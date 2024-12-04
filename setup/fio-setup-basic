@@ -27,6 +27,14 @@
 # - cpus_allowed
 # - donorname
 # - testfile
+# - buffered
+# - norandommap
+# - random_generator
+# - allrandrepeat
+# - group_reporting
+# - exitall
+# - ramp_time
+# - stonewall
 
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/common.sh
@@ -148,6 +156,60 @@ if parse_bool -q "$donorname"; then
        create_task="
 $create_task
 donorname=$donorname
+"
+fi
+
+buffered=$(parse_bool $buffered)
+create_task="
+$create_task
+buffered=$buffered
+"
+
+if parse_bool -q "$norandommap"; then
+        create_task="
+$create_task
+norandommap
+"
+fi
+
+if [ -n "$random_generator" ]; then
+        create_task="
+$create_task
+random_generator=$random_generator
+"
+fi
+
+allrandrepeat=$(parse_bool $allrandrepeat)
+create_task="
+$create_task
+allrandrepeat=$allrandrepeat
+"
+
+if parse_bool -q "$group_reporting"; then
+        create_task="
+$create_task
+group_reporting
+"
+fi
+
+if parse_bool -q "$exitall"; then
+        create_task="
+$create_task
+exitall
+"
+fi
+
+if [ -n "$ramp_time" ]; then
+        create_task="
+$create_task
+ramp_time=$ramp_time
+"
+fi
+
+if parse_bool -q "$stonewall"; then
+	create_task="
+$create_task
+stonewall
 "
 fi
 

@@ -30,6 +30,17 @@ parameters:
                unless limited by other options (runtime, for instance)
  nr_task:      number of clones (processes/threads performing the same workload) of this job. Default to 1
  fallocate:    whether pre-allocation is performed when laying down files
+ buffered:     a boolean parameter, if true, use buffered I/O (usually O_DIRECT). Default to true.
+ norandommap:  with this parameter, fio will just get a new random offset without looking at past I/O history.
+ random_generator:   defines engine for generating I/O offsets for random I/O.
+ allrandrepeat:      seed all random number generators in a predictable way so the pattern is repeatable
+                     across runs. Default to true.
+ group_reporting:    see the final report per-group instead of per-job.
+ exitall:      a boolean parameter, if true, terminate all jobs in the same group, as soon as one job of
+               that group finishes.
+ ramp_time:    if set, fio will run the specified workload for this amount of time before logging any
+               performance numbers.
+ stonewall:    wait for preceding jobs of a group to exit, before starting new reporting group.
 
 results:
  fio.write_bw_MBps:    average write bandwidth

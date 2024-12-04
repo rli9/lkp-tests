@@ -1,0 +1,30 @@
+suite: fio-basic
+testcase: fio-basic
+category: benchmark
+
+disk: 1SSD
+runtime: 60
+nr_task: 8t
+fs: ext4
+test_size: 1024M
+
+fio-setup-basic:
+  rw: read
+  bs: 128k
+  ioengine: libaio
+  direct: 1
+  buffered: 0
+  invalidate: 1
+  time_based: 1
+  norandommap: 1
+  allrandrepeat: 0
+  random_generator: lfsr
+  cpus_allowed_policy: split
+  cpus_allowed: 0-127
+  exitall: 1
+  group_reporting: 1
+  ramp_time: 5
+  stonewall: 1
+  iodepth: 16
+
+fio:
