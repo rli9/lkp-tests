@@ -420,7 +420,6 @@ linux-libc-dev-amd64-cross:
 linux-libc-dev: kernel-headers
 linux-libc-dev:i386: kernel-headers
 linux-perf: perf
-linux-tools: perf
 llvm: llvm7.0
 locales: glibc-common
 manpages-dev: man-pages

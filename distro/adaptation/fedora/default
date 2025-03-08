@@ -354,7 +354,6 @@ linux-libc-dev-amd64-cross:
 linux-libc-dev: kernel-headers
 linux-libc-dev:i386: kernel-headers
 linux-perf: perf
-linux-tools: perf
 llvm-dev: llvm-devel
 locales: glibc-common
 mesa-utils: mesa-demos
