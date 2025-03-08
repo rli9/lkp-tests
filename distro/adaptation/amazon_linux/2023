@@ -27,6 +27,7 @@ libvirt-dev:
 libyaml-cpp-dev: yaml-cpp-devel
 libzstd-dev: libzstd-devel
 linux-cpupower:
+linux-perf:
 mysql-server:
 network-manager:
 openbsd-inetd:
