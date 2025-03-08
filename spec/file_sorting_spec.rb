@@ -5,9 +5,9 @@ def sorted_file_content(file_path)
 end
 
 def filtered_files(path, filter)
-  Dir.entries(path)
-     .reject { |f| File.symlink?(File.join(path, f)) || File.directory?(File.join(path, f)) || f.start_with?('.') }
-     .select { |f| filter.nil? || filter.call(f) }
+  Dir.glob("#{path}/**/*")
+     .select { |f| File.file?(f) && !File.symlink?(f) && f !~ /\.(rb|yml)$/ }
+     .select { |f| filter.nil? || filter.call(File.basename(f)) }
 end
 
 describe 'Directory File Sorting' do
@@ -16,26 +16,27 @@ describe 'Directory File Sorting' do
       path: "#{LKP_SRC}/distro/adaptation",
       filter: ->(filename) { filename != 'README.md' }
     },
+
     'adaptation_pkg' => {
       path: "#{LKP_SRC}/distro/adaptation-pkg"
     },
+
     'programs' => {
       path: "#{LKP_SRC}/programs",
       filter: ->(filename) { filename.start_with?('depends') }
     },
+
     'etc' => {
       path: "#{LKP_SRC}/etc",
-      filter: ->(filename) { filename != 'makepkg.conf' && filename !~ /\.(rb|yml)$/ }
+      filter: ->(filename) { filename != 'makepkg.conf' }
     }
   }
 
   directories.each do |dir_name, config|
     context "in #{dir_name}" do
-      filtered_files(config[:path], config[:filter]).each do |filename|
-        file_path = File.join(config[:path], filename)
-
-        it "#{file_path} has sorted content and no duplicates" do
-          expect(File.read(file_path)).to eq(sorted_file_content(file_path))
+      filtered_files(config[:path], config[:filter]).each do |file|
+        it "#{file} has sorted content and no duplicates" do
+          expect(File.read(file)).to eq(sorted_file_content(file))
         end
       end
     end
