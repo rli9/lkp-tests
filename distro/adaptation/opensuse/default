@@ -29,9 +29,12 @@ gcc-multilib: gcc-32bit
 genisoimage:
 gettext-base: gettext-runtime
 gettext: gettext-runtime
+glib2:
 gnupg: gpg2
 groff-base: groff
+gtk3:
 hpcc:
+ima-evm-utils:
 init-system-helpers: systemd
 initramfs-tools: dracut
 install-info: info
@@ -47,11 +50,13 @@ lib32gcc-dev: gcc-32bit
 libacl1-dev: libacl-devel
 libacl: libacl1
 libaio-dev: libaio-devel
+libaio: libaio1
 libapache2-mpm-itk: apache2
 libapparmor-dev: libapparmor-devel
 libarchive-dev: libarchive-devel
 libarchive-tools: libarchive13 bsdtar
 libarchive-zip-perl: perl-Archive-Zip
+libarchive: libarchive13
 libasound2-dev: alsa-devel
 libattr1-dev: libattr-devel
 libattr: libattr1
@@ -95,6 +100,7 @@ libdrm-amdgpu1: libdrm_amdgpu1
 libdrm-dev: libdrm-devel
 libdrm-intel1: libdrm_intel1
 libdrm-nouveau2: libdrm_nouveau2
+libdrm:
 libdw-dev: libdw-devel
 libdwarf-dev: libdwarf-devel
 libedit-dev: libedit-devel
@@ -104,6 +110,7 @@ libelf-dev: libelf-devel
 libevdev: libevdev2
 libevent-dev: libevent-devel
 libevent-openssl: libevent-2_1-8
+libevent: libevent-2_1-7
 libfabric-dev: libfabric-devel
 libfdt-dev: libfdt-devel
 libffi-dev: libffi-devel
@@ -120,7 +127,7 @@ libgflags2.2: gflags
 libgl1-mesa-dev: Mesa-libGL-devel
 libgl1-mesa-dri: Mesa
 libgles2-mesa-dev: Mesa-libGL-devel
-libgles2: Mesa-libGLESv2-2
+libgles2:
 libglib2.0-0: glib2
 libglib2.0-dev: glib2-devel
 libglut-dev: freeglut-devel
@@ -167,6 +174,7 @@ libncurses5-dev: ncurses-devel
 libncursesw5-dev: ncurses-devel
 libndctl-dev: libndctl-devel
 libnfs-dev: libnfs-devel
+libnfs:
 libnl-3-dev: libnl3-devel
 libnl-cli-3-200: libnl3-200
 libnl-genl-3-dev: libnl3-devel
@@ -204,6 +212,7 @@ libpthread-stubs0-dev: pthread-stubs-devel
 libpulse-dev: libpulse-devel
 libpython2: libpython2_7-1_0
 libpython3: libpython3_12-1_0
+libqt5-qtbase:
 libqt5opengl5-dev: libQt5OpenGL-devel
 librbd-dev: librados-devel
 librdmacm-dev: rdma-core-devel
@@ -213,8 +222,7 @@ libsasl2-dev: cyrus-sasl-devel
 libsctp-dev: lksctp-tools-devel
 libsctp1: lksctp-tools
 libsdl2-2.0-0: libSDL2-2_0-0
-libsdl2-dev: libSDL2-devel
-libSDL2-devel: libSDL2-devel
+libsdl2-dev:
 libseccomp-dev: libseccomp-devel
 libselinux1-dev: libselinux-devel
 libslang2-dev: slang-devel
@@ -240,7 +248,7 @@ libtirpc: libtirpc3
 libtool-bin: libtool
 libtraceevent-dev: libtraceevent-devel
 libtracefs-dev: libtracefs-devel
-libudev-dev: libudev-devel
+libudev-dev:
 libunwind-dev: libunwind-devel
 liburcu-dev: liburcu-devel
 liburcu: liburcu6
@@ -270,8 +278,10 @@ libx32ubsan1: libubsan1-32bit
 libxen-dev: xen-devel
 libxkbcommon-dev: libxkbcommon-devel
 libxml2-dev: libxml2-devel
+libxml2:
 libxmlrpc-core-c3-dev: xmlrpc-c-devel
 libxmlrpc-core-c3: libxmlrpc3
+libxslt: libxslt1
 libxxhash-dev: xxhash-devel
 libyaml-dev: libyaml-devel
 libzmq3-dev: zeromq-devel
@@ -288,9 +298,11 @@ man-db: man
 mariadb-server: mariadb
 mesa-utils: Mesa-demo-x
 mpi-default-bin: openmpi
+mysql-server:
 nbd-client: nbd
 nbd-server: nbd
 ncurses-bin: ncurses
+ncurses:
 ndisc6:
 netpipe-lam:
 netpipe-mpich2:
@@ -307,7 +319,9 @@ opencryptoki: openCryptoki
 openjdk: java-11-openjdk
 openmpi-bin: openmpi
 openvswitch-common: openvswitch
+openvswitch-switch: openvswitch
 perl-modules-5: perl
+php-cli:
 php-xml: php7
 po-debconf: gettext-runtime
 python3-crypto: python3-pycrypto
@@ -329,6 +343,7 @@ qemu-utils: qemu-tools
 qt5-default: libqt5-qtbase
 qtbase5-dev: libqt5-qtbase-devel
 reiserfsprogs: reiserfs
+rfkill:
 rng-tools5: rng-tools
 rpcsvc-proto: rpcsvc-proto-devel
 rstatd:
@@ -347,6 +362,7 @@ tshark: wireshark
 update-inetd:
 uuid-dev: uuid-devel
 uuid-runtime: util-linux
+uuid:
 vde2-devel:
 winpdb:
 wireguard: wireguard-tools
@@ -360,4 +376,4 @@ xsltproc: libxslt
 xutils-dev: xorg-x11-util-devel
 xz-utils: xz
 zlib1g-dev: zlib-devel
-zlib1g: zlib
+zlib1g:
