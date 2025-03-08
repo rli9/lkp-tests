@@ -42,7 +42,7 @@ def load_yaml_with_conditionals(file_path)
   YAML.load(yaml_content)
 end
 
-def is_erb_file(file_path)
+def erb_file?(file_path)
   File.foreach(file_path) { |line| return true if line.include?('<%') || line.include?('<%=') }
   false
 end
@@ -53,8 +53,8 @@ describe 'Check need_kconfig from' do
                                                                  .each do |file|
     begin
       yaml_data = load_yaml_with_conditionals(file)
-      # next if yaml_data.nil? || !yaml_data.is_a?(Hash) || is_erb_file(file)
-      next unless yaml_data.is_a?(Hash) && !is_erb_file(file)
+      # next if yaml_data.nil? || !yaml_data.is_a?(Hash) || erb_file?(file)
+      next unless yaml_data.is_a?(Hash) && !erb_file?(file)
 
       kconfig_section = yaml_data['need_kconfig']
 
