@@ -3,6 +3,7 @@
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(File.dirname(File.realpath($PROGRAM_NAME))))
 
 require "#{LKP_SRC}/lib/log"
+require "#{LKP_SRC}/lib/string"
 
 module LKP
   class Stats
@@ -54,7 +55,7 @@ module LKP
         test_case.to_s
                  .strip
                  .gsub(/[\s,"_\[\]():]+/, '_')
-                 .gsub(/(^_+|_+$)/, '')
+                 .remove(/(^_+|_+$)/)
                  .gsub(/_{2,}/, '_') # replace continuous _ to single _
                  .gsub(/\.{4,}/, '.') # replace more than .... to single .
       end
