@@ -1,7 +1,9 @@
 require 'spec_helper'
+require "#{LKP_SRC}/lib/string"
 
 def sorted_file_content(file_path)
-  `LC_ALL=C sort -f #{file_path} | uniq`
+  # remove empty line and line starting with #
+  `LC_ALL=C sort -f #{file_path} | grep -hv '^\\s*#\\|^\\s*$' | uniq`
 end
 
 def with_shebang?(file)
@@ -45,7 +47,11 @@ describe 'Directory File Sorting' do
     context "in #{dir_name}" do
       filtered_files(config[:path], config[:filter]).each do |file|
         it "#{file} has sorted content and no duplicates" do
-          expect(File.read(file)).to eq(sorted_file_content(file))
+          actual = File.readlines(file)
+                       .reject { |line| line.blank? || line.start_with?('#') }
+                       .join
+
+          expect(actual).to eq(sorted_file_content(file))
         end
       end
     end
