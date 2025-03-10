@@ -4,9 +4,18 @@ def sorted_file_content(file_path)
   `LC_ALL=C sort -f #{file_path} | uniq`
 end
 
+def with_shebang?(file)
+  File.open(file, 'r') do |f|
+    return f.readline.start_with?('#!')
+  end
+rescue EOFError
+  false
+end
+
 def filtered_files(path, filter)
   Dir.glob("#{path}/**/*")
-     .select { |f| File.file?(f) && !File.symlink?(f) && f !~ /\.(rb|yml)$/ }
+     .select { |f| File.file?(f) }
+     .reject { |f| f =~ /\.(sh|rb|yml)$/ || File.symlink?(f) || with_shebang?(f) }
      .select { |f| filter.nil? || filter.call(File.basename(f)) }
 end
 
