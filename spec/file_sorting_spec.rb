@@ -17,7 +17,7 @@ end
 def filtered_files(path, filter)
   Dir.glob("#{path}/**/*")
      .select { |f| File.file?(f) }
-     .reject { |f| f =~ /\.(sh|rb|yml)$/ || File.symlink?(f) || with_shebang?(f) }
+     .reject { |f| f =~ /\.(sh|rb|yml|py|txt)$/ || File.symlink?(f) || with_shebang?(f) }
      .select { |f| filter.nil? || filter.call(File.basename(f)) }
 end
 
