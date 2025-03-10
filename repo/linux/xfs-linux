@@ -4,3 +4,4 @@ integration_testing_branches: for-next
 subsystems:
 - xfs
 - libxfs
+branch_denylist: test-merge
