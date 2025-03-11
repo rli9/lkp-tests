@@ -1,0 +1,5 @@
+url: https://github.com/btrfs/linux.git
+integration_testing_branches: for-next
+subsystems:
+- btrfs
+- sysfs
