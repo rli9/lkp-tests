@@ -1,5 +1,4 @@
 # bullseye
-btrfs-tools: btrfs-progs
 gcc: gcc-10
 lib32gcc-dev: lib32gcc-10-dev
 lib64asan3: lib64asan6

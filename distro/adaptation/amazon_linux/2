@@ -27,7 +27,6 @@ python-pkg-resources: python-setuptools
 qemu-utils: qemu-img
 rstatd: rusers-server
 rt-tests: numactl-devel
-ruby-dev: ruby-devel
 rusersd: rusers-server rusers
 sg3-utils: sg3_utils
 stress-ng:

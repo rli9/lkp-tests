@@ -411,6 +411,7 @@ qtbase5-dev:
 reiserfsprogs:
 rng-tools5: rng-tools
 rpcsvc-proto: rpcgen
+ruby-dev: ruby-devel
 ruby-git:
 ruby-gnuplot:
 rusers:

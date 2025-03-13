@@ -17,7 +17,6 @@ libopencryptoki0:
 libpfm-dev: libpfm-devel
 libpfm: libpfm-devel
 libpng12-dev:
-libreadline5: readline
 libstdc++-dev: libstdc++-devel libstdc++-static
 libtracefs-dev:
 libtsan0: libtsan
@@ -39,7 +38,6 @@ python3-openssl: python3-pyOpenSSL
 python3-pkg-resources: python3-setuptools
 rstatd:
 rt-tests:
-ruby-dev: ruby-devel
 rusersd:
 sg3-utils:
 tshark:

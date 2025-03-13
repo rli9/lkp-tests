@@ -1,5 +1,4 @@
 # buster
-btrfs-tools: btrfs-progs
 fsverity:
 gcc: gcc-9
 lib32gcc-dev: lib32gcc-8-dev
@@ -8,7 +7,6 @@ libasan: libasan5
 libevent-openssl: libevent-openssl-2.1-6
 libevent: libevent-2.1-6
 libgcc-dev: libgcc-8-dev
-libgcrypt-dev: libgcrypt20-dev
 libglut-dev:
 libglut3:
 libgsl: libgsl23
