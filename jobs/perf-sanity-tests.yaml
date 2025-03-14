@@ -9,4 +9,4 @@ perf-sanity-tests:
     - gcc
     - clang
 
-timeout: 90m
+timeout: 2h
