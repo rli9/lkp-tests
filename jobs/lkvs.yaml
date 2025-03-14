@@ -4,10 +4,8 @@ category: functional
 
 lkvs:
   test:
-    - amx
     - avx512vbmi
     - cet
-    - cmpccxadd
     - dma
     - dsa
     - edac
@@ -15,7 +13,6 @@ lkvs:
     - hotplug
     # - guest-test # cause machine power down
     - idxd
-    - ifs
     # - instruction-check
     - isst
     - pcie
@@ -24,23 +21,37 @@ lkvs:
     - pt
     - ras
     - sdsi
-    - tdx-compliance
-    - tdx-guest
+    # - tdx-compliance
+    # - tdx-guest
     # - tdx-osv-sanity
     - telemetry
     - th
     - thermal
-    - tpm
-    - tpmi
-    - ufs # require GNR and above
     - umip
     - workload-xsave
     - xsave
 
 ---
-
 need_cpuid: 106
 
 lkvs:
   test:
-    - splitlock # require ICL and above
+    - ifs
+    - splitlock
+
+---
+need_cpuid: 173
+
+lkvs:
+  test:
+    - amx
+    - tpm
+    - tpmi
+    - ufs
+
+---
+need_cpuid: 175
+
+lkvs:
+  test:
+    - cmpccxadd
