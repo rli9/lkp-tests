@@ -12,66 +12,38 @@ consider to create image for interested test for easy reuse.
 git clone https://github.com/intel/lkp-tests.git
 
 cd lkp-tests
+make install
 
 image=debian/buster
 hostname=lkp-docker.${image//\//.}
 
-docker build -f docker/${image%%/*}/Dockerfile -t lkp-tests/${image} -t lkp-tests/${image}:$(git log -1 --pretty=%h) --build-arg hostname=$hostname --build-arg base_image=$(if [[ "$image" == opensuse/* ]]; then echo "$image" | sed 's|opensuse/\([^/]*\)/|opensuse/\1:|'; elif [[ "$image" == redhat/* ]]; then echo "$image" | sed 's|redhat/\([^/]*\)/|redhat/\1:|'; else echo ${image//\//:}; fi) .
+lkp docker build --image $image --hostname $hostname
 
 docker run --rm --entrypoint '' lkp-tests/${image} lkp help
 ```
 
-The alternative method to build the image is
-
-```bash
-lkp docker build --image $image --hostname $hostname
-```
-
 ## Run one atomic job
+
+Kindly note that
+* All installed dependencies are inside container and not persistent.
+* The jobs and benchmarks are persistent, thus this can be run directly in a new container. It does not work for all tests, so that lkp install need rerun.
 
 ```bash
 # Add --privileged option to allow privileged access like dmesg, sysctl. Use
 # this with caution.
-docker run -d -h $hostname --name $hostname \
-           -v /home/$USER/lkp/paths:/lkp/paths \
-           -v /home/$USER/lkp/benchmarks:/lkp/benchmarks \
-           -v /home/$USER/lkp/result:/lkp/result \
-           -v /home/$USER/lkp/jobs:/lkp/jobs \
-           lkp-tests/${image}
-
-docker exec -it $hostname bash
-
-/lkp/lkp-tests# lkp split-job jobs/hackbench.yaml -o /lkp/jobs
-
-# Install the dependencies for the splited job and generate binary at /lkp/benchmarks
-# Pls note all dependencies are inside container and not persistent.
-/lkp/lkp-tests# lkp install /lkp/jobs/hackbench-pipe-8-process-1600%.yaml
-
-# The jobs and benchmarks are persistent, thus this can be run directly in a new
-# container. It does not work for all tests, so that lkp install need rerun.
-/lkp/lkp-tests# lkp run /lkp/jobs/hackbench-pipe-8-process-1600%.yaml
-
-/lkp/lkp-tests# lkp rt hackbench
-```
-
-The alternative method to attach to a terminal in the docker container is 
-
-```bash
-lkp docker attach --container $hostname
-```
-
-The alternative method to run the job is
-
-```bash
 lkp docker test -i $image -j hackbench.yaml -g pipe-8-process-1600 --hostname $hostname
 
-# The flag --any can be set to let lkp randomly choose a job from the suite
-lkp docker test -i $image -j hackbench.yaml --any --hostname $hostname
+lkp docker rt --container $hostname --options "hackbench"
 ```
 
-The alternative method to run rt
-```
-lkp docker rt --container $hostname --options "hackbench"
+## More Examples of lkp docker Usage
+
+```bash
+# The flag --any can be set to let lkp randomly choose a job from the suite
+lkp docker test -i $image -j hackbench.yaml --any --hostname $hostname
+
+# Attach to a running container
+lkp docker attach --container $hostname
 ```
 
 ## Test by lkp docker
