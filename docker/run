@@ -38,6 +38,9 @@ while getopts "d:i:t:-:" opt; do
 				recreate)
 					opt_recreate=true
 					;;
+				privileged)
+					opt_privileged=true
+					;;
 				*)
 					echo "Unknown option --${OPTARG}"
 					exit 1
@@ -67,7 +70,9 @@ do
 	mkdir -p "$opt_test_dir/$subdir"
 done
 
-exec_cmd docker run -d -h $opt_hostname --name $opt_hostname \
+[[ "$opt_privileged" = true ]] && docker_options="--privileged"
+
+exec_cmd docker run -d -h $opt_hostname --name $opt_hostname $docker_options \
 	-v $opt_test_dir/paths:/lkp/paths \
 	-v $opt_test_dir/benchmarks:/lkp/benchmarks \
 	-v $opt_test_dir/result:/lkp/result \

@@ -55,6 +55,9 @@ while getopts "d:i:j:g:t:-:" opt; do
 				recreate)
 					opt_recreate=true
 					;;
+				privileged)
+					opt_privileged=true
+					;;
 				*)
 					echo "Unknown option --${OPTARG}"
 					exit 1
@@ -78,6 +81,7 @@ opt_test_dir=${opt_test_dir:-$LKP_DOCKER_TEST_DIR}
 
 cmd="$LKP_SRC/docker/run -i $opt_image --hostname $opt_hostname -d $opt_test_dir"
 [[ "$opt_recreate" = true ]] && cmd="$cmd --recreate"
+[[ "$opt_privileged" = true ]] && cmd="$cmd --privileged"
 
 exec_cmd $cmd
 
