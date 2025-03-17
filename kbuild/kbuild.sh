@@ -312,16 +312,6 @@ setup_cross_vars()
 		xtensa)
 			crosstool=xtensa-linux
 			;;
-		arc)
-			# start to support big endian arc toolchain form gcc-9.3.0
-			# for earlier gcc version, will failed to find arceb-elf for
-			# big endian arceb-elf tool chain
-			if is_config_enabled CONFIG_CPU_BIG_ENDIAN; then
-				crosstool=arceb-elf
-			else
-				crosstool=arc-elf
-			fi
-			;;
 		c6x)
 			crosstool=c6x-elf
 			;;
@@ -339,8 +329,8 @@ setup_cross_vars()
 		loongarch)
 			crosstool=loongarch64-linux
 			;;
-		# nios2
 		*)
+			# arc
 			crosstool=$ARCH-linux
 			;;
 	esac
