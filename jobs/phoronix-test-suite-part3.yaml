@@ -14,7 +14,7 @@ phoronix-test-suite:
     - petsc-1.0.0
     - nwchem-1.1.1 # runtime > 1h on lkp-csl-2sp7
     # - hdparm-read-1.0.0 #  The test run did not produce a result.
-    # - duckdb-1.0.0 # The test quit with a non-zero exit status.
+    # - duckdb-1.1.0 # The test quit with a non-zero exit status.
     # - build-linux-kernel-1.15.0 # runtime > 40m on lkp-csl-2sp7
     - build-llvm-1.5.0
     - build-gem5-1.1.0
@@ -119,11 +119,11 @@ phoronix-test-suite:
       - 3 # clock_nanosleep TIME_ABSTIME, Interval 500 ms, 100000 Loops
       - 4 # POSIX Timer, Interval 500 ms, 100000 Loops
 
-  - test: couchdb-1.3.0
+  - test: couchdb-1.4.1
     option_a: # Bulk Size
       - 100
       - 300
-      - 500
+      # - 500 # PHP Fatal error:  Allowed memory size of 1073741824 bytes exhausted
     option_b: # Inserts
       - 1000
       # - 3000 # runtime > 98m on 500-3000 lkp-csl-2sp7
