@@ -18,7 +18,7 @@ phoronix-test-suite:
   - test: tensorflow-2.1.1
     option_a:
       - CPU
-      - GPU
+      # - GPU
     option_b:
       - 1
       # - 16

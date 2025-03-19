@@ -1,0 +1,32 @@
+suite: phoronix-test-suite
+testcase: phoronix-test-suite
+category: benchmark
+
+need_memory: 8G
+times_to_run: 1
+
+timeout: 1h
+
+phoronix-test-suite:
+  - test:
+    - nwchem-1.1.1 # runtime > 1h on lkp-csl-2sp7
+    - numpy-1.2.1 # runtime > 1h
+    # - keydb-1.4.0 # soft timeout > 2h
+    - core-latency-1.0.0 # runtime > 10h
+
+  - test: build-linux-kernel-1.15.0 # runtime > 40m on lkp-csl-2sp7
+    option_a:
+      - 1 # defconfig    [Default Kernel Build]
+      - 2 # allmodconfig [This option is *much* more time consuming...]
+
+  - test: etcd-1.0.0 # Estimated Time To Completion: 49 Minutes
+    option_a:
+      - PUT
+      - RANGE
+    option_b:
+      - 50
+      # - 100
+      # - 500
+    option_c:
+      - 100
+      # - 1000
