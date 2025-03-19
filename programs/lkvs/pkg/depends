@@ -2,6 +2,7 @@ asciidoc
 bison
 build-essential
 cmake
+coreutils
 cpuid
 dmidecode
 flex
