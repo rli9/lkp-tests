@@ -309,9 +309,6 @@ setup_cross_vars()
 			cross_pkg=m68k-linux-gnu
 			crosstool=m68k-linux
 			;;
-		xtensa)
-			crosstool=xtensa-linux
-			;;
 		c6x)
 			crosstool=c6x-elf
 			;;
@@ -330,7 +327,7 @@ setup_cross_vars()
 			crosstool=loongarch64-linux
 			;;
 		*)
-			# arc
+			# arc, xtensa
 			crosstool=$ARCH-linux
 			;;
 	esac
