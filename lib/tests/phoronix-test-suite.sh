@@ -429,13 +429,6 @@ fixup_xsbench_cl_install()
 	sed -i "4ased -i '1048s,256,64,' XSBench_OCL.c" "$target"
 }
 
-fixup_opm_git_install()
-{
-	local test=$1
-	local target=/var/lib/phoronix-test-suite/test-profiles/pts/${test}/install.sh
-	sed -i "82a git clone --depth 1 https://github.com/OPM/opm-data.git" "$target"
-}
-
 fixup_clpeak_install()
 {
 	local test=$1
@@ -549,10 +542,6 @@ fixup_install()
 		# fix issue: unionized_grid_search: failed to launch kernel with error -54
 		fixup_xsbench_cl_install $test || die "failed to fixup $test install"
 		;;
-	opm-git-*)
-		# fix issue: git clone opm-data when omega-opm not present
-		fixup_opm_git_install $test || die "failed to fixup opm-git install"
-		;;
 	tesseract-*)
 		# fix issue: mv: cannot stat 'bench.so': No such file or directory
 		fixup_tesseract_install $test || die "failed to fixup tesseract install"
@@ -611,12 +600,6 @@ fixup_test()
 
 			# produce big file to /opt/rootfs when test on cluster
 			[ "$LKP_LOCAL_RUN" = "1" ] || fixup_interbench $test
-			;;
-		opm-git-*)
-			# Choose
-			# 2: Flow MPI Norne
-			# 1: 1
-			test_opt="\n2\n1\nn"
 			;;
 		numenta-nab-*)
 			# fix issue: SyntaxError: Missing parentheses in call to 'print'.
