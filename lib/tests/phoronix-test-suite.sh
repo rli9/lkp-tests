@@ -757,6 +757,17 @@ fixup_test()
 	esac
 }
 
+setup_run_option()
+{
+	run_option="run"
+	if [[ "$debug" = 1 ]]; then
+		run_option="debug-run"
+	elif [[ "$debug" = 2 ]]; then
+		run_option="default-run"
+		test_opt=
+	fi
+}
+
 run_test()
 {
 	local test=$1
@@ -792,8 +803,7 @@ run_test()
 
 	phoronix-test-suite list-installed-tests | grep -q $test || die "$test is not installed"
 
-	run_option="run"
-	[ -n "$debug" ] && run_option="debug-run"
+	setup_run_option
 
 	if echo "$test" | grep idle-power-usage; then
 		# Choose
@@ -879,15 +889,6 @@ run_test()
 	elif [ "$test_opt" ]; then
 		echo -e "$test_opt" | log_cmd phoronix-test-suite $run_option $test
 	else
-		[ -n "$debug" ] || run_option="default-run"
-
-		/usr/bin/expect <<-EOF
-			spawn phoronix-test-suite $run_option $test
-			expect {
-				"Would you like to save these test results" { send "n\r"; exp_continue }
-				eof { }
-				default { exp_continue }
-			}
-	EOF
+		echo -e "n" | log_cmd phoronix-test-suite $run_option $test
 	fi
 }
