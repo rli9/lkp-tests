@@ -13,7 +13,7 @@ phoronix-test-suite:
     - petsc-1.0.0
     - build-llvm-1.5.0
     - build-gem5-1.1.0
-    - build-nodejs-1.3.0
+    - build-nodejs-1.4.0
     - cockroach-1.0.2
     - asmfish-1.1.2
     - vosk-1.0.1
@@ -42,6 +42,15 @@ phoronix-test-suite:
       - AES-256-GCM
       - ChaCha20
       - ChaCha20-Poly1305
+
+  - test: dbench-1.0.2
+    option_a: # client count
+      - 1
+      - 6
+      # - 12
+      # - 48
+      # - 128
+      # - 256
 
   - test: dragonflydb-1.1.0
     option_a: # Clients Per Thread
@@ -163,20 +172,6 @@ phoronix-test-suite:
       - Read Write
   #     - Read Only # E: pgbench: error: could not create connection for setup
 
-  - test: renaissance-1.3.0
-    option_a:
-      - 1 # Akka Unbalanced Cobwebbed Tree
-      - 2 # Savina Reactors.IO
-      - 3 # Apache Spark ALS
-      - 4 # Random Forest
-      - 5 # Apache Spark Bayes
-      - 6 # Apache Spark PageRank
-      # - 7 # In-Memory Database Shootout # Benchmark 'db-shootout' excluded: requires JVM version >=1.8 and <=11 (found 17).
-      - 8 # Scala Dotty
-      - 9 # Finagle HTTP Requests
-      - 10 # Genetic Algorithm Using Jenetics + Futures
-      - 11 # ALS Movie Lens
-
   - test: helsing-1.0.2
     option_a:
       - 12 digit
@@ -214,3 +209,25 @@ phoronix-test-suite:
       # - 6 # 128
       # - 7 # 256
       - 8 # 500
+
+  - test: duckdb-1.1.0
+    option_a:
+      - IMDB
+      - TPC-H Parquet
+      - Clickbench
+
+  - test: minife-1.0.0
+    option_a:
+      - Small
+  #     - Medium # PHP Fatal error:  Allowed memory size of 1073741824 bytes exhausted
+  #     - Large
+
+  - test: hpcg-1.3.0
+    option_a:
+      - 104 104 104
+      # - 144 144 144
+      # - 160 160 160
+      # - 192 192 192
+    option_b:
+      - 1 # 60   [Shorter run-time]
+      # - 2 # 1800 [Official run-time]

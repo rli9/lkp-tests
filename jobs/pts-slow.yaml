@@ -14,10 +14,10 @@ phoronix-test-suite:
     # - keydb-1.4.0 # soft timeout > 2h
     - core-latency-1.0.0 # runtime > 10h
 
-  - test: build-linux-kernel-1.15.0 # runtime > 40m on lkp-csl-2sp7
+  - test: build-linux-kernel-1.16.0
     option_a:
       - 1 # defconfig    [Default Kernel Build]
-      - 2 # allmodconfig [This option is *much* more time consuming...]
+      - 2 # allmodconfig [This option is *much* more time consuming...] # runtime > 40m on lkp-csl-2sp7
 
   - test: etcd-1.0.0 # Estimated Time To Completion: 49 Minutes
     option_a:

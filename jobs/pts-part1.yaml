@@ -12,15 +12,15 @@ phoronix-test-suite:
     - blosc-1.3.0
     - bork-1.0.1
     - build-apache-1.6.1
-    - build-eigen-1.1.0
+    - build-eigen-1.2.0
     - build-erlang-1.2.0
-    - build-ffmpeg-6.1.0
+    - build-ffmpeg-7.0.0
     - build-gdb-1.1.0
     - build-godot-4.0.0
     - build-imagemagick-1.7.2
     - build-mesa-1.1.0
     - build-mplayer-1.5.0
-    - build-php-1.6.0
+    - build-php-1.7.0
     - byte-1.2.2
     - c-ray-2.0.0
     - clomp-1.1.2
@@ -64,7 +64,6 @@ phoronix-test-suite:
     - leveldb-1.1.0
     - libxsmm-1.0.1
     - node-web-tooling-1.0.1
-    - jpegxl-decode-1.5.0
     - libraw-1.0.0
     - liquid-dsp-1.6.0
     - luaradio-1.0.0
@@ -82,6 +81,7 @@ phoronix-test-suite:
     - network-loopback-1.0.3
     - openjpeg-1.0.0
     - optcarrot-1.0.1
+    - system-decompress-gzip-1.1.1
 
   - test: apache-3.0.0
     option_a:
@@ -347,21 +347,6 @@ phoronix-test-suite:
       - Default Test Directory
       # - /opt/rootfs # don't touch the rootfs dir
 
-  - test: iozone-1.9.6
-    option_a:
-      - 4Kb
-      # - 64Kb
-      - 1MB
-      # - 2MB
-    option_b:
-      - 512MB
-      - 2GB
-      # - 4GB
-      # - 8GB
-    option_c:
-      - Write Performance
-      - Read Performance
-
   - test: ipc-benchmark-1.0.0
     option_a:
       - Unnamed Pipe
@@ -518,7 +503,7 @@ phoronix-test-suite:
       - Launch Programs
       - Memory Allocations
 
-  - test: ospray-2.12.0
+  - test: ospray-3.2.0 # install failed
     option_a:
       - gravity_spheres_volume/dim_512/ao/real_time
       - gravity_spheres_volume/dim_512/scivis/real_time

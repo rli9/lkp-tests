@@ -2,73 +2,44 @@ suite: phoronix-test-suite
 testcase: phoronix-test-suite
 category: benchmark
 
-need_memory: 8G
+times_to_run: 1
 
 phoronix-test-suite:
   - test:
     - ai-benchmark-1.0.2 # E: AttributeError: module 'numpy' has no attribute 'warnings'. Did you mean: 'hanning'?
-    - build-clash-1.0.2 # wait for newer version
-    - caffe-1.5.0 # install failed
-    - civilization-vi-1.0.1 # install failed
-    - coh2-1.0.3 # install failed
-    - comd-cl-1.0.0 # install failed due to build errors
-    - compress-lzma-1.3.1 # install failed
-    - compress-zstd-1.6.0 # install failed
+    # - build-clash-1.0.2 # install failed
+    # - caffe-1.5.0 # install failed
+    # - comd-cl-1.0.0 # install failed
+    # - compress-zstd-1.6.0 # install failed
     - iperf-1.2.0 # The test quit with a non-zero exit status.
     - java-gradle-perf-1.1.0 # Exception in thread "main" java.net.ConnectException: Connection refused
-    - java-jmh-1.0.1 # The test run did not produce a result.
-    - csgo-1.7.2 # install failed
-    - deus-exmd-1.1.1 # install failed
-    - dirt-rally-1.1.0 # install failed
-    - dirt-showdown-1.1.2 # install failed
-    - dota2-1.2.7 # install failed
-    - dow3-1.0.1 # install failed
-    - f12017-1.1.1 # install failed
-    - fast-cli-1.0.0 # E: ./fast-cli: 2: node_modules/fast-cli/cli.js: not found
-    - hpcc-1.2.8 # run time more than 2h on clear, install failed on debian
-    - mencoder-1.5.0 # install failed
-    - metro2033-redux-1.1.1 # install failed
-    - metroll-redux-1.2.1 # install failed
-    - libframetime-1.0.0 # not installed
-    - kripke-1.2.0 # MPI_ABORT was invoked on rank 41 in communicator MPI_COMM_WORLD with errorcode 1.
+    # - java-jmh-1.0.1 # install failed
+    # - fast-cli-1.0.0 # E: ./fast-cli: 2: node_modules/fast-cli/cli.js: not found
+    # - hpcc-1.2.8 # install failed
+    # - mencoder-1.5.0 # install failed
+    # - kripke-1.2.0 # MPI_ABORT was invoked on rank 41 in communicator MPI_COMM_WORLD with errorcode 1.
     - luxcorerender-1.4.0 # E: RUNTIME ERROR: No hardware device selected or available
-    - namd-cuda-1.1.1 # nvidia video card is needed
     - nero2d-1.1.0 # E: mpirun noticed that process rank 46 with PID 0 on node lkp-csl-2sp7 exited on signal 11 (Segmentation fault)
-    - netperf-1.0.4 # install failed
+    # - netperf-1.0.4 # install failed
     - node-express-loadtest-1.0.1 # The test run did not produce a result.
-    - node-octane-1.0.1 # E: ReferenceError: GLOBAL is not defined
-    - oidn-2.1.0 # E: Error: unsupported device type: SYCL
-    - onnx-1.6.0 # E: onnxruntime/onnxruntime/test/onnx/onnx_model_info.cc:45 void OnnxModelInfo::InitOnnxModelInfo(const PATH_CHAR_TYPE*) open file "yolov4/yolov4.onnx" failed: No such file or directory
-    - opencv-bench-1.0.0 # install failed
-    - open-porous-media-1.3.1 # 3rd party url is N/A
-    - plaidml-1.0.4 # need to connect to internet
+    # - node-octane-1.0.1 # E: ReferenceError: GLOBAL is not defined
+    # - oidn-2.3.0 # install failed
+    # - onnx-1.6.0 # E: onnxruntime/onnxruntime/test/onnx/onnx_model_info.cc:45 void OnnxModelInfo::InitOnnxModelInfo(const PATH_CHAR_TYPE*) open file "yolov4/yolov4.onnx" failed: No such file or directory
+    # - opencv-bench-1.0.0 # install failed
+    # - open-porous-media-1.3.1 # install failed
+    - plaidml-1.0.4 # ImportError: cannot import name 'Iterable' from 'collections' # need to connect to internet
     - pts-self-test-1.0.4 # need to connect to internet and only for selftest
     - pymongo-inserts-1.0.0 # E: TypeError: 'Collection' object is not callable.
-    - redshift-1.0.1 # E: ./redshift: 3: /usr/redshift/bin/redshiftBenchmark: not found
     - serial-loopback-1.0.2 # need to really plug to serial ports
-    - smart-1.0.0 # depending on the health of hard disk, may cost long time
     - speedtest-cli-1.0.0 # E: ERROR: <urlopen error [Errno 111] Connection refused>
-    - stream-dynamic-1.0.0 # for AMD CPU only
+    # - stream-dynamic-1.0.0 # install failed # for AMD CPU only
     - stresscpu2-1.0.1 # not performance test
-    - system-decompress-gzip-1.1.1 # 3rd party url is N/A
-    - systemd-boot-kernel-1.0.1 # ./systemd-boot-kernel: 9: Illegal number
-    - systemd-boot-userspace-1.0.1 # too old to run, use systemd-boot-total instead
-    - thronesofbritannia-1.0.0 # install failed
-    - trislam-1.0.0 # install failed
-    - x265-1.3.0 # install failed
-    - y-cruncher-1.4.0 # install failed
+    # - systemd-boot-kernel-1.0.1 # ./systemd-boot-kernel: 9: Illegal number
+    # - systemd-boot-userspace-1.0.1 # too old to run, use systemd-boot-total instead
+    # - x265-1.5.0 # install failed
+    # - y-cruncher-1.4.0 # install failed
     - deepsparse-1.7.0 # The test quit with a non-zero exit status
     - scikit-learn-2.0.0 # E: ImportError: /lib/x86_64-linux-gnu/liblapack.so.3: undefined symbol: gotoblas
-
-  - test: hpcg-1.3.0 # oom
-    option_a:
-      - 104 104 104
-      # - 144 144 144
-      # - 160 160 160
-      # - 192 192 192
-    option_b:
-      - 1 # 60   [Shorter run-time]
-      # - 2 # 1800 [Official run-time]
 
   - test: interbench-1.0.1 # all the option combinations result in "no space left on device"
     option_a:
@@ -92,27 +63,40 @@ phoronix-test-suite:
       # - Write
       # - Read
 
-  - test: startup-time-1.4.1 # The test run did not produce a result.
-    option_a: # Background I/O Mix
-      # - Only Sequential Reads # need more than 1h. GNOME_Terminal-_opt_rootfs. E: df: write error: Broken pipe
-      - Sequential Reads + Writes
-    option_b: # Application To Start
-      - GNOME Terminal
-      # - xterm
-      # - LibreOffice Writer
-    option_c: # Disk Target
-      - /opt/rootfs
+  # - test: renaissance-1.4.0 # install failed
+  #   option_a:
+  #     - 1 # Akka Unbalanced Cobwebbed Tree
+  #     - 2 # Savina Reactors.IO
+  #     - 3 # Apache Spark ALS
+  #     - 4 # Random Forest
+  #     - 5 # Apache Spark Bayes
+  #     - 6 # Apache Spark PageRank
+  #     - 7 # In-Memory Database Shootout # Benchmark 'db-shootout' excluded: requires JVM version >=1.8 and <=11 (found 17).
+  #     - 8 # Scala Dotty
+  #     - 9 # Finagle HTTP Requests
+  #     - 10 # Genetic Algorithm Using Jenetics + Futures
+  #     - 11 # ALS Movie Lens
 
-  - test: hdparm-read-1.0.0
-    option_a:
-      - /dev/sda
-      - /dev/sdb
+  # - test: startup-time-1.4.1 # The test run did not produce a result.
+  #   option_a: # Background I/O Mix
+  #     # - Only Sequential Reads # need more than 1h. GNOME_Terminal-_opt_rootfs. E: df: write error: Broken pipe
+  #     - Sequential Reads + Writes
+  #   option_b: # Application To Start
+  #     - GNOME Terminal
+  #     # - xterm
+  #     # - LibreOffice Writer
+  #   option_c: # Disk Target
+  #     - /opt/rootfs
 
-  - test: duckdb-1.1.0 # Connection error for HTTP HEAD to 'https://github.com/duckdb/duckdb-data/releases/download/v1.0/job_aka_name.parquet'
-    option_a:
-      - IMDB
-      - TPC-H Parquet
-      - Clickbench
+  # - test: hdparm-read-1.0.0
+  #   option_a:
+  #     - /dev/sda
+  #     - /dev/sdb
+
+  # - test: smart-1.0.0 # Final: PASS (Overall-Health Self-Assessment) # depending on the health of hard disk, may cost long time
+  #   option_a:
+  #     - /dev/sda
+  #     - /dev/sdb
 
   # - test: stressapptest-1.0.1 # Final: PASS (Pass / Fail)
   #   option_a:
@@ -165,58 +149,58 @@ phoronix-test-suite:
       # 2: ggml-small.en
       # 3: ggml-medium.en
 
-  - test: yugabytedb-1.0.0 # Exception in thread "main" com.datastax.driver.core.exceptions.NoHostAvailableException
-    option_a: # Workload
-      - CassandraKeyValue
-      # - CassandraBatchKeyValue, Batch 10
-      # - CassandraBatchKeyValue, Batch 25
-    option_b: # Num Threads Write
-      # - 0
-      # - 1
-      - 16
-      # - 32
-      # - 64
-      # - 128
-      # - 256
-    option_c: # Num Threads Read
-      # - 0
-      # - 1
-      - 16
-      # - 32
-      # - 128
-      # - 256
+  # - test: yugabytedb-1.0.0 # Exception in thread "main" com.datastax.driver.core.exceptions.NoHostAvailableException
+  #   option_a: # Workload
+  #     - CassandraKeyValue
+  #     - CassandraBatchKeyValue, Batch 10
+  #     - CassandraBatchKeyValue, Batch 25
+  #   option_b: # Num Threads Write
+  #     - 0
+  #     - 1
+  #     - 16
+  #     - 32
+  #     - 64
+  #     - 128
+  #     - 256
+  #   option_c: # Num Threads Read
+  #     - 0
+  #     - 1
+  #     - 16
+  #     - 32
+  #     - 128
+  #     - 256
 
-  - test: system-libxml2-1.0.3 # install failed
-    option_a:
-      - 5 KB
-      - 50 KB
-      # - 100 KB
-      # - 150 KB
-      # - 200 KB
-      # - 250 KB
-      # - 300 KB
-      # - 350 KB
-      # - 400 KB
-      # - 450 KB
-      # - 500 KB
-      # - 550 KB
-      # - 600 KB
-      # - 650 KB
-      # - 700 KB
-      # - 750 KB
-      # - 800 KB
-      # - 850 KB
-      # - 900 KB
-      # - 950 KB
-      # - 1 MB
-      # - 2 MB
-      # - 3 MB
-      # - 112 MB
+  # - test: system-libxml2-1.0.3 # install failed
+  #   option_a:
+  #     - 5 KB
+  #     - 50 KB
+  #     - 100 KB
+  #     - 150 KB
+  #     - 200 KB
+  #     - 250 KB
+  #     - 300 KB
+  #     - 350 KB
+  #     - 400 KB
+  #     - 450 KB
+  #     - 500 KB
+  #     - 550 KB
+  #     - 600 KB
+  #     - 650 KB
+  #     - 700 KB
+  #     - 750 KB
+  #     - 800 KB
+  #     - 850 KB
+  #     - 900 KB
+  #     - 950 KB
+  #     - 1 MB
+  #     - 2 MB
+  #     - 3 MB
+  #     - 112 MB
 
-  - test: chia-vdf-1.1.0 # install failed
-    option_a:
-      - Square Plain C++
-      - Square Assembly Optimized
+  # - test: chia-vdf-1.1.0 # install failed
+  #   option_a:
+  #     - Square Plain C++
+  #     - Square Assembly Optimized
 
   - test: pyperformance-1.1.0 # E: urllib.error.URLError: <urlopen error [Errno 101] Network is unreachable>
     option_a:
@@ -290,15 +274,15 @@ phoronix-test-suite:
       - BF16
       - FP32
 
-  - test: apache-siege-1.0.5 # install failed
-    option_a: # cocurrent users
-      - 1
-      # - 10
-      # - 50
-      # - 100
-      # - 200
-      # - 250
-      # - 500
+  # - test: apache-siege-1.1.0 # install failed
+  #   option_a: # cocurrent users
+  #     - 1
+  #     - 10
+  #     - 50
+  #     - 100
+  #     - 200
+  #     - 250
+  #     - 500
 
   - test: mlpack-1.0.2 # E: TypeError: load_all() missing 1 required positional argument: 'Loader'
     option_a:
@@ -307,22 +291,13 @@ phoronix-test-suite:
       # - scikit_qda
       # - scikit_ica
 
-  - test: cassandra-1.2.0 # The test run did not produce a result.
+  - test: cassandra-1.3.0
     option_a:
       - Writes
       - Mixed 1:1
       # - Mixed 1:3
 
-  - test: dbench-1.0.2
-    option_a: # client count
-      - 1
-      - 6
-      # - 12
-      # - 48
-      # - 128
-      # - 256
-
-  - test: fio-2.1.0 # temporarily comment out
+  - test: fio-2.1.0
     option_a:
       - Random Read
       # - Random Write
@@ -363,17 +338,16 @@ phoronix-test-suite:
       # - json
       # - garbage # E: ./go-benchmark: 2: ./garbage: not found
 
-  - test: minife-1.0.0 # The test quit with a non-zero exit status.
-    option_a:
-      - Small
-  #     - Medium # PHP Fatal error:  Allowed memory size of 1073741824 bytes exhausted
-  #     - Large
+  # - test: minion-1.5.2 # install failed
+  #   option_a:
+  #     - Graceful
+  #     - Quasigroup
+  #     - Solitaire
 
-  - test: minion-1.5.2 # install failed
+  - test: jpegxl-decode-1.6.0 # E: ./jpegxl-decode: 2: /var/lib/phoronix-test-suite/installed-tests/pts/jpegxl-1.6.0//libjxl-0.10.1/build/tools/djxl: not found
     option_a:
-      - Graceful
-      - Quasigroup
-      - Solitaire
+      - 1
+      - All
 
   - test: mysqlslap-1.4.0 # The test quit with a non-zero exit status
     option_a: # clients
@@ -392,91 +366,10 @@ need_x: true
 
 phoronix-test-suite:
   - test:
-    - insurgency-1.2.0 # The test run did not produce a result.
-    - vkresample-1.0.2 # The test quit with a non-zero exit status.
-    - sam2017-1.0.2 # E: ./sam2017: line 15: steam: command not found
-    - shadowofthetombraider-1.1.0 # A video game that needs to be downloaded from Steam platform
-    - ss3bfe-1.0.0 # A video game that needs to be downloaded from Steam platform
-    - unigine-super-1.0.8 # E: ./unigine-super: 4: ./bin/superposition: not found
     - xplane9-1.3.1 # A flight simulator that needs to be downloaded from Steam platform
-    - xplane11-1.1.2 # A flight simulator that needs to be downloaded from Steam platform
-    - xplane12-1.0.1 # A flight simulator that needs to be downloaded from Steam platform
-    - riseofthetombraider-1.0.2 # A video game that needs to be downloaded from Steam platform
-    - talos-principle-1.2.1 # E: cat: '/root//.steam/steam/steamapps/common/The Talos Principle/Log/Talos.log': No such file or directory
-    - quake4-1.1.0 # need extra quake4 gamefile and key
-    - render-bench-1.1.2 # need imlib2-config which is only available in outdated version of libimlib2-dev
     - smokin-guns-1.2.2 # need 32bit libs (libjpeg62:i386 etc), runtime > 1h
-    - specviewperf9-1.1.1 # need csh or tcsh
     - vdrift-1.2.0 # build with old g++ (g++-3.4)
-    - video-cpu-usage-1.2.1 # need soundcard
-    - warsow-1.5.1 # need to upgrade to newer version
     - tf2-1.2.3 # download files from stream
     - tremulous-1.1.0 # need 32bit libs (libjpeg62:i386 etc)
-    - ue4-matinee-1.1.0 # block by known issues
-    - ue4-mountains-1.1.0 # block by known issue
-    - unvanquished-1.8.0 # this test profile is currently marked Broken
-    - xonotic-1.7.0 # runtime is long
-    - cuda-mini-nbody-1.1.1 # need CUDA compatible hardware
-    - etxreal-1.0.0 # too old (last update 2012) to work
-    - etqw-1.1.0 # has been replaced by newer etqw-demo
-    - etqw-demo-1.1.0 # need 32bit libs
     - etqw-demo-iqc-1.0.0 # need 32bit libs
-    - gfxbench-1.0.0 # need to download files from stream
-    - jgfxbat-1.1.0 # 3rd party url is N/A
-    - octanebench-1.1.2 # need CUDA compatible hardware
-    - prey-1.1.2 # need to download files from stream
-
-  - test: etlegacy-1.3.0 # The test run did not produce a result.
-    option_a:
-      - Default
-      - Renderer2
-    option_b:
-      - 1024 x 768
-
-  - test: j2dbench-1.1.2 # The test run did not produce a result.
-    option_a:
-      - All Rendering Tests
-      # - Vector Graphics Rendering
-      # - Image Rendering
-      # - Text Rendering
-
-  - test: supertuxkart-1.6.0
-    option_a:
-      - 800 x 600
-      # - 1024 x 768
-    option_b:
-      # - Windowed
-      - Fullscreen
-    option_c: # Graphics Effects
-      - Low
-      # - Medium
-      # - High # runtime > 3h on 1024_x_768-Fullscreen-High-1-2 lkp-csl-2sp7
-      # - Ultimate
-    option_d: # number of karts
-      - 1
-      # - 2
-      # - 3
-      # - 4
-      # - 5
-      # - 6
-      # - 7
-      # - 8
-    option_e:
-      - 1 # Candela City          [Approximately 400k triangles; advanced graphics]
-      # - 2 # Cocoa Temple          [Approximately 300k triangles; advanced graphics]
-      # - 3 # Gran Paradiso Island  [Approximately 275k triangles; advanced graphics]
-      # - 4 # Around the Lighthouse [Approximately 65k triangles]
-      # - 5 # Zen Garden            [Low poly]
-
-  - test: geexlab-rt-1.0.1 # The test run did not produce a result.
-    option_a:
-      -  800 x 600
-      # -  1024 x 768
-
-  - test: yquake2-1.3.0 # The test quit with a non-zero exit status.
-    option_a:
-      -  Software CPU
-      -  Software CPU Color Light
-      # -  OpenGL 3.x
-      # -  OpenGL ES 3.x
-      # -  Vulkan
+    # - jgfxbat-1.1.0 # install failed # 3rd party url is N/A

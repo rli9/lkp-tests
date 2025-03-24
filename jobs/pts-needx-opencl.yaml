@@ -16,24 +16,6 @@ phoronix-test-suite:
       - Microphone
       - Hotel
 
-  # - test: gl-vs-vk-1.0.0 # E: ./GL_vs_VK: error while loading shared libraries: libGLEW.so.1.13
-  #   option_a:
-  #     - Static Scene
-  #     - Terrain With Dynamic LoD
-  #     - Shadow Mapping
-  #   option_b:
-  #     - OpenGL
-  #     - Vulkan
-  #   option_c:
-  #     - 'Yes'
-  #     - 'No'
-
-  - test: cl-mem-1.0.1
-    option_a:
-      - Read
-      - Write
-      - Copy
-
   - test: financebench-1.1.1
     option_a:
       - Bonds OpenMP
@@ -56,22 +38,6 @@ phoronix-test-suite:
       - CPU
       # - GPU # The test quit with a non-zero exit status.
       - CPU+GPU
-
-  - test: mixbench-1.0.0
-    option_a:
-      - Single Precision
-      - Double Precision
-      - Integer
-
-  - test: shoc-1.2.0
-    option_a:
-      - Bus Speed Download
-      - Bus Speed Readback
-      - Max SP Flops
-      - Texture Read Bandwidth
-      - FFT SP
-      - MD5 Hash
-      - Triad
 
   # - test: smallpt-gpu-1.3.0 # The test quit with a non-zero exit status
   #   option_a:
