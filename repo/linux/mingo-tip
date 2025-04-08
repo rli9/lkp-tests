@@ -1,2 +1,4 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/mingo/tip.git
-owner: Ingo Molnar <mingo@redhat.com>
+owner: Ingo Molnar <mingo@kernel.org>
+notify_build_success_branch: .*
+mail_cc: Ingo Molnar <mingo@kernel.org>
