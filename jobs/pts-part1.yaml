@@ -22,9 +22,7 @@ phoronix-test-suite:
     - build-mplayer-1.5.0
     - build-php-1.7.0
     - byte-1.2.2
-    - c-ray-2.0.0
     - clomp-1.1.2
-    - cloverleaf-1.2.0
     - compress-7zip-1.11.0
     - compress-gzip-1.2.0
     - compress-pbzip2-1.6.1
@@ -48,7 +46,6 @@ phoronix-test-suite:
     - git-1.1.0
     - gmpbench-1.3.0
     - gromacs-1.8.0
-    - hadoop-1.0.0
     - hammerdb-postgresql-1.1.1
     - heffte-1.1.0
     - himeno-1.3.0
@@ -57,15 +54,12 @@ phoronix-test-suite:
     - memtier-benchmark-1.5.0
     - minibude-1.0.0
     - build-wasmer-1.2.0
-    - daphne-1.1.0
     - draco-1.6.1
     - epoch-1.0.0
     - faiss-1.0.1
-    - leveldb-1.1.0
     - libxsmm-1.0.1
     - node-web-tooling-1.0.1
     - libraw-1.0.0
-    - liquid-dsp-1.6.0
     - luaradio-1.0.0
     - lulesh-1.1.1
     - m-queens-1.1.0
@@ -78,10 +72,51 @@ phoronix-test-suite:
     - namd-1.2.1
     - natron-1.1.0
     - neat-1.1.0
-    - network-loopback-1.0.3
     - openjpeg-1.0.0
     - optcarrot-1.0.1
     - system-decompress-gzip-1.1.1
+
+  - test: c-ray-2.0.0
+    option_a:
+      - 1080p
+      # - 4K
+      # - 5K    [Practical for high core count systems.]
+
+  - test: liquid-dsp-1.6.0
+    option_a:
+      # - 1
+      # - 2
+      # - 4
+      # - 8
+      # - 16
+      - 32
+      # - 64
+      # - 96
+
+  - test: leveldb-1.1.0
+    option_a:
+      - Sequential Fill
+      - Random Fill
+      # - Overwrite
+      # - Fill Sync
+      # - Random Read
+      # - Random Delete
+      # - Hot Read
+      # - Seek Random
+
+  - test: cloverleaf-1.2.0
+    option_a:
+      # - clover_bm         [Shortest test]
+      - clover_bm64_short
+      # - clover_bm16       [Most time consuming model for high core count servers]
+
+  - test: hadoop-1.0.0
+    option_a:
+      - Create
+      - Open
+      - Delete
+      - File Status
+      - Rename
 
   - test: apache-3.0.0
     option_a:
@@ -94,15 +129,22 @@ phoronix-test-suite:
 
   - test: aom-av1-3.12.0
     option_a: # Encoder Mode
-      - Speed 11 Realtime
+        # 1: Speed 11 Realtime [Fastest]
+        # 2: Speed 10 Realtime
+      - Speed 9 Realtime
+        # 4: Speed 8 Realtime
+        # 5: Speed 6 Realtime
+      - Speed 6 Two-Pass
+        # 7: Speed 4 Two-Pass
+        # 8: Speed 0 Two-Pass  [Slowest]
     option_b: # Input
-      - Bosphorus 4K
+      # - Bosphorus 4K
       - Bosphorus 1080p
 
   - test: graph500-1.0.2
     option_a: # Scale
-      - 26
-      - 29
+      - 1 # 26 [Smallest, requires ~18GB of RAM]
+      - 2 # 29 [Requires ~138GB of RAM]
 
   - test: intel-mlc-1.1.0
     option_a:
@@ -502,12 +544,3 @@ phoronix-test-suite:
       - Create Threads
       - Launch Programs
       - Memory Allocations
-
-  - test: ospray-3.2.0 # install failed
-    option_a:
-      - gravity_spheres_volume/dim_512/ao/real_time
-      - gravity_spheres_volume/dim_512/scivis/real_time
-      - gravity_spheres_volume/dim_512/pathtracer/real_time
-      - particle_volume/ao/real_time
-      - particle_volume/scivis/real_time
-      - particle_volume/pathtracer/real_time

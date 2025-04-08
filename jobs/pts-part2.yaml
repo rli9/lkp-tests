@@ -7,17 +7,13 @@ need_memory: 8G
 phoronix-test-suite:
   - test:
     - amg-1.1.0
-    - palabos-1.0.0
     - phpbench-1.1.6
     - pjdfstest-1.0.1
     - pjsip-1.0.1
     - pmbench-1.0.2
-    - polyhedron-1.0.1
     - postmark-1.1.2
     - povray-1.2.1
-    - primesieve-1.9.0
     - pybench-1.1.3
-    - pyhpc-3.0.0
     - qe-1.3.1
     - quicksilver-1.0.0
     - rays1bench-1.0.0
@@ -55,6 +51,43 @@ phoronix-test-suite:
     - xsbench-1.0.0
     - brl-cad-1.6.0
     - build2-1.3.0
+
+  - test: primesieve-1.9.0
+    option_a:
+      - 1 # 1e12 [Quickest]
+      # - 2 # 1e13 [Useful for higher core count systems]
+
+  - test: polyhedron-1.0.1
+    option_a:
+      - ac
+      - aermod
+      # - air
+      # - capacita
+      # - channel2
+      # - doduc
+      # - fatigue2
+      # - gas_dyn2
+      # - induct2
+      # - linpk
+      # - mdbx
+      # - mp_prop_design
+      # - protein
+      # - rnflow
+      # - test_fpu2
+      # - tfft2
+
+  - test: palabos-1.0.0
+    option_a:
+      # - 100
+      # - 400
+      - 500
+      # - 1000
+      # - 4000
+
+  - test: pyhpc-3.0.0
+    option_a:
+      - CPU
+      # - GPU
 
   - test: smhasher-1.1.0
     option_a:

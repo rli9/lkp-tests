@@ -21,6 +21,7 @@ phoronix-test-suite:
     - luxcorerender-1.4.0 # E: RUNTIME ERROR: No hardware device selected or available
     - nero2d-1.1.0 # E: mpirun noticed that process rank 46 with PID 0 on node lkp-csl-2sp7 exited on signal 11 (Segmentation fault)
     # - netperf-1.0.4 # install failed
+    - network-loopback-1.0.3 # E: ./network-loopback: 5: nc: not found
     - node-express-loadtest-1.0.1 # The test run did not produce a result.
     # - node-octane-1.0.1 # E: ReferenceError: GLOBAL is not defined
     # - oidn-2.3.0 # install failed
@@ -62,6 +63,15 @@ phoronix-test-suite:
       # - Memload
       # - Write
       # - Read
+
+  # - test: ospray-3.2.0 # install failed
+  #   option_a:
+  #     - gravity_spheres_volume/dim_512/ao/real_time
+  #     - gravity_spheres_volume/dim_512/scivis/real_time
+  #     - gravity_spheres_volume/dim_512/pathtracer/real_time
+  #     - particle_volume/ao/real_time
+  #     - particle_volume/scivis/real_time
+  #     - particle_volume/pathtracer/real_time
 
   # - test: renaissance-1.4.0 # install failed
   #   option_a:

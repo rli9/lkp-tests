@@ -9,18 +9,45 @@ phoronix-test-suite:
   - test:
     - build-gcc-1.4.0
     - mnn-2.1.0
-    - openradioss-1.1.1
     - petsc-1.0.0
-    - build-llvm-1.5.0
     - build-gem5-1.1.0
     - build-nodejs-1.4.0
     - cockroach-1.0.2
     - asmfish-1.1.2
     - vosk-1.0.1
-    - encodec-1.0.1
     - gpaw-1.2.0
-    - numenta-nab-1.1.1
     - pytorch-1.1.0
+
+  - test: encodec-1.0.1
+    option_a:
+      # - 1.5 kbps
+      # - 3 kbps
+      - 6 kbps
+      # - 24 kbps
+
+  - test: openradioss-1.1.1
+    option_a:
+      - Bird Strike on Windshield
+      - Rubber O-Ring Seal Installation
+      # - Cell Phone Drop Test                                  [Least time consuming model.]
+      - Bumper Beam
+      # - INIVOL and Fluid Structure Interaction Drop Container [Very time consuming model.]
+      # - Chrysler Neon 1M                                      [Very time consuming model for HPC.]
+      # - Ford Taurus 10M                                       [The most time consuming model for HPC.]
+
+  - test: build-llvm-1.5.0
+    option_a:
+      - Ninja
+      - Unix Makefiles
+
+  - test: numenta-nab-1.1.1
+    option_a:
+      - Bayesian Changepoint
+      - Windowed Gaussian
+      - Relative Entropy
+      - Earthgecko Skyline
+      - KNN CAD
+      - Contextual Anomaly Detector OSE
 
   - test: openems-1.0.0
     option_a:
@@ -214,7 +241,7 @@ phoronix-test-suite:
     option_a:
       - IMDB
       - TPC-H Parquet
-      - Clickbench
+      # - Clickbench # The test quit with a non-zero exit status
 
   - test: minife-1.0.0
     option_a:

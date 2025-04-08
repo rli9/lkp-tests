@@ -7,7 +7,6 @@ need_x: true
 phoronix-test-suite:
   - test:
     - quadray-1.0.0
-    - indigobench-1.1.0
 
   - test: qmlbench-1.1.0
     option_a:
