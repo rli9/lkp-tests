@@ -1,0 +1,4 @@
+url: https://github.com/mjguzik/linux
+owner: Mateusz Guzik <mjguzik@gmail.com>
+mail_to: Mateusz Guzik <mjguzik@gmail.com>
+private_report_branch: .*
