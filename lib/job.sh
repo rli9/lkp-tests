@@ -238,6 +238,8 @@ run_monitor()
 {
 	# w/a for watchdog to permit it always runs
 	[ "$need_monitors" = "false" ] && [ "${1%%monitors/plain/watchdog}" = "$1" ] && return
+	[ "$disable_monitor" = "$1" ] && return
+
 	run_program_in_background "$@"
 }
 
