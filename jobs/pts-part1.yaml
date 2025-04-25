@@ -121,7 +121,7 @@ phoronix-test-suite:
   - test: apache-3.0.0
     option_a:
       - 4
-      - 20
+      # - 20 # The test quit with a non-zero exit status.
       # - 100
       # - 200
       # - 500
@@ -144,7 +144,7 @@ phoronix-test-suite:
   - test: graph500-1.0.2
     option_a: # Scale
       - 1 # 26 [Smallest, requires ~18GB of RAM]
-      - 2 # 29 [Requires ~138GB of RAM]
+      # - 2 # 29 [Requires ~138GB of RAM] # The test quit with a non-zero exit status.
 
   - test: intel-mlc-1.1.0
     option_a:

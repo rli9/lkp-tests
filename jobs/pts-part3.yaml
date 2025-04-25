@@ -239,7 +239,7 @@ phoronix-test-suite:
 
   - test: duckdb-1.1.0
     option_a:
-      - IMDB
+      # - IMDB # The test quit with a non-zero exit status.
       - TPC-H Parquet
       # - Clickbench # The test quit with a non-zero exit status
 

@@ -371,6 +371,15 @@ phoronix-test-suite:
       # - 4096
       # - 8192
 
+  - test: daphne-1.1.0 # The test run did not produce a result.
+    option_a:
+      - OpenMP
+      - OpenCL
+    option_b:
+      - Euclidean Cluster
+      - NDT Mapping
+      # - Points2Image
+
 ---
 need_x: true
 

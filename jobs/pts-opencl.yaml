@@ -8,15 +8,6 @@ phoronix-test-suite:
     # - xsbench-cl-1.0.0 # Could not initialize OpenCL: error = -1001
     # - x264-opencl-1.9.1 # not installed, build errors
 
-  - test: daphne-1.1.0
-    option_a:
-      - OpenMP
-      - OpenCL
-    option_b:
-      - Euclidean Cluster
-      - NDT Mapping
-      # - Points2Image
-
   - test: indigobench-1.1.0
     option_a:
       - CPU
@@ -48,7 +39,7 @@ phoronix-test-suite:
   - test: parboil-1.2.1
     option_a:
       - OpenMP CUTCP
-      - OpenMP MRI-Q
+      # - OpenMP MRI-Q # The test quit with a non-zero exit status.
       # - OpenMP MRI Gridding
       # - OpenMP Stencil
       # - OpenMP LBM
