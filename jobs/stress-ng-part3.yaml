@@ -24,6 +24,7 @@ stress-ng:
     - pci
     - personality
     - peterson
+    - physmmap
     - physpage
     - pidfd
     - ping-sock

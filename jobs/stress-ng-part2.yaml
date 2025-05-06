@@ -1,9 +1,9 @@
 suite: stress-ng
 testcase: stress-ng
 category: benchmark
- 
+
 nr_threads: 100%
- 
+
 testtime:
   - 60s
 
@@ -69,6 +69,7 @@ stress-ng:
     - mmapfixed
     - mmapfork
     - mmapmany
+    - mmaptorture
     # - module # require open RUNTIME_TESTING_MENU and TEST_LKM
     - monte-carlo
     - mpfr

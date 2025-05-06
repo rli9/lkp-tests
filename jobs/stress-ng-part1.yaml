@@ -44,6 +44,7 @@ stress-ng:
     - dev
     - dev-shm
     - dynlib
+    - easy-opcode
     # - eigen
     - efivar
     - enosys
@@ -58,6 +59,7 @@ stress-ng:
     - fd-race
     - fibsearch
     - fifo
+    - filerace
     - flipflop
     - flushcache
     - fma

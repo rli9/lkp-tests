@@ -22,6 +22,7 @@ stress-ng:
     - tun
     - udp
     - udp-flood
+    - umask
     - umount
     - unlink
     - unshare
