@@ -47,3 +47,8 @@ phoronix-test-suite:
   #     - Complex
   #     - Caustic3
   #     - Cornell
+
+  - test: indigobench-1.1.0
+    option_a:
+      - CPU
+      - OpenCL GPU

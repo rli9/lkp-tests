@@ -8,11 +8,6 @@ phoronix-test-suite:
     # - xsbench-cl-1.0.0 # Could not initialize OpenCL: error = -1001
     # - x264-opencl-1.9.1 # not installed, build errors
 
-  - test: indigobench-1.1.0
-    option_a:
-      - CPU
-      - OpenCL GPU
-
   - test: arrayfire-1.2.1
     option_a:
       - BLAS CPU FP32
