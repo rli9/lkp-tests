@@ -56,7 +56,6 @@ phoronix-test-suite:
     - draco-1.6.1
     - epoch-1.0.0
     - faiss-1.0.1
-    - libxsmm-1.0.1
     - node-web-tooling-1.0.1
     - libraw-1.0.0
     - luaradio-1.0.0
@@ -548,3 +547,10 @@ phoronix-test-suite:
     option_a:
       - 1 # BM1 [Smaller problem size.]
       - 2 # BM2 [Intended for larger servers.]
+
+  - test: libxsmm-1.0.1
+    option_a:
+      - 32
+      - 64
+      - 128
+      - 256
