@@ -38,7 +38,6 @@ phoronix-test-suite:
     - tjbench-1.2.0
     - tnn-1.1.0
     - toktx-1.0.1
-    - toybrot-1.2.0
     - tscp-1.2.2
     - ttsiod-renderer-1.7.0
     - unpack-firefox-1.0.0
@@ -393,3 +392,10 @@ phoronix-test-suite:
     option_a:
       - CPU
       - Vulkan GPU
+
+  - test: toybrot-1.2.0
+    option_a:
+      - OpenMP
+      - C++ Tasks
+      - C++ Threads
+      - TBB
