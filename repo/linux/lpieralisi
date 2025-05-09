@@ -1,5 +1,5 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/lpieralisi/linux.git
 notify_build_success_branch: .*
 private_report_branch: .*
-mail_to: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-owner: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+mail_to: Lorenzo Pieralisi <lpieralisi@kernel.org>
+owner: Lorenzo Pieralisi <lpieralisi@kernel.org>
