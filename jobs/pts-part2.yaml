@@ -46,7 +46,6 @@ phoronix-test-suite:
     - viennacl-1.1.0
     - vvenc-1.9.1
     - webp-1.2.0
-    - xmrig-1.2.0
     - xsbench-1.0.0
     - brl-cad-1.6.0
     - build2-1.3.0
@@ -399,3 +398,12 @@ phoronix-test-suite:
       - C++ Tasks
       - C++ Threads
       - TBB
+
+  - test: xmrig-1.2.0
+    option_a:
+      - 1 # Monero                 [Default]
+      - Wownero
+      - CryptoNight-Femto UPX2
+      - CryptoNight-Heavy
+      - KawPow
+      - GhostRider
