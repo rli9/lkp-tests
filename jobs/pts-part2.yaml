@@ -33,7 +33,6 @@ phoronix-test-suite:
     - tachyon-1.3.0
     - tinymembench-1.0.2
     - tjbench-1.2.0
-    - toktx-1.0.1
     - tscp-1.2.2
     - ttsiod-renderer-1.7.0
     - unpack-firefox-1.0.0
@@ -438,3 +437,11 @@ phoronix-test-suite:
     option_a:
       - OpenCL BLAS
       - CPU BLAS
+
+  - test: toktx-1.0.1
+    option_a:
+      - Zstd Compression 9
+      - Zstd Compression 19
+      - UASTC 3
+      - UASTC 3  + Zstd Compression 19
+      - UASTC 4  + Zstd Compression 19
