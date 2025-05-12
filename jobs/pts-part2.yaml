@@ -9,7 +9,6 @@ phoronix-test-suite:
     - amg-1.1.0
     - phpbench-1.1.6
     - pjdfstest-1.0.1
-    - pjsip-1.0.1
     - pmbench-1.0.2
     - postmark-1.1.2
     - povray-1.2.1
@@ -423,3 +422,9 @@ phoronix-test-suite:
       - 3 # Quality 100, Highest Compression
       - 4 # Quality 100, Lossless
       - 5 # Quality 100, Lossless, Highest Compression
+
+  - test: pjsip-1.0.1
+    option_a:
+      - 1 # OPTIONS, Stateful
+      - 2 # OPTIONS, Stateless
+      - 3 # INVITE             [Call Performance]
