@@ -39,7 +39,6 @@ phoronix-test-suite:
     - unpack-firefox-1.0.0
     - unpack-linux-1.2.0
     - uvg266-1.0.0
-    - viennacl-1.1.0
     - vvenc-1.9.1
     - xsbench-1.0.0
     - brl-cad-1.6.0
@@ -434,3 +433,8 @@ phoronix-test-suite:
       - MobileNet v2
       - SqueezeNet v1.1
       - SqueezeNet v2
+
+  - test: viennacl-1.1.0
+    option_a:
+      - OpenCL BLAS
+      - CPU BLAS
