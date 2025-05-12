@@ -31,7 +31,6 @@ phoronix-test-suite:
     - synthmark-1.0.1
     - system-decompress-bzip2-1.0.2
     - system-decompress-xz-1.0.2
-    - t-test1-1.0.1
     - tachyon-1.3.0
     - tinymembench-1.0.2
     - tjbench-1.2.0
@@ -412,3 +411,8 @@ phoronix-test-suite:
       - CORAL2 P1
       - CORAL2 P2
       - CTS2
+
+  - test: t-test1-1.0.1
+    option_a:
+      - 1
+      - 2
