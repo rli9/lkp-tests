@@ -33,7 +33,6 @@ phoronix-test-suite:
     - tachyon-1.3.0
     - tinymembench-1.0.2
     - tjbench-1.2.0
-    - tnn-1.1.0
     - toktx-1.0.1
     - tscp-1.2.2
     - ttsiod-renderer-1.7.0
@@ -428,3 +427,10 @@ phoronix-test-suite:
       - 1 # OPTIONS, Stateful
       - 2 # OPTIONS, Stateless
       - 3 # INVITE             [Call Performance]
+
+  - test: tnn-1.1.0
+    option_a:
+      - DenseNet
+      - MobileNet v2
+      - SqueezeNet v1.1
+      - SqueezeNet v2
