@@ -380,6 +380,11 @@ phoronix-test-suite:
       - NDT Mapping
       # - Points2Image
 
+  - test: faiss-1.0.1 # The test quit with a non-zero exit status.
+    option_a:
+      - demo_sift1M
+      - bench_polysemous_sift1m
+
 ---
 need_x: true
 

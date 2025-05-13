@@ -54,7 +54,6 @@ phoronix-test-suite:
     - memtier-benchmark-1.5.0
     - build-wasmer-1.2.0
     - epoch-1.0.0
-    - faiss-1.0.1
     - node-web-tooling-1.0.1
     - libraw-1.0.0
     - luaradio-1.0.0
