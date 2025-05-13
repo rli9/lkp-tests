@@ -9,7 +9,6 @@ phoronix-test-suite:
     - amg-1.1.0
     - phpbench-1.1.6
     - pjdfstest-1.0.1
-    - pmbench-1.0.2
     - postmark-1.1.2
     - povray-1.2.1
     - pybench-1.1.3
@@ -452,3 +451,19 @@ phoronix-test-suite:
       - Kostya
       - DistinctUserID
       - TopTweet
+
+  - test: pmbench-1.0.2
+    option_a:
+      - 1 # 1
+      - 2 # 2
+      - 3 # 4
+      - 4 # 8
+      - 5 # 16
+      - 6 # 32
+      - 7 # 64
+      - 8 # 128
+    option_b:
+      - 100% Writes
+      - 50%
+      - 80% Reads 20% Writes
+      - 100% Reads
