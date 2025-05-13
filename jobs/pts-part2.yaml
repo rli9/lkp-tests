@@ -35,7 +35,6 @@ phoronix-test-suite:
     - ttsiod-renderer-1.7.0
     - unpack-firefox-1.0.0
     - unpack-linux-1.2.0
-    - uvg266-1.0.0
     - vvenc-1.9.1
     - xsbench-1.0.0
     - brl-cad-1.6.0
@@ -467,3 +466,14 @@ phoronix-test-suite:
       - 50%
       - 80% Reads 20% Writes
       - 100% Reads
+
+  - test: uvg266-1.0.0
+    option_a:
+      - Bosphorus 1080p
+      - Bosphorus 4K
+    option_b:
+      - 1 #  Slow
+      - 2 #  Medium     [Default]
+      - 3 #  Very Fast
+      - 4 #  Super Fast
+      - 5 #  Ultra Fast
