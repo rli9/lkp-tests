@@ -75,6 +75,22 @@ phoronix-test-suite:
     option_a:
       - CPU
       # - GPU
+    option_b:
+      # - Aesara # The test run did not produce a result.
+      - Numpy
+      # - JAX # The test run did not produce a result.
+      # - Numba # The test run did not produce a result.
+      # - PyTorch # The test run did not produce a result.
+      # - TensorFlow # The test run did not produce a result.
+    option_c:
+      - 16384
+      - 65536
+      - 262144
+      - 1048576
+      - 4194304
+    option_d:
+      - Equation of State
+      - Isoneutral Mixing
 
   - test: smhasher-1.1.0
     option_a:
