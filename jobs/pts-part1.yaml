@@ -114,6 +114,16 @@ phoronix-test-suite:
       - Delete
       - File Status
       - Rename
+    option_b:
+      - 20
+      - 50
+      - 100
+      - 500
+      - 1000
+    option_c:
+      - 100000
+      - 1000000
+      - 10000000
 
   - test: apache-3.0.0
     option_a:
