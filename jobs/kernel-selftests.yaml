@@ -64,7 +64,6 @@ kernel-selftests:
     - mqueue
     - nci
     # - nolibc # not enabled yet
-    - nsfs
     # - ntb
     - openat2
     - perf_events
