@@ -17,6 +17,5 @@ ltp:
     - hyperthreading
     - ima
     - input
-    - ipc
     - irq
     - kvm
