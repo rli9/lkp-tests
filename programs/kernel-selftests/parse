@@ -111,12 +111,12 @@ class Stater
          /^# # Testing (.+):/ # # # Testing allocation and importing:
       curr_test.parts = [test_name($1, $2)]
     when /: recipe for target.+failed$/,
-         /^make: \*\*\* (.*) (Error \d+|Stop\.)$/,
+         /^make(?:\[1\])?: \*\*\* .*\/tools\/testing\/selftests\/.* (Error \d+|Stop\.)$/,
          /Cannot find a vmlinux for VMLINUX_BTF/
       # Makefile:47: recipe for target 'sysret_ss_attrs_64' failed
       # make: *** No rule to make target .*, needed by 'all'.  Stop.
       parse_make_result('fail')
-    when %r{make: Leaving directory .*/(.*)'}
+    when %r{make(?:\[1\])?: Leaving directory .*/tools/testing/selftests/#{@test_dir}'}
       @test_dir = @test_script = nil
 
       @test_level = 0
@@ -215,7 +215,7 @@ class NetStater < Stater
          /^# (?<test_parts>.*)(?<result>OK|ok|PASS)$/
       parse_test_result(Regexp.last_match)
     when /^# TEST SECTION: (.*)/,
-        /^# ((Control|Data) path: .+)/, # # Control path: Large scale MDB dump - IPv6 overlay / IPv6 underlay
+         /^# ((Control|Data) path: .+)/, # # Control path: Large scale MDB dump - IPv6 overlay / IPv6 underlay
          /^# (ipv\d.*)$/i, # # ipv4
          /^# (.*qdisc on VRF device)/,
          /^# (dgram.*|raw.*)$/,
@@ -500,7 +500,7 @@ class MqueueStater < Stater
     when %r{(\d+) nsec/msg}
       # 484 nsec/msg
       @mqueue_speed["#{@mqueue_test}.#{@io}"] = Regexp.last_match[1].to_i
-    when /make: Leaving.*mqueue'/
+    when /make(?:\[\d+\])?: Leaving.*mqueue'/
       stats.add test_name(@test_dir, 'nsec_per_msg'), @mqueue_speed.values.average.to_i unless @mqueue_speed.empty?
     else
       super
@@ -595,7 +595,7 @@ while (line = $stdin.gets)
     stater = Object.const_get("#{$2.split('-').map(&:capitalize).join}Stater")
                    .new($1, $3, stats)
   when /^# selftests: (.+): (.+)/,
-       /make: Entering directory .*\/(.*)'/
+       /make(?:\[1\])?: Entering directory .*\/tools\/testing\/selftests\/(.*)'/
     # selftests: kmod: kmod.sh
     stater_cls = begin
       Object.const_get("#{$1.split('-').map(&:capitalize).join}Stater")

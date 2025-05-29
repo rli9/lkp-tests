@@ -1,0 +1,35 @@
+2025-05-29 07:23:46 make TARGETS=drivers/ntsync quicktest=1 run_tests
+make[1]: Entering directory '/usr/src/perf_selftests-x86_64-rhel-9.4-kselftests-59dd07db92c166ca3947d2a1bf548d57b7f03316/tools/testing/selftests/drivers/ntsync'
+  CC       ntsync
+make[1]: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-9.4-kselftests-59dd07db92c166ca3947d2a1bf548d57b7f03316/tools/testing/selftests/drivers/ntsync'
+make[1]: Entering directory '/usr/src/perf_selftests-x86_64-rhel-9.4-kselftests-59dd07db92c166ca3947d2a1bf548d57b7f03316/tools/testing/selftests/drivers/ntsync'
+TAP version 13
+1..1
+# timeout set to 300
+# selftests: drivers/ntsync: ntsync
+# TAP version 13
+# 1..11
+# # Starting 11 tests from 1 test cases.
+# #  RUN           global.semaphore_state ...
+# # ntsync.c:151:semaphore_state:Expected 0 (0) <= fd (-1)
+# # semaphore_state: Test terminated by assertion
+# #          FAIL  global.semaphore_state
+# not ok 1 global.semaphore_state
+# #  RUN           global.mutex_state ...
+# # ntsync.c:235:mutex_state:Expected 0 (0) <= fd (-1)
+# # mutex_state: Test terminated by assertion
+# #          FAIL  global.mutex_state
+# not ok 2 global.mutex_state
+not ok 1 selftests: drivers/ntsync: ntsync # exit=1                                                                                             make[1]: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-9.4-kselftests-59dd07db92c166ca3947d2a1bf548d57b7f03316/tools/testing/selftests/drivers/ntsync'
+2025-05-29 07:33:22 make TARGETS=drivers/net/hw quicktest=1 run_tests
+make[1]: Entering directory '/usr/src/perf_selftests-x86_64-rhel-9.4-kselftests-59dd07db92c166ca3947d2a1bf548d57b7f03316/tools/testing/selftests/drivers/net/hw'
+  CC       iou-zcrx
+iou-zcrx.c: In function ‘get_refill_ring_size’:
+iou-zcrx.c:115:41: error: invalid application of ‘sizeof’ to incomplete type ‘struct io_uring_zcrx_rqe’
+make[1]: *** [../../../lib.mk:222: /usr/src/perf_selftests-x86_64-rhel-9.4-kselftests-59dd07db92c166ca3947d2a1bf548d57b7f03316/tools/testing/selftests/drivers/net/hw/iou-zcrx] Error 1
+make[1]: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-9.4-kselftests-59dd07db92c166ca3947d2a1bf548d57b7f03316/tools/testing/selftests/drivers/net/hw'
+make: *** [Makefile:204: all] Error 2
+2025-05-29 07:33:22 make TARGETS=drivers/net/dsa quicktest=1 run_tests
+make[1]: Entering directory '/usr/src/perf_selftests-x86_64-rhel-9.4-kselftests-59dd07db92c166ca3947d2a1bf548d57b7f03316/tools/testing/selftests/drivers/net/dsa'
+make[1]: Nothing to be done for 'all'.
+make[1]: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-9.4-kselftests-59dd07db92c166ca3947d2a1bf548d57b7f03316/tools/testing/selftests/drivers/net/dsa'

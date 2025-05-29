@@ -702,13 +702,15 @@ run_tests()
 		[[ $exit_status = 2 ]] && return $exit_status
 		[[ $exit_status = 0 ]] || die "fixup_$group failed as $exit_status"
 
-		log_cmd make -j${nr_cpu} TARGETS=$group 2>&1
-
 		# vmalloc performance and stress, can not use 'make run_tests' to run
 		if [[ $test =~ ^vmalloc\-(performance|stress)$ ]]; then
+			log_cmd make -j${nr_cpu} TARGETS=$group 2>&1 || continue
+
 			log_cmd mm/test_vmalloc.sh ${test##vmalloc-} 2>&1
 			log_cmd dmesg | grep -E '(Summary|All test took)' 2>&1
 		elif [[ $group = resctrl ]]; then
+			log_cmd make -j${nr_cpu} TARGETS=$group 2>&1 || continue
+
 			log_cmd resctrl/resctrl_tests 2>&1
 		elif [[ $group = bpf ]]; then
 			# Order correspond to 'make run_tests' order
@@ -728,7 +730,7 @@ run_tests()
 				sed -i 's/test_progs-no_alu32/test_lpm_map/' bpf/Makefile
 			fi
 
-			log_cmd make quicktest=1 run_tests -C $group 2>&1
+			log_cmd make TARGETS=$group quicktest=1 run_tests 2>&1
 
 			if [[ -f bpf/test_progs && -f bpf/test_progs-no_alu32 ]]; then
 				cd bpf
@@ -743,9 +745,9 @@ run_tests()
 				echo "build bpf/test_progs or bpf/test_progs-no_alu32 failed" >&2
 			fi
 		elif [[ $category = "functional" ]]; then
-			log_cmd make quicktest=1 run_tests -C $group 2>&1
+			log_cmd make TARGETS=$group quicktest=1 run_tests 2>&1
 		else
-			log_cmd make run_tests -C $group 2>&1
+			log_cmd make TARGETS=$group run_tests 2>&1
 		fi
 
 		cleanup_test_group $group

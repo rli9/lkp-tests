@@ -1,0 +1,5 @@
+drivers/ntsync.make.pass: 1
+drivers/ntsync.ntsync.global.semaphore_state.fail: 1
+drivers/ntsync.ntsync.global.mutex_state.fail: 1
+drivers/ntsync.ntsync.fail: 1
+drivers/net/hw.make.fail: 1

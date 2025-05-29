@@ -1,14 +1,13 @@
-2020-09-08 09:09:39 make run_tests -C futex
-make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d012a7190fc1fd72ed48911e77ca97ba4521bccd/tools/testing/selftests/futex'
-make[1]: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d012a7190fc1fd72ed48911e77ca97ba4521bccd/tools/testing/selftests/futex/functional'
+make[1]: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d012a7190fc1fd72ed48911e77ca97ba4521bccd/tools/testing/selftests/futex'
+make[2]: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d012a7190fc1fd72ed48911e77ca97ba4521bccd/tools/testing/selftests/futex/functional'
 make --no-builtin-rules INSTALL_HDR_PATH=$OUTPUT/usr \
 	ARCH=x86 -C ../../../../.. headers_install
-make[2]: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d012a7190fc1fd72ed48911e77ca97ba4521bccd'
+make[3]: Entering directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d012a7190fc1fd72ed48911e77ca97ba4521bccd'
   INSTALL /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d012a7190fc1fd72ed48911e77ca97ba4521bccd/tools/testing/selftests/futex/functional/usr/include
-make[2]: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d012a7190fc1fd72ed48911e77ca97ba4521bccd'
+make[3]: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d012a7190fc1fd72ed48911e77ca97ba4521bccd'
 gcc  -g -O2 -Wall -D_GNU_SOURCE -pthread -I../include -I../../    futex_wait_timeout.c /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d012a7190fc1fd72ed48911e77ca97ba4521bccd/tools/testing/selftests/kselftest_harness.h /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d012a7190fc1fd72ed48911e77ca97ba4521bccd/tools/testing/selftests/kselftest.h ../include/futextest.h ../include/atomic.h ../include/logging.h -lpthread -lrt -o /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d012a7190fc1fd72ed48911e77ca97ba4521bccd/tools/testing/selftests/futex/functional/futex_wait_timeout
 gcc  -g -O2 -Wall -D_GNU_SOURCE -pthread -I../include -I../../    futex_wait_wouldblock.c /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d012a7190fc1fd72ed48911e77ca97ba4521bccd/tools/testing/selftests/kselftest_harness.h /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d012a7190fc1fd72ed48911e77ca97ba4521bccd/tools/testing/selftests/kselftest.h ../include/futextest.h ../include/atomic.h ../include/logging.h -lpthread -lrt -o /usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d012a7190fc1fd72ed48911e77ca97ba4521bccd/tools/testing/selftests/futex/functional/futex_wait_wouldblock
-make[1]: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d012a7190fc1fd72ed48911e77ca97ba4521bccd/tools/testing/selftests/futex/functional'
+make[2]: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d012a7190fc1fd72ed48911e77ca97ba4521bccd/tools/testing/selftests/futex/functional'
 TAP version 13
 1..1
 # selftests: futex: run.sh
@@ -45,4 +44,4 @@ TAP version 13
 # ok 1 futex-wait-wouldblock
 # # Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
 ok 1 selftests: futex: run.sh
-make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d012a7190fc1fd72ed48911e77ca97ba4521bccd/tools/testing/selftests/futex'
+make[1]: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-7.6-kselftests-d012a7190fc1fd72ed48911e77ca97ba4521bccd/tools/testing/selftests/futex'
