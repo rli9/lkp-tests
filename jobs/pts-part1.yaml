@@ -60,7 +60,6 @@ phoronix-test-suite:
     - lulesh-1.1.1
     - m-queens-1.1.0
     - mafft-1.6.2
-    - mkl-dnn-1.3.1
     - mpcbench-1.0.1
     - mrbayes-1.5.0
     - mt-dgemm-1.2.0
@@ -567,3 +566,16 @@ phoronix-test-suite:
     option_a:
       # - Church Facade # The test quit with a non-zero exit status.
       - Lion
+
+  - test: mkl-dnn-1.3.1
+    option_a:
+      - Deconvolution Batch deconv_1d
+      - Deconvolution Batch deconv_3d
+      - IP Batch 1D
+      - IP Batch All
+      # - Recurrent Neural Network Training # The test quit with a non-zero exit status.
+      # - Recurrent Neural Network Inference # The test quit with a non-zero exit status.
+    option_b:
+      - f32
+      - u8s8f32      [Optimized For AVX-512]
+      - bf16bf16bf16 [Optimized For AVX-512 + VNNI]
