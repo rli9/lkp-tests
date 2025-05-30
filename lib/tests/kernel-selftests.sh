@@ -580,6 +580,13 @@ fixup_tc_testing()
 	modprobe netdevsim
 }
 
+fixup_drivers_net_bonding()
+{
+	# selftests: drivers/net/bonding: bond-break-lacpdu-tx.sh
+	# ./bond-break-lacpdu-tx.sh: 26: source: not found
+	sed -i 's/bin\/sh/bin\/bash/' drivers/net/bonding/bond-break-lacpdu-tx.sh
+}
+
 build_tools()
 {
 
@@ -630,10 +637,9 @@ fixup_test_group()
 {
 	local group=$1
 
-	if [[ "$group" = "tc-testing" ]]; then
-		fixup_tc_testing || return
-	elif [[ $(type -t "fixup_${group//\//_}") = function ]]; then
-		fixup_${group//\//_} || return
+	local fixup_handler="fixup_${group//[\/-]/_}"
+	if declare -f "$fixup_handler" > /dev/null; then
+		$fixup_handler || return
 	fi
 
 	# update Makefile to run the specified $test only
