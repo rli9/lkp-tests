@@ -691,6 +691,16 @@ prepare_tests()
 	[ -n "$selftest_mfs" ] || die "empty selftest_mfs"
 }
 
+make_run_tests()
+{
+	log_cmd make -j${nr_cpu} TARGETS=$group 2>&1 || return
+
+	# install is needed for testing like drivers/net to trigger the build of INSTALL_DEP_TARGETS
+	log_cmd make -j${nr_cpu} TARGETS=$group install 2>&1 || return
+
+	log_cmd make TARGETS=$group run_tests 2>&1
+}
+
 run_tests()
 {
 	local selftest_mfs=$@
@@ -736,7 +746,7 @@ run_tests()
 				sed -i 's/test_progs-no_alu32/test_lpm_map/' bpf/Makefile
 			fi
 
-			log_cmd make TARGETS=$group quicktest=1 run_tests 2>&1
+			quicktest=1 make_run_tests
 
 			if [[ -f bpf/test_progs && -f bpf/test_progs-no_alu32 ]]; then
 				cd bpf
@@ -751,9 +761,9 @@ run_tests()
 				echo "build bpf/test_progs or bpf/test_progs-no_alu32 failed" >&2
 			fi
 		elif [[ $category = "functional" ]]; then
-			log_cmd make TARGETS=$group quicktest=1 run_tests 2>&1
+			quicktest=1 make_run_tests
 		else
-			log_cmd make TARGETS=$group run_tests 2>&1
+			make_run_tests
 		fi
 
 		cleanup_test_group $group
