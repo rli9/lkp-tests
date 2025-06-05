@@ -50,7 +50,6 @@ stress-ng:
   - spawn
   - switch
   - tee
-  - vfork
   - vforkmany
   - wait
   - workload

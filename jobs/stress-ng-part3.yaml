@@ -13,6 +13,7 @@ stress-ng:
     - netdev
     - netlink-proc
     - netlink-task
+    - ng
     - nice
     - nop
     - "null"
@@ -39,7 +40,9 @@ stress-ng:
     - prime
     - prio-inv
     - priv-instr
+    - pseek
     - pthread
+    - ptr-chase
     - ptrace
     - pty
     - qsort

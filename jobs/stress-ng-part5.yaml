@@ -36,7 +36,6 @@ stress-ng:
     - vecmath
     - vecshuf
     - vecwide
-    - vfork
     - vforkmany
     - vm
     - vm-addr

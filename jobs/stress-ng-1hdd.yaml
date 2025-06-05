@@ -61,7 +61,6 @@ stress-ng:
     - rawdev
     - rename
     - swap
-    - symlink
     - sync-file
     - touch
     - utime

@@ -1,9 +1,9 @@
 suite: stress-ng
 testcase: stress-ng
 category: benchmark
- 
+
 nr_threads: 100%
- 
+
 testtime:
   - 60s
 
@@ -29,6 +29,7 @@ stress-ng:
     - sigchld
     - sigfd
     - sigfpe
+    - sighup
     - sigill
     - sigio
     - signal

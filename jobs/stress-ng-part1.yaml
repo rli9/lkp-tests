@@ -36,6 +36,7 @@ stress-ng:
     - context
     - cpu
     - cpu-online
+    - cpu-sched
     - crypt
     - cyclic
     - daemon
@@ -43,10 +44,12 @@ stress-ng:
     - dekker
     - dev
     - dev-shm
+    - dfp
     - dynlib
     - easy-opcode
-    # - eigen
     - efivar
+    # - eigen
+    - eigen-ops
     - enosys
     - epoll
     - exec
