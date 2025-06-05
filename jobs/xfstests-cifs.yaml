@@ -92,6 +92,7 @@ xfstests:
     - generic-group-73
     - generic-group-74
     - generic-group-75
+    - generic-group-76
     - generic-logdev
     - generic-525
     - generic-no-xfs-bug-on-assert
