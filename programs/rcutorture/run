@@ -10,13 +10,22 @@
 . $LKP_SRC/lib/reproduce-log.sh
 
 args=""
+
 case "$test" in
 cpuhotplug)
-        args=${args}" onoff_interval=3 onoff_holdoff=30"
+        args="${args} onoff_interval=3 onoff_holdoff=30"
         ;;
 esac
 
-[ -n "$torture_type" ] && args=${args}" torture_type=$torture_type"
+[ -n "$torture_type" ] && {
+	args="${args} torture_type=$torture_type"
+
+	case "$torture_type" in
+	trivial)
+			args="${args} shuffle_interval=0"
+			;;
+	esac
+}
 
 log_cmd depmod
 log=$(log_cmd modprobe rcutorture $args 2>&1) || {
