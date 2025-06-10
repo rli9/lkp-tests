@@ -114,7 +114,7 @@ def revise_hash(original, revisions, overwrite_top_keys: true)
           hash[key] = nil if hash[key].empty?
         else
           hash.delete key
-          parent[pkey] = nil if hash.empty? && parent.object_id != hash.object_id
+          parent[pkey] = nil if hash.empty? && !parent.object_id.equal?(hash.object_id)
         end
       end
       next false
@@ -130,8 +130,8 @@ def revise_hash(original, revisions, overwrite_top_keys: true)
     next true unless k.index('.')
 
     _parent, _pkey, hash, key, _keys = lookup_hash(original, k, create_missing: true)
-    hash[key] = v if overwrite_top_keys || hash.object_id != original.object_id || hash[key].nil?
-    next false if hash.object_id != original.object_id
+    hash[key] = v if overwrite_top_keys || !hash.object_id.equal?(original.object_id) || hash[key].nil?
+    next false unless hash.object_id.equal?(original.object_id)
 
     true
   end
