@@ -8,3 +8,7 @@
 ^stderr\.sync_disk_cp.*: cannot create /fs/shm/tmpb
 ^stderr\.umount:/tmp/vm-scalability-tmp:target_is_busy
 ^stderr\.xinit:giving_up
+# perf related tests generated sanitizer kmsg
+^kmsg\.sanitizer
+# stress-ng contains fail stat when one stressor is not working
+^stress-ng\..+\.fail
