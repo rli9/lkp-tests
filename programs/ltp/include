@@ -37,6 +37,7 @@ need_kconfig:
 - WATCH_QUEUE: y
 % elsif ___.test == "cve-07"
 - CRYPTO_SM3
+- CRYPTO_LIB_SM3 # f4065b2f63cf ("crypto: lib/sm3 - Move sm3 library into lib/crypto")
 - CRYPTO_SM3_GENERIC
 
 - SND_SEQUENCER
