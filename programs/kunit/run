@@ -29,7 +29,7 @@ elif [[ "$group" = "group-01" ]]; then
 	            "crc32test" "atomic64_test" "snd-soc-avs-i2s-test" "test_dynamic_debug" "raid6test" "backtracetest")
 elif [[ "$group" = "group-03" ]]; then
 	test_array=("drm_buddy_test" "kasan_test" "kfence_test" "platform-device-test" "property-entry-test" \
-				"of_test" "overlay-test" "packing_test")
+				"of_test" "overlay-test" "packing_test" "printf_kunit" "scanf_kunit")
 fi
 
 run_kunit_tests()

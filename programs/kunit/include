@@ -306,4 +306,7 @@ need_kconfig:
 
 - PACKING_KUNIT_TEST: m
 - PACKING: y
+
+- PRINTF_KUNIT_TEST: m
+- SCANF_KUNIT_TEST: m
 % end
