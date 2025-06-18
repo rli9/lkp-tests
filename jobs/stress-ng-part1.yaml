@@ -40,7 +40,6 @@ stress-ng:
     - crypt
     - cyclic
     - daemon
-    - dccp
     - dekker
     - dev
     - dev-shm

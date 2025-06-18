@@ -3,8 +3,6 @@ need_kconfig:
 - SECURITY: y
 - NET: y
 - SECURITY_APPARMOR: y
-% elsif ___.test == "dccp"
-- IP_DCCP: y
 % elsif ___.test == "tun"
 - TUN: m
 % elsif ___.test == "userfaultfd"

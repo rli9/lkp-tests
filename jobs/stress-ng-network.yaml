@@ -10,7 +10,6 @@ testtime:
 # docker run --rm ghcr.io/colinianking/stress-ng --class network?
 stress-ng:
   test:
-  - dccp
   - epoll
   - icmp-flood
   - netdev
