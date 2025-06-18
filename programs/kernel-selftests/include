@@ -14,7 +14,6 @@ need_kconfig:
 % elsif ___.group == "lib"
 - PRIME_NUMBERS: m
 - TEST_BITMAP: m
-- TEST_PRINTF: m
 - TEST_SCANF: m
 - TEST_BITOPS: m
 - TEST_STRSCPY: m
@@ -38,6 +37,8 @@ need_kconfig:
 % elsif ___.group == "kvm"
 - KVM
 - KVM_INTEL
+- USERFAULTFD: y
+
 % elsif ___.group == "mm"
 - DEVICE_PRIVATE: y
 - GUP_BENCHMARK: y
@@ -54,6 +55,7 @@ need_kconfig:
 - TEST_VMALLOC: m
 - TRANSPARENT_HUGEPAGE: y
 - USERFAULTFD: y
+- ANON_VMA_NAME: y
 % elsif ___.group == "livepatch"
 - DYNAMIC_DEBUG: y
 - LIVEPATCH: y
@@ -64,6 +66,7 @@ need_kconfig:
 - IKCONFIG: y
 - IKCONFIG_PROC: y
 - TEST_FIRMWARE: m
+- RUNTIME_TESTING_MENU: y
 - FW_UPLOAD: y
 % elsif ___.group == "pidfd"
 - UTS_NS: y
@@ -71,21 +74,21 @@ need_kconfig:
 - USER_NS: y
 - PID_NS: y
 - NET_NS: y
+- TIME_NS: y
 - CGROUPS: y
 - CHECKPOINT_RESTORE: y
+% elsif ___.group == "timens"
+- TIME_NS: y
 % elsif ___.group == "tdx"
 - TDX_GUEST_DRIVER
 % elsif ___.group == "nci"
 - NFC
 - NFC_NCI
 - NFC_VIRTUAL_NCI
-% elsif ___.group == "group-00"
-- ANDROID: y
-- DRM
-- DRM_VGEM
-- ION: y
-- ION_SYSTEM_HEAP: y
+% elsif ___.group == "sync"
 - STAGING: y
+- SW_SYNC: y
+- SYNC_FILE: y
 % elsif ___.group == "landlock"
 - CGROUPS: y
 - CGROUP_SCHED: y
@@ -102,113 +105,98 @@ need_kconfig:
 - SYSFS: y
 - TMPFS: y
 - TMPFS_XATTR: y
+- MPTCP: y
+- MPTCP_IPV6: y
 % elsif ___.group == "iommu"
 - FAULT_INJECTION_DEBUG_FS: y
 - FAULT_INJECTION: y
+- DEBUG_KERNEL: y
+
 - IOMMUFD
 - IOMMUFD_TEST: y
 - FAILSLAB: y
+% elsif ___.group == "ipc"
+- CHECKPOINT_RESTORE: y
+- EXPERT: y
 % elsif ___.group == "filesystems"
 - ANDROID_BINDERFS: y
 - ANDROID_BINDER_IPC: y
-% elsif ___.group == "group-01"
+- PID_NS: y
+- UTS_NS: y
+- USER_NS: y
+% elsif ___.group == "pid_namespace"
+- PID_NS: y
+- USER_NS: y
+
+% elsif ___.group == "damon"
 - DAMON: y
 - DAMON_VADDR: y
 - DAMON_PADDR: y
-- DAMON_DBGFS: y
 - DAMON_SYSFS: y
 - DAMON_LRU_SORT: y
 - DAMON_RECLAIM: y
-- SECURITY_PATH: y
+% elsif ___.group == "dmabuf-heaps"
 - DMABUF_HEAPS: y
 - DMABUF_HEAPS_SYSTEM: y
-- BTRFS_FS: m
-- CHECKPOINT_RESTORE: y
-- DRM_DEBUG_SELFTEST: m
-- EXPERT: y
-- LEDS_CLASS_MULTICOLOR: y
-
-# tools/testing/selftests/gpio
+- DRM_VGEM
+- DRM
+% elsif ___.group == "kmod"
+- TEST_KMOD: m
+- TEST_LKM: m
+% elsif ___.group == "splice"
+- TEST_LKM: m
+% elsif ___.group == "kexec"
+- IMA_APPRAISE: y
+- IMA: y
+- IMA_ARCH_POLICY: y
+- SECURITYFS: y
+% elsif ___.group == "lsm"
+- SYSFS: y
+- SECURITY: y
+- SECURITYFS: y
+% elsif ___.group == "safesetid"
+- SECURITY: y
+- SECURITYFS: y
+% elsif ___.group == "gpio"
 - GPIOLIB: y
 - GPIO_CDEV: y
 - GPIO_MOCKUP: m
 - GPIO_SIM: m
-
-- IMA: y
-- IMA_APPRAISE: y
-- IMA_ARCH_POLICY: y
-- IR_IMON_DECODER: m
-- IR_SHARP_DECODER: m # Depends on: RC_DECODERS && RC_CORE
-- LIRC: y # Depends on: RC_CORE
-- LKDTM: y
-- SECURITYFS: y
-- TEST_BITMAP: m
-- TEST_KMOD: m
-- TEST_LKM: m
-- TEST_PRINTF: m
-- TUN: m
-- WW_MUTEX_SELFTEST: m
-- XFS_FS: m
+- GPIO_AGGREGATOR: m
+% elsif ___.group == "dma"
 - DMA_MAP_BENCHMARK: y
-- TEST_FPU: m
-- DEBUG_KERNEL: y
-- FAULT_INJECTION: y
-- FPROBE: y # Depends on: FTRACE && FUNCTION_TRACER && DYNAMIC_FTRACE_WITH_REGS && HAVE_RETHOOK
-% elsif ___.group == "group-02"
-- FUSE_FS: m
-- IPV6_MULTIPLE_TABLES: y
-- MISC_FILESYSTEMS: y
-- MPTCP: y
-- MPTCP_IPV6: y
-- NET_FOU
-- NET_FOU_IP_TUNNELS: y
-- NET_L3_MASTER_DEV: y
-- NET_SCH_NETEM
-- NET_VRF
-- NF_FLOW_TABLE: m
-- NF_FLOW_TABLE_INET: m
-- NF_FLOW_TABLE_IPV4: m
-- NF_FLOW_TABLE_IPV6: m
-- NF_TABLES_NETDEV: y
-- PROC_FS: y
+% elsif ___.group == "pstore"
 - PSTORE: y
 - PSTORE_CONSOLE: y
 - PSTORE_PMSG: y
 - PSTORE_RAM: m
-- SECCOMP: y
-- SECCOMP_FILTER: y
-- TEST_BLACKHOLE_DEV: m
-- UTS_NS: y
-- VETH
-- X86_CPU_RESCTRL: y
-- ANON_VMA_NAME: y # Depends on: PROC_FS && ADVISE_SYSCALLS && MMU
-% elsif ___.group == "group-s"
-- SECURITY: y
-- SECURITYFS: y
+- MISC_FILESYSTEMS: y
+
+% elsif ___.group == "zram"
+- ZSMALLOC: y
+- ZRAM: m
+% elsif ___.group == "syscall_user_dispatch"
+- GENERIC_ENTRY: y
+% elsif ___.group == "seccomp"
 - PID_NS: y
 - SECCOMP: y
 - SECCOMP_FILTER: y
 - USER_NS: y
-- TEST_LKM: m
-- TEST_STATIC_KEYS: m
-- STAGING: y
-- ANDROID: y
-- SYNC: y
-- SW_SYNC: y
-- GENERIC_ENTRY: y
-- TEST_SYSCTL: m
-- X86_SGX: y
-% elsif ___.group == "group-03"
-- NET: y
-- VIRT_DRIVERS: y
-- INTEL_TDX_GUEST: y
-- TEST_USER_COPY: m
-- TIME_NS: y
-- USERFAULTFD: y
+% elsif ___.group == "rlimits"
 - USER_NS: y
-- ZRAM: m
-- ZSMALLOC: y
-- ZONE_DEVICE: y
+% elsif ___.group == "uevent"
+- USER_NS: y
+- NET: y
+
+% elsif ___.group == "mount"
+- USER_NS: y
+% elsif ___.group == "mount_setattr"
+- USER_NS: y
+% elsif ___.group == "move_mount_set_group"
+- USER_NS: y
+% elsif ___.group == "sysctl"
+- TEST_SYSCTL: m
+- PROC_SYSCTL: y
 % elsif ___.group == "resctrl"
 - X86_CPU_RESCTRL: y
 - PROC_CPU_RESCTRL: y
@@ -335,28 +323,31 @@ need_kconfig:
 # drivers/net/team/config
 - NET_TEAM_MODE_LOADBALANCE
 - NET_TEAM
-% else
-- BLOCK: y
-- BTRFS_FS: m
-- FTRACE: y
+
+- IPV6_MULTIPLE_TABLES: y
+- NET_L3_MASTER_DEV: y
+- NET_VRF
+
+- VETH
+% elsif ___.group == "wireguard"
 - IP_ADVANCED_ROUTER: y
-- IP_MULTIPLE_TABLES: y # Depends on: IP_ADVANCED_ROUTER [: y]
-- RC_CORE
-- RC_DECODERS: y # Depends on: RC_CORE
-- RC_DEVICES: y # Depends on: RC_CORE
-- RC_LOOPBACK: m # Depends on: RC_CORE && RC_DEVICES
-- RUNTIME_TESTING_MENU: y
-- STAGING: y
-- SYNC_FILE: y
-- TEST_FIRMWARE: m
-- TEST_KMOD: m
-- TEST_LKM: m
-- TEST_USER_COPY: m
-- TUN: m
-- XFS_FS: m # Depends on: BLOCK [: y]
-- OVERLAY_FS
-- PERF_EVENTS: y
-- SCHED_DEBUG: y
-- SHMEM: y
+- IP_MULTIPLE_TABLES: y
+- IPV6_MULTIPLE_TABLES: y
 - TMPFS: y
+- SHMEM: y
+- PROC_FS: y
+- NET: y
+- VETH
+% elsif ___.group == "perf_events"
+- PERF_EVENTS: y
+% elsif ___.group == "static_keys"
+- TEST_STATIC_KEYS: m
+% elsif ___.group == "prctl"
+- ANON_VMA_NAME: y
+% elsif ___.group == "memfd"
+- FUSE_FS: m
+% elsif ___.group == "fpu"
+- TEST_FPU: m
+% elsif ___.group == "lkdtm"
+- LKDTM: y
 % end
