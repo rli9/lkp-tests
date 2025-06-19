@@ -12,7 +12,6 @@ phoronix-test-suite:
     - petsc-1.0.0
     - build-gem5-1.1.0
     - build-nodejs-1.4.0
-    - cockroach-1.0.2
     - asmfish-1.1.2
     - vosk-1.0.1
     - gpaw-1.2.0
@@ -258,3 +257,16 @@ phoronix-test-suite:
     option_b:
       - 1 # 60   [Shorter run-time]
       # - 2 # 1800 [Official run-time]
+
+  - test: cockroach-1.0.2
+    option_a:
+      - 1 # KV, 95% Reads
+      - 2 # KV, 50% Reads
+      - 3 # KV, 60% Reads
+      - 4 # KV, 10% Reads
+      - 5 # MoVR
+    option_b:
+      - 128
+      - 256
+      - 512
+      - 1024
