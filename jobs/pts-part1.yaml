@@ -28,7 +28,6 @@ phoronix-test-suite:
     - compress-rar-1.2.0
     - compress-xz-1.1.0
     - coremark-1.0.1
-    - cp2k-1.5.0
     - crafty-1.4.5
     - ctx-clock-1.0.0
     - cython-bench-1.1.0
@@ -612,3 +611,9 @@ phoronix-test-suite:
       - 250
       - 500
       - 1000
+
+  - test: cp2k-1.5.0
+    option_a:
+      - Fayalite-FIST
+      - H20-64
+      - H20-256
