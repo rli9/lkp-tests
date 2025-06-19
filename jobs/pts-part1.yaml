@@ -83,6 +83,10 @@ phoronix-test-suite:
       - 32
       # - 64
       # - 96
+    option_b:
+      - 32
+      - 57
+      - 512
 
   - test: leveldb-1.1.0
     option_a:
