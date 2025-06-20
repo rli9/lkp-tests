@@ -22,7 +22,7 @@ esac
 
 	case "$torture_type" in
 	trivial)
-			args="${args} shuffle_interval=0"
+			args="${args} onoff_interval=0 shuffle_interval=0"
 			;;
 	esac
 }
