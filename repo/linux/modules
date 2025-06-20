@@ -1,1 +1,15 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/modules/linux.git
+owner:
+- Luis Chamberlain <mcgrof@kernel.org>
+- Petr Pavlu <petr.pavlu@suse.com>
+- Sami Tolvanen <samitolvanen@google.com>
+- Daniel Gomez <da.gomez@kernel.org>
+subsystems:
+- modules
+mail_cc:
+- Luis Chamberlain <mcgrof@kernel.org>
+- Petr Pavlu <petr.pavlu@suse.com>
+- Sami Tolvanen <samitolvanen@google.com>
+- Daniel Gomez <da.gomez@kernel.org>
+- linux-modules@vger.kernel.org
+notify_build_success_branch: .*
