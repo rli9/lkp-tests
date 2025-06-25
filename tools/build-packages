@@ -17,8 +17,8 @@ show_cmd()
 
 queue()
 {
-	echo queue "$@"
-	command queue "$@"
+	echo queue "$@" -t lkp-skl-fpga01
+	command queue "$@" -t lkp-skl-fpga01
 }
 
 . $LKP_SRC/distro/common
@@ -30,10 +30,11 @@ queue pack-deps.yaml rootfs=$rootfs benchmark=pack -q vip --wait 3600 || exit
 
 if [[ $2 = 'each' ]]; then
 	for i in $(show_deps_list); do
-		queue pack-deps.yaml	rootfs=$rootfs benchmark=$i
+		queue pack-deps.yaml rootfs=$rootfs benchmark=$i
 	done
+
 	for i in $(show_pack_list); do
-		queue pack.yaml		rootfs=$rootfs benchmark=$i
+		queue pack.yaml rootfs=$rootfs benchmark=$i
 	done
 elif [[ $2 = 'all' ]]; then
 	queue pack-deps.yaml -s "benchmark: all" rootfs=$rootfs

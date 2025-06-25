@@ -3,7 +3,6 @@ testcase: pack-deps
 
 branch: linus/master
 commit: RELEASE
-testbox: lkp-skl-fpga01
 
 pack_arch: x86_64
 pack-deps:
