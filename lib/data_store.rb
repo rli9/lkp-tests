@@ -74,7 +74,7 @@ module DataStore
       begin
         elayout = load_yaml path(CONFIG_FILE)
       rescue StandardError
-        elayout = {}
+        elayout = { MAPS => [], COMPRESS_MATRIX => nil }
       end
       from_data elayout
     end
