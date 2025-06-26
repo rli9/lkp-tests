@@ -16,6 +16,7 @@ idle-inject
 irda-kernel
 kernel-builtin
 kernel-selftests
+kernel-selftests-bpf
 kvm-kernel-boot-test
 kvm-unit-tests
 kvm-unit-tests-qem
