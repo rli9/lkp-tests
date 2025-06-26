@@ -59,6 +59,7 @@ perf-bench-numa-mem
 perf-bench-sched-pipe
 perf-event-tests
 pft
+pgbench
 phoronix-test-suite
 phpbench
 pigz
