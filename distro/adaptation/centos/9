@@ -31,6 +31,7 @@ libusb-1.0-0: libusb
 llvm-dev: llvm-devel
 openbsd-inetd:
 pkg-config:
+python-minimal: python3
 python3-all-dev:
 python3-cherrypy3: python3-cherrypy
 python3-crypto:
@@ -42,7 +43,6 @@ python3-hid: python3-hidapi
 python3-mako: python-pyramid-mako
 python3-markupsafe: python34-markupsafe
 python3-minimal: python3
-python-minimal: python3
 python3-nose:
 python3-openssl: python3-pyOpenSSL
 python3-pkg-resources:
