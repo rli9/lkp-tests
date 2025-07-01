@@ -1,0 +1,28 @@
+pass:
+  '*': pass
+  rcuperf: completed
+  last_state: completed
+  dmesg: boot_succeeded
+
+fail:
+  '*': fail error timeout job_oom job_soft_timeout killed_by
+  kernel-selftests: xfailed xfail
+  dmesg: .+
+  kmsg: .+
+  last_state: .+
+  rcutoture: rcu_hotplug
+  locktoture: lock_hotplug
+  leaking-addresses: dmesg\.(?!R).* proc\.(?!blacklist|netlink|vmallocinfo)(?!.*:0000000)
+  rcuperf: unknown
+  avocado: interrupted warn
+
+skip:
+  '*': skip block not_installed job_skip
+  dpdk-dts: skiped
+  nvml: test_skip
+  kernel-selftests: test_skip unresolved unsupported
+  perf-event-tests: perf_event_tests old_behavior use_caution unexplained new_behavior known_kernel_bug
+  avocado: cancel
+  xfstests: expunged
+  ltp: unknown
+  lkvs: na
