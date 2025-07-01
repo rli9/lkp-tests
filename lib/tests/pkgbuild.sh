@@ -132,7 +132,7 @@ update_submodules()
 	git submodule update --init --recursive
 }
 
-build_qemu()
+pkgbuild_build_qemu()
 {
 	local qemu_branch=$1
 	local qemu_commit=$2

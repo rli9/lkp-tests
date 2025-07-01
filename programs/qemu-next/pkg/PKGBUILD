@@ -14,7 +14,7 @@ md5sums=('SKIP')
 
 build()
 {
-	build_qemu qemu/master HEAD
+	pkgbuild_build_qemu qemu/master HEAD
 }
 
 package()
