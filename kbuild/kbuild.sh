@@ -101,23 +101,16 @@ is_llvm_equal_one_supported()
 	# handle v2.6.X version, similar to is_clang_supported_arch function
 	local kernel_version_major=${kernel_version_major%%.*}
 
-	# LLVM=1 is introduced by below commit which merged into v5.7-rc1
-	# irb(main):001:0> Git.open.gcommit('a0d1c951ef0').merged_by
-	# => "v5.7-rc1"
-	# commit a0d1c951ef08ed24f35129267e3595d86f57f5d3
-	# Author: Masahiro Yamada <masahiroy@kernel.org>
-	# Date:   Wed Apr 8 10:36:23 2020 +0900
-	# 	kbuild: support LLVM=1 to switch the default tools to Clang/LLVM
-	#
-	# 	As Documentation/kbuild/llvm.rst implies, building the kernel with a
-	# 	full set of LLVM tools gets very verbose and unwieldy.
-	#
-	# 	Provide a single switch LLVM=1 to use Clang and LLVM tools instead
-	# 	of GCC and Binutils. You can pass it from the command line or as an
-	# 	environment variable.
+	# LLVM=1 is introduced by below commit
+	# [v5.7-rc1] a0d1c951ef08 ("kbuild: support LLVM=1 to switch the default tools to Clang/LLVM")
 	is_kernel_version "<" 5.7 && return 1
 
 	if [[ $ARCH = "s390" ]]; then
+		return 1
+	elif [[ $ARCH = sparc64 ]]; then
+		# [v6.13-rc1] f6dee26d26e3 ("sparc/build: Add SPARC target flags for compiling with clang")
+		#    * - sparc (sparc64 only)
+		#      - ``CC=clang LLVM_IAS=0`` (LLVM >= 20)
 		return 1
 	elif [[ $ARCH =~ "powerpc" || $ARCH =~ "mips" || $ARCH =~ "riscv" ]]; then
 		# https://www.kernel.org/doc/html/v5.18/kbuild/llvm.html
@@ -133,9 +126,8 @@ setup_llvm_ias()
 	local opt_cc=$1
 
 	if [[ $ARCH =~ "powerpc" ]]; then
-		# f12b034afeb3 ("scripts/Makefile.clang: default to LLVM_IAS=1")
-		# above commit is merged by v5.15-rc1, and will enable clang integrated assembler by default
-		# it will raise below errors:
+		# [v5.15-rc1] f12b034afeb3 ("scripts/Makefile.clang: default to LLVM_IAS=1")
+		# Above commit enables clang integrated assembler by default, which raises below errors:
 		# clang-14: error: unsupported argument '-mpower4' to option 'Wa,'
 		# clang-14: error: unsupported argument '-many' to option 'Wa,'
 		# explicitly set LLVM_IAS=0 to disable integrated assembler and switch back to gcc assembler
@@ -144,6 +136,9 @@ setup_llvm_ias()
 		is_kernel_version "<" 5.15 && echo "LLVM_IAS=1"
 	elif [[ $ARCH =~ arm ]]; then
 		is_kernel_version "<" 5.15 && [[ $opt_cc = "LLVM=1" ]] && echo "LLVM_IAS=1"
+	elif [[ $ARCH = sparc64 ]]; then
+		# [v6.13-rc1] f6dee26d26e3 ("sparc/build: Add SPARC target flags for compiling with clang")
+		echo "LLVM_IAS=0"
 	fi
 }
 
