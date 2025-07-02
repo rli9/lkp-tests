@@ -19,7 +19,7 @@ kernel-selftests
 kernel-selftests-bpf
 kvm-kernel-boot-test
 kvm-unit-tests
-kvm-unit-tests-qem
+kvm-unit-tests-qemu
 leaking-addresses
 libhugetlbfs-test
 lkvs
