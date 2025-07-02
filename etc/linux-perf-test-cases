@@ -96,7 +96,7 @@ sysbench-memory
 sysbench-mutex
 sysbench-threads
 tbench
-tcryp
+tcrypt
 thrulay
 tinymembench
 tlbflush
