@@ -98,6 +98,9 @@ add_kbuild_kcflags()
 
 is_llvm_equal_one_supported()
 {
+	local compiler=$1
+	local clang_version=${compiler#clang-}
+
 	# handle v2.6.X version, similar to is_clang_supported_arch function
 	local kernel_version_major=${kernel_version_major%%.*}
 
@@ -106,7 +109,8 @@ is_llvm_equal_one_supported()
 	is_kernel_version "<" 5.7 && return 1
 
 	if [[ $ARCH = "s390" ]]; then
-		return 1
+		# [v6.9-rc2] 978fa00eb035 ("Documentation/llvm: Note s390 LLVM=1 support with LLVM 18.1.0 and newer")
+		(( clang_version < 18 )) && return 1
 	elif [[ $ARCH = sparc64 ]]; then
 		# [v6.13-rc1] f6dee26d26e3 ("sparc/build: Add SPARC target flags for compiling with clang")
 		#    * - sparc (sparc64 only)
