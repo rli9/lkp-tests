@@ -17,6 +17,7 @@ irda-kernel
 kernel-builtin
 kernel-selftests
 kernel-selftests-bpf
+kernel-selftests-rust
 kvm-kernel-boot-test
 kvm-unit-tests
 kvm-unit-tests-qemu
