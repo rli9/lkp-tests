@@ -74,7 +74,6 @@ qperf
 rcurefscale
 reaim
 redis
-rocksdb
 rt-app
 schbench
 sdf

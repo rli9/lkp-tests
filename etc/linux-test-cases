@@ -8,7 +8,7 @@ cpu-hotplug
 ext4-frag
 ftq
 ftrace-onoff
-fw
+fwq
 fxmark
 galileo
 hwsim
@@ -45,6 +45,7 @@ rcuscale
 rcutorture
 rdma-pyverb
 reboot
+rocksdb
 suspend
 suspend-stress
 test-bpf
