@@ -11,7 +11,7 @@ build() {
 	cd "$srcdir/v4l-utils"
 	./bootstrap.sh || return
 	./configure --prefix="${pkgdir}/lkp/benchmarks/v4l2" || return
-	make || return
+	make 2>&1 || return
 	make install
 }
 

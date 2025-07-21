@@ -16,7 +16,7 @@ build_libhugetlbfs()
 {
 	log_cmd ./autogen.sh
 	log_cmd ./configure
-	log_cmd make $make_opt BUILDTYPE=NATIVEONLY
+	log_cmd make $make_opt BUILDTYPE=NATIVEONLY 2>&1
 }
 
 build_libhugetlbfs || die "make failed"

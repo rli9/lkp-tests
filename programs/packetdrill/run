@@ -31,6 +31,6 @@ grep -q -- --tolerance_usecs packetdrill/run_all.py || sed -ri \
 's/(--send_omit_free)/\1 --tolerance_usecs=100000/g' packetdrill/run_all.py
 
 # Use run_all.py to run tcp tests
-packetdrill/run_all.py -L -l -v tcp
+log_cmd packetdrill/run_all.py -L -l -v tcp 2>&1
 
 exit 0

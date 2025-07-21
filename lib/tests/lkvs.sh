@@ -13,7 +13,7 @@ build_lkvs_tools()
 {
 	log_cmd cd $BENCHMARK_ROOT/$testcase/lkvs/BM/tools || return
 
-	log_cmd make --keep-going || {
+	log_cmd make --keep-going 2>&1 || {
 		echo "tools make fail"
 		return 1
 	}
@@ -35,7 +35,7 @@ build_lkvs()
 		log_cmd cmake ..
 	fi
 
-	log_cmd make --keep-going || {
+	log_cmd make --keep-going 2>&1 || {
 		echo "$test make fail"
 		return 1
 	}

@@ -92,7 +92,7 @@ prepare_for_bpf()
 			#  CLNG-BPF [test_maps] bpf_iter_task_vma.o
 			# /bin/sh: 1: ./tools/bpf/resolve_btfids/resolve_btfids: not found
 			cd $linux_selftests_dir &&
-			make -j${nr_cpu} -C tools/bpf/resolve_btfids &&
+			make -j${nr_cpu} -C tools/bpf/resolve_btfids 2>&1 &&
 			mkdir -p $linux_headers_mod_dirs/tools/bpf/resolve_btfids &&
 			cp tools/bpf/resolve_btfids/resolve_btfids $linux_headers_mod_dirs/tools/bpf/resolve_btfids/
 		)
@@ -242,7 +242,7 @@ fixup_net()
 	[[ $test = "fib_nexthops.sh" ]] && echo "timeout=3600" >> $group/settings
 
 	[[ -d ../../net/ynl ]] && {
-		log_cmd make -j${nr_cpu} -C ../../net/ynl || return
+		log_cmd make -j${nr_cpu} -C ../../net/ynl 2>&1 || return
 	}
 
 	export CCINCLUDE="-I../bpf/tools/include"
@@ -361,7 +361,7 @@ fixup_memfd()
 	# before v4.13-rc1, we need to compile fuse_mnt first
 	# check whether there is target "fuse_mnt" at Makefile
 	grep -wq '^fuse_mnt:' memfd/Makefile || return 0
-	make fuse_mnt -C memfd
+	make fuse_mnt -C memfd 2>&1
 }
 
 fixup_bpf()

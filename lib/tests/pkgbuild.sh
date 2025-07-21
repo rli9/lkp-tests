@@ -44,7 +44,7 @@ build_dropwatch()
 
 	./autogen.sh || return
 	./configure --prefix=$benchmark_path/$pkgname/dropwatch || return
-	make || return
+	make 2>&1 || return
 	make install
 }
 
@@ -53,7 +53,7 @@ build_iproute2()
 	cd $srcdir/iproute2-next
 
 	./configure || return
-	make || return
+	make 2>&1 || return
 	DESTDIR=$benchmark_path/$pkgname/iproute2-next make install
 }
 
@@ -66,7 +66,7 @@ build_edk2()
 	git submodule init
 	git submodule update --recursive || return
 
-	log_cmd make -C BaseTools/Source/C || return
+	log_cmd make -C BaseTools/Source/C 2>&1 || return
 
 	# generate Build/OvmfX64/DEBUG_GCC5/FV/OVMF.fd
 	log_cmd OvmfPkg/build.sh -a X64 -n 112
