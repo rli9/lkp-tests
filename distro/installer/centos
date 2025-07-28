@@ -15,7 +15,7 @@ fi
 
 if ! rpm -q epel-release >/dev/null; then
 	${package_manager} install -y epel-release
-	${package_manager} makecache fast
+	${package_manager} makecache
 fi
 
 ${package_manager} install -y "$extra_option" $*
