@@ -13,7 +13,6 @@ flex
 fuse
 gcc-multilib
 iperf3
-iproute
 iptables
 iputils-ping
 ipv6toolkit
