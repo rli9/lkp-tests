@@ -73,7 +73,13 @@ pack()
 
 	local downloaded_rpms=$(find /var/ -type f -name "*.rpm")
 
-	[ "$downloaded_rpms" ] || return
+	# Sometimes nothing is downloaded if package is installed.
+	#
+	# Package libgomp-11.5.0-9.el9.x86_64 is already installed.
+	# Dependencies resolved.
+	# Nothing to do.
+	# Complete!
+	[ "$downloaded_rpms" ] || return 0
 
 	mkdir -p $target_dir
 

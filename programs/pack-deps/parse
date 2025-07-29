@@ -7,7 +7,8 @@ while (line = $stdin.gets)
   when /^package installed to \S+cgz$/
     stats_name = 'pass: 1'
     break
-  when /^empty PACKAGE_LIST for .*$/
+  when /^empty PACKAGE_LIST for .*$/,
+       /Nothing to do/
     stats_name = 'skip: 1'
     break
   end
