@@ -1,11 +1,11 @@
 pkgname=mcperf
-pkgver=0.1.1
+pkgver=git
 pkgrel=0
 pkgdesc="A tool for measuring memcached server performance"
 arch=('i386' 'x86_64' 'aarch64')
 url="https://github.com/twitter-archive/twemperf/"
 license=('GPL')
-source=("https://github.com/twitter-archive/twemperf.git#tag=v$pkgver")
+source=("https://github.com/twitter-archive/twemperf.git")
 md5sums=('SKIP')
 
 build() {
