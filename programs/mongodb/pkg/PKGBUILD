@@ -1,12 +1,12 @@
 pkgname=mongodb
-pkgver=r7.3.0
+pkgver=git
 pkgrel=1
 arch=('x86_64' 'aarch64')
 url="https://www.mongodb.com/"
 pkgdesc="A high-performance, open source, schema-free document-oriented database"
 license=('AGPL3')
 depends=()
-source=("https://github.com/mongodb/mongo.git#tag=$pkgver")
+source=("https://github.com/mongodb/mongo.git")
 sha256sums=('SKIP')
 
 build()
