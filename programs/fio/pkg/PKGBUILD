@@ -1,12 +1,12 @@
 pkgname=fio
-pkgver=3.40
+pkgver=git
 pkgrel=1
 pkgdesc="Fio is a tool that will spawn a number of threads or processes doing a particular type of I/O action as specified by the user."
 arch=('i386' 'x86_64' 'riscv64' 'aarch64')
 url="https://github.com/axboe/fio"
 license=('GPL')
 depends=('')
-source=("https://github.com/axboe/fio.git#tag=fio-$pkgver")
+source=("https://github.com/axboe/fio.git")
 md5sums=('SKIP')
 
 build() {
