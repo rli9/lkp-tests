@@ -7,7 +7,7 @@ license=('GPL')
 source=('https://git.kernel.org/pub/scm/fs/xfs/xfstests-dev.git'
 	'https://git.kernel.org/pub/scm/linux/kernel/git/jaegeuk/f2fs-tools.git'
 	'https://git.kernel.org/pub/scm/linux/kernel/git/djwong/e2fsprogs.git'
-	'https://github.com/koverstreet/bcachefs-tools.git#tag=v1.13.0')
+	'https://github.com/koverstreet/bcachefs-tools.git')
 md5sums=('SKIP' 'SKIP' 'SKIP' 'SKIP')
 
 . $LKP_SRC/lib/tests/common.sh
