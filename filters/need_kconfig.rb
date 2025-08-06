@@ -138,7 +138,7 @@ def check_all(kernel_kconfigs, needed_kconfigs)
   uncompiled_kconfigs = uncompiled_kconfigs.compact.sort.uniq
   return if uncompiled_kconfigs.empty?
 
-  kconfigs_error_message = "#{File.basename __FILE__}: #{uncompiled_kconfigs} has not been compiled by this kernel (#{context.kernel_version} based) per #{kconfigs_yaml}"
+  kconfigs_error_message = "#{File.basename __FILE__}: #{uncompiled_kconfigs} has not been compiled by this kernel (#{context.kernel_version} based)"
   raise Job::ParamError, kconfigs_error_message.to_s unless __FILE__ =~ /suggest_kconfig/
 
   puts "suggest kconfigs: #{uncompiled_kconfigs}"
