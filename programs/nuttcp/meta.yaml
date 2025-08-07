@@ -5,6 +5,6 @@ description: >
 homepage: http://nuttcp.org/nuttcp
 
 parameters:
- runtime:
+  runtime:
 
 results:

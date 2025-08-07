@@ -5,9 +5,8 @@ description: >
 homepage:
 
 parameters:
- runtime:
- iterations:
- nr_threads:
+  runtime:
+  iterations:
+  nr_threads:
 
 results:
-

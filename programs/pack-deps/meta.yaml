@@ -5,9 +5,7 @@ description: >
 homepage:
 
 parameters:
- benchmark:
- pack_arch:
-
+  benchmark:
+  pack_arch:
 
 results:
-

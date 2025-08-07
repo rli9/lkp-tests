@@ -5,8 +5,8 @@ description: >
 homepage: http://download.savannah.gnu.org/releases/nepim/nepim-0.53.tar.gz
 
 parameters:
- runtime:
- nr_threads:
- protocol:
+  runtime:
+  nr_threads:
+  protocol:
 
 results:

@@ -5,14 +5,14 @@ description: >
 homepage: https://www.samba.org/ftp/tridge/dbench
 
 parameters:
- runtime:
- nr_threads:
- iterations:
+  runtime:
+  nr_threads:
+  iterations:
 
 results:
- tbench.throughput_MB/s:
- tbench.throughput_MB/s_harmonic_mean: 
- tbench.clients: 
- tbench.procs: 
- tbench.max_latency:
- tbench.max_latency_harmonic_mean: 
+  tbench.throughput_MB/s:
+  tbench.throughput_MB/s_harmonic_mean:
+  tbench.clients:
+  tbench.procs:
+  tbench.max_latency:
+  tbench.max_latency_harmonic_mean:

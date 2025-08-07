@@ -1,14 +1,13 @@
 short_description: >
- Pixz (pronounced pixie) is a parallel, indexing version of xz.
+  Pixz (pronounced pixie) is a parallel, indexing version of xz.
 description: >
 
 homepage: https://github.com/vasi/pixz.git
 
 parameters:
- runtime:
- nr_threads:
- blocksize:
- iterations:
+  runtime:
+  nr_threads:
+  blocksize:
+  iterations:
 
 results:
-

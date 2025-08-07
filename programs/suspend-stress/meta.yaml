@@ -5,11 +5,10 @@ description: >
 homepage:
 
 parameters:
- mode:
- rtcwake:  
- iterations:
- runtime:    
- pm_test:    
- idle_time:  
- debug:      
-
+  mode:
+  rtcwake:
+  iterations:
+  runtime:
+  pm_test:
+  idle_time:
+  debug:

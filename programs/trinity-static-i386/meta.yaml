@@ -1,9 +1,8 @@
 short_description: >
- inux system call fuzzer.
+  inux system call fuzzer.
 
 description: >
 
 homepage: https://github.com/kernelslacker/trinity
 
 parameters:
-

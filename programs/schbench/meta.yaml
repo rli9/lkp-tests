@@ -4,10 +4,10 @@ short_description: >
 homepage: https://git.kernel.org/pub/scm/linux/kernel/git/mason/schbench.git
 
 parameters:
-  message_threads:  number of message threads
-  worker_threads:   number of workers per message thread
-  runtime:          seconds to run before exiting
-  iterations:       number of iterations
+  message_threads: number of message threads
+  worker_threads: number of workers per message thread
+  runtime: seconds to run before exiting
+  iterations: number of iterations
 
 results:
   schbench.wakeup_latency_50%_us

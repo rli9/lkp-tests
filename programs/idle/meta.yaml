@@ -5,6 +5,6 @@ description: >
 homepage:
 
 parameters:
- idle_time:
+  idle_time:
 
 results:
