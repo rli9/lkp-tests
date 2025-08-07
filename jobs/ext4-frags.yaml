@@ -3,7 +3,7 @@ testcase: ext4-frags
 category: functional
 
 disk:
-- 1HDD
+  - 1HDD
 
 need_memory: 1G
 

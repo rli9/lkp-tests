@@ -80,16 +80,16 @@ phoronix-test-suite:
   - test: dragonflydb-1.1.0
     option_a: # Clients Per Thread
       - 10
-  #     - 20
-  #     - 50
-  #     - 60
-  #     - 100
+      # - 20
+      # - 50
+      # - 60
+      # - 100
     option_b: # Set To Get Ratio
       - "1:100"
-  #     - "1:10"
-  #     - "1:5"
-  #     - "1:1"
-  #     - "5:1"
+      # - "1:10"
+      # - "1:5"
+      # - "1:1"
+      # - "5:1"
 
   - test: cryptopp-1.1.0
     option_a:
@@ -180,22 +180,22 @@ phoronix-test-suite:
   - test: pgbench-1.14.0
     option_a: # Scaling Factor
       - 1 # 1
-  #     # - 2 # 100
-  #     # - 3 # 1000
-  #     - 4 # 10000
-  #     # - 5 # 25000 [Intended for very large servers.]
+      # - 2 # 100
+      # - 3 # 1000
+      # - 4 # 10000
+      # - 5 # 25000 [Intended for very large servers.]
     option_b: # Clients
       - 1
-  #     # - 50
-  #     # - 100
-  #     # - 250
-  #     # - 500
-  #     - 800
-  #     # - 1000
-  #     # - 5000
+      # - 50
+      # - 100
+      # - 250
+      # - 500
+      - 800
+      # - 1000
+      # - 5000
     option_c: # Mode
       - Read Write
-  #     - Read Only # E: pgbench: error: could not create connection for setup
+      # - Read Only # E: pgbench: error: could not create connection for setup
 
   - test: helsing-1.0.2
     option_a:
@@ -244,8 +244,8 @@ phoronix-test-suite:
   - test: minife-1.0.0
     option_a:
       - Small
-  #     - Medium # PHP Fatal error:  Allowed memory size of 1073741824 bytes exhausted
-  #     - Large
+      # - Medium # PHP Fatal error:  Allowed memory size of 1073741824 bytes exhausted
+      # - Large
 
   - test: hpcg-1.3.0
     option_a:

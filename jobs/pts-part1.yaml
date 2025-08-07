@@ -133,14 +133,14 @@ phoronix-test-suite:
 
   - test: aom-av1-3.12.0
     option_a: # Encoder Mode
-        # 1: Speed 11 Realtime [Fastest]
-        # 2: Speed 10 Realtime
+      # 1: Speed 11 Realtime [Fastest]
+      # 2: Speed 10 Realtime
       - Speed 9 Realtime
-        # 4: Speed 8 Realtime
-        # 5: Speed 6 Realtime
+      # 4: Speed 8 Realtime
+      # 5: Speed 6 Realtime
       - Speed 6 Two-Pass
-        # 7: Speed 4 Two-Pass
-        # 8: Speed 0 Two-Pass  [Slowest]
+      # 7: Speed 4 Two-Pass
+      # 8: Speed 0 Two-Pass  [Slowest]
     option_b: # Input
       # - Bosphorus 4K
       - Bosphorus 1080p

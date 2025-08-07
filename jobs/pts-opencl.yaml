@@ -49,10 +49,10 @@ phoronix-test-suite:
       - 5 # OpenMP HotSpot3D       [Physics Simulation]
 
   # - test: geekbench-6.1.0 # requires registration for a license
-    # option_a:
-      # - CPU Single Core
-      # - CPU Multi Core
-      # - GPU OpenCL
-      # - GPU Apple Metal
-      # - GPU NVIDIA CUDA # not supported and not display
-      # - GPU Vulkan
+  #   option_a:
+  #     - CPU Single Core
+  #     - CPU Multi Core
+  #     - GPU OpenCL
+  #     - GPU Apple Metal
+  #     - GPU NVIDIA CUDA # not supported and not display
+  #     - GPU Vulkan

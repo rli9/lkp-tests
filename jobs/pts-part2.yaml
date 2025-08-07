@@ -94,15 +94,15 @@ phoronix-test-suite:
 
   - test: smhasher-1.1.0
     option_a:
-      -  wyhash
-      # -  t1ha2_atonce
-      # -  Spooky32
-      # -  fasthash32
-      # -  SHA3-256
-      # -  t1ha0_aes_avx2 x86_64  [Requires AVX2]
-      # -  MeowHash x86_64 AES-NI [Requires x86_64 AES-NI]
-      # -  FarmHash32 x86_64 AVX  [Requires x86_64 SSE4/AVX]
-      # -  FarmHash128
+      - wyhash
+      # - t1ha2_atonce
+      # - Spooky32
+      # - fasthash32
+      # - SHA3-256
+      # - t1ha0_aes_avx2 x86_64  [Requires AVX2]
+      # - MeowHash x86_64 AES-NI [Requires x86_64 AES-NI]
+      # - FarmHash32 x86_64 AVX  [Requires x86_64 SSE4/AVX]
+      # - FarmHash128
 
   - test: rabbitmq-1.1.1
     option_a:

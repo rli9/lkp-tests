@@ -4,8 +4,8 @@ category: benchmark
 
 runtime: 300s
 nr_threads:
-- 25%
-# - 40%
+  - 25%
+  # - 40%
 
 cluster: cs-localhost
 
@@ -15,7 +15,7 @@ if role server:
 if role client:
   nepim:
     protocol:
-    - tcp
-    - tcp6
-    - udp
-    - udp6
+      - tcp
+      - tcp6
+      - udp
+      - udp6

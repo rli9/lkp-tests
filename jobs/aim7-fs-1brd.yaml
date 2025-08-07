@@ -6,53 +6,54 @@ perf-profile:
   delay: 15
 
 disk:
-- 1BRD_48G
+  - 1BRD_48G
+
 fs:
-- xfs
-- ext4
-- btrfs
+  - xfs
+  - ext4
+  - btrfs
 
 aim7:
   test:
-  - disk_src
-  - disk_rr
-  - disk_rw
-  - disk_cp
-  #- disk_wrt
+    - disk_src
+    - disk_rr
+    - disk_rw
+    - disk_cp
+    # - disk_wrt
   load: {{
           if fs == 'btrfs'
-                  aim7.test == 'disk_src' ? 500 : 1500
+            aim7.test == 'disk_src' ? 500 : 1500
           else
-                  3000
+            3000
           end
         }}
 
 ---
 aim7:
   test:
-  - sync_disk_rw
+    - sync_disk_rw
   load: {{
           case fs
           when 'btrfs' then 10
-          when 'f2fs'  then 200
-          else              600
+          when 'f2fs' then 200
+          else 600
           end
         }}
 
 ---
 aim7:
   test:
-  - creat-clo
+    - creat-clo
   load: {{
           case fs
           when 'btrfs' then 4
-          when 'ext4'  then 1000
-          else              1500
+          when 'ext4' then 1000
+          else 1500
           end
         }}
 
 ---
 aim7:
   test:
-  - disk_rd
+    - disk_rd
   load: 9000

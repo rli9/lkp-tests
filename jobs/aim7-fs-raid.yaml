@@ -6,40 +6,40 @@ perf-profile:
   delay: 15
 
 disk:
-- 4BRD_12G
+  - 4BRD_12G
 md:
-- RAID0
-- RAID1
+  - RAID0
+  - RAID1
 fs:
-- xfs
-- ext4
-- btrfs
+  - xfs
+  - ext4
+  - btrfs
 
 aim7:
   test:
-  - {{ fs == 'f2fs' ? nil : 'disk_src' }}
-  - disk_rr
-  - disk_rw
-  - disk_cp
-  #- disk_wrt
+    - {{ fs == 'f2fs' ? nil : 'disk_src' }}
+    - disk_rr
+    - disk_rw
+    - disk_cp
+    # - disk_wrt
   load: {{
           if fs == 'btrfs'
-                  if aim7.test == 'disk_src' ||  aim7.test == 'disk_rr'
-                          500
-                  elsif aim7.test == 'disk_rw'
-                          100
-                  else
-                          1500
-                  end
+            if aim7.test == 'disk_src' || aim7.test == 'disk_rr'
+              500
+            elsif aim7.test == 'disk_rw'
+              100
+            else
+              1500
+            end
           else
-                  3000
+            3000
           end
         }}
 
 ---
 aim7:
   test:
-  - sync_disk_rw
+    - sync_disk_rw
   load: {{
           case fs
           when 'btrfs' then 20
@@ -52,7 +52,7 @@ aim7:
 ---
 aim7:
   test:
-  - creat-clo
+    - creat-clo
   load: {{
           case fs
           when 'btrfs' then 2
@@ -64,5 +64,5 @@ aim7:
 ---
 aim7:
   test:
-  - disk_rd
+    - disk_rd
   load: 9000

@@ -10,8 +10,6 @@ lkvs:
 lkvs:
   test: cstate-server # require GNR and above
 
-perf-stat:
-
 timeout: 1h
 
 ---

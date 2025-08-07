@@ -3,4 +3,4 @@ testcase: phpbench
 category: benchmark
 
 phpbench:
- iterations: 2000000
+  iterations: 2000000

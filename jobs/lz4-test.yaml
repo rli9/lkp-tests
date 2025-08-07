@@ -6,6 +6,6 @@ iterations:
   - 1x
 lz4-test:
   compression:
-   - 1
-   - 3
-   - 9
+    - 1
+    - 3
+    - 9

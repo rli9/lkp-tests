@@ -11,8 +11,8 @@ phoronix-test-suite:
       # - Triad
       # - Average
     option_b:
-     - Integer
-     - Floating Point
+      - Integer
+      - Floating Point
 
   - test:
     - rust-mandel-1.0.0

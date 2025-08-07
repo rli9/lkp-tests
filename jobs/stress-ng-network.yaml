@@ -10,20 +10,20 @@ testtime:
 # docker run --rm ghcr.io/colinianking/stress-ng --class network?
 stress-ng:
   test:
-  - epoll
-  - icmp-flood
-  - netdev
-  - ping-sock
-  - rawpkt
-  - rawsock
-  - rawudp
-  - sctp
-  - sock
-  - sockabuse
-  - sockdiag
-  - sockfd
-  - sockmany
-  - sockpair
-  - tun
-  - udp
-  - udp-flood
+    - epoll
+    - icmp-flood
+    - netdev
+    - ping-sock
+    - rawpkt
+    - rawsock
+    - rawudp
+    - sctp
+    - sock
+    - sockabuse
+    - sockdiag
+    - sockfd
+    - sockmany
+    - sockpair
+    - tun
+    - udp
+    - udp-flood

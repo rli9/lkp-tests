@@ -12,5 +12,5 @@ if role server:
 if role client:
   iperf:
     protocol:
-    - tcp
-    - udp
+      - tcp
+      - udp
