@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'bundler/setup'
+require 'rake/file_utils'
 require 'rspec/core/rake_task'
 require 'fileutils'
 require 'rubocop/rake_task'
@@ -91,6 +92,13 @@ task :shellcheck do
   bash "#{base_cmd} #{executables}"
 
   puts 'shellcheck OK'
+end
+
+desc 'Run yamllint'
+task :yamllint do
+  sh 'yamllint', '--strict', '--format=auto', '.'
+
+  puts 'yamllint OK'
 end
 
 desc 'Run code check'
