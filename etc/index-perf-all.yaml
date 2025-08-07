@@ -41,7 +41,7 @@ glbenchmark\.fps: 1
 hackbench\.throughput: 1
 hpcc\.HPL_Tflops: 1
 hpcc\.PTRANS_GBs: 1
-idle\.turbostat.Busy% : -1
+idle\.turbostat.Busy%: -1
 iostat\..+\.wkB\/s: 1
 iozone\.average_KBps: 1
 iperf\..+\.bps: 1
@@ -188,10 +188,10 @@ pixz\.throughput: 1
 plzip\.throughput: 1
 pmbench\.throughput\.aps: 1
 postmark\.transactions: 1
-power-idle\.turbostat\.Busy% : -1
-power-idle\.turbostat\.Bzy_MHz : -1
-power-idle\.turbostat\.PkgTemp : -1
-power-idle\.turbostat\.PkgWatt : -1
+power-idle\.turbostat\.Busy%: -1
+power-idle\.turbostat\.Bzy_MHz: -1
+power-idle\.turbostat\.PkgTemp: -1
+power-idle\.turbostat\.PkgWatt: -1
 pxz\.throughput: 1
 qperf\..+\.bw: 1
 qperf\..+_bw: 1
