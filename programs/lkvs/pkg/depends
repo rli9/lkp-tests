@@ -25,6 +25,7 @@ m4
 mcelog
 mesa-utils
 msr-tools
+pciutils
 screen
 sshpass
 stress
