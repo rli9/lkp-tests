@@ -15,6 +15,8 @@ $opt_kernel = ''
 $opt_field = 'time.elapsed_time'
 $opt_pattern = ''
 
+options = {}
+
 opt_parser = OptionParser.new do |opts|
   opts.banner = 'Usage: lkp stat [options]'
 
@@ -55,6 +57,8 @@ opt_parser = OptionParser.new do |opts|
   opts.on('-q queue', '--queue queue', 'queue') do |queue|
     $opt_pattern = " -q #{queue}" + $opt_pattern
   end
+
+  opts.on('-s', '--sort', 'sort by average value') { options[:sort] = true }
 
   opts.on_tail('-h', '--help', 'show this message') do
     puts opts
@@ -100,12 +104,16 @@ end
 
 printf "%8s %16s %16s %6s%%  %s\n", 'runs', 'sum', 'average', 'stddev', 'case'
 
-groups.each do |k, v|
-  if $opt_raw
-    puts "#{k}: #{v}"
-  else
+if $opt_raw
+  groups.each { |k, v| puts "#{k}: #{v}" }
+else
+  groups = groups.reject { |_k, v| v.sum.zero? }
+
+  groups = groups.sort_by { |_k, v| v.reject(&:zero?).average.to_i } if options[:sort]
+
+  groups.each do |k, v|
     v = v.reject(&:zero?) unless $opt_field =~ /last_state/
-    next if v.empty? || v.sum.zero?
+    next if v.empty?
 
     total = v.sum
     avg = v.average
