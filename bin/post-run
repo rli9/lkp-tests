@@ -217,17 +217,15 @@ kmemleak_is_enabled && {
 dmesg --facility user --human --decode --color=always > $TMP/umesg 2>/dev/null
 truncate --no-create --size='<10M' $TMP/output $TMP/stdout $TMP/stderr $TMP/umesg 2>/dev/null
 
-upload_files	$TMP/boot-time	\
-		$TMP/stdout	\
-		$TMP/stderr	\
-		$TMP/output	\
-		$TMP/umesg
-
-[ -s $TMP/env.yaml ] &&
-upload_files	$TMP/env.yaml
-
-[ -s $TMP/program_list ] &&
-upload_files	$TMP/program_list
+upload_files $TMP/boot-time	\
+	$TMP/stdout	\
+	$TMP/stderr	\
+	$TMP/output	\
+	$TMP/umesg \
+	$TMP/env.yaml \
+	$TMP/program_list \
+	$TMP/OOM \
+	$TMP/soft_timeout
 
 upload_qemu_results()
 {
