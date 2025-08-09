@@ -2,8 +2,6 @@ suite: vm-scalability
 testcase: swapin
 category: benchmark
 
-timeout: 50m # for 1HDD-72-32G combination which costs longest time
-
 perf-profile:
 
 disk: 1HDD

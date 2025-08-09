@@ -7,5 +7,3 @@ kernel-selftests-bpf:
     - net/netfilter
   test:
     - nft_concat_range.sh
-
-timeout: 1h

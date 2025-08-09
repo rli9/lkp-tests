@@ -8,13 +8,6 @@ lkvs:
 
 ---
 lkvs:
-  test: cstate-server # require GNR and above
-
-timeout: 1h
-
----
-lkvs:
   test:
+    - cstate-server # require GNR and above
     - rapl-server # require GNR and above
-
-timeout: 1h

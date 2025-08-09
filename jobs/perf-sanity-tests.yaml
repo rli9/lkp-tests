@@ -12,5 +12,3 @@ perf-sanity-tests:
     - group-00
     - group-01
     - group-02
-
-timeout: 2h

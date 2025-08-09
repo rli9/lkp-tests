@@ -11,5 +11,3 @@ kernel-selftests-bpf:
   group:
     - bpf
     - hid
-
-timeout: 1h

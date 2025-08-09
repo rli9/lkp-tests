@@ -21,5 +21,3 @@ fsmark:
     - fsyncBeforeClose
   nr_directories: 16d
   nr_files_per_directory: 256fpd
-
-timeout: 40m

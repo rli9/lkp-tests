@@ -10,10 +10,4 @@ pm-qa:
     - cpuhotplug
     # - suspend
     # - powertop
-
----
-
-timeout: 30m # ~1500s on lkp-bdw-de1
-pm-qa:
-  test:
     - thermal
