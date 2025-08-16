@@ -6,6 +6,7 @@ branch_allowlist: 5.15-velinux|6.6-velinux
 branch_denylist: .*
 no_merge_branch: .*
 compiler: gcc
+belongs_to: downstream
 mail_to:
 - jason.zeng@intel.com
 private_report_branch: .*
