@@ -46,7 +46,7 @@ setup_test_env()
 	timing=$(ls $BENCHMARK_ROOT/ocfs2test/timing-*.tar.gz)
 	[[ -f $timing ]] || die "can not find timing*.tar.gz file"
 
-	pip install $timing
+	pip install $timing || die "pip install $timing fail"
 
 	# add /sbin to PATH for some ocfs2 command.
 	echo "PATH=$PATH:/sbin" >> $OCFS2TEST_HOME/.bashrc
