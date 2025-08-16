@@ -17,7 +17,6 @@ mail_to:
 - jingqunli@tencent.com
 - jason.zeng@intel.com
 - jun.j.tian@intel.com
-- yingbao.jia@intel.com
 no_merge_branch: .*
 report_picked_commit: .*
 private_report_branch: .*
