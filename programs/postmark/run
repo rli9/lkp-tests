@@ -11,8 +11,11 @@
 
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/env.sh
 
 [ -z "$mount_points" ] && die "no $mount_points"
+
+has_cmd postmark || die "postmark: command not found"
 
 location="${mount_points%% *}"
 number=${number%n}
