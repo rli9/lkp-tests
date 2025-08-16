@@ -4,7 +4,6 @@ integration_testing_branches:
 - bleeding-edge
 mail_cc:
 - linux-acpi@vger.kernel.org
-- devel@acpica.org
 - linux-pm@vger.kernel.org
 owner: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 subsystems:
