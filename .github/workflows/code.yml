@@ -33,11 +33,24 @@ jobs:
       - run: rubocop -v
       - run: bundle exec rake code
 
-  test-packages:
+  test-packages-debian:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        image: ['amazonlinux/2023', 'centos/stream9', 'debian/bookworm', 'fedora/41', 'opensuse/leap', 'oraclelinux/9', 'rockylinux/9', 'ubuntu/noble']
+        image: ['debian/bookworm', 'debian/trixie']
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build ${{ matrix.image }} image
+        run: bin/lkp docker build --image ${{ matrix.image }}
+      - name: Test packages on ${{ matrix.image }}
+        run: docker run -e DEBIAN_FRONTEND=noninteractive --rm --entrypoint '' lkp-tests/${{ matrix.image }} tools/test-packages.sh
+
+  test-packages-other:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        image: ['amazonlinux/2023', 'centos/stream9', 'fedora/41', 'opensuse/leap', 'oraclelinux/9', 'rockylinux/9', 'ubuntu/noble']
 
     steps:
       - uses: actions/checkout@v3
