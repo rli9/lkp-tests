@@ -693,12 +693,12 @@ prepare_tests()
 
 make_run_tests()
 {
-	log_cmd make -j${nr_cpu} TARGETS=$group 2>&1 || return
+	if [[ "$group" == "net" || "$group" == "drivers/net" || "$group" == "drivers/net/hw" ]]; then
+		# install is needed to trigger the build of INSTALL_DEP_TARGETS
+		log_cmd make -j${nr_cpu} TARGETS=$group install 2>&1 || return
+	fi
 
-	# install is needed for testing like drivers/net to trigger the build of INSTALL_DEP_TARGETS
-	log_cmd make -j${nr_cpu} TARGETS=$group install 2>&1 || return
-
-	log_cmd make TARGETS=$group run_tests 2>&1
+	log_cmd make -j${nr_cpu} TARGETS=$group run_tests 2>&1
 }
 
 run_tests()
