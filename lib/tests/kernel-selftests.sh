@@ -473,13 +473,18 @@ fixup_damon()
 	chmod +x damon/*.sh damon/*.py
 }
 
-prepare_for_selftest()
+prepare_for_selftest_mfs()
 {
-	if [[ "$group" =~ ^net ]]; then
+	# kvm Makefile doesn't include lib.mk
+	if [[ "$group" =~ ^net || "$group" = kvm ]]; then
 		selftest_mfs=$(ls -d $group/Makefile)
 	else
 		selftest_mfs=$(find $group -name Makefile)
+		# assume the Makefile is a valid make TARGETS if including lib.mk
+		selftest_mfs=$(echo "$selftest_mfs" | xargs -r grep -l '/lib.mk')
 	fi
+
+	[ -n "$selftest_mfs" ] || die "empty selftest_mfs"
 }
 
 fixup_cpufreq()
@@ -686,9 +691,7 @@ prepare_tests()
 
 	cd $linux_selftests_dir/tools/testing/selftests || die
 
-	prepare_for_selftest
-
-	[ -n "$selftest_mfs" ] || die "empty selftest_mfs"
+	prepare_for_selftest_mfs
 }
 
 make_run_tests()
