@@ -4,8 +4,8 @@ pkgrel=1
 arch=('i686' 'x86_64' 'aarch64')
 url="https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git"
 license=('GPL')
-source=('https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git' 'https://git.kernel.org/pub/scm/devel/pahole/pahole.git' 'https://git.kernel.org/pub/scm/network/iproute2/iproute2-next.git' 'https://github.com/nhorman/dropwatch.git')
-md5sums=('SKIP' 'SKIP' 'SKIP' 'SKIP')
+source=('https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git' 'https://git.kernel.org/pub/scm/devel/pahole/pahole.git' 'https://git.kernel.org/pub/scm/network/iproute2/iproute2-next.git')
+md5sums=('SKIP' 'SKIP' 'SKIP')
 
 # Download kernel from git.kernel.org.
 # If the kernel has been download into the computer, you can copy it to ${srcdir}.
@@ -77,7 +77,7 @@ build()
 	build_iproute2 || return
 	build_tools || return
 	build_pahole || return
-	build_dropwatch || return
+
 	install_selftests
 }
 
