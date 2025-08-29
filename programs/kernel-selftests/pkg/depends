@@ -6,6 +6,7 @@ bison
 build-essential
 clang
 conntrack
+dropwatch
 ebtables
 ethtool
 file

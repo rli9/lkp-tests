@@ -102,7 +102,6 @@ prepare_for_bpf()
 prepare_for_commands()
 {
 	export PATH=/lkp/benchmarks/kernel-selftests/kernel-selftests/iproute2-next/sbin:$PATH
-	export PATH=$BENCHMARK_ROOT/kernel-selftests/kernel-selftests/dropwatch/bin:$PATH
 
 	# temporarily workaround compile error on gcc-6
 	has_cmd gcc-5 && log_cmd ln -sf /usr/bin/gcc-5 /usr/bin/gcc
