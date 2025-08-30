@@ -80,6 +80,7 @@ phoronix-test-suite\..+\.activity_level: 1
 phoronix-test-suite\..+\.average_mbytes_sec: 1
 phoronix-test-suite\..+\.average_msg_sec: 1
 phoronix-test-suite\..+\.average_usec: 1
+phoronix-test-suite\..+\.batches_sec: 1
 phoronix-test-suite\..+\.billion_interactions_s: 1
 phoronix-test-suite\..+\.bogo_ops_s: 1
 phoronix-test-suite\..+\.byte_s: 1
@@ -162,11 +163,13 @@ phoronix-test-suite\..+\.points: -1
 phoronix-test-suite\..+\.quips: 1
 phoronix-test-suite\..+\.real_c_s: 1
 phoronix-test-suite\..+\.records_s: 1
+phoronix-test-suite\..+\.runs_s: 1
 phoronix-test-suite\..+\.samples: 1
 phoronix-test-suite\..+\.samples_sec: 1
 phoronix-test-suite\..+\.score: 1
 phoronix-test-suite\..+\.sec: -1
 phoronix-test-suite\..+\.seconds: -1
+phoronix-test-suite\..+\.sending_messages_s: 1
 phoronix-test-suite\..+\.sign_s: 1
 phoronix-test-suite\..+\.speedup: 1
 phoronix-test-suite\..+\.throughput_fom: 1
