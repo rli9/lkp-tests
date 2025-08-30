@@ -146,9 +146,10 @@ need_kconfig:
 % elsif ___.group == "splice"
 - TEST_LKM: m
 % elsif ___.group == "kexec"
+- IMA_ARCH_POLICY: y
+- KEXEC_SIG: y
 - IMA_APPRAISE: y
 - IMA: y
-- IMA_ARCH_POLICY: y
 - SECURITYFS: y
 % elsif ___.group == "lsm"
 - SYSFS: y
