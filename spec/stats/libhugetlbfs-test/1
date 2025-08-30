@@ -6,6 +6,8 @@ HUGETLB_ELFMAP=RW linkhuge_rw (2M: 32):
 HUGETLB_ELFMAP=RW linkhuge_rw (2M: 64):
 HUGETLB_SHARE=1 HUGETLB_ELFMAP=R linkhuge_rw (2M: 32):	FAIL	small_const is not hugepage
 HUGETLB_SHARE=1 HUGETLB_ELFMAP=R linkhuge_rw (2M: 64):	FAIL	small_const is not hugepage
+LD_PRELOAD=libhugetlbfs.so HUGETLB_MORECORE=yes malloc (2M: 32):        SKIPPED
+LD_PRELOAD=libhugetlbfs.so HUGETLB_MORECORE=yes malloc (2M: 64):        SKIPPED
 ********** TEST SUMMARY
 *                      2M
 *                      32-bit 64-bit

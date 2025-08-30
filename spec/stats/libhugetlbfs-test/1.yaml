@@ -6,4 +6,5 @@
 64bit.hugetlb_elfmap=rw_linkhuge_rw.killed_by_signal: 1
 32bit.hugetlb_share=1_hugetlb_elfmap=r_linkhuge_rw.fail: 1
 64bit.hugetlb_share=1_hugetlb_elfmap=r_linkhuge_rw.fail: 1
-total_test: 8
+32bit.ld_preload=libhugetlbfs_so_hugetlb_morecore=yes_malloc.skip: 1
+64bit.ld_preload=libhugetlbfs_so_hugetlb_morecore=yes_malloc.skip: 1
