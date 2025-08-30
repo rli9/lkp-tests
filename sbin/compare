@@ -812,7 +812,7 @@ def sort_stats(stats)
 
     if x =~ ABS_CHANGE_STATS_RE
       [stat_priority(fields[0]), fields[1], abs_change]
-    elsif fields.size >= 3 && !fields[1] =~ /^node\d+$/
+    elsif fields.size >= 3 && fields[1] !~ /^node\d+$/
       # when a monitor can be broken into sub-groups of stats
       # under which values can be logically compared
       [stat_priority(fields[0]), fields[1], rel_change]
