@@ -248,6 +248,7 @@ Spectre_v2_mitigation
 ^leaking-addresses\.proc.vmallocinfo
 ^leaking-addresses\.result.fail
 ^leaking-addresses\.total_number
+^libhugetlbfs-test\..+\.killed_by_signal
 ^lkvs\..*\.na
 ^lock_stat\.
 ^max_iostat\.
