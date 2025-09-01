@@ -174,8 +174,8 @@ need_kconfig:
 - MISC_FILESYSTEMS: y
 
 % elsif ___.group == "zram"
-- ZSMALLOC: y
-- ZRAM: m
+- ZSMALLOC
+- ZRAM
 % elsif ___.group == "syscall_user_dispatch"
 - GENERIC_ENTRY: y
 % elsif ___.group == "seccomp"
