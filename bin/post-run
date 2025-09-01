@@ -220,7 +220,7 @@ truncate --no-create --size='<10M' $TMP/output $TMP/stdout $TMP/stderr $TMP/umes
 files=""
 for file in $TMP/boot-time $TMP/stdout $TMP/stderr $TMP/output $TMP/umesg $TMP/env.yaml $TMP/program_list $TMP/OOM $TMP/soft_timeout
 do
-	files="$files $file"
+	[ -f $file ] && files="$files $file"
 done
 
 [ -n "$files" ] && upload_files $files
