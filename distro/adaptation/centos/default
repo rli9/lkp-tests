@@ -113,6 +113,7 @@ libdaxctl-dev: daxctl-devel
 libdbd-mysql-perl: perl-DBD-MySQL
 libdbi-perl: perl-DBI
 libdbus-1-dev: dbus-devel
+libdebuginfod-dev: elfutils-libelf-devel
 libdpkg-perl:
 libdrm-amdgpu1:
 libdrm-dev: libdrm-devel
