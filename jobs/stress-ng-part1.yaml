@@ -30,6 +30,7 @@ stress-ng:
     - cap
     - cgroup
     - chroot
+    - chyperbolic
     - clock
     - clone
     - close
@@ -38,6 +39,7 @@ stress-ng:
     - cpu-online
     - cpu-sched
     - crypt
+    - ctrig
     - cyclic
     - daemon
     - dekker
@@ -57,6 +59,7 @@ stress-ng:
     - factor
     - far-branch
     - fault
+    - fd-abuse
     - fd-fork
     - fd-race
     - fibsearch

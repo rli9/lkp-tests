@@ -66,10 +66,12 @@ stress-ng:
     - mlockmany
     - mmap
     - mmapaddr
+    - mmapcow
     - mmapfiles
     - mmapfixed
     - mmapfork
     - mmapmany
+    - mmaprandom
     - mmaptorture
     # - module # require open RUNTIME_TESTING_MENU and TEST_LKM
     - monte-carlo
