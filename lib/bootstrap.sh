@@ -450,6 +450,20 @@ wait_load_disk()
 	return 1
 }
 
+mount_rootfs_partition()
+{
+	mkdir -p $ROOTFS_DIR
+
+	mount $rootfs_partition $ROOTFS_DIR && return
+
+	mkfs.btrfs -f $rootfs_partition || return
+
+	mount $rootfs_partition $ROOTFS_DIR || {
+		set_job_state 'mount_rootfs_fail'
+		return 1
+	}
+}
+
 mount_rootfs()
 {
 	if [ -n "$rootfs_partition" ]; then
@@ -460,19 +474,21 @@ mount_rootfs()
 			set_job_state 'load_disk_fail'
 			return 1
 		}
+
 		ROOTFS_DIR=/opt/rootfs
-		mkdir -p $ROOTFS_DIR
-		mount $rootfs_partition $ROOTFS_DIR || {
-			mkfs.btrfs -f $rootfs_partition
-			mount $rootfs_partition $ROOTFS_DIR
+
+		mount_rootfs_partition && {
+			CACHE_DIR=$ROOTFS_DIR/tmp
+			mkdir -p $CACHE_DIR
+
+			cleanup_pkg_cache $CACHE_DIR
 		}
-		mkdir -p $ROOTFS_DIR/tmp
-		CACHE_DIR=$ROOTFS_DIR/tmp
-		cleanup_pkg_cache $CACHE_DIR
-	else
-		CACHE_DIR=/tmp/cache
-		mkdir -p $CACHE_DIR
 	fi
+
+	[ -n "$CACHE_DIR" ] || CACHE_DIR=/tmp/cache
+	mkdir -p $CACHE_DIR
+
+	echo "INFO: lkp CACHE_DIR is $CACHE_DIR"
 
 	export CACHE_DIR
 }
