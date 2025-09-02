@@ -34,5 +34,8 @@ liburcu: liburcu6
 minix-dev:
 mysql-server: default-mysql-server
 openjdk: openjdk-11-jdk
+python3-crypto: python3-pycryptodome
+python3-gobject: python3-gi
 which: debianutils
+winpdb:
 yum-utils:

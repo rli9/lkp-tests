@@ -6,7 +6,6 @@ dwarves: pahole
 exfat-utils: exfatprogs
 freeglut: libglut3.12
 fuse: fuse3
-gcc: gcc-12
 lib32gcc-dev: lib32gcc-11-dev
 lib64asan3: lib64asan6
 lib64gcc-dev: lib64gcc-11-dev
@@ -37,11 +36,11 @@ libprocps-dev: libproc2-dev
 libprocps: libproc2-0
 libpython2:
 libpython3: libpython3.11
-libreadline5: readline-common
+libreadline5: libreadline8
 libssl: libssl3
 libstdc++-dev: libstdc++-11-dev
 libtiff: libtiff6
-libtirpc: libtirpc-common
+libtirpc: libtirpc3
 liburcu: liburcu8
 liburing: liburing2
 libwebp: libwebp7
@@ -53,9 +52,6 @@ openjdk: openjdk-17-jdk
 perl-modules-5: perl-modules-5.36
 python-setuptools: python3-setuptools
 python2:
-python3-crypto: python3-pycryptodome
-python3-gobject:
 python3-tox: tox
 python: python3
 qt5-default: qtbase5-dev
-winpdb:
