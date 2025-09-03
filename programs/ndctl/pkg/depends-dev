@@ -5,6 +5,7 @@ libiniparser-dev
 libjson-c-dev
 libkeyutils-dev
 libkmod-dev
+libsystemd-dev
 libtraceevent-dev
 libtracefs-dev
 libudev-dev
