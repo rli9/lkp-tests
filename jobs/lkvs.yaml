@@ -11,7 +11,6 @@ lkvs:
     - edac
     - fred
     - hotplug
-    # - guest-test # cause machine power down
     - idxd
     # - instruction-check
     - isst
@@ -22,7 +21,6 @@ lkvs:
     - ras
     - sdsi
     # - tdx-compliance
-    # - tdx-guest
     # - tdx-osv-sanity
     - telemetry
     - th

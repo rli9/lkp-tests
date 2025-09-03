@@ -91,9 +91,6 @@ runtests()
 				log_cmd insmod fred/fred_test_driver.ko
 				# No doc about how to get the test result after loading the module
 				;;
-			guest-test)
-				log_cmd ./runtests -f guest-test/guest.test_launcher.sh
-				;;
 			prefetchi)
 				log_cmd prefetchi/prefetchi
 				;;
