@@ -267,7 +267,7 @@ module Git
         @ancestors ||= {}
         @ancestors[commit] if @ancestors.key? commit
 
-        @ancestors[commit] = command("merge-base --is-ancestor #{sha} #{commit} 2>/dev/null; echo $?").to_i.zero?
+        @ancestors[commit] = exist_in?(commit)
       end
 
       def command(cmd, opts = [], redirect = '', chdir: true, &block)
