@@ -26,7 +26,6 @@ lkvs:
     - th
     - thermal
     - umip
-    - workload-xsave
     - xsave
 
 ---

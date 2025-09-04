@@ -29,12 +29,6 @@ build_lkvs()
 
 	cd $BENCHMARK_ROOT/$testcase/lkvs/BM/$test || return
 
-	if [[ $test = workload-xsave ]]; then
-		log_cmd mkdir build
-		log_cmd cd build
-		log_cmd cmake ..
-	fi
-
 	log_cmd make --keep-going 2>&1 || {
 		echo "$test make fail"
 		return 1
@@ -103,11 +97,6 @@ runtests()
 			th)
 				log_cmd ./runtests -c "th/th_test 1"
 				log_cmd ./runtests -c "th/th_test 2"
-				;;
-			workload-xsave)
-				log_cmd cd $test/build || die "fail to cd build dir"
-				local available_workloads=$(./yogini 2>&1 | grep "Available workloads" | cut -d: -f 2 | xargs)
-				log_cmd ../start_test.sh -1 100 $available_workloads
 				;;
 			topology-client)
 				log_cmd ./runtests -f topology/tests-client
