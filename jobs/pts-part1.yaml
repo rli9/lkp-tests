@@ -602,18 +602,18 @@ phoronix-test-suite:
 
   - test: hammerdb-postgresql-1.1.1
     option_a: # Virtual Users
-      - 1 # this is "1: 8", but do not use 8 as 8 is "8: Test All Options"
-      - 16
-      - 32
-      - 64
-      - 128
+      # - 1 # this is "1: 8", but do not use 8 as 8 is "8: Test All Options"
+      # - 16
+      # - 32
+      # - 64
+      # - 128
       - 256
-      - 512
+      # - 512 # runtime > 4h
     option_b: # Warehouses
-      - 100
+      # - 100
       - 250
-      - 500
-      - 1000
+      # - 500
+      # - 1000
 
   - test: cp2k-1.5.0
     option_a:
