@@ -9,6 +9,8 @@
 ##  - Limit the test's runtime in 5 minutes
 ##  - Adapt test to use runtime_loop framework
 
+. $LKP_SRC/lib/run.sh
+
 CPUPATH="/sys/devices/system/cpu"
 
 NUMBER_OF_CPUS=$(ls -d $CPUPATH/cpu[0-9]* | wc -l)
@@ -28,5 +30,4 @@ do_test()
 	done
 }
 
-. $LKP_SRC/lib/runtime_loop.sh
 runtime_loop

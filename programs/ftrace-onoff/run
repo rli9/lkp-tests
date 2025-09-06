@@ -8,6 +8,7 @@
 
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/run.sh
 
 cd /sys/kernel/debug/tracing || die "no /sys/kernel/debug/tracing"
 
@@ -23,5 +24,4 @@ do_test()
 	done
 }
 
-. $LKP_SRC/lib/runtime_loop.sh
 runtime_loop
