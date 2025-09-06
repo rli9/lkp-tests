@@ -555,11 +555,12 @@ phoronix-test-suite:
       - 2 # BM2 [Intended for larger servers.]
 
   - test: libxsmm-1.0.1
-    option_a:
-      - 32
-      - 64
+    option_a: # M N K
+      # - 32
+      # - 64
       - 128
       - 256
+    times_to_run: 1
 
   - test: draco-1.6.1
     option_a:
