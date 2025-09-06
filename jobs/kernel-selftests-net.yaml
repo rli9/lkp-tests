@@ -5,29 +5,56 @@ category: functional
 kernel-selftests-bpf:
   group:
     - net
+    - net/af_unix
+    - net/bench
+    - net/can
+    - net/forwarding
+    - net/hsr
+    - net/lib
     - net/mptcp
+    - net/openvswitch
+    - net/ovpn
+    - net/packetdrill
+    - net/rds
+    - net/tcp_ao
 
 ---
 kernel-selftests-bpf:
   group:
     - net/netfilter
   test:
-    - nft_trans_stress.sh
-    - nft_fib.sh
-    - nft_nat.sh
+    - br_netfilter.sh
     - bridge_brouter.sh
+    - br_netfilter_queue.sh
+    - conntrack_dump_flush.sh
     - conntrack_icmp_related.sh
-    - nft_flowtable.sh
-    - ipvs.sh
-    - nft_conntrack_helper.sh
-    - nft_queue.sh
-    - nft_meta.sh
-    - nf_nat_edemux.sh
-    - ipip-conntrack-mtu.sh
+    - conntrack_ipip_mtu.sh
     - conntrack_tcp_unreplied.sh
+    - conntrack_resize.sh
+    - conntrack_sctp_collision.sh
     - conntrack_vrf.sh
-    - nft_synproxy.sh
+    - conntrack_clash.sh
+    - conntrack_reverse_clash.sh
+    - ipvs.sh
+    - nf_conntrack_packetdrill.sh
+    - nf_nat_edemux.sh
+    - nft_audit.sh
     - nft_concat_range.sh
+    - nft_conntrack_helper.sh
+    - nft_fib.sh
+    - nft_flowtable.sh
+    - nft_interface_stress.sh
+    - nft_meta.sh
+    - nft_nat.sh
+    - nft_nat_zones.sh
+    - nft_queue.sh
+    - nft_synproxy.sh
+    - nft_tproxy_tcp.sh
+    - nft_tproxy_udp.sh
+    - nft_zones_many.sh
+    - rpath.sh
+    - vxlan_mtu_frag.sh
+    - xt_string.sh
 
 ---
 kernel-selftests-bpf:

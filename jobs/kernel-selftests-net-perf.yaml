@@ -6,4 +6,4 @@ kernel-selftests-bpf:
   group:
     - net/netfilter
   test:
-    - nft_concat_range.sh
+    - nft_concat_range_perf.sh
