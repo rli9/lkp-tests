@@ -418,6 +418,7 @@ phoronix-test-suite:
       - CORAL2 P1
       - CORAL2 P2
       - CTS2
+    times_to_run: 1
 
   - test: t-test1-1.0.1
     option_a:
