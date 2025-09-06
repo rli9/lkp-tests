@@ -8,13 +8,14 @@
 . $LKP_SRC/lib/misc-base.sh
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/tests/build-qemu.sh
+. $LKP_SRC/lib/run.sh
 
 QEMU="/bin/qemu-system-x86_64"
 [[ -f $QEMU ]] || build_qemu
 echo "QEMU: $QEMU"
 $QEMU --version || die "fail to get version of $QEMU"
 
-cd $BENCHMARK_ROOT/kvm-unit-tests || die "no $BENCHMARK_ROOT/kvm-unit-tests"
+cd_benchmark kvm-unit-tests
 
 export QEMU
 

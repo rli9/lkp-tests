@@ -5,8 +5,9 @@
 # - samples
 
 . $LKP_SRC/lib/reproduce-log.sh
+. $LKP_SRC/lib/run.sh
 
-cd $BENCHMARK_ROOT/jitter/archived-pma_tools/jitter || die "jitter benchmark is not installed yet"
+cd_benchmark $suite/archived-pma_tools/jitter
 
 [ -n "$core_id" ] || core_id=1
 [ -n "$rate" ] || rate=20000

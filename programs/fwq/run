@@ -9,8 +9,9 @@
 . $LKP_SRC/lib/upload.sh
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/run.sh
 
-cd $BENCHMARK_ROOT/fwq || die "no $BENCHMARK_ROOT/fwq"
+cd_benchmark
 
 [ "$nr_task" -gt 1  ] && opt_task="-t $nr_task"
 

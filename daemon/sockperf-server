@@ -1,8 +1,9 @@
 #!/bin/sh
 
 . $LKP_SRC/lib/reproduce-log.sh
+. $LKP_SRC/lib/run.sh
 
-cd $BENCHMARK_ROOT/sockperf || exit
+cd_benchmark sockperf
 
 log_cmd ./sockperf server &
 log_cmd ./sockperf server --tcp &

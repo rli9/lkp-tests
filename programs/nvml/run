@@ -5,16 +5,17 @@
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/tests/nvml.sh
+. $LKP_SRC/lib/run.sh
 
-cd $BENCHMARK_ROOT/nvml || die "fail to cd $BENCHMARK_ROOT/nvml"
+cd_benchmark
 
 check_group_param
 check_test_param
 
 setup_compiler
 
-build_env "$testcase" || die "build env failed"
+build_env
 
-enable_remote_node "$testcase"
+enable_remote_node
 
-run "$testcase"
+run

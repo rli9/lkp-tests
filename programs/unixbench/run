@@ -9,8 +9,9 @@
 ## various aspects of the system's performance.
 
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/run.sh
 
-cd $BENCHMARK_ROOT/unixbench || die "no $BENCHMARK_ROOT/unixbench"
+cd_benchmark
 
 if [ "$need_x" = true ]; then
 	mkdir -p /tmp/.X11-unix

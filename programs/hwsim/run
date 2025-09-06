@@ -6,8 +6,9 @@
 
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/reproduce-log.sh
+. $LKP_SRC/lib/run.sh
 
-cd $BENCHMARK_ROOT/hwsim/tests/hwsim || die "no $BENCHMARK_ROOT/hwsim/tests/hwsim"
+cd_benchmark $suite/tests/hwsim
 
 test_file=$BENCHMARK_ROOT/hwsim/hwsim-$test
 

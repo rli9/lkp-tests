@@ -7,8 +7,9 @@
 
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/run.sh
 
-cd $BENCHMARK_ROOT/schbench || die "no $BENCHMARK_ROOT/schbench"
+cd_benchmark
 
 : [ -n "$worker_threads" ] || worker_threads=16
 : [ -n "$runtime" ] || runtime=300

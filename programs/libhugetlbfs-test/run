@@ -4,8 +4,9 @@
 . $LKP_SRC/lib/env.sh
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/reproduce-log.sh
+. $LKP_SRC/lib/run.sh
 
-cd $BENCHMARK_ROOT/libhugetlbfs-test || die "can not cd libhugetlbfs-test"
+cd_benchmark
 
 is_clearlinux && {
 	make_opt="PREFIX=/usr LIB32=lib32 LIB64=lib64 CFLAGS=-fPIC"

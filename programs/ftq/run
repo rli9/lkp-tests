@@ -11,6 +11,7 @@
 . $LKP_SRC/lib/unit.sh
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/run.sh
 
 [ "$test" = cache ] && {
 	cache_size=$(sed -ne '1,$s/cache size\s\+:\s\([0-9]\+\)\s\+\(.\)./\1\2/p' /proc/cpuinfo | tail -n 1)
@@ -19,7 +20,7 @@
 	opt_arg="-a $task_cache_size"
 }
 
-cd $BENCHMARK_ROOT/ftq || die "no $BENCHMARK_ROOT/ftq"
+cd_benchmark
 
 [ 0"$nr_task" -gt 1  ] && opt_task="-t $nr_task"
 

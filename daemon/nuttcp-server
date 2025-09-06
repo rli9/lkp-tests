@@ -1,8 +1,9 @@
 #!/bin/sh
 
 . $LKP_SRC/lib/reproduce-log.sh
+. $LKP_SRC/lib/run.sh
 
-cd $BENCHMARK_ROOT/nuttcp || exit
+cd_benchmark nuttcp
 
 # add multi-thread
 log_cmd ./nuttcp -S --nofork &

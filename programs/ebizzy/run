@@ -12,8 +12,9 @@
 
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/run.sh
 
-cd $BENCHMARK_ROOT/ebizzy || die "no $BENCHMARK_ROOT/ebizzy"
+cd_benchmark
 
 duration=${duration%%s}
 

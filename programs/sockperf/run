@@ -6,8 +6,9 @@
 
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/run.sh
 
-cd $BENCHMARK_ROOT/sockperf || die "$BENCHMARK_ROOT/sockperf"
+cd_benchmark
 
 [ -n "$runtime" ] || runtime=600
 time=$((runtime / 6))

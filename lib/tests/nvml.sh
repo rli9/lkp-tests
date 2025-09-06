@@ -3,10 +3,11 @@
 . $LKP_SRC/lib/env.sh
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/run.sh
 
 check_group_param()
 {
-	cd $BENCHMARK_ROOT/nvml/src/test || die "Can not find nvml/src/test dir"
+	cd_benchmark $suite/src/test
 
 	[[ -n "$group" ]] || die "Parameter \"group\" is empty"
 
@@ -47,9 +48,7 @@ setup_compiler()
 
 build_env()
 {
-	local casename=$1
-
-	log_cmd cd $BENCHMARK_ROOT/$casename
+	cd_benchmark
 
 	setup_compiler
 
@@ -79,11 +78,9 @@ build_env()
 
 enable_remote_node()
 {
-	local casename=$1
+	cd_benchmark $suite/src/test
 
-	log_cmd cd $BENCHMARK_ROOT/$casename/src/test || die "Can not find $casename/src/test dir"
-
-	# To fix no nodes provide. It takes another machines as remote nodes. We can use 
+	# To fix no nodes provide. It takes another machines as remote nodes. We can use
 	# localhost as remote node but need to do some configs as below.
 	# reference on follow link
 	# https://github.com/pmem/nvml/blob/3ab708efad653aeda0bcbc6b8d2b61d9ba9d5310/utils/docker/configure-tests.sh#L53
@@ -130,12 +127,11 @@ umount_loop_dev()
 
 run()
 {
-	local casename=$1
-	local user_filter="$BENCHMARK_ROOT/$casename/user_filter"
+	local user_filter="$BENCHMARK_ROOT/$suite/user_filter"
 	local testcase=
 	local test_cmd=
 
-	log_cmd cd $BENCHMARK_ROOT/$casename/src/test
+	cd_benchmark $suite/src/test
 
 	# to fix SKIP: C++11 required
 	log_cmd export CXX=g++
@@ -167,7 +163,7 @@ run()
 			log_eval su lkp -c "$test_cmd $testcase  2>&1"
 		else
 			log_eval $test_cmd $testcase  2>&1
-		fi  
+		fi
 
 		# unset env variable in case it do impact on other tests
 		[[ $testcase =~ obj_tx_a ]] && unset MALLOC_MMAP_THRESHOLD_

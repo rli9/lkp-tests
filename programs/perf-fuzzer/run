@@ -10,8 +10,9 @@
 . $LKP_SRC/lib/env.sh
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/run.sh
 
-cd $BENCHMARK_ROOT/perf_event_tests/fuzzer || die "can not find fuzzer dir"
+cd_benchmark perf_event_tests/fuzzer
 
 # Check parameters
 [ -z "$number" ] && [ -z "$runtime" ] && die "number and runtime can not both be empty "

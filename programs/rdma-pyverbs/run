@@ -1,6 +1,7 @@
 #!/bin/sh
 
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/run.sh
 
 setup_rxe_netdev()
 {
@@ -19,7 +20,7 @@ run_pyverbs()
 	./bin/run_tests.py --dev $RXE_NAME --gid 1 -v 2>&1
 }
 
-cd $BENCHMARK_ROOT/rdma-pyverbs || die "failed to cd $BENCHMARK_ROOT/rdma-pyverbs"
+cd_benchmark
 
 setup_rxe_netdev
 run_pyverbs

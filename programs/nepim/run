@@ -9,6 +9,7 @@
 
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/run.sh
 
 [ -n "$nr_threads" ] && opt_streams="-n $nr_threads"
 [ "${protocol#udp}" != "$protocol" ]	&& opt_udp=-u
@@ -21,6 +22,7 @@
 server=${server%% *}
 [ -z "$opt_addr" ] && opt_addr=$server
 
-cd $BENCHMARK_ROOT/nepim || die "no $BENCHMARK_ROOT/nepim"
+cd_benchmark
+
 export LD_LIBRARY_PATH=/usr/local/oop/lib:$LD_LIBRARY_PATH
 log_cmd ./nepim -c $opt_addr -d $opt_udp -a $runtime $opt_streams 2>&1

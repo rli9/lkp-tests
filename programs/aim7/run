@@ -9,6 +9,9 @@
 ## exercises a different aspect of the operating system, such as
 ## disk-file operations, process creation, user virtual memory
 ## operations, pipe I/O, and compute-bound arithmetic loops.
+. $LKP_SRC/lib/reproduce-log.sh
+. $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/run.sh
 
 [ -n "$test" ] || exit
 
@@ -16,9 +19,6 @@
 [ -z "$load" ] && [ -z "$nr_task" ] && exit
 
 [ -n "$nr_task" ] && load=$nr_task
-
-. $LKP_SRC/lib/reproduce-log.sh
-. $LKP_SRC/lib/debug.sh
 
 aim7_setup()
 {
@@ -81,6 +81,6 @@ run_aim()
 	wait
 }
 
-cd $BENCHMARK_ROOT/aim7 || die "aim7 benchmark is not installed yet"
+cd_benchmark
 
 run_aim

@@ -3,6 +3,7 @@
 # - test
 
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/run.sh
 
 ## Suite IX is the "AIM Independent Resource Benchmark:"
 ## the famous synthetic benchmark.
@@ -43,6 +44,6 @@ run_aim()
 	wait
 }
 
-cd $BENCHMARK_ROOT/aim9 || die "aim9 benchmark is not installed yet"
+cd_benchmark
 
 run_aim

@@ -3,6 +3,8 @@
 
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/run.sh
 
-cd $BENCHMARK_ROOT/phpbench || die "no $BENCHMARK_ROOT/phpbench"
+cd_benchmark
+
 log_cmd php phpbench.php -i $iterations || die "failed to run phpbench"

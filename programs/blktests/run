@@ -11,8 +11,9 @@
 . $LKP_SRC/lib/upload.sh
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/tests/common.sh
+. $LKP_SRC/lib/run.sh
 
-cd $BENCHMARK_ROOT/blktests || die "fail to cd $BENCHMARK_ROOT/blktests"
+cd_benchmark
 
 # https://github.com/osandov/blktests/pull/64
 sed -i 's/set -u//' common/multipath-over-rdma

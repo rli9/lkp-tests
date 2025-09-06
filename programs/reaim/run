@@ -16,6 +16,7 @@
 
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/reproduce-log.sh
+. $LKP_SRC/lib/run.sh
 
 [ -n "$test" ] || die "test is empty"
 [ -n "$runtime" ] || [ -n "$iterations" ] || die "runtime or iterations must be specified"
@@ -45,7 +46,7 @@ run_for_iterations()
 	run_reaim $iterations
 }
 
-cd $BENCHMARK_ROOT/reaim || die "fail to cd $BENCHMARK_ROOT/reaim"
+cd_benchmark
 
 if [ -z "$nr_task" ]; then
 	REAIM_STARTUSERS=1

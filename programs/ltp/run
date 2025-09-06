@@ -9,8 +9,9 @@
 . $LKP_SRC/lib/tests/ltp.sh
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/run.sh
 
-cd $BENCHMARK_ROOT/ltp || die "no $BENCHMARK_ROOT/ltp"
+cd_benchmark
 
 export PATH=/lkp/benchmarks/ltp/bin:$PATH
 

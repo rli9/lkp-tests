@@ -6,8 +6,9 @@
 . $LKP_SRC/lib/unit.sh
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/run.sh
 
-cd $BENCHMARK_ROOT/openssl-speed || die "no $BENCHMARK_ROOT/openssl-speed"
+cd_benchmark
 
 echo "Running openssl-speed benchmark..."
 export LD_LIBRARY_PATH=$BENCHMARK_ROOT/openssl/lib:$LD_LIBRARY_PATH

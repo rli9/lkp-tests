@@ -4,8 +4,9 @@
 . $LKP_SRC/lib/upload.sh
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/run.sh
 
-cd $BENCHMARK_ROOT/rt-app || die "rt-app benchmark is not installed yet"
+cd_benchmark
 
 log_cmd bin/rt-app workloads/${workload}.json 2>&1
 

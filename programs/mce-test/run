@@ -11,10 +11,11 @@ shopt -s nullglob
 . "$LKP_SRC"/lib/job.sh
 . "$LKP_SRC"/lib/debug.sh
 . $LKP_SRC/lib/reproduce-log.sh
+. $LKP_SRC/lib/run.sh
 
 [ -n "$mount_points" ] || die "\"mount_points\" is empty"
 
-cd $BENCHMARK_ROOT/mce-test || die "no $BENCHMARK_ROOT/mce-test"
+cd_benchmark
 
 read_env_vars
 exit_value=0

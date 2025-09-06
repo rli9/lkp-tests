@@ -34,6 +34,7 @@
 
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/run.sh
 
 # Run lmbench3 benchmark suit with all/hardware/os/development mode
 # All mode: run all of the testcases
@@ -211,10 +212,7 @@ if [ "${standalone}" != "1" ]; then
 fi
 
 
-cd $BENCHMARK_ROOT/lmbench3 || {
-	echo "ERROR: lmbench benchmark has not been installed yet"
-	exit 1
-}
+cd_benchmark
 
 make 2>&1 || die "failed to build lmbench3"
 
@@ -241,7 +239,7 @@ else
 		'lat_mem_rd')
 			TEST_BIN_PATH="$(find bin/ -maxdepth 2 -name lat_mem_rd)"
 			echo "Running memory load latency..."
-			log_cmd ./${TEST_BIN_PATH} -P ${nr_parallelism} ${size} ${stride} > $TMP_RESULT_ROOT/lmbench3 2>&1 
+			log_cmd ./${TEST_BIN_PATH} -P ${nr_parallelism} ${size} ${stride} > $TMP_RESULT_ROOT/lmbench3 2>&1
 
 			LMBENCH_RESULT="$TMP_RESULT_ROOT/extract-lmbench3"
 			sed '1,2d' $TMP_RESULT_ROOT/lmbench3 > ${LMBENCH_RESULT}

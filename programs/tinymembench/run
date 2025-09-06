@@ -3,7 +3,8 @@
 
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/run.sh
 
-cd $BENCHMARK_ROOT/tinymembench || die "no $BENCHMARK_ROOT/tinymembench"
+cd_benchmark
 
 log_cmd ./tinymembench || die "failed to run tinymembench"

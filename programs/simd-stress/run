@@ -6,8 +6,9 @@
 
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/run.sh
 
-cd $BENCHMARK_ROOT/simd-stress || die "no $BENCHMARK_ROOT/simd-stress"
+cd_benchmark
 
 : "${duration:=10}"
 : "${thread_count:=4}"

@@ -7,8 +7,9 @@
 
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/run.sh
 
-cd $BENCHMARK_ROOT/intel-ipsec-mb || die "no $BENCHMARK_ROOT/intel-ipsec-mb"
+cd_benchmark
 
 : "${algo:=chacha20-poly1305}"
 : "${arch:=AVX512}"

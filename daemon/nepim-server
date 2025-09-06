@@ -1,8 +1,9 @@
 #!/bin/sh
 
 . $LKP_SRC/lib/reproduce-log.sh
+. $LKP_SRC/lib/run.sh
 
-cd $BENCHMARK_ROOT/nepim || exit
+cd_benchmark nepim
 
 export LD_LIBRARY_PATH=/usr/local/oop/lib:$LD_LIBRARY_PATH
 log_cmd ./nepim >/dev/null 2>&1 &

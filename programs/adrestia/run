@@ -6,8 +6,9 @@
 
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/run.sh
 
-cd $BENCHMARK_ROOT/adrestia || die "no $BENCHMARK_ROOT/adrestia"
+cd_benchmark
 
 : "${arrival_rate:=2000}"
 : "${num_loop:=200000}"

@@ -11,8 +11,9 @@
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/upload.sh
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/run.sh
 
-cd $BENCHMARK_ROOT/unixbench/UnixBench || die "no $BENCHMARK_ROOT/unixbench/UnixBench dir"
+cd_benchmark $suite/UnixBench
 
 export LANG=C
 

@@ -5,8 +5,9 @@
 
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/run.sh
 
-cd $BENCHMARK_ROOT/ku-latency || die "no $BENCHMARK_ROOT/ku-latency"
+cd_benchmark
 
 [ -n "$runtime" ] || runtime=300
 

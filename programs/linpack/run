@@ -10,8 +10,9 @@
 . $LKP_SRC/lib/unit.sh
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/run.sh
 
-cd $BENCHMARK_ROOT/linpack || die "no $BENCHMARK_ROOT/linpack"
+cd_benchmark
 
 if [ -z "$test_memory_size" ]; then
 	test_memory_size=$(($(to_byte $memory) / 2))

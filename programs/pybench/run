@@ -4,6 +4,8 @@
 
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/run.sh
 
-cd $BENCHMARK_ROOT/pybench || die "no $BENCHMARK_ROOT/pybench"
+cd_benchmark
+
 log_cmd python3 pybench.py -n $rounds -w $warp || die "failed to run pybench"

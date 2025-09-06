@@ -7,8 +7,9 @@
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/tests/perf_event_tests.sh
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/run.sh
 
-cd $BENCHMARK_ROOT/perf_event_tests || die "can not find perf_event_test dir"
+cd_benchmark
 
 check_elements "$paranoid"
 setup_test_env "$paranoid"

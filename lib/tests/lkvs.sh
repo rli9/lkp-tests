@@ -3,15 +3,18 @@
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/env.sh
+. $LKP_SRC/lib/run.sh
 
 build_libipt()
 {
-	cd $BENCHMARK_ROOT/$testcase/libipt && cmake . && make install
+	cd_benchmark $suite/libipt
+
+	cmake . && make install
 }
 
 build_lkvs_tools()
 {
-	log_cmd cd $BENCHMARK_ROOT/$testcase/lkvs/BM/tools || return
+	cd_benchmark $suite/lkvs/BM/tools
 
 	log_cmd make --keep-going 2>&1 || {
 		echo "tools make fail"
@@ -25,9 +28,9 @@ build_lkvs()
 {
 	build_lkvs_tools || return
 
-	[[ -f $BENCHMARK_ROOT/$testcase/lkvs/BM/$test/Makefile ]] || return 0
+	[[ -f $BENCHMARK_ROOT/$suite/lkvs/BM/$test/Makefile ]] || return 0
 
-	cd $BENCHMARK_ROOT/$testcase/lkvs/BM/$test || return
+	cd_benchmark $suite/lkvs/BM/$test
 
 	log_cmd make --keep-going 2>&1 || {
 		echo "$test make fail"
@@ -65,7 +68,7 @@ runtests()
 	# libipt.so.2 is installed in /usr/local/lib
 	export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 
-	cd $BENCHMARK_ROOT/$testcase/lkvs/BM || return
+	cd_benchmark $suite/lkvs/BM
 
 	if [[ $(type -t "fixup_${test//-/_}") =~ (alias|function) ]]; then
 		fixup_${test//-/_} || return

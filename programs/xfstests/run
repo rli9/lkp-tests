@@ -10,9 +10,11 @@
 . $LKP_SRC/lib/tests/common.sh
 . $LKP_SRC/lib/tests/xfstests.sh
 . $LKP_SRC/lib/env.sh
+. $LKP_SRC/lib/run.sh
 
 [ "$nr_partitions" -lt 2 ] && die "$nr_partitions -lt 2"
-cd $BENCHMARK_ROOT/xfstests || die "fail to cd $BENCHMARK_ROOT/xfstests"
+
+cd_benchmark
 
 export LC_ALL=C
 export LANG=C

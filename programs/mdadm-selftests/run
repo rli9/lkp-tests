@@ -3,12 +3,11 @@
 
 ## mdadm is a tool for managing Linux Software RAID arrays.
 
-cd $BENCHMARK_ROOT/mdadm-selftests || exit 1
-
 . $LKP_SRC/lib/upload.sh
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/install.sh
+. $LKP_SRC/lib/run.sh
 
 mount_partition()
 {
@@ -29,6 +28,8 @@ mount_partition()
 	log_cmd mke2fs -t ext3 -b 4096 -J size=4 -q $partition || return
 	log_cmd mount -t ext3 $partition $mnt || return
 }
+
+cd_benchmark
 
 mount_partition || die "mount partition failed"
 

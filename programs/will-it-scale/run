@@ -9,13 +9,14 @@
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/env.sh
 . $LKP_SRC/lib/reproduce-log.sh
+. $LKP_SRC/lib/run.sh
 
 ## It Scale takes a testcase and runs it from 1 through to n
 ## parallel copies to see if the testcase will scale. It
 ## builds both a process and threads based test in order
 ## to see any differences between the two.
 
-cd $BENCHMARK_ROOT/will-it-scale || exit
+cd_benchmark
 
 # $ gzip -dc will-it-scale-x86_64.cgz | cpio -it | grep "fallocate1_"
 # lkp/benchmarks/will-it-scale/fallocate1_processes

@@ -6,8 +6,9 @@
 . $LKP_SRC/lib/unit.sh
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/run.sh
 
-cd $BENCHMARK_ROOT/lz4-test || die "no $BENCHMARK_ROOT/lz4-test"
+cd_benchmark
 
 TESTFILE=ubuntu-18.04.3-desktop-amd64.iso
 if [ ! -f "$TESTFILE" ]; then

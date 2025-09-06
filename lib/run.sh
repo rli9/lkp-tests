@@ -1,5 +1,17 @@
 #!/bin/sh
 
+. $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/reproduce-log.sh
+
+cd_benchmark()
+{
+	local suite=${1:-$suite}
+
+	[ -n $suite ] || die "suite argument is empty"
+
+	log_cmd cd $BENCHMARK_ROOT/$suite || die "$BENCHMARK_ROOT/$suite does not exist"
+}
+
 report_ops()
 {
 	stop_time=$(date +%s)

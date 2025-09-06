@@ -8,8 +8,10 @@
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/env.sh
+. $LKP_SRC/lib/run.sh
 
-log_cmd cd $BENCHMARK_ROOT/$testcase || die "can not enter $BENCHMARK_ROOT/$testcase"
+cd_benchmark
+
 has_cmd gcc || die "gcc: command not found"
 
 log_cmd export OMP_NUM_THREADS=$nr_threads

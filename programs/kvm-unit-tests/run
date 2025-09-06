@@ -11,8 +11,9 @@
 . $LKP_SRC/lib/upload.sh
 . $LKP_SRC/lib/tests/kvm-unit-tests.sh
 . $LKP_SRC/lib/reproduce-log.sh
+. $LKP_SRC/lib/run.sh
 
-cd $BENCHMARK_ROOT/kvm-unit-tests || die "no $BENCHMARK_ROOT/kvm-unit-tests"
+cd_benchmark
 
 # Debian/Fedora/Ubuntu use /usr/bin/qemu-system-x86_64 as QEMU Emulator.
 # RHEL use /usr/libexec/qemu-kvm as QEMU Emulator.

@@ -5,8 +5,9 @@
 
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/run.sh
 
-cd $BENCHMARK_ROOT/libMicro || die "no $BENCHMARK_ROOT/libMicro"
+cd_benchmark libMicro
 
 case $test in
 	"fast")

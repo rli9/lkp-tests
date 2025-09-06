@@ -7,8 +7,9 @@
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/install.sh
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/run.sh
 
-cd $BENCHMARK_ROOT/pm-qa || die "no $BENCHMARK_ROOT/pm-qa"
+cd_benchmark
 
 [ -e "/usr/bin/glmark2" ] || ln -sf /lkp/benchmarks/pm-qa/glmark2/bin/glmark2 /usr/bin/glmark2
 
