@@ -4,7 +4,6 @@
 ## and this perf-sanity-tests are the built-in sanity tests from perf tool.
 
 . $LKP_SRC/lib/env.sh
-. $LKP_SRC/lib/tests/perf_test.sh
 . $LKP_SRC/lib/reproduce-log.sh
 
 set_perf_path '/usr/bin/perf'
