@@ -105,22 +105,22 @@ phoronix-test-suite:
       # - clover_bm16       [Most time consuming model for high core count servers]
 
   - test: hadoop-1.0.0
-    option_a:
+    option_a: # Operation
       - Create
       - Open
       - Delete
       - File Status
       - Rename
-    option_b:
-      - 20
-      - 50
+    option_b: # Threads
+      # - 20
+      # - 50
       - 100
-      - 500
+      # - 500
       - 1000
-    option_c:
-      - 100000
+    option_c: # Files
+      # - 100000
       - 1000000
-      - 10000000
+      # - 10000000
 
   - test: apache-3.0.0
     option_a:
