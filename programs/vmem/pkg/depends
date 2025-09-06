@@ -13,7 +13,7 @@ libglib2.0-dev
 libibverbs-dev
 libjson-c-dev
 libkmod-dev
-libncurses5-dev
+libncurses-dev
 librdmacm-dev
 libudev-dev
 libuv1-dev

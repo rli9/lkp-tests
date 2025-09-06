@@ -240,9 +240,8 @@ libmpc3: libmpc
 libmpfr-dev: mpfr-devel
 libmpfr6: mpfr
 libmpx2:
-libncurses5-dev: ncurses-devel
-libncurses5: ncurses
-libncursesw5-dev: ncurses-devel
+libncurses-dev: ncurses-devel
+libncurses: ncurses
 libndctl-dev: ndctl-devel
 libnfs-dev: libnfs-devel
 libnl-3-200: libnl3

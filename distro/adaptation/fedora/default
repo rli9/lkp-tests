@@ -204,9 +204,9 @@ libmnl-dev: libmnl-devel
 libmount-dev: libmount-devel
 libmpfr-dev: mpfr-devel
 libmpfr6: mpfr
-libncurses5-dev: ncurses-devel
-libncurses5: ncurses
-libncursesw5-dev:
+libncurses-dev:
+libncurses-dev: ncurses-devel
+libncurses: ncurses
 libndctl-dev: ndctl-devel
 libnfs-dev: libnfs-devel
 libnl-3-200: libnl3

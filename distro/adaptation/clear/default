@@ -290,8 +290,7 @@ libmpc3: os-core-dev
 libmpfr6:
 libmpx2/unstable: dev-utils-dev
 libmpx2: dev-utils-dev
-libncurses5-dev: os-core-dev
-libncursesw5-dev: os-core-dev
+libncurses-dev: os-core-dev
 libnl-3-dev: storage-utils
 libnl-genl-3-dev: storage-utils
 libnl-route-3-dev: network-basic-dev

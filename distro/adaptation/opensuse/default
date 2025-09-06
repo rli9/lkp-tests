@@ -170,8 +170,7 @@ libmariadb-dev: libmariadb-devel
 libmnl-dev: libmnl-devel
 libmount-dev: libmount-devel
 libmpfr-dev: mpfr-devel
-libncurses5-dev: ncurses-devel
-libncursesw5-dev: ncurses-devel
+libncurses-dev: ncurses-devel
 libndctl-dev: libndctl-devel
 libnfs-dev: libnfs-devel
 libnfs:

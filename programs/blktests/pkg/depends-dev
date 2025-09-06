@@ -1,6 +1,6 @@
 autopoint
 gettext
-libncursesw5-dev
+libncurses-dev
 libsqlite3-dev
 linux-libc-dev
 pkg-config

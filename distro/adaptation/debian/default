@@ -20,6 +20,7 @@ libgcc-dev: libgcc-6-dev
 libgcrypt-dev: libgcrypt20-dev
 libiscsi: libiscsi7
 libldap: libldap-2.4-2
+libncurses: libncurses6
 libpcap: libpcap0.8
 libpfm-dev: libpfm4-dev
 libpfm: libpfm4
