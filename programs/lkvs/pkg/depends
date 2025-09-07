@@ -19,7 +19,6 @@ libcapstone-dev
 libdebuginfod-dev
 libdw-dev
 libelf-dev
-libelf1
 libhwloc-dev
 libjson-c-dev
 libnl-genl-3-dev

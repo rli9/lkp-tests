@@ -16,6 +16,7 @@ libarchive: libarchive13t64
 libasan: libasan6
 libcapstone4: libcapstone5
 libdw1: libdw1t64
+libelf1: libelf1t64
 libevent-openssl: libevent-openssl-2.1-7t64
 libevent: libevent-2.1-7t64
 libfuse3: libfuse3-4
