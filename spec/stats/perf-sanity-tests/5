@@ -9,26 +9,6 @@ make: Entering directory '/usr/src/perf_selftests-x86_64-rhel-8.3-bpf-94f6f0550c
 [0;33mWarning[0m: Kernel ABI header differences:
 
 Auto-detecting system features:
-...                                   dwarf: [ [32mon[m  ]
-...                      dwarf_getlocations: [ [32mon[m  ]
-...                                   glibc: [ [32mon[m  ]
-...                                  libbfd: [ [32mon[m  ]
-...                          libbfd-buildid: [ [32mon[m  ]
-...                                  libcap: [ [32mon[m  ]
-...                                  libelf: [ [32mon[m  ]
-...                                 libnuma: [ [32mon[m  ]
-...                  numa_num_possible_cpus: [ [32mon[m  ]
-...                                 libperl: [ [32mon[m  ]
-...                               libpython: [ [32mon[m  ]
-...                               libcrypto: [ [32mon[m  ]
-...                               libunwind: [ [32mon[m  ]
-...                      libdw-dwarf-unwind: [ [32mon[m  ]
-...                                    zlib: [ [32mon[m  ]
-...                                    lzma: [ [32mon[m  ]
-...                               get_cpuid: [ [32mon[m  ]
-...                                     bpf: [ [32mon[m  ]
-...                                  libaio: [ [32mon[m  ]
-...                                 libzstd: [ [32mon[m  ]
 
   LINK    perf
 make: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-8.3-bpf-94f6f0550c625fab1f373bb86a6669b45e9748b3/tools/perf'
