@@ -135,7 +135,7 @@ less: os-core
 lftp:
 libacl1-dev: os-core
 libaio-dev: storage-utils-dev
-libaio1: os-core-dev
+libaio: os-core-dev
 libann0:
 libapache2-mpm-itk:
 libapparmor-dev:
