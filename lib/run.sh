@@ -7,7 +7,7 @@ cd_benchmark()
 {
 	local suite=${1:-$suite}
 
-	[ -n $suite ] || die "suite argument is empty"
+	[ -n "$suite" ] || die "suite argument is empty"
 
 	log_cmd cd $BENCHMARK_ROOT/$suite || die "$BENCHMARK_ROOT/$suite does not exist"
 }
