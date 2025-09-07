@@ -8,5 +8,5 @@ disk:
 need_memory: 1G
 
 ext4-frags:
-  nr_1Mfiles: 10000
+  nr_1Mfiles: 5000
   nr_1Gfiles: 5
