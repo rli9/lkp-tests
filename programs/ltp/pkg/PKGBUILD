@@ -5,7 +5,10 @@ url='https://github.com/linux-test-project/ltp'
 arch=('i386' 'x86_64' 'aarch64')
 license=('GPL')
 options=('!strip')
-source=('https://github.com/linux-test-project/ltp.git' 'https://git.centos.org/r/rpms/rusers.git' 'https://github.com/PeterHuewe/tpm-emulator.git' 'https://github.com/numactl/numactl.git')
+source=('https://github.com/linux-test-project/ltp.git'
+	'https://gitlab.com/CentOS/archives/git.centos.org/rpms/rusers.git'
+	'https://github.com/PeterHuewe/tpm-emulator.git'
+	'https://github.com/numactl/numactl.git')
 md5sums=('SKIP' 'SKIP' 'SKIP' 'SKIP')
 
 . $LKP_SRC/lib/tests/ltp.sh
