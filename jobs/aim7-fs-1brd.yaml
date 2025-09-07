@@ -22,7 +22,11 @@ aim7:
     # - disk_wrt
   load: {{
           if fs == 'btrfs'
-            aim7.test == 'disk_src' ? 500 : 1500
+            if aim7.test == 'disk_src' || aim7.test == 'disk_rw'
+              500
+            else
+              1500
+            end
           else
             3000
           end
