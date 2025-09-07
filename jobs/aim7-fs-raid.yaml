@@ -56,7 +56,7 @@ aim7:
   load: {{
           case fs
           when 'btrfs' then 2
-          when 'ext4'  then 1000
+          when 'ext4'  then 300
           else              1500
           end
         }}
