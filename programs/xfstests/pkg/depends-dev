@@ -8,7 +8,7 @@ libaio-dev
 libattr1-dev
 libblkid-dev
 libclang-dev
-libfuse-dev
+libfuse3-dev
 libgdbm-dev
 libicu-dev
 libiscsi-dev
