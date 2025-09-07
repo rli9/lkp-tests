@@ -14,7 +14,7 @@ build_perf()
     PATH=$BUILD_DIR:$PATH make
 }
 
-build_pmu-tools()
+bulid_pmu_tools()
 {
     cd "${srcdir}/pmu-tools"
     files=$(grep -rl "^#\!\/usr\/bin.*python" ./)
@@ -30,7 +30,7 @@ build_pmu-tools()
 
 build() {
     build_perf || return
-    build_pmu-tools || return
+    bulid_pmu_tools || return
 }
 
 package() {
