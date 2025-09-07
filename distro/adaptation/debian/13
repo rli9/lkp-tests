@@ -37,6 +37,7 @@ libopenmpi3: libopenmpi40
 libpcre3-dev: libpcre2-dev
 libpcre3: libpcre2-32-0
 libperl5: libperl5.40
+libpng16-16: libpng16-16t64
 libpolly-dev: libpolly-19-dev
 libprocps-dev: libproc2-dev
 libprocps: libproc2-0
