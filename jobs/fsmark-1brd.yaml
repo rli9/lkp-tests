@@ -1,0 +1,8 @@
+<< : jobs/fsmark.yaml
+
+need_memory: 50G
+
+disk: 1BRD_48G
+
+perf-profile:
+  delay: 1

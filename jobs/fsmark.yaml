@@ -2,24 +2,27 @@ suite: fsmark
 testcase: fsmark
 category: benchmark
 
-iterations: 1x
-nr_threads: 32t
-
 disk: 1HDD
 
+iterations: 4
+nr_threads: 10%
+
 fs:
-  - xfs
-  - ext4
   - btrfs
+  - ext4
+  - xfs
 fs2:
   - nfsv4
   -
 
 fsmark:
-  filesize: 16MB
-  test_size: 60G
+  filesize:
+    - 9B
+    - 8K
+    - 16MB
+  test_size: 16G
   sync_method:
-    - NoSync
     - fsyncBeforeClose
+    - NoSync
   nr_directories: 16d
   nr_files_per_directory: 256fpd

@@ -1,0 +1,13 @@
+<< : jobs/fsmark.yaml
+
+need_memory: 100G
+
+disk: 8BRD_12G
+
+perf-profile:
+  delay: 10
+
+md:
+  - RAID0
+  - RAID5
+  - RAID6
