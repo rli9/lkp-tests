@@ -412,6 +412,7 @@ phoronix-test-suite:
       - CryptoNight-Heavy
       - KawPow
       - GhostRider
+    times_to_run: 1
 
   - test: quicksilver-1.0.0
     option_a:
