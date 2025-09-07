@@ -18,4 +18,6 @@ hwsim:
     - group-39
     - long-param-group-00
     - long-param-group-01
+    - long-param-group-02
+    - long-param-group-03
     - mcc
