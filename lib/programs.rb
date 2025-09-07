@@ -46,7 +46,7 @@ module LKP
       # program: turbostat, turbostat-dev
       def find_depends_file(program)
         candidates = ["#{LKP_SRC}/distro/depends/#{program}", "#{PROGRAMS_ROOT}/#{program}/pkg/depends"]
-        candidates += "#{PROGRAMS_ROOT}/#{program.sub(/-dev$/, '')}/pkg/depends-dev" if program =~ /-dev$/
+        candidates += ["#{PROGRAMS_ROOT}/#{program.sub(/-dev$/, '')}/pkg/depends-dev"] if program =~ /-dev$/
 
         candidates.find { |file| File.exist? file }
       end
