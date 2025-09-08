@@ -32,6 +32,7 @@ build()
 				--enable-burst
 	)
 
+	./autogen.sh
 	CFLAGS="-std=gnu89 -fcommon" ./configure "${configure_flags[@]}"
 	make
 }
