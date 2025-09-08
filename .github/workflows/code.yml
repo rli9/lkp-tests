@@ -37,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        image: ['debian/bookworm', 'debian/trixie']
+        image: ['debian/bookworm', 'debian/trixie', 'debian/trixie-slim']
 
     steps:
       - uses: actions/checkout@v3
