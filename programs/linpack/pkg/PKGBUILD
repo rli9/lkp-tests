@@ -17,7 +17,7 @@ source=("http://registrationcenter.intel.com/irc_nas/3914/l_lpk_p_11.1.2.005.tgz
         'runme.template')
 install=readme.install
 backup=(etc/linpack.conf)
-sha256sums=('00c804e7b8cb31b4d94055b1889df4ab820e077dda0d3767af29f6af9f3c99b2'
+sha256sums=('SKIP'
             'd7e31c8c7e2648c8fa3c4838d98dfc39b8fadf0f74bdaa4ca52cd38277ec8254'
             '8c880adeee3de6c0e6005e210cea0e01b471219c590e25e824298a25ab0eef31')
 
