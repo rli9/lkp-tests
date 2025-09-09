@@ -6,9 +6,8 @@ arch=('i386' 'x86_64' 'aarch64')
 license=('GPL')
 options=('!strip')
 source=('https://github.com/linux-test-project/ltp.git'
-	'https://github.com/PeterHuewe/tpm-emulator.git'
-	'https://github.com/numactl/numactl.git')
-md5sums=('SKIP' 'SKIP' 'SKIP' 'SKIP')
+	'https://github.com/PeterHuewe/tpm-emulator.git')
+md5sums=('SKIP' 'SKIP')
 
 . $LKP_SRC/lib/tests/ltp.sh
 . $LKP_SRC/lib/install.sh
@@ -35,19 +34,6 @@ build_tpm_emulator()
 	make package
 }
 
-build_numactl()
-{
-	echo build_numactl
-
-	cd $srcdir/numactl || return
-
-	benchmark_path=${pkgdir}/lkp/benchmarks/${pkgname}
-
-	autoreconf -f -i
-	./configure --prefix="${benchmark_path}"/testcases/bin/numactl
-	make
-}
-
 install_tpm_emulator()
 {
 	echo install_tpm_emulator
@@ -58,19 +44,6 @@ install_tpm_emulator()
 
 	mkdir -p "${benchmark_path}"/tpm-emulater
 	cp build/*.zip "${benchmark_path}"/tpm-emulater
-}
-
-install_numactl()
-{
-	echo install_numactl
-
-	cd $srcdir/numactl || return
-
-	benchmark_path=${pkgdir}/lkp/benchmarks/${pkgname}
-
-	make install
-	ln -sf "${benchmark_path}"/testcases/bin/numactl/bin/numademo "${benchmark_path}"/testcases/bin/numademo
-	ln -sf "${benchmark_path}"/testcases/bin/numactl/bin/memhog "${benchmark_path}"/testcases/bin/memhog
 }
 
 build_ltp()
@@ -91,7 +64,6 @@ build()
 	build_ltp "${pkgdir}/lkp/benchmarks/${pkgname}" || return
 
 	# build_tpm_emulator || return
-	build_numactl || return
 
 	return 0
 }
@@ -212,7 +184,6 @@ package()
 	install_ltp "${pkgdir}/lkp/benchmarks/${pkgname}" || return
 
 	# install_tpm_emulator || return
-	install_numactl || return
 
 	split_tests || return
 
