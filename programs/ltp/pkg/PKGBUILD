@@ -5,46 +5,11 @@ url='https://github.com/linux-test-project/ltp'
 arch=('i386' 'x86_64' 'aarch64')
 license=('GPL')
 options=('!strip')
-source=('https://github.com/linux-test-project/ltp.git'
-	'https://github.com/PeterHuewe/tpm-emulator.git')
-md5sums=('SKIP' 'SKIP')
+source=('https://github.com/linux-test-project/ltp.git')
+md5sums=('SKIP')
 
 . $LKP_SRC/lib/tests/ltp.sh
 . $LKP_SRC/lib/install.sh
-
-build_tpm_emulator()
-{
-	echo build_tpm_emulator
-
-	cd $srcdir/tpm-emulator || return
-
-	# the lastest tpm-emulator is currupted so use old one
-	git reset --hard 0f4579e
-	# remove Werror to use gcc-7
-	sed -i "s/-Werror//g" CMakeLists.txt || return
-	# don't build kernel module
-	sed -i "s/add_subdirectory(tpmd_dev)/#add_subdirectory(tpmd_dev)/g" CMakeLists.txt || return
-
-	mkdir build || return
-
-	cd build
-	cmake .. || return
-	make || return
-	make install || return
-	make package
-}
-
-install_tpm_emulator()
-{
-	echo install_tpm_emulator
-
-	cd $srcdir/tpm-emulator || return
-
-	benchmark_path=${pkgdir}/lkp/benchmarks/${pkgname}
-
-	mkdir -p "${benchmark_path}"/tpm-emulater
-	cp build/*.zip "${benchmark_path}"/tpm-emulater
-}
 
 build_ltp()
 {
@@ -62,8 +27,6 @@ build()
 	echo build_ltp
 	git log -1
 	build_ltp "${pkgdir}/lkp/benchmarks/${pkgname}" || return
-
-	# build_tpm_emulator || return
 
 	return 0
 }
@@ -182,8 +145,6 @@ package()
 {
 	cd $srcdir/$pkgname
 	install_ltp "${pkgdir}/lkp/benchmarks/${pkgname}" || return
-
-	# install_tpm_emulator || return
 
 	split_tests || return
 
