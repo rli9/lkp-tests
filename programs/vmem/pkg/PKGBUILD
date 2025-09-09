@@ -6,12 +6,12 @@ arch=('i386' 'x86_64' 'aarch64')
 license=('Intel' 'Apache 2.0' 'BSD' 'GPL 2.1' )
 source=(
 	'https://github.com/pmem/vmem.git'
-	'https://github.com/pmem/valgrind.git'
+	'https://github.com/pmem/valgrind.git#branch=pmem-3.20'
 	'https://github.com/llvm-mirror/llvm.git'
 	'https://github.com/llvm-mirror/libcxxabi.git'
 	'https://github.com/pmem/libcxx.git'
-	'https://github.com/pmem/pmdk.git'
-	'https://github.com/pmem/ndctl.git')
+	'https://github.com/pmem/pmdk.git#branch=stable-2.1'
+	'https://github.com/pmem/ndctl.git#branch=pending')
 md5sums=('SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP')
 
 . $LKP_SRC/lib/env.sh
@@ -19,7 +19,7 @@ md5sums=('SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP')
 build_install_valgrind_pmem()
 {
 	cd "${srcdir}/valgrind"
-	git checkout pmem-3.12
+
 	git submodule init
 	git submodule update
 	./autogen.sh
@@ -31,18 +31,17 @@ build_install_valgrind_pmem()
 build_install_ndctl()
 {
 	cd "${srcdir}/ndctl"
-	git checkout pending
-	./autogen.sh
-	./configure CFLAGS='-g -O0' --disable-docs --enable-debug --prefix=/usr/local
-	make
-	make install
+
+	[[ -e '/usr/include/iniparser.h' ]] || cp /usr/include/iniparser/* /usr/include/
+	meson setup build
+	meson configure -Dtest=enabled -Ddocs=disabled build
+	meson compile -C build
 }
 
 # Test vmem_malloc, will use daxio command, it located in pmdk/src/tools.
 build_install_pmdk()
 {
 	cd "${srcdir}/pmdk"
-	git checkout stable-1.8
 	make
 }
 

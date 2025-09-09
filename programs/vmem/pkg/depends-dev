@@ -4,6 +4,7 @@ cmake
 libjson-c-dev
 libkeyutils-dev
 libkmod-dev
+libsystemd-dev
 libudev-dev
 pkg-config
 udev
