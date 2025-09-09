@@ -2,6 +2,7 @@ bind: bind9
 btrfs-tools: btrfs-progs
 dnf-plugins-core:
 freeglut: freeglut3
+gcc-toolset-binutils: binutils
 gcc-toolset:
 gtk3: gir1.2-gtk-3.0
 iproute: iproute2
