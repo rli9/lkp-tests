@@ -1,2 +1,4 @@
 # Avoid nfs latency for sync used in benchmark
 avoid_nfs: 1
+
+rootfs: debian-12-x86_64.cgz
