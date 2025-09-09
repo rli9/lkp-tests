@@ -48,6 +48,7 @@ librdmacm1: librdmacm1t64
 libreadline5: libreadline8t64
 libsmbclient: libsmbclient0
 libssl: libssl3t64
+libstdc++-dev: libstdc++-14-dev
 libtirpc: libtirpc3t64
 liburcu: liburcu8t64
 liburing: liburing2
