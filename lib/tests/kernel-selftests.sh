@@ -363,12 +363,19 @@ fixup_memfd()
 	make fuse_mnt -C memfd 2>&1
 }
 
+build_bpftool()
+{
+	log_cmd make -j${nr_cpu} -C ../../../tools/bpf/bpftool 2>&1 || return 2
+	log_cmd make install -C ../../../tools/bpf/bpftool 2>&1 || return 2
+
+	# tools/testing/selftests/bpf/tools/sbin/bpftool
+	export PATH=$linux_selftests_dir/tools/testing/selftests/bpf/tools/sbin:$PATH
+}
+
 fixup_bpf()
 {
 	prepare_for_bpf
 
-	log_cmd make -j${nr_cpu} -C ../../../tools/bpf/bpftool 2>&1 || return 2
-	log_cmd make install -C ../../../tools/bpf/bpftool 2>&1 || return 2
 	type ping6 && {
 		sed -i 's/if ping -6/if ping6/g' bpf/test_skb_cgroup_id.sh 2>/dev/null
 		sed -i 's/ping -${1}/ping${1%4}/g' bpf/test_sock_addr.sh 2>/dev/null
@@ -390,8 +397,7 @@ fixup_bpf()
 		sed -i 's/\/redirect_map_2/\/xdp_redirect_map_2/g' bpf/test_xdp_veth.sh
 	}
 
-	# tools/testing/selftests/bpf/tools/sbin/bpftool
-	export PATH=$linux_selftests_dir/tools/testing/selftests/bpf/tools/sbin:$PATH
+	build_bpftool
 }
 
 fixup_kmod()
@@ -589,6 +595,14 @@ fixup_drivers_net_bonding()
 	# selftests: drivers/net/bonding: bond-break-lacpdu-tx.sh
 	# ./bond-break-lacpdu-tx.sh: 26: source: not found
 	sed -i 's/bin\/sh/bin\/bash/' drivers/net/bonding/bond-break-lacpdu-tx.sh
+}
+
+fixup_drivers_net()
+{
+	prepare_for_bpf
+
+	# drivers/net/xdp.py calls bpftool
+	build_bpftool
 }
 
 build_tools()
