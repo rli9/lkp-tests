@@ -9,6 +9,7 @@ libjpeg-dev
 libqt5opengl5-dev
 libudev-dev
 libx11-dev
+meson
 qt5-default
 qtbase5-dev
 udev

@@ -9,10 +9,10 @@ md5sums=('SKIP' 'SKIP')
 
 build() {
 	cd "$srcdir/v4l-utils"
-	./bootstrap.sh || return
-	./configure --prefix="${pkgdir}/lkp/benchmarks/v4l2" || return
-	make 2>&1 || return
-	make install
+
+	meson setup build/
+	ninja -C build/
+	DESTDIR="${pkgdir}/lkp/benchmarks/v4l2" ninja -C build/ install
 }
 
 package() {
