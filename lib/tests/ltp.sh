@@ -205,7 +205,6 @@ test_setting()
 		;;
 	net.rpc_tests)
 		systemctl start openbsd-inetd || exit
-		cp netkit-rusers/bin/rup /usr/bin/
 		;;
 	net_stress.appl-0*)
 		[ -d /srv/ftp ] && export FTP_DOWNLOAD_DIR=/srv/ftp

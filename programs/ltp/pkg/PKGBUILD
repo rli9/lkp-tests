@@ -6,50 +6,12 @@ arch=('i386' 'x86_64' 'aarch64')
 license=('GPL')
 options=('!strip')
 source=('https://github.com/linux-test-project/ltp.git'
-	'https://gitlab.com/CentOS/archives/git.centos.org/rpms/rusers.git'
 	'https://github.com/PeterHuewe/tpm-emulator.git'
 	'https://github.com/numactl/numactl.git')
 md5sums=('SKIP' 'SKIP' 'SKIP' 'SKIP')
 
 . $LKP_SRC/lib/tests/ltp.sh
 . $LKP_SRC/lib/install.sh
-
-build_rusers()
-{
-	echo build_rusers
-
-	cd $srcdir/rusers || return
-
-	git checkout c7 || return
-
-	local rusers_version=$(grep ^Version: SPECS/rusers.spec | awk '{print $2}')
-
-	local source=$(grep ^Source: SPECS/rusers.spec | awk '{print $2}')
-
-	# below url was from http://sourceforge.net/projects/rstatd/
-	# in SPECS/rusers.spec
-
-	wget --no-check-certificate -c "https://sourceforge.net/projects/rstatd/files/rstatd/4.0.1/rpc.rstatd-4.0.1.tar.gz/download" -O - | tar -xz || exit 1
-
-	for p in $(grep ^Patch SPECS/rusers.spec | awk '{print $2}')
-	do
-		echo "Patching $p ..."
-		patch -f -p0 < SOURCES/$p
-	done
-
-	# rpc*/ currently means rpc.rstatd-4.0.1/
-	cd rpc*/ || return
-
-	benchmark_path=${pkgdir}/lkp/benchmarks/${pkgname}
-	./configure --prefix="${benchmark_path}"/netkit-rusers
-
-	local distro=$(basename $rootfs)
-	if [[ "$distro" =~ "debian-12" ]]; then
-		sed -i '/^DEFAULT_INCLUDES =/ s/$/ -I\/usr\/include\/tirpc/' Makefile
-		sed -i '/^LIBS =/ s/$/ -ltirpc/' Makefile
-	fi
-	make
-}
 
 build_tpm_emulator()
 {
@@ -84,19 +46,6 @@ build_numactl()
 	autoreconf -f -i
 	./configure --prefix="${benchmark_path}"/testcases/bin/numactl
 	make
-}
-
-install_rusers()
-{
-	echo install_rusers
-
-	cd $srcdir/rusers || return
-
-	mkdir -p "${benchmark_path}"/netkit-rusers/{bin,man/man1}
-
-	local rusers_version=$(grep ^Version: SPECS/rusers.spec | awk '{print $2}')
-	cd rpc*/
-	make install 2> /dev/null
 }
 
 install_tpm_emulator()
@@ -143,10 +92,6 @@ build()
 
 	# build_tpm_emulator || return
 	build_numactl || return
-
-	[ "$DISTRO" = "debian" -o "$DISTRO" = "ubuntu" ] && {
-		build_rusers || return
-	}
 
 	return 0
 }
@@ -268,10 +213,6 @@ package()
 
 	# install_tpm_emulator || return
 	install_numactl || return
-
-	[ "$DISTRO" = "debian" -o "$DISTRO" = "ubuntu" ] && {
-		install_rusers || return
-	}
 
 	split_tests || return
 
