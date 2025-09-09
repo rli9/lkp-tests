@@ -1,6 +1,5 @@
 acl
 attr
-build-essential
 debhelper
 gettext
 libacl1-dev
@@ -21,7 +20,6 @@ liburcu-dev
 liburing-dev
 libuuid1
 libzstd-dev
-pkg-config
 uuid-dev
 valgrind
 xfslibs-dev

@@ -1,5 +1,4 @@
 asciidoctor
-automake
 bash-completion
 cmake
 keyutils
@@ -8,12 +7,10 @@ libjson-c-dev
 libkeyutils-dev
 libkmod-dev
 libsystemd-dev
-libtool
 libtraceevent-dev
 libtracefs-dev
 libudev-dev
 meson
-pkg-config
 systemd-dev
 udev
 uuid-dev

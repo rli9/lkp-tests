@@ -8,6 +8,5 @@ libkeyutils-dev
 libkmod-dev
 libndctl-dev
 libudev-dev
-pkg-config
 udev
 uuid-dev

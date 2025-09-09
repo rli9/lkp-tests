@@ -2,4 +2,3 @@ autoconf
 libsystemd-dev
 ndctl
 pandoc
-pkg-config

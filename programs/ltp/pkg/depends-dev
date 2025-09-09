@@ -1,12 +1,9 @@
 acl-dev
 autoconf
-automake
-build-essential
 clang
 cmake
 debhelper
 devscripts
-gcc
 iproute
 jq
 libacl1-dev
@@ -20,7 +17,5 @@ libnuma-dev
 libsepol-dev
 libssl-dev
 libtirpc-dev
-libtool
 linux-libc-dev
-pkg-config
 xfslibs-dev

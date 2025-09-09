@@ -32,7 +32,6 @@ libvde-dev
 libvdeplug-dev
 libxen-dev
 ninja-build
-pkg-config
 python
 python-dev
 python-pip

@@ -1,5 +1,4 @@
 autoconf
-automake
 bc
 binutils-dev
 cmake
@@ -16,10 +15,8 @@ libpci-dev
 libpopt-dev
 libreadline-dev
 libssl-dev
-libtool
 libudev-dev
 libudev1
 m4
-pkg-config
 python-pip
 systemd

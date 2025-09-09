@@ -1,4 +1,3 @@
-build-essential
 libaio-dev
 libnuma-dev
 libpmem-dev (x86_64)

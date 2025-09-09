@@ -1,6 +1,4 @@
 binutils-dev
-bison
-flex
 libaudit-dev
 libbabeltrace-dev
 libcap-dev

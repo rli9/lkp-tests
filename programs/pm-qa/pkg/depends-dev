@@ -6,5 +6,4 @@ libpng-dev
 libudev-dev
 libwayland-dev
 libx11-dev
-pkg-config
 sudo

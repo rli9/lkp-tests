@@ -1,10 +1,8 @@
-bison
 comerr-dev
 e2fslibs-dev
 libaio-dev
 libopenmpi-dev
 ocfs2-tools-dev
 openmpi-bin
-pkg-config
 python-pip
 python-setuptools

@@ -1,5 +1,4 @@
 autoconf
-automake
 cmake
 libasound2-dev
 libc-bin
@@ -20,13 +19,11 @@ libkmod-dev
 libpciaccess-dev
 libpixman-1-dev
 libprocps-dev
-libtool
 libudev-dev
 libunwind-dev
 libxmlrpc-core-c3-dev
 make
 peg
-pkg-config
 python
 python-dev
 python-docutils

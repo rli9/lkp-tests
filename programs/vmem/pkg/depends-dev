@@ -6,6 +6,5 @@ libkeyutils-dev
 libkmod-dev
 libsystemd-dev
 libudev-dev
-pkg-config
 udev
 uuid-dev

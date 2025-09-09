@@ -3,5 +3,4 @@ gettext
 libncurses-dev
 libsqlite3-dev
 linux-libc-dev
-pkg-config
 uuid-runtime

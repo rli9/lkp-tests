@@ -1,8 +1,4 @@
-bison
-build-essential
 cmake
-flex
-git
 libclang-dev
 libedit-dev
 libelf-dev
