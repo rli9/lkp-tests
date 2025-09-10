@@ -13,7 +13,7 @@ cassandra::
 chromeswap::
 cyclictest::
 daxctl::
-dbench: tbench
+dbench:
 device-dax: ndctl
 ebizzy::
 energy: perf
