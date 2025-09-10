@@ -3,7 +3,7 @@ automake
 autotools-dev
 git
 kmod
-libiniparser4
+libiniparser
 libjson
 libkmod2
 libtool

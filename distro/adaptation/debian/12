@@ -12,7 +12,6 @@ lib64gcc-dev: lib64gcc-11-dev
 lib64gcc1: lib64gcc-s1
 libarchive: libarchive13
 libasan: libasan6
-libcilkrts5:
 libevent-openssl: libevent-openssl-2.1-7
 libevent: libevent-2.1-7
 libgcc-dev: libgcc-11-dev
@@ -21,12 +20,12 @@ libgsl: libgsl27
 libhugetlbfs: libhugetlbfs0
 libhwloc5: libhwloc15
 libicu: libicu72
+libiniparser: libiniparser1
 libipsec-mb: libipsec-mb1
 libisl: libisl23
 libjson: libjson-c5
 libldap: libldap-2.5-0
-libllvm: libllvm14
-libmpx2:
+libllvm: libllvm19
 libmysqlclient-dev: default-libmysqlclient-dev
 libnfs: libnfs13
 libntfs: libntfs-3g89
@@ -41,6 +40,7 @@ libssl: libssl3
 libstdc++-dev: libstdc++-11-dev
 libtiff: libtiff6
 libtirpc: libtirpc3
+libtsan0: libtsan2
 liburcu: liburcu8
 liburing: liburing2
 libwebp: libwebp7
@@ -55,3 +55,4 @@ python2:
 python3-tox: tox
 python: python3
 qt5-default: qtbase5-dev
+systemd-dev:
