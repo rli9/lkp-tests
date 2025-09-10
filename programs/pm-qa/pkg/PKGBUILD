@@ -4,8 +4,8 @@ pkgrel=1
 arch=('i386' 'x86_64' 'aarch64')
 url="https://git.linaro.org/power/pm-qa.git"
 license=('GPL')
-source=('https://git.linaro.org/power/pm-qa.git' https://github.com/glmark2/glmark2.git)
-sha256sums=('SKIP' 'SKIP')
+source=('https://git.linaro.org/power/pm-qa.git')
+sha256sums=('SKIP')
 
 . $LKP_SRC/lib/env.sh
 
@@ -15,19 +15,11 @@ build()
 	make -C cpuidle cpuidle_killer
 	cd utils
 	make
-
-	is_clearlinux && return
-
-	cd ${srcdir}/glmark2
-	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
-	mkdir -p $benchmark_path/glmark2
-	[ "$DISTRO" = "centos" -o "$DISTRO" = "aliyun" ] && sed -i 's/-std=c++14/-std=c++1y/' wscript
-	./waf configure --prefix=$benchmark_path/glmark2 --with-flavors=x11-gl || return
-	./waf || return
-	./waf install || return
 }
 
 package() {
 	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
+	mkdir -p ${benchmark_path}
+
 	cp -af "${srcdir}/${pkgname}/"* $benchmark_path
 }
