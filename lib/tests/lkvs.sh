@@ -30,6 +30,9 @@ build_lkvs()
 
 	[[ -f $BENCHMARK_ROOT/$suite/lkvs/BM/$test/Makefile ]] || return 0
 
+	# only BM/pt needs the 3rd party library libipt
+	[[ $test = pt ]] && build_libipt
+
 	cd_benchmark $suite/lkvs/BM/$test
 
 	log_cmd make --keep-going 2>&1 || {
