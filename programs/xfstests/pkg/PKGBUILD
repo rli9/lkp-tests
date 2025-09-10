@@ -161,10 +161,15 @@ build()
 	mkdir -p ${benchmark_path}/tests
 
 	cd $srcdir
-	build_install_xfstests || return
-	build_install_f2fs_tools || return
-	build_install_bcachefs_tools || return
+	build_install_xfstests
+	build_install_f2fs_tools
+
 	build_install_e2fuzz
+
+	# skip the build on debian 13
+	[ $_system_name_lowercase = 'debian' ] && [ $_system_version -ge 13 ] && return
+
+	build_install_bcachefs_tools
 }
 
 package()
@@ -172,13 +177,13 @@ package()
 	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
 	cp -af $srcdir/xfstests-dev/* $benchmark_path
 
-	cp_to_pkg $CARGO_HOME
+	[ -d $CARGO_HOME ] && cp_to_pkg $CARGO_HOME
 
 	wget --no-check-certificate -O $benchmark_path/tools/find-api-violations.sh https://git.kernel.org/pub/scm/fs/xfs/xfsprogs-dev.git/plain/tools/find-api-violations.sh || return
 
-	generate_exclude_files || return
+	generate_exclude_files
 
-	generate_tests || return
+	generate_tests
 
 	split_tests
 }
