@@ -12,6 +12,21 @@ build_libipt()
 	cmake . && make install
 }
 
+build_accel_config()
+{
+	cd_benchmark $suite/lkvs/BM/tools/idxd-config
+
+	log_cmd ./autogen.sh 2>&1 || {
+		echo "accel_config autogen fail"
+		return 1
+	}
+
+	log_cmd ./configure CFLAGS='-g -O2' --prefix=/usr --sysconfdir=/etc --libdir=/usr/lib64 --enable-test=yes
+	log_cmd make && make install
+
+	return 0
+}
+
 build_lkvs_tools()
 {
 	cd_benchmark $suite/lkvs/BM/tools
@@ -27,6 +42,9 @@ build_lkvs_tools()
 build_lkvs()
 {
 	build_lkvs_tools || return
+
+	# BM/idxd and BM/dsa need accel-config tool
+	[[ $test = idxd || $test = dsa ]] && build_accel_config
 
 	[[ -f $BENCHMARK_ROOT/$suite/lkvs/BM/$test/Makefile ]] || return 0
 
