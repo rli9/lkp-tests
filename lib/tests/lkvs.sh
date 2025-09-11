@@ -46,10 +46,10 @@ build_lkvs()
 	# BM/idxd and BM/dsa need accel-config tool
 	[[ $test = idxd || $test = dsa ]] && build_accel_config
 
-	[[ -f $BENCHMARK_ROOT/$suite/lkvs/BM/$test/Makefile ]] || return 0
-
 	# only BM/pt needs the 3rd party library libipt
 	[[ $test = pt ]] && build_libipt
+
+	[[ -f $BENCHMARK_ROOT/$suite/lkvs/BM/$test/Makefile ]] || return 0
 
 	cd_benchmark $suite/lkvs/BM/$test
 
