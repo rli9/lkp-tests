@@ -50,11 +50,6 @@ show_pack_list()
 	rm $tmp_input &>/dev/null
 }
 
-install_runtime_depends()
-{
-	:
-}
-
 update()
 {
 	:

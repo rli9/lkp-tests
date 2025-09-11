@@ -24,7 +24,6 @@ fakeroot
 flex
 bison
 libssl-dev
-libipc-run-perl
 libc6-dev-x32 (x86_64)
 linux-cpupower
 pkg-config

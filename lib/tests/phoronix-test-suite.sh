@@ -173,7 +173,7 @@ fixup_mysqlslap()
 	[ -n "$environment_directory" ] || return
 	local test=$1
 	local target=$environment_directory/../test-profiles/pts/${test}/pre.sh
-	is_clearlinux && sed -i 's,mysqld_safe --no-defaults,mysqld --user root --log-error=/tmp/log,' "$target"
+
 	sed -i '4a groupadd mysql' "$target"
 	sed -i '5a useradd -g mysql mysql' "$target"
 	sed -i '6a chown -R mysql:mysql data' "$target"
@@ -246,7 +246,7 @@ fixup_fio()
 	modprobe loop || return
 	mount -t auto -o loop $test_disk $test_dir ||return
 
-	is_clearlinux || sed -i 's,#!/bin/sh,#!/bin/dash,' "$target"
+	sed -i 's,#!/bin/sh,#!/bin/dash,' "$target"
 	sed -i "s#filename=\$DIRECTORY_TO_TEST#filename=$test_dir/fiofile#" "$target"
 
 	# Choose
@@ -333,11 +333,8 @@ fixup_network_loopback()
 	[ -n "$environment_directory" ] || return
 	local test=$1
 	local target=${environment_directory}/pts/${test}/network-loopback
-	if is_clearlinux; then
-		sed -i 's,nc -d -l,nc -l,' $target
-	else
-		sed -i 's,nc -d -l,nc -l -p,' $target
-	fi
+
+	sed -i 's,nc -d -l,nc -l -p,' $target
 }
 
 fixup_mcperf()
@@ -516,7 +513,7 @@ fixup_install()
 		;;
 	clpeak-*)
 		# fix issue: Could not find OpenCL include/libs.  Set OPENCL_ROOT to your OpenCL SDK.
-		is_clearlinux || fixup_clpeak_install $test
+		fixup_clpeak_install $test
 		;;
 	numenta-nab-*)
 		# fix issue: No matching distribution found for nupic==1.0.5 (from nab==1.0)
@@ -717,7 +714,7 @@ fixup_test()
 			fixup_aom_av1 $test
 			;;
 		bullet-*)
-			is_clearlinux || fixup_bullet $test
+			fixup_bullet $test
 			;;
 		gpu-residency-*)
 			fixup_gpu_residency $test
@@ -795,11 +792,9 @@ run_test()
 
 	[ "$test_opt" ] && echo "test_opt: $test_opt"
 
-	is_clearlinux || {
-		root_access="/usr/share/phoronix-test-suite/pts-core/static/root-access.sh"
-		[ -f "$root_access" ] || die "$root_access not exist"
-		sed -i 's,#!/bin/sh,#!/bin/dash,' $root_access
-	}
+	root_access="/usr/share/phoronix-test-suite/pts-core/static/root-access.sh"
+	[ -f "$root_access" ] || die "$root_access not exist"
+	sed -i 's,#!/bin/sh,#!/bin/dash,' $root_access
 
 	phoronix-test-suite list-installed-tests | grep -q $test || die "$test is not installed"
 

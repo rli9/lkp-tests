@@ -157,22 +157,11 @@ add_lkp_user()
 	fi
 }
 
-clearlinux_timesync()
-{
-	echo "[Time]" >/etc/systemd/timesyncd.conf
-	echo "NTP=internal-lkp-server" >>/etc/systemd/timesyncd.conf
-	timedatectl set-ntp false
-	timedatectl set-ntp true
-	hwclock -w
-}
-
 run_ntpdate()
 {
 	[ -z "$NO_NETWORK" ] || return
 
 	[ "$LKP_SERVER" = internal-lkp-server ] || return
-
-	is_clearlinux && clearlinux_timesync && return
 
 	[ -x '/usr/sbin/ntpdate' ] || return
 
@@ -364,23 +353,8 @@ try_get_and_set_distro()
 	DISTRO=${DISTRO##*/}
 }
 
-try_install_runtime_depends()
-{
-	[ "$LKP_LOCAL_RUN" = "1" ] && return
-
-	# 0Day only
-	[ "$require_install_depends" != "1" ] && return
-	try_get_and_set_distro || return
-	[ -f $LKP_SRC/distro/$DISTRO ] || return
-
-	. $LKP_SRC/distro/$DISTRO
-	install_runtime_depends $job 2>&1 | grep -v "Out of memory"
-}
-
 fixup_packages()
 {
-	try_install_runtime_depends
-
 	install_deb
 
 	install_rpms
@@ -722,7 +696,7 @@ boot_init()
 
 	mount_debugfs
 
-	if is_clearlinux || is_aliyunos; then
+	if is_aliyunos; then
 		add_nfs_default_options
 	fi
 

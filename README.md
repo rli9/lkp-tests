@@ -16,7 +16,7 @@
 ```
 	# browse and select a job you want to run, for example, jobs/hackbench.yaml
 	ls lkp-tests/jobs
-	
+
 	# install the common dependencies for lkp
 	# Note: lkp doesn't support ruby >= 3.0, default ruby version should be 2.x
 	lkp install
@@ -106,7 +106,6 @@ There is however some initial support for:
 - OpenSUSE:
 	- jobs/trinity.yaml
 - Fedora
-- Clear Linux(>=22640)
 
 As for now, lkp-tests still needs to run as root.
 

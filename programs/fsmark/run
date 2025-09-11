@@ -104,8 +104,6 @@ calc_nr_file()
 
 calc_nr_file
 
-export PATH="$PATH:$BENCHMARK_ROOT/fsmark"
-
 nr_directories=${nr_directories%d}
 nr_files_per_directory=${nr_files_per_directory%fpd}
 if [ -z "$nr_directories" -a -n "$nr_files_per_directory" ]; then

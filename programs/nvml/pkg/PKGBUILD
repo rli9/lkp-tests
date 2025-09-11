@@ -94,11 +94,9 @@ package()
 	cp -af "${srcdir}/${pkgname}" "${benchmark_path}"
 	. $LKP_SRC/lib/env.sh
 
-	is_clearlinux || {
-		cd "${srcdir}/valgrind"
-		make DESTDIR="${pkgdir}" install
-		cd "${srcdir}/libfabric"
-		make DESTDIR="${pkgdir}" install
-		cp -af "/usr/local/libcxx" "${pkgdir}/usr/local"
-	}
+	cd "${srcdir}/valgrind"
+	make DESTDIR="${pkgdir}" install
+	cd "${srcdir}/libfabric"
+	make DESTDIR="${pkgdir}" install
+	cp -af "/usr/local/libcxx" "${pkgdir}/usr/local"
 }
