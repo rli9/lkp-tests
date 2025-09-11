@@ -56,7 +56,6 @@ oltp::
 openssl-speed::
 otc-ddt::
 packetdrill::
-pbzip2::
 pepc::
 perf-bench-futex: perf
 perf-c2c: perf
@@ -73,8 +72,6 @@ perf::
 pft::
 phpbench::
 piglit::
-pixz::
-plzip::
 pm-qa::
 pmbench::
 pmu-tools::

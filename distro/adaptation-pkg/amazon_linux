@@ -68,7 +68,6 @@ oltp::
 openssl-speed::
 otc-ddt::
 packetdrill::
-pbzip2::
 pepc::
 perf-bench-futex: perf
 perf-c2c: perf
@@ -86,8 +85,6 @@ pft::
 phoronix-test-suite::
 phpbench::
 piglit::
-pixz::
-plzip::
 pm-qa::
 pmbench::
 pmdk::
