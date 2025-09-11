@@ -89,7 +89,6 @@ pm-qa::
 pmbench::
 pmdk::
 pmu-tools::
-postmark::
 pybench::
 qat::
 qemu-next::

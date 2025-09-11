@@ -82,7 +82,6 @@ piglit::
 pm-qa::
 pmbench::
 pmu-tools::
-postmark::
 pybench::
 qat::
 qemu-next::
