@@ -15,6 +15,7 @@ libevent-openssl: libevent-openssl-2.1-7
 libevent: libevent-2.1-7
 libglut3: libglut3.12
 libgsl: libgsl27
+libiniparser:
 libipsec-mb: libipsec-mb1
 libjson: libjson-c5
 libldap: libldap2
