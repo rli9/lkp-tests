@@ -33,6 +33,8 @@ module Git
       command('rev-list', ['-1', commit])
     rescue StandardError
       false
+    else
+      true
     end
 
     def remote_exist?(remote)
