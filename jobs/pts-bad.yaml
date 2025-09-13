@@ -2,8 +2,6 @@ suite: phoronix-test-suite
 testcase: phoronix-test-suite
 category: benchmark
 
-times_to_run: 1
-
 phoronix-test-suite:
   - test:
     - ai-benchmark-1.0.2 # E: AttributeError: module 'numpy' has no attribute 'warnings'. Did you mean: 'hanning'?

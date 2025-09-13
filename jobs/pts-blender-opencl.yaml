@@ -3,7 +3,6 @@ testcase: phoronix-test-suite
 category: benchmark
 
 need_memory: 8G
-times_to_run: 1
 
 phoronix-test-suite:
   - test: blender-4.0.0

@@ -2,8 +2,6 @@ suite: phoronix-test-suite
 testcase: phoronix-test-suite
 category: benchmark
 
-times_to_run: 1
-
 phoronix-test-suite:
   - test: svt-av1-2.11.1
     option_a:

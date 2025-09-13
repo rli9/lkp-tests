@@ -412,14 +412,12 @@ phoronix-test-suite:
       - CryptoNight-Heavy
       - KawPow
       - GhostRider
-    times_to_run: 1
 
   - test: quicksilver-1.0.0
     option_a:
       - CORAL2 P1
       - CORAL2 P2
       - CTS2
-    times_to_run: 1
 
   - test: t-test1-1.0.1
     option_a:

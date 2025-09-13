@@ -298,7 +298,6 @@ phoronix-test-suite:
       - Platform
       - Video On Demand
       # - Upload # this is duplicate to the second
-    times_to_run: 1
 
   - test: fftw-1.2.0
     option_a:
@@ -561,7 +560,6 @@ phoronix-test-suite:
       # - 64
       - 128
       - 256
-    times_to_run: 1
 
   - test: draco-1.6.1
     option_a:
