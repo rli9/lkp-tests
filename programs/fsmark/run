@@ -34,8 +34,9 @@
 . $LKP_SRC/lib/env.sh
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/run.sh
 
-cd $BENCHMARK_ROOT || die "no $BENCHMARK_ROOT"
+cd_benchmark
 
 # NOTE: support 1 disk test only so far
 test_dir=${mount_points%% *}
@@ -114,7 +115,7 @@ if [ "$nr_directories" -a "$nr_files_per_directory" ]; then
 	PARAM="${PARAM} -D $nr_directories -N $nr_files_per_directory"
 fi
 
-log_cmd fs_mark \
+log_cmd ./fs_mark \
 	$PARAM \
 	-n $nr_files	\
 	-L $iterations \
