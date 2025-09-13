@@ -13,5 +13,5 @@ fs1:
 postmark:
   number:
     - {{ fs =~ /ext4|xfs/ ? '1000n' : '4000n' }}
-  trans: 30000s
+  trans: 10000s
   subdirs: 100d
