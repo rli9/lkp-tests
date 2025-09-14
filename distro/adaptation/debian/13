@@ -62,6 +62,7 @@ libwebp: libwebp7
 libx32asan5: libx32asan8
 libx32gcc-dev: libx32gcc-12-dev
 libx32gcc1: libx32gcc-s1
+libxmlrpc-core-c3: libxmlrpc-core-c3t64
 linux-libc-dev:i386:
 mcelog: rasdaemon
 netpipe-pvm:
