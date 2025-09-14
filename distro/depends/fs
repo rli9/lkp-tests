@@ -7,3 +7,4 @@ libselinux1
 uuid-dev
 samba
 cifs-utils
+e2fsprogs
