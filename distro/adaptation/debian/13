@@ -15,6 +15,7 @@ libaio: libaio1t64
 libarchive: libarchive13t64
 libasan: libasan8
 libcapstone4: libcapstone5
+libdrm: libdrm2
 libdw1: libdw1t64
 libelf1: libelf1t64
 libevent-openssl: libevent-openssl-2.1-7t64
@@ -62,6 +63,7 @@ libwebp: libwebp7
 libx32asan5: libx32asan8
 libx32gcc-dev: libx32gcc-12-dev
 libx32gcc1: libx32gcc-s1
+libxmlrpc-core-c3: libxmlrpc-core-c3t64
 linux-libc-dev:i386:
 mcelog: rasdaemon
 netpipe-pvm:
