@@ -15,6 +15,7 @@
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/fs_ext.sh
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/env.sh
 
 [ -n "$mount_option" ] && mount_option="-o $mount_option"
 
@@ -90,6 +91,8 @@ is_btrfs_raid_levels() {
 
 make_fs() {
 	is_btrfs_raid_levels && {
+		has_cmd mkfs.$fs || die "failed to find mkfs.$fs"
+
 		log_cmd mkfs.btrfs --data ${raid_level#b} -m ${raid_level#b} $mkfs $ensure_mkfs $partitions || exit
 		return
 	}
@@ -102,6 +105,8 @@ make_fs() {
 	for dev in $bdevs
 	do
 		if [ ! "$format" = 'n' ]; then
+			has_cmd mkfs.$fs || die "failed to find mkfs.$fs"
+
 			log_cmd mkfs -t $fs ${mkfs:-$def_mkfs} $ensure_mkfs $dev &
 		fi
 		pids="${pids} $! "
