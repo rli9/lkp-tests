@@ -149,7 +149,7 @@ pkgbuild_build_qemu()
 
 	update_submodules || return
 
-	log_cmd ./configure --target-list="$qemu_config" --disable-docs --enable-kvm --prefix=${pkgdir} || return
+	log_cmd ./configure --target-list="$qemu_config" --disable-docs --enable-kvm --prefix=${pkgdir}/usr || return
 
 	unset LDFLAGS
 	log_cmd make -j $nr_cpu 2>&1
@@ -164,15 +164,8 @@ pack_qemu()
 
 	log_cmd cd "$srcdir/$qemu_remote"
 
-	log_cmd make install V=1 || return
-
-	# remove var/run dir as it conflicts with debian rootfs which has /var/run links to /run
-	log_cmd cd $pkgdir
-
-	log_cmd ls -lrt
-	log_cmd ls -lrt var/run
-	log_cmd rm -rf var
+	log_cmd make install V=1
 
 	# create /bin/kvm link that app like avocado list requires kvm bin
-	log_cmd ln -s qemu-system-x86_64 bin/kvm
+	log_cmd ln -s qemu-system-x86_64 $pkgdir/usr/bin/kvm
 }
