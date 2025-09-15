@@ -36,9 +36,15 @@ else
 	generic_packages="$(find $LKP_SRC -type f -name depends\* | list_packages)"
 fi
 
+echo "== generic_packages =="
+echo "$generic_packages"
+echo
 packages=$(map_packages)
-
+echo "== packages =="
+echo "$packages"
+echo
 [[ "$distro" =~ (debian|ubuntu) ]] && extra_option="--dry-run"
 
 echo "$LKP_SRC/distro/installer/$distro $extra_option" 1>&2
+echo $LKP_SRC/distro/installer/$distro $extra_option $packages
 $LKP_SRC/distro/installer/$distro $extra_option $packages
