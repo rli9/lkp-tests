@@ -6,6 +6,7 @@ bison
 build-essential
 clang
 conntrack
+dc
 dropwatch
 e2fsprogs
 ebtables
