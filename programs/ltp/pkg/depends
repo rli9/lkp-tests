@@ -31,6 +31,7 @@ iptables
 iputils-clockdiff
 iputils-ping
 iputils-tracepath
+isc-dhcp-client
 isc-dhcp-server
 libaio
 libcap
