@@ -21,7 +21,8 @@ package() {
 	turbostat_path="${pkgdir}/lkp/benchmarks/turbostat"
 	mkdir -p "${turbostat_path}"
 	cp -a "${srcdir}/linux/tools/power/x86/turbostat/turbostat" "${turbostat_path}"
-	firmware_path="${pkgdir}/lib/firmware/"
+
+	firmware_path="${pkgdir}/usr/lib/firmware/"
 	mkdir -p $firmware_path
 	cp -af "${srcdir}/linux-firmware/"* "${firmware_path}"
 }
