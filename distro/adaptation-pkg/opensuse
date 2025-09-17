@@ -38,7 +38,6 @@ kvm-unit-tests-qemu::
 kvm-unit-tests::
 leaking-addresses::
 lib-micro::
-libfdt-dev::
 libhugetlbfs-test::
 libhugetlbfs::
 liblz-dev: lzlib
