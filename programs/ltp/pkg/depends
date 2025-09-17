@@ -13,6 +13,7 @@ dnsmasq
 dnsutils
 dosfstools
 dwarves
+e2fsprogs
 elfutils
 ethtool
 exfat-fuse
