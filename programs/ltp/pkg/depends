@@ -29,6 +29,7 @@ ima-evm-utils
 iproute
 iptables
 iputils-clockdiff
+iputils-ping
 iputils-tracepath
 isc-dhcp-server
 libaio
