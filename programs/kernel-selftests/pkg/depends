@@ -7,6 +7,7 @@ build-essential
 clang
 conntrack
 dropwatch
+e2fsprogs
 ebtables
 ethtool
 file
