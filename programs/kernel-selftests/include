@@ -220,6 +220,7 @@ need_kconfig:
 - NET_SCH_CHOKE: m
 - NET_SCH_CODEL: m
 - NET_SCH_DRR: m
+- NET_SCH_DUALPI2
 - NET_SCH_ETF: m
 - NET_SCH_FQ: m
 - NET_SCH_FQ_CODEL: m
