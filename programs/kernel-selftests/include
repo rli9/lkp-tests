@@ -322,7 +322,7 @@ need_kconfig:
 # drivers/platform/x86/intel/ifs
 - INTEL_IFS
 
-# drivers/net/team/config
+# drivers/net/team
 - NET_TEAM_MODE_LOADBALANCE
 - NET_TEAM
 
@@ -331,6 +331,10 @@ need_kconfig:
 - NET_VRF
 
 - VETH
+
+# drivers/net/virtio_net
+- VIRTIO_DEBUG
+
 % elsif ___.group == "wireguard"
 - IP_ADVANCED_ROUTER: y
 - IP_MULTIPLE_TABLES: y
