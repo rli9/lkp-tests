@@ -45,7 +45,7 @@ kernel-selftests:
     - ipc
     - ir
     - kcmp
-    - kexec
+    # - kexec # runtime > 7h on lkp-skl-d08
     - kmod
     - lib
     - livepatch
