@@ -86,6 +86,7 @@ kernel-selftests:
     - sched
     - sched_ext
     - seccomp
+    - sgx
     - signal
     - size
     # - sparc64
@@ -115,6 +116,7 @@ kernel-selftests:
     # - watchdog
 
     - wireguard
+    - x86
     - zram
 
 ---
@@ -164,3 +166,12 @@ kernel-selftests:
     - landlock
 
 kernel_cmdline: lsm=landlock
+
+---
+need_memory: 12G # lkp-icl-2sp5
+
+kernel-selftests:
+  group:
+    - kvm
+
+kernel_cmdline: kvm-intel.unrestricted_guest=0
