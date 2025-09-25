@@ -105,10 +105,6 @@ runtests()
 			cstate-server)
 				log_cmd ./runtests -f cstate/tests-server
 				;;
-			fred)
-				log_cmd insmod fred/fred_test_driver.ko
-				# No doc about how to get the test result after loading the module
-				;;
 			prefetchi)
 				log_cmd prefetchi/prefetchi
 				;;
