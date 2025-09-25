@@ -1,6 +1,7 @@
 suite: lkvs
 testcase: lkvs
 category: functional
+kernel_cmdline: "initcall_debug text log_buf_len=200M no_console_suspend ignore_loglevel intel_iommu=on,sm_on fred=on"
 
 lkvs:
   test:
