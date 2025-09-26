@@ -12,6 +12,7 @@ cassandra::
 chromeswap::
 cyclictest::
 daxctl::
+dbench:
 device-dax: ndctl
 eatmem: vm-scalability
 ebizzy::

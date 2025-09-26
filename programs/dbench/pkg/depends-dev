@@ -1,0 +1,5 @@
+libpopt-dev
+libsmbclient-dev
+samba-dev
+xsltproc
+zlib1g-dev
