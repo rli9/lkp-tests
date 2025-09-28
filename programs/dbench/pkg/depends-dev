@@ -1,5 +1,8 @@
+libiscsi-dev
+libnfs-dev
 libpopt-dev
 libsmbclient-dev
+libtirpc-dev
 samba-dev
 xsltproc
 zlib1g-dev

@@ -22,7 +22,6 @@ libpython2: libpython2.7
 libpython3:
 libstdc++-dev:
 libtiff: libtiff5
-libtirpc: libtirpc3
 libtraceevent-dev:
 libtraceevent1:
 libtracefs-dev:

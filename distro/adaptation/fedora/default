@@ -299,7 +299,6 @@ libtasn1-6:
 libteam-utils: teamd
 libtimedate-perl: perl-TimeDate
 libtirpc-dev: libtirpc-devel
-libtirpc3:
 libtool-bin: libtool
 libtraceevent-dev: libtraceevent-devel
 libtraceevent1: libtraceevent

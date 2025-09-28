@@ -24,7 +24,7 @@ librdmacm1
 libsqlite3-0
 libssl-dev
 libtasn1-6
-libtirpc3
+libtirpc
 multipath-tools
 nbd-client
 nbd-server

@@ -39,7 +39,6 @@ libreadline5: libreadline8
 libssl: libssl3
 libstdc++-dev: libstdc++-11-dev
 libtiff: libtiff6
-libtirpc: libtirpc3
 libtsan0: libtsan2
 liburcu: liburcu8
 liburing: liburing2

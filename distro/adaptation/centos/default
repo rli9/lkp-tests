@@ -349,7 +349,6 @@ libthai0: libthai
 libtimedate-perl: perl-TimeDate
 libtinfo-dev: ncurses-devel
 libtirpc-dev: libtirpc-devel
-libtirpc3:
 libtool-bin: libtool
 libtraceevent-dev: libtraceevent-devel
 libtraceevent1: libtraceevent
