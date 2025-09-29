@@ -4,6 +4,41 @@
 . $LKP_SRC/lib/install.sh
 . $LKP_SRC/lib/reproduce-log.sh
 
+get_benchmark_path()
+{
+	# pkgdir is like /tmp/lkp/dbench/pkg/dbench
+	echo "${pkgdir}/lkp/benchmarks/${pkgname}"
+}
+
+prepare_benchmark_path()
+{
+	export benchmark_path=$(get_benchmark_path)
+
+	mkdir -p $benchmark_path
+}
+
+get_src_pkg_dir()
+{
+	local pkgname=${1:-$pkgname}
+
+	# srcdir is like /tmp/lkp/dbench/src
+	echo "$srcdir/$pkgname"
+}
+
+cd_src_pkg_dir()
+{
+	local src_pkg_dir=$(get_src_pkg_dir $1)
+
+	log_cmd cd $src_pkg_dir
+}
+
+rename_versioned_src_pkg_dir()
+{
+	local versioned_pkgname=${1:-$pkgname-$pkgver}
+
+	log_cmd mv "$srcdir/$versioned_pkgname" "$srcdir/$pkgname"
+}
+
 pip3_install()
 {
 	local package=$1
@@ -16,7 +51,7 @@ pip3_install()
 
 build_pahole()
 {
-	log_cmd cd "${srcdir}/pahole"
+	cd_src_pkg_dir pahole
 
 	mkdir build
 	cd build
@@ -28,7 +63,7 @@ build_pahole()
 
 build_dropwatch()
 {
-	cd $srcdir/dropwatch
+	cd_src_pkg_dir dropwatch
 
 	# when use latest 1.5.4 in Debian 10, compile error:
 	# configure: error: libreadline is required
@@ -37,36 +72,36 @@ build_dropwatch()
 	# so, keeps 1.5.3 in Debian 10/Debian 11.
 	local distro=$(basename $rootfs)
 	if [[ "$distro" =~ "debian-12" ]]; then
-		git checkout v1.5.4 || return
+		git checkout v1.5.4
 	else
-		git checkout v1.5.3 || return
+		git checkout v1.5.3
 	fi
 
-	./autogen.sh || return
-	./configure --prefix=$benchmark_path/$pkgname/dropwatch || return
-	make 2>&1 || return
+	./autogen.sh
+	./configure --prefix=$benchmark_path/$pkgname/dropwatch
+	make 2>&1
 	make install
 }
 
 build_iproute2()
 {
-	cd $srcdir/iproute2-next
+	cd_src_pkg_dir iproute2-next
 
-	./configure || return
-	make 2>&1 || return
+	./configure
+	make 2>&1
 	DESTDIR=$benchmark_path/$pkgname/iproute2-next make install
 }
 
 build_edk2()
 {
-	log_cmd cd "$srcdir/edk2"
+	cd_src_pkg_dir edk2
 
 	source edksetup.sh BaseTools
 
 	git submodule init
-	git submodule update --recursive || return
+	git submodule update --recursive
 
-	log_cmd make -C BaseTools/Source/C 2>&1 || return
+	log_cmd make -C BaseTools/Source/C 2>&1
 
 	# generate Build/OvmfX64/DEBUG_GCC5/FV/OVMF.fd
 	log_cmd OvmfPkg/build.sh -a X64 -n 112
@@ -74,7 +109,7 @@ build_edk2()
 
 pack_edk2()
 {
-	cp_to_pkg "$srcdir/edk2/Build/OvmfX64/DEBUG_GCC5/FV/OVMF.fd" "${pkgdir}/lkp/benchmarks/edk2/Build/OvmfX64/DEBUG_GCC5/FV"
+	pack_contents "$srcdir/edk2/Build/OvmfX64/DEBUG_GCC5/FV/OVMF.fd" "${pkgdir}/lkp/benchmarks/edk2/Build/OvmfX64/DEBUG_GCC5/FV"
 }
 
 pack_avocado_vt()
@@ -99,13 +134,13 @@ EOT
 	rm -rf $avocado_data_dir/avocado-vt/images/*
 	find $avocado_data_dir/avocado-vt/virttest/test-providers.d -name .git -type d | xargs rm -rf
 
-	cp_to_pkg "$avocado_conf_file"
-	cp_to_pkg "$avocado_data_dir"
+	pack_contents "$avocado_conf_file"
+	pack_contents "$avocado_data_dir"
 
 	# packages location
 	#   debian: /usr/lib/python3/dist-packages/ and /usr/local/lib/python3.x/dist-packages/
 	#   centos: /usr/lib/python3.x/site-packages/ and /usr/local/lib/python3.x/site-packages/
-	cp_to_pkg /usr/lib/python3*
+	pack_contents /usr/lib/python3*
 
 	# /usr/local/lib/python3.11/dist-packages# ls -d avocado*
 	# avocado  avocado_framework-107.0.egg-info  avocado_framework_plugin_vt-104.0.dist-info  avocado_vt
@@ -113,18 +148,51 @@ EOT
 	# # find / -name pytest
 	# /usr/local/bin/pytest
 	# /usr/local/lib/python3.9/site-packages/pytest
-	cp_to_pkg /usr/local
+	pack_contents /usr/local
 }
 
-# cp_to_pkg /usr/lib/python3
-# cp_to_pkg "$srcdir/lkvs/KVM" "${pkgdir}/lkp/benchmarks/lkvs"
-cp_to_pkg()
+# pack_contents /usr/lib/python3
+# pack_contents "$srcdir/lkvs/KVM" "${pkgdir}/lkp/benchmarks/lkvs"
+pack_contents()
 {
-	local src="$1"
-	local dst_dir="${2:-${pkgdir}$(dirname $src)}"
+	if [[ "$#" == 0 ]]; then
+		echo "$FUNCNAME: miss argument" 1>&2
+		return 1
+	elif [[ "$#" == 1 ]]; then
+		local src="$1"
+		[[ $src ]] || return
 
-	log_cmd mkdir -p "$dst_dir"
-	log_cmd cp -af $src "$dst_dir"
+		pack_contents "$src" "$pkgdir/$(dirname $src)"
+	else
+		# last argument is dst_dir
+		mkdir -p "${!#}"
+
+		log_cmd cp -a $@
+	fi
+}
+
+pack_src_pkg_contents()
+{
+	if [[ "$#" == 0 ]]; then
+		pack_contents "$(get_src_pkg_dir)/." "$benchmark_path"
+	else
+		(
+			cd $(get_src_pkg_dir)
+
+			pack_contents $@ "$benchmark_path"
+		)
+	fi
+}
+
+pack_src_pkg_execs()
+{
+	local exec_prefix=${1:-.}
+
+	(
+		cd $(get_src_pkg_dir)
+
+		find . -maxdepth 1 -type f -executable ! -name "${exec_prefix}*" -exec cp -af {} $benchmark_path \;
+	)
 }
 
 update_submodules()
@@ -143,13 +211,13 @@ pkgbuild_build_qemu()
 
 	local qemu_remote=${qemu_branch%%/*}
 
-	log_cmd cd "$srcdir/$qemu_remote"
+	cd_src_pkg_dir $qemu_remote
 
-	log_cmd git checkout -q $qemu_commit || return
+	log_cmd git checkout -q $qemu_commit
 
-	update_submodules || return
+	update_submodules
 
-	log_cmd ./configure --target-list="$qemu_config" --disable-docs --enable-kvm --prefix=${pkgdir}/usr || return
+	log_cmd ./configure --target-list="$qemu_config" --disable-docs --enable-kvm --prefix=${pkgdir}/usr
 
 	unset LDFLAGS
 	log_cmd make -j $nr_cpu 2>&1
@@ -158,11 +226,11 @@ pkgbuild_build_qemu()
 pack_qemu()
 {
 	local qemu_branch=$1
-	[ -n "$qemu_branch" ] || return
+	[[ -n "$qemu_branch" ]] || return
 
 	local qemu_remote=${qemu_branch%%/*}
 
-	log_cmd cd "$srcdir/$qemu_remote"
+	cd_src_pkg_dir $qemu_remote
 
 	log_cmd make install V=1
 

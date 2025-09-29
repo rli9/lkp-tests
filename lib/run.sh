@@ -5,11 +5,35 @@
 
 cd_benchmark()
 {
-	local suite=${1:-$suite}
+	local benchmark_path=$(get_benchmark_path $1)
 
+	log_cmd cd $benchmark_path || die "$benchmark_path does not exist"
+}
+
+get_benchmark_path()
+{
+	local suite=${1:-$suite}
 	[ -n "$suite" ] || die "suite argument is empty"
 
-	log_cmd cd $BENCHMARK_ROOT/$suite || die "$BENCHMARK_ROOT/$suite does not exist"
+	echo $BENCHMARK_ROOT/$suite
+}
+
+prepare_exec_path()
+{
+	local exec_name=${1:-$suite}
+	local benchmark_path=$(get_benchmark_path)
+
+	local exec_path
+	for exec_path in $benchmark_path $benchmark_path/usr/local/bin $benchmark_path/bin
+	do
+		[ -f "$exec_path/$exec_name" ] && {
+			export PATH=$exec_path:$PATH
+			echo "PATH=$PATH"
+			return
+		}
+	done
+
+	die "$exec_name is not found"
 }
 
 report_ops()
