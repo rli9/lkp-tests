@@ -4,18 +4,27 @@ pkgrel=1
 arch=('i386' 'x86_64' 'aarch64')
 url="https://github.com/jedisct1/Blogbench"
 license=('GPL')
-source=("https://download.pureftpd.org/pub/blogbench/blogbench-${pkgver}.tar.gz")
+source=("https://download.pureftpd.org/pub/blogbench/$pkgname-$pkgver.tar.gz")
 sha256sums=('SKIP')
+
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+	rename_versioned_src_pkg_dir
+}
 
 build()
 {
-	cd "${srcdir}/${pkgname}-${pkgver}"
+	cd_src_pkg_dir
+
 	cp /usr/share/misc/config.{guess,sub} .
 	./configure
 	make
 }
 
-package() {
-	mkdir -p "${pkgdir}/lkp/benchmarks/${pkgname}"
-	cp -af "$srcdir/${pkgname}-${pkgver}/src/blogbench" "${pkgdir}/lkp/benchmarks/${pkgname}"
+package()
+{
+	pack_src_pkg_contents src/blogbench
 }
