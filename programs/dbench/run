@@ -11,37 +11,50 @@
 . $LKP_SRC/lib/env.sh
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/reproduce-log.sh
+. $LKP_SRC/lib/run.sh
 
 run_dbench()
 {
-	client_file=/usr/local/share/client.txt
-	[ -f "$client_file" ] || client_file=/usr/share/dbench/client.txt
-	[ -f "$client_file" ] || die "can not find client.txt"
-	log_cmd dbench $nr_threads -c $client_file
+	load_file=loadfiles/client.load
+	[ -f "$load_file" ] || die "can not find $load_file"
+
+	log_cmd dbench $nr_threads -c $load_file
 }
 
 run_cifsdbench()
 {
-	# https://dbench.samba.org/loadfiles/smb.txt
-	#./dbench -B smb --smb-share=//10.0.0.33/data --smb-user=Administrator%password --loadfile=smb-writefiles.txt --run-once --skip-cleanup 10
+	# https://dbench.samba.org/loadfiles/smb.load
+	# dbench -B smb --smb-share=//10.0.0.33/data --smb-user=Administrator%password --loadfile=smb-writefiles.load --run-once --skip-cleanup 10
 	# dbench version 4.00 - Copyright Andrew Tridgell 1999-2004
 
 	log_cmd umount $cifs_mount_points
 	# First run is used to avoid below errors, it will be prepare files for next 2nd run
-	# [5] OPEN "client7/test.txt" failed
+	# [5] OPEN "client7/test.load" failed
 	# drop its output, otherwise it will confuse the stat
-	echo "dbench -B smb --smb-share=\"$cifs_server_paths\" --smb-user=root%pass --loadfile=/usr/local/share/smb_3.txt  --skip-cleanup -t 60 $nr_threads"
-	dbench -B smb --smb-share="$cifs_server_paths" --smb-user=root%pass --loadfile=/usr/local/share/smb_3.txt  --skip-cleanup -t 60 $nr_threads 1>/dev/null 2>&1
+	echo "dbench -B smb --smb-share=\"$cifs_server_paths\" --smb-user=root%pass --loadfile=loadfiles/smb_3.load -t 60 --skip-cleanup  $nr_threads"
+	dbench -B smb --smb-share="$cifs_server_paths" --smb-user=root%pass --loadfile=loadfiles/smb_3.load -t 60 --skip-cleanup $nr_threads 1>/dev/null 2>&1
+
 	sleep 2
-	log_cmd dbench -B smb --smb-share="$cifs_server_paths" --smb-user=root%pass --loadfile=/usr/local/share/smb_2.txt -t 60 --skip-cleanup $nr_threads
+
+	load_file=loadfiles/smb_2.load
+	[ -f "$load_file" ] || die "can not find $load_file"
+
+	log_cmd dbench -B smb --smb-share="$cifs_server_paths" --smb-user=root%pass --loadfile=$loadfiles -t 60 --skip-cleanup $nr_threads
 }
 
 run_nfsdbench()
 {
 	# https://dbench.samba.org/web/nfs-loadfiles.html
-	# ./dbench -B nfs --server=10.0.0.21 --export=/gpfs/nfsshare --protocol=tcp -c tmp.loadfile  -t 20 3 2>/dev/null
+	# dbench -B nfs --server=10.0.0.21 --export=/gpfs/nfsshare --protocol=tcp -c tmp.loadfile  -t 20 3 2>/dev/null
 	log_cmd umount $nfs_mount_points
-	log_cmd dbench -B nfs --server=127.0.0.1 --export=/export"$nfs_export_paths" --protocol=tcp --loadfile=/usr/local/share/nfs_2.txt -t 60 $nr_threads
+
+	load_file=loadfiles/nfs_2.load
+	[ -f "$load_file" ] || die "can not find $load_file"
+
+	dbench --help
+	log_cmd dbench -B nfs --server=127.0.0.1 --export=/export"$nfs_export_paths" --protocol=tcp --loadfile=$load_file -t 60 $nr_threads
 }
+
+prepare_exec_path
 
 run_"$fs2"dbench

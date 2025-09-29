@@ -1,4 +1,5 @@
+libiscsi
+libnfs
 libsmbclient
 libtirpc
-libtirpc3
 rpcsvc-proto

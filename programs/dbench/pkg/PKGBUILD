@@ -1,4 +1,4 @@
-pkgname=tbench
+pkgname=dbench
 pkgver=git
 pkgrel=1
 url='https://github.com/sahlberg/dbench'
@@ -7,35 +7,26 @@ license=('GPL')
 source=('https://github.com/sahlberg/dbench.git')
 md5sums=('SKIP')
 
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
+
 build()
 {
-	cd $srcdir/dbench
-	cp -a loadfiles/*.txt /usr/local/share/
+	cd_src_pkg_dir
 
-	./autogen.sh || return
-	./configure CFLAGS=$(pkg-config --cflags smbclient) || return
-	# Fix libnfs.c:27:39: error: intptr_t undeclared (first use in this function); did you mean in_port_t?
-	sed -i '/#include "nfs.h/a #include <stdint.h>' libnfs.c
-	# Fix fatal error: rpc/rpc.h: No such file or directory
-	[[ -e '/usr/include/rpc/rpc.h' ]] || cp /usr/include/tirpc/* /usr/include/ -rf
-	sed -i '/^LIBS=/ s/$/ -ltirpc/' Makefile
-	make dbench || return
-	make tbench || return
-	make tbench_srv || return
-	make install
+	./autogen.sh
+	./configure --prefix $benchmark_path
+
+	make dbench
 }
 
 package()
 {
-	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
-	usr_path="${pkgdir}/usr"
+	make install
 
-	mkdir -p $benchmark_path
-	mkdir -p $usr_path/local/bin
-	mkdir -p $usr_path/local/share
-
-	cd $srcdir/dbench
-	cp -a dbench tbench tbench_srv $usr_path/local/bin
-	cp -a /usr/local/share/*.txt $usr_path/local/share
-	touch $benchmark_path/empty
+	pack_src_pkg_contents loadfiles
 }
