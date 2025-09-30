@@ -64,6 +64,19 @@ update_shared_pkg()
 	echo "update shared pkg link ${benchmark}-${arch}.cgz -> $bm_link"
 }
 
+update_softlink()
+{
+	[ -e "$sync_dest/$cgz_name" ] || return
+
+	ln -sf "$(basename $(realpath $sync_dest/$cgz_name))" "$sync_dest/${bm_name}-${arch}.cgz" || return
+	echo "create package: $sync_dest/${bm_name}-${arch}.cgz -> $(realpath $sync_dest/$cgz_name)"
+
+	update_shared_pkg "${bm_name}-${arch}.cgz"
+
+	[ -L $sync_dest/$cgz_name ] || return 0
+	rm $sync_dest/$cgz_name
+}
+
 fixup_distro_mirror
 
 setup_proxy
@@ -84,19 +97,6 @@ bm_name=$(check_shared_pkg)
 cgz_name="${bm_name}-${arch}-${pkgver:-0}-${pkgrel:-0}_${date}.cgz"
 
 PACMAN=true BUILDDIR=$TMP CARCH=$arch PKGEXT=.cgz CGZDEST="$sync_dest/$cgz_name" \
-	$LKP_SRC/sbin/makepkg --config $(lkp_src)/etc/makepkg.conf
-
-update_softlink()
-{
-	[ -e "$sync_dest/$cgz_name" ] || return
-
-	ln -sf "$(basename $(realpath $sync_dest/$cgz_name))" "$sync_dest/${bm_name}-${arch}.cgz" || return
-	echo "create package: $sync_dest/${bm_name}-${arch}.cgz -> $(realpath $sync_dest/$cgz_name)"
-
-	update_shared_pkg "${bm_name}-${arch}.cgz"
-
-	[ -L $sync_dest/$cgz_name ] || return 0
-	rm $sync_dest/$cgz_name
-}
+	$LKP_SRC/sbin/makepkg --config $(lkp_src)/etc/makepkg.conf || exit
 
 update_softlink && echo "Makepkg finished successfully"
