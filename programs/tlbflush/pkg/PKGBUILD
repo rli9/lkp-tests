@@ -3,19 +3,25 @@ pkgver=1
 pkgrel=1
 arch=('i386' 'x86_64' 'aarch64')
 license=('GPL')
+source=('tlbflush.c')
+sha256sums=('SKIP')
 
 . $LKP_SRC/lib/install.sh
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
 
 build()
 {
 	cd "$srcdir"
-	cp $(get_pkg_dir $pkgname)/${pkgname}.c .
+
 	gcc -DFILE_SIZE=$((128*1048576)) -g -O2 "${pkgname}.c" -lpthread -o "${pkgname}"
 }
 
 package()
 {
-	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
-	mkdir -p "$benchmark_path"
-	cp -af "$srcdir/${pkgname}" "$benchmark_path"
+	pack_contents "$srcdir/$pkgname" "$benchmark_path"
 }
