@@ -4,17 +4,28 @@ pkgrel=1
 arch=('i386' 'x86_64' 'aarch64')
 url="https://git.linuxtv.org/v4l-utils.git/"
 license=('GPL')
-source=("git://linuxtv.org/v4l-utils.git" "https://github.com/umlaeute/v4l2loopback.git")
+source=("$pkgname"::"git://linuxtv.org/v4l-utils.git"
+	"https://github.com/umlaeute/v4l2loopback.git")
 md5sums=('SKIP' 'SKIP')
 
-build() {
-	cd "$srcdir/v4l-utils"
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
+
+build()
+{
+	cd_src_pkg_dir
 
 	meson setup build/
 	ninja -C build/
-	DESTDIR="${pkgdir}/lkp/benchmarks/v4l2" ninja -C build/ install
 }
 
-package() {
-	cp -af "$srcdir/v4l2loopback" "${pkgdir}/lkp/benchmarks"
+package()
+{
+	DESTDIR=$benchmark_path ninja -C build/ install
+
+	pack_contents "$srcdir/v4l2loopback" "${pkgdir}/lkp/benchmarks"
 }

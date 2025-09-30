@@ -1,17 +1,17 @@
 #!/bin/bash
 # - test
 
-export PATH="$BENCHMARK_ROOT"/v4l2/bin:"$PATH"
-
 . "$LKP_SRC"/lib/debug.sh
 . "$LKP_SRC"/lib/reproduce-log.sh
+. "$LKP_SRC"/lib/run.sh
 
 ## If don't have /dev/video, call build_simulator to simulate video device.
 ## Simulator v4l2loopback will create a kernel module v4l2loopback.
 ## Need current kernel project to build simulator.
 build_simulator()
 {
-	cd "$BENCHMARK_ROOT"/v4l2loopback || die "Simulator dir doesn't exist"
+	cd_benchmark v4l2loopback
+
 	log_cmd make 2>&1 || die "Failed to make simulator"
 	log_cmd make install 2>&1 || die "Failed to install simulator"
 	log_cmd depmod -a 2>&1 || die "Failed to depmod"
@@ -33,9 +33,10 @@ run()
 		;;
 	esac
 
-
 	log_cmd v4l2-compliance $test_option $test_dev 2>&1
 	echo "Test finished"
 }
+
+prepare_exec_path v4l2-compliance
 
 run
