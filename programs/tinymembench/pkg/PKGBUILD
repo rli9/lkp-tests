@@ -6,12 +6,20 @@ license=('MIT')
 source=("$pkgname"::"https://github.com/ssvb/tinymembench.git")
 md5sums=('SKIP')
 
-build() {
-	cd "$srcdir/$pkgname"
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
+
+build()
+{
+	cd_src_pkg_dir
 	make
 }
 
-package() {
-	mkdir -p "$pkgdir/lkp/benchmarks/tinymembench"
-	cp -r "$srcdir/$pkgname/"* "$pkgdir/lkp/benchmarks/tinymembench"
+package()
+{
+	pack_src_pkg_contents
 }
