@@ -55,23 +55,23 @@ set_def_unit_size()
 {
 	if [ "${test#*shm}" != "$test" ]; then
 		if [ "${test#*lru}" != "$test" ]; then
-			unit_size=$(( shm_size / 2  ))
+			unit_size=$(( shm_size / 2 ))
 		else
-			unit_size=$(( shm_size * nr_cpu / 2  ))
+			unit_size=$(( shm_size * nr_cpu / 2 ))
 		fi
 	else
-		unit_size=$(( mem / 2  ))
+		unit_size=$(( mem / 2 ))
 	fi
 }
 
 set_repeat_count()
 {
-	size=$(( size * nr_node  ))
+	size=$(( size * nr_node ))
 	if [ -z "$unit_size" ]; then
 		set_def_unit_size
 	fi
-	[ "$unit_size" -gt "$size" ] && unit_size=$(( size  ))
-	repeat=$(( size / unit_size  ))
+	[ "$unit_size" -gt "$size" ] && unit_size=$(( size ))
+	repeat=$(( size / unit_size ))
 	echo "repeat count: $repeat"
 }
 
