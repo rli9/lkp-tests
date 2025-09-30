@@ -7,8 +7,23 @@ license=('GPL')
 source=("https://git.kernel.org/pub/scm/linux/kernel/git/rostedt/trace-cmd.git")
 md5sums=('SKIP')
 
-package() {
-	cd "$srcdir/trace-cmd"
-	make prefix="${pkgdir}/lkp/benchmarks/${pkgname}"
-	make prefix="${pkgdir}/lkp/benchmarks/${pkgname}" install
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
+
+build()
+{
+	cd_src_pkg_dir
+
+	make
+}
+
+package()
+{
+	cd_src_pkg_dir
+
+	make install prefix=$benchmark_path
 }
