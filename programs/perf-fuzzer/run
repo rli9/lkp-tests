@@ -12,7 +12,7 @@
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/run.sh
 
-cd_benchmark perf_event_tests/fuzzer
+cd_benchmark $suite/fuzzer
 
 # Check parameters
 [ -z "$number" ] && [ -z "$runtime" ] && die "number and runtime can not both be empty "
