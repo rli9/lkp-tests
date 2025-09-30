@@ -14,7 +14,7 @@ md5sums=('SKIP' 'SKIP' 'SKIP')
 
 build()
 {
-	cd "$srcdir/$pkgname"
+	cd_src_pkg_dir
 
 	build_edk2
 }
@@ -24,11 +24,11 @@ package()
 	local avocado_data_dir="/lkp/benchmarks/avocado/data"
 	pack_avocado_vt $avocado_data_dir
 
-	cp_to_pkg "$(get_pkg_dir $pkgname)/addon/*.cfg" "${pkgdir}$avocado_data_dir/avocado-vt/backends/qemu/cfg/"
-	cp_to_pkg "$srcdir/lkvs/KVM" "${pkgdir}/lkp/benchmarks/lkvs"
+	pack_contents "$(get_pkg_dir $pkgname)/addon/*.cfg" "${pkgdir}$avocado_data_dir/avocado-vt/backends/qemu/cfg/"
+	pack_contents "$srcdir/lkvs/KVM" "${pkgdir}/lkp/benchmarks/lkvs"
 
 	# required by lkvs/KVM/qemu/tests/x86_cpuid.py
-	cp_to_pkg "$srcdir/lkvs/BM" "${pkgdir}/lkp/benchmarks/lkvs"
+	pack_contents "$srcdir/lkvs/BM" "${pkgdir}/lkp/benchmarks/lkvs"
 
 	pack_edk2
 }
