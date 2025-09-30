@@ -4,18 +4,24 @@ pkgrel=1
 url="https://github.com/deater/perf_event_tests"
 arch=('x86_64' 'i386' 'riscv64' 'aarch64')
 license=('GPL')
-source=("https://github.com/deater/perf_event_tests.git")
+source=("$pkgname"::"https://github.com/deater/perf_event_tests.git")
 md5sums=('SKIP')
+
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
 
 build()
 {
-	cd "$srcdir/perf_event_tests"
+	cd_src_pkg_dir
 
 	make
 }
 
 package()
 {
-	mkdir -p "${pkgdir}/lkp/benchmarks"
-	cp -af "$srcdir/perf_event_tests" "${pkgdir}/lkp/benchmarks"
+	pack_src_pkg_contents
 }
