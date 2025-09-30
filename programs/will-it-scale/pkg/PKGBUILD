@@ -7,17 +7,20 @@ license=('GPL')
 source=('https://github.com/antonblanchard/will-it-scale.git')
 md5sums=('SKIP')
 
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
+
 build()
 {
-	cd $srcdir/${pkgname}
+	cd_src_pkg_dir
 	make
 }
 
 package()
 {
-	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
-	mkdir -p $benchmark_path
-	cd $srcdir/${pkgname}
-	find . -maxdepth 1 -type f -executable ! -name ".*" \
-		-exec cp -af {} $benchmark_path \;
+	pack_src_pkg_execs
 }

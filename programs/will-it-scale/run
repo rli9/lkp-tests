@@ -27,7 +27,7 @@ setup_params()
 {
 	iterations=$((3 + nr_node))
 	duration=$(( runtime / iterations / 2 - WARMUP_ITERATIONS ))
-	[ "$duration" -lt 5  ] && duration=5
+	[ "$duration" -lt 5 ] && duration=5
 }
 
 [ -n "$mode" ] || mode='both'
