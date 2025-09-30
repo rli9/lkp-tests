@@ -4,4 +4,8 @@
 # - cycles
 # - swap_targets
 
-LD_LIBRARY_PATH="/usr/lib/libblas;/usr/lib/lapack" python2 $BENCHMARK_ROOT/chromeswap/platform_CompressedSwapPerf.py
+. $LKP_SRC/lib/run.sh
+
+cd_benchmark
+
+LD_LIBRARY_PATH="/usr/lib/libblas;/usr/lib/lapack" python2 platform_CompressedSwapPerf.py
