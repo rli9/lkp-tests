@@ -24,7 +24,9 @@
 
 . "$LKP_SRC"/lib/reproduce-log.sh
 . "$LKP_SRC"/lib/numactl.sh
-export PATH=$BENCHMARK_ROOT/memtier_benchmark/:$PATH
+. "$LKP_SRC"/lib/run.sh
+
+prepare_exec_path memtier_benchmark
 
 : "${runtime:=600}"
 : "${nr_processes:=1}"
@@ -38,10 +40,7 @@ memtier_dir="$TMP/memtier-$instance_id"
 rm -rf "$memtier_dir"
 mkdir -p "$memtier_dir"
 
-[ -n "$key_max" ] || {
-	echo "$(basename $0) key_max must be specified!\n";
-	exit 1
-}
+[ -n "$key_max" ] || die "$(basename $0) key_max must be specified!\n"
 
 proc_key_max=$((key_max/nr_processes/nr_instances))
 
