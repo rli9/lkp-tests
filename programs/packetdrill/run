@@ -8,17 +8,17 @@
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/run.sh
 
-cd_benchmark $suite/gtests/net
+cd_benchmark $suite/gtests/net/packetdrill
 
 # fix the issue: open tun device: No such file or directory
 lsmod | grep -q tun || modprobe tun
 
-for f in $(find packetdrill -name "*.pkt" ! -name "*diag-ipv6*" | sort); do
+for f in $(find . -name "*.pkt" ! -name "*diag-ipv6*" | sort); do
 	echo "Running $f ..."
 	ip tcp_metrics flush all > /dev/null 2>&1
 	# default tolerance_usecs is 4000 us, allow 10 times(4000 us) on LKP
 	opts=$(grep -q -- --tolerance_usecs $f >/dev/null 2>&1 || echo "--tolerance_usecs=40000")
-	log_cmd packetdrill/packetdrill $opts $f 2>&1
+	log_cmd ./packetdrill $opts $f 2>&1
 	return_value=$?
 	if [ $return_value -eq 0 ]; then
 		echo "$f pass"
@@ -28,10 +28,9 @@ for f in $(find packetdrill -name "*.pkt" ! -name "*diag-ipv6*" | sort); do
 done
 
 # Pass --tolerance_usecs=100000 to packetdrill command
-grep -q -- --tolerance_usecs packetdrill/run_all.py || sed -ri \
-'s/(--send_omit_free)/\1 --tolerance_usecs=100000/g' packetdrill/run_all.py
+grep -q -- --tolerance_usecs ./run_all.py || sed -ri 's/(--send_omit_free)/\1 --tolerance_usecs=100000/g' ./run_all.py
 
 # Use run_all.py to run tcp tests
-log_cmd packetdrill/run_all.py -L -l -v tcp 2>&1
+log_cmd ./run_all.py -L -l -v tcp 2>&1
 
 exit 0

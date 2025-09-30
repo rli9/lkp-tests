@@ -7,9 +7,16 @@ license=('GPL')
 source=('https://github.com/google/packetdrill.git')
 md5sums=('SKIP')
 
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
+
 build()
 {
-	cd ${srcdir}/${pkgname}/gtests/net/packetdrill
+	cd_src_pkg_dir ${pkgname}/gtests/net/packetdrill
 
 	./configure
 	CPPFLAGS="" make
@@ -17,8 +24,5 @@ build()
 
 package()
 {
-	cd $srcdir/$pkgname
-
-	mkdir -p "${pkgdir}/lkp/benchmarks/${pkgname}"
-	cp -af ./* "${pkgdir}/lkp/benchmarks/${pkgname}"
+	pack_src_pkg_contents
 }
