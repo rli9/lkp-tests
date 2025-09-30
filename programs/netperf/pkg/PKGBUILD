@@ -7,9 +7,16 @@ license=('GPL')
 source=("https://github.com/HewlettPackard/netperf.git")
 md5sums=('SKIP')
 
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
+
 build()
 {
-	cd "$srcdir/$pkgname"
+	cd_src_pkg_dir
 
 	if [[ $CARCH == 'riscv64' ]]; then
 		. $LKP_SRC/lib/reproduce-log.sh
@@ -24,7 +31,7 @@ build()
 	sed -i 's/(netperf_sendfile/(len = netperf_sendfile/g' src/nettest_bsd.c
 
 	local configure_flags=(
-				--prefix="$pkgdir/lkp/benchmarks/$pkgname"
+				--prefix=$benchmark_path
 				--enable-demo
 				--enable-unixdomain
 				--enable-sctp
@@ -37,7 +44,9 @@ build()
 	make
 }
 
-package() {
-	cd "$srcdir/$pkgname"
+package()
+{
+	cd_src_pkg_dir
+
 	make install
 }
