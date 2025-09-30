@@ -9,28 +9,33 @@ arch=('i386' 'x86_64' 'aarch64')
 url=http://www.nongnu.org/nepim/
 license=(GPL)
 depends=(liboop)
-source=("http://download.savannah.gnu.org/releases/nepim/nepim-${pkgver}.tar.gz")
+source=("http://download.savannah.gnu.org/releases/nepim/$pkgname-$pkgver.tar.gz")
 md5sums=('6f7a09e8cb7e605ebe35815ed9239536')
 
 . $LKP_SRC/lib/install.sh
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+	rename_versioned_src_pkg_dir
+}
 
 patch_source()
 {
-	cd nepim-${pkgver}
+	cd_src_pkg_dir
 	patch -p1 < "$(get_pkg_dir $pkgname)/0001-src-Makefile-change-sequence-of-options-for-gcc.patch"
 }
 
 build()
 {
-  cd nepim-${pkgver}/src
-  unset LDFLAGS
-  make OOP_BASE=/usr
+	cd_src_pkg_dir $pkgname/src
+	unset LDFLAGS
+	make OOP_BASE=/usr
 }
 
 package()
 {
-  benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
-  mkdir -p "$benchmark_path"
-  cd nepim-${pkgver}/src
-  install -Dm755 nepim "$benchmark_path"
+	cd_src_pkg_dir $pkgname/src
+	install -Dm755 nepim "$benchmark_path"
 }
