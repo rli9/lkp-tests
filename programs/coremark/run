@@ -12,4 +12,3 @@ cd_benchmark
 echo "Running coremark benchmark..."
 
 log_cmd ./coremark.exe
-
