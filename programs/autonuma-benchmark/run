@@ -4,10 +4,9 @@
 
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/run.sh
 
-export PATH=$PATH:$BENCHMARK_ROOT/autonuma-benchmark
-
-cd "$BENCHMARK_ROOT/autonuma-benchmark" || die "no $BENCHMARK_ROOT/autonuma-benchmark"
+cd_benchmark
 
 ln -sf /usr/bin/gnuplot-qt /usr/bin/gnuplot
 
@@ -16,33 +15,33 @@ ln -sf /usr/bin/gnuplot-qt /usr/bin/gnuplot
 # If test is not specified, will test all available tests.
 : "${test:=all}"
 case "$test" in
-    "all")
-        option="-A"
-        ;;
-    "numa02_SMT")
-        option="-s"
-        ;;
-    "numa01_THREAD_ALLOC")
-        option="-t"
-        ;;
-    "numa02SMT_numa01THREAD_ALLOC")
-        option="-s -t"
-        ;;
-    "_HARD_BIND")
-        option="-b"
-        ;;
-    "_INVERSE_BIND")
-        option="-i"
-        ;;
-    "minimal_thread_per_numa")
-        option="-m"
-        ;;
-    *)
-        echo "Invalid test parameter." && exit 1
-        ;;
+	"all")
+		option="-A"
+		;;
+	"numa02_SMT")
+		option="-s"
+		;;
+	"numa01_THREAD_ALLOC")
+		option="-t"
+		;;
+	"numa02SMT_numa01THREAD_ALLOC")
+		option="-s -t"
+		;;
+	"_HARD_BIND")
+		option="-b"
+		;;
+	"_INVERSE_BIND")
+		option="-i"
+		;;
+	"minimal_thread_per_numa")
+		option="-m"
+		;;
+	*)
+		echo "Invalid test parameter." && exit 1
+		;;
 esac
 
 for i in $(seq $iterations)
 do
-  /bin/bash start_bench.sh $option 2>&1 || die "Autonuma run failed, check result log"
+	/bin/bash start_bench.sh $option 2>&1 || die "Autonuma run failed, check result log"
 done

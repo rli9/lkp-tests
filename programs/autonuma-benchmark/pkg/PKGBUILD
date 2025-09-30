@@ -7,8 +7,14 @@ license=('GPL')
 source=("https://github.com/pholasek/autonuma-benchmark.git")
 sha256sums=('SKIP')
 
-package() {
-	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
-	mkdir -p "${benchmark_path}"
-	cp -af "$srcdir/${pkgname}/"* "$benchmark_path"
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
+
+package()
+{
+	pack_src_pkg_contents
 }
