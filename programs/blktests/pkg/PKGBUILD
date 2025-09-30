@@ -8,44 +8,45 @@ source=("https://github.com/osandov/blktests.git" "https://github.com/karelzak/u
 md5sums=('SKIP' 'SKIP')
 
 . $LKP_SRC/lib/install.sh
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
 
 build_util_linux()
 {
-	cd "${srcdir}/util-linux"
-	./autogen.sh || return
-	./configure || return
+	cd_src_pkg_dir util-linux
+	./autogen.sh
+	./configure
 	make
 }
 
 build_blktests()
 {
-	cd "${srcdir}/blktests"
+	cd_src_pkg_dir blktests
 	make
 }
 
 build()
 {
-	build_util_linux || return
+	build_util_linux
 	build_blktests
 }
 
 package()
 {
-	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
-	mkdir -p "${benchmark_path}"
+	pack_src_pkg_contents
+	pack_contents "$srcdir/util-linux" "$benchmark_path"
 
-	cp -af "$srcdir/blktests/"* "$benchmark_path"
-	cp -af "$srcdir/util-linux" "$benchmark_path"
-
-	generate_new_tests || return
+	generate_new_tests
 
 	split_tests
 }
 
 generate_new_tests()
 {
-	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
-
 	for tests in $(get_pkg_dir ${pkgname})/addon/tests/*
 	do
 		cat $tests | grep -v '^#' > $benchmark_path/tests/$(basename $tests)
@@ -63,11 +64,9 @@ generate_new_tests()
 
 split_tests()
 {
-	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
-
 	cd $benchmark_path/tests
 
-	split_standalone_tests || return
+	split_standalone_tests
 
 	find -mindepth 1 -maxdepth 1 -type d | while read type;
 	do
