@@ -4,12 +4,19 @@ pkgrel=1
 url='http://www.openssl.org/'
 arch=('i386' 'x86_64' 'riscv64' 'aarch64')
 license=('Apache License 2.0')
-source=("https://github.com/openssl/openssl.git")
+source=("$pkgname"::"https://github.com/openssl/openssl.git")
 md5sums=('SKIP')
+
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
 
 build()
 {
-	cd $srcdir/openssl
+	cd_src_pkg_dir
 
 	./config no-zlib
 	make -j $(nproc)
@@ -17,7 +24,5 @@ build()
 
 package()
 {
-	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
-	mkdir -p $benchmark_path
-	cp -arf "$srcdir/openssl/"* $benchmark_path
+	pack_src_pkg_contents
 }
