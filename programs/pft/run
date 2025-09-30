@@ -16,8 +16,9 @@
 . "$LKP_SRC/lib/sysinfo.sh"
 . "$LKP_SRC/lib/reproduce-log.sh"
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/run.sh
 
-cd "$BENCHMARK_ROOT/pft" || die "no $BENCHMARK_ROOT/pft"
+cd_benchmark
 
 if [ -z "$test_memory_size" ]; then
 	memory=$(to_byte "$memory")
@@ -62,9 +63,8 @@ elif [ -n "$iterations" ]; then
 		log_test ./pft -m "$pft_mapping_size" -n "$nr_task" -F
 	done
 else
-	echo "Error: Please specify the correct combination of parameters which is shown in following:
+	die "Error: Please specify the correct combination of parameters which is shown in following:
 	1. iterations
 	2. nr_task, runtime
-	3. nr_task, iterations" >&2
-	exit 1
+	3. nr_task, iterations"
 fi
