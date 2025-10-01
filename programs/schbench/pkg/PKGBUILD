@@ -7,12 +7,20 @@ license=('GPL')
 source=("https://git.kernel.org/pub/scm/linux/kernel/git/mason/schbench.git")
 md5sums=('SKIP')
 
-build() {
-	cd "$srcdir/$pkgname"
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
+
+build()
+{
+	cd_src_pkg_dir
 	CFLAGS="" make
 }
 
-package() {
-	mkdir -p "$pkgdir/lkp/benchmarks/schbench"
-	cp -r "$srcdir/$pkgname/"* "$pkgdir/lkp/benchmarks/schbench"
+package()
+{
+	pack_src_pkg_contents
 }
