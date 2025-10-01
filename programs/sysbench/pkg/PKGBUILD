@@ -8,8 +8,17 @@ license=('GPL')
 source=("https://github.com/akopytov/sysbench.git")
 md5sums=('SKIP')
 
-build() {
-  cd "$srcdir/$pkgname"
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
+
+build()
+{
+  cd_src_pkg_dir
+
   ./autogen.sh
   # running oltp by sysbench may get "Illegal instruction"
   # error on some arches so avoid it by --without-gcc-arch
@@ -17,7 +26,9 @@ build() {
   make
 }
 
-package() {
-  cd "$srcdir/$pkgname"
-  make DESTDIR=$pkgdir install
+package()
+{
+  cd_src_pkg_dir
+
+  make install DESTDIR=$pkgdir
 }
