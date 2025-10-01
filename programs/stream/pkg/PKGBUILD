@@ -7,7 +7,14 @@ license=('GPL')
 source=("$pkgname"::"https://github.com/jeffhammond/STREAM.git")
 md5sums=('SKIP')
 
-package() {
-	mkdir -p "${pkgdir}/lkp/benchmarks/${pkgname}"
-	cp "$srcdir/$pkgname/stream.c" "${pkgdir}/lkp/benchmarks/${pkgname}"
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
+
+package()
+{
+	pack_src_pkg_contents stream.c
 }
