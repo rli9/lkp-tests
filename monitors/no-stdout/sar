@@ -7,11 +7,11 @@
 . $LKP_SRC/lib/common.sh
 . $LKP_SRC/lib/wait.sh
 
-for sadc in /lkp/benchmarks/sysstat/usr/local/lib/sa/sadc /usr/lib/sysstat/sadc /usr/lib64/sa/sadc; do
+for sadc in /lkp/benchmarks/sar/usr/local/lib/sa/sadc /usr/lib/sysstat/sadc /usr/lib64/sa/sadc; do
 	[ -x $sadc ] && break
 done
 
-for sadf in /lkp/benchmarks/sysstat/usr/local/bin/sadf /usr/bin/sadf; do
+for sadf in /lkp/benchmarks/sar/usr/local/bin/sadf /usr/bin/sadf; do
 	[ -x $sadf ] && break
 done
 

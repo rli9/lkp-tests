@@ -5,16 +5,27 @@ pkgdesc="System performance tools for the Linux operating system, contains vario
 arch=('i386' 'x86_64' 'riscv64' 'aarch64')
 url="https://github.com/sysstat/sysstat"
 license=('GPL')
-source=("https://github.com/sysstat/sysstat.git")
+source=("$pkgname"::"https://github.com/sysstat/sysstat.git")
 md5sums=('SKIP')
 
-build() {
-	cd "$srcdir/sysstat"
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
+
+build()
+{
+	cd_src_pkg_dir
+
 	./configure
 	make
 }
 
-package() {
-	cd "$srcdir/sysstat"
-	make DESTDIR=$pkgdir/lkp/benchmarks/sysstat install
+package()
+{
+	cd_src_pkg_dir
+
+	make install DESTDIR=$benchmark_path
 }

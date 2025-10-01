@@ -10,7 +10,7 @@
 . $LKP_SRC/lib/common.sh
 . $LKP_SRC/lib/env.sh
 
-mpstat="/lkp/benchmarks/sysstat/usr/local/bin/mpstat"
+mpstat="/lkp/benchmarks/sar/usr/local/bin/mpstat"
 
 [ -e $mpstat ] || {
 	# rollback to the default mpstat
