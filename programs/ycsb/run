@@ -20,9 +20,10 @@
 ##used to compare relative performance of NoSQL database
 ##management systems.
 
-. "$LKP_SRC"/lib/reproduce-log.sh
-. "$LKP_SRC"/lib/numactl.sh
+. $LKP_SRC/lib/reproduce-log.sh
+. $LKP_SRC/lib/numactl.sh
 . $LKP_SRC/lib/tests/fixup.sh
+. $LKP_SRC/lib/run.sh
 
 fixup_python
 fixup_java_home
@@ -30,7 +31,8 @@ fixup_java_home
 export JRE_HOME=${JAVA_HOME}/jre
 export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib
 export PATH=${JAVA_HOME}/bin:$PATH
-export PATH=$BENCHMARK_ROOT/ycsb/ycsb/bin:$PATH
+
+prepare_exec_path
 
 : "${nr_processes:=1}"
 
