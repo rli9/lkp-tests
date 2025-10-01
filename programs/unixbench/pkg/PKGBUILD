@@ -4,28 +4,34 @@ pkgrel=1
 url='https://github.com/kdlucas/byte-unixbench.git'
 arch=('i386' 'x86_64' 'riscv64' 'aarch64')
 license=('GPL')
-source=('https://github.com/kdlucas/byte-unixbench.git')
+source=("$pkgname"::'https://github.com/kdlucas/byte-unixbench.git')
 md5sums=('SKIP')
 
 . $LKP_SRC/lib/install.sh
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
 
 patch_source()
 {
-	cd $srcdir/byte-unixbench
+	cd_src_pkg_dir
+
 	patch -p1 < "$(get_pkg_dir $pkgname)/${pkgname}.patch"
 }
 
 build()
 {
-	cd $srcdir/byte-unixbench
-	cd UnixBench
+	cd_src_pkg_dir $pkgname/UnixBench
+
 	make
 }
 
 package()
 {
-	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
-	mkdir -p $benchmark_path
-	cp -af "$srcdir/byte-unixbench/"* $benchmark_path
+	pack_src_pkg_contents
+
 	mkdir $benchmark_path/results
 }
