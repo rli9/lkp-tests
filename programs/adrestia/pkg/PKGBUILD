@@ -7,12 +7,21 @@ license=('GPL')
 source=("https://github.com/mfleming/adrestia.git")
 md5sums=('SKIP')
 
-build() {
-	cd "$srcdir/$pkgname"
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
+
+build()
+{
+	cd_src_pkg_dir
+
 	CC=clang CFLAGS="" make
 }
 
-package() {
-	mkdir -p "$pkgdir/lkp/benchmarks/adrestia"
-	cp -r "$srcdir/$pkgname/"* "$pkgdir/lkp/benchmarks/adrestia"
+package()
+{
+	pack_src_pkg_execs
 }
