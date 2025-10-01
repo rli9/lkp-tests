@@ -7,13 +7,15 @@
 
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/reproduce-log.sh
+. $LKP_SRC/lib/run.sh
 
 run_uperf()
 {
-	local uperf_path
-	uperf_path=/lkp/benchmarks/uperf/usr/local/bin/uperf
-	[ -f "$uperf_path" ] || die "can not find $uperf_path"
-	log_cmd $uperf_path -m $LKP_SRC/programs/uperf/uperf_web.xml
+	cd_benchmark
+
+	log_cmd uperf -m uperf_web.xml
 }
+
+prepare_exec_path
 
 run_uperf
