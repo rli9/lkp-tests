@@ -4,8 +4,7 @@ pkgrel=1
 url='https://github.com/pmem/vmem'
 arch=('i386' 'x86_64' 'aarch64')
 license=('Intel' 'Apache 2.0' 'BSD' 'GPL 2.1' )
-source=(
-	'https://github.com/pmem/vmem.git'
+source=('https://github.com/pmem/vmem.git'
 	'https://github.com/pmem/valgrind.git#branch=pmem-3.20'
 	'https://github.com/llvm-mirror/llvm.git'
 	'https://github.com/llvm-mirror/libcxxabi.git'
@@ -15,22 +14,27 @@ source=(
 md5sums=('SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP')
 
 . $LKP_SRC/lib/env.sh
+. $LKP_SRC/lib/tests/pkgbuild.sh
 
-build_install_valgrind_pmem()
+prepare()
 {
-	cd "${srcdir}/valgrind"
+	prepare_benchmark_path
+}
+
+valgrind()
+{
+	cd_src_pkg_dir valgrind
 
 	git submodule init
 	git submodule update
 	./autogen.sh
 	./configure --prefix=/usr/local CFLAGS="-fno-stack-protector"
 	make
-	make install
 }
 
-build_install_ndctl()
+build_ndctl()
 {
-	cd "${srcdir}/ndctl"
+	cd_src_pkg_dir ndctl
 
 	[[ -e '/usr/include/iniparser.h' ]] || cp /usr/include/iniparser/* /usr/include/
 	meson setup build
@@ -39,9 +43,9 @@ build_install_ndctl()
 }
 
 # Test vmem_malloc, will use daxio command, it located in pmdk/src/tools.
-build_install_pmdk()
+build_pmdk()
 {
-	cd "${srcdir}/pmdk"
+	cd_src_pkg_dir pmdk
 	make
 }
 
@@ -50,13 +54,13 @@ build_install_pmdk()
 # to get more detail info.
 build_install_libcxx()
 {
-	cd "${srcdir}/libcxxabi"
+	cd_src_pkg_dir libcxxabi
 	git checkout release_39
 
-	cd "${srcdir}/llvm"
+	cd_src_pkg_dir llvm
 	git checkout release_39
 
-	cd "${srcdir}/libcxx"
+	cd_src_pkg_dir libcxx
 	git checkout release_39
 
 	export CC=clang
@@ -72,7 +76,7 @@ build_install_libcxx()
 	mkdir -p "${srcdir}/build/abi"
 	mkdir -p "${srcdir}/build/lib"
 
-	cd "${srcdir}/build/abi"
+	cd_src_pkg_dir build/abi
 	$CMAKE -DLLVM_PATH="${srcdir}/llvm" -DCMAKE_INSTALL_PREFIX="${install_path}" "${srcdir}/llvm/projects/libcxxabi/"
 	make
 	make install
@@ -80,7 +84,7 @@ build_install_libcxx()
 	# xlocale.h was removed since libc6-de 2.26: https://sourceware.org/glibc/wiki/Release/2.26#Removal_of_.27xlocale.h.27
 	# here touch a fake header to avoid compiling error.
 	[ -f /usr/include/xlocale.h ] || touch "${srcdir}/llvm/projects/libcxx/include/xlocale.h"
-	cd "${srcdir}/build/lib"
+	cd_src_pkg_dir build/lib
 	$CMAKE -DLLVM_PATH="${srcdir}/llvm" -DLIBCXX_CXX_ABI=libcxxabi -DLIBCXX_CXX_ABI_INCLUDE_PATHS="${srcdir}/llvm/projects/libcxxabi/include" -DCMAKE_INSTALL_PREFIX="${install_path}" -DLIBCXX_CXX_ABI_LIBRARY_PATH="${install_path}/lib" "${srcdir}/llvm/projects/libcxx"
 	make
 	make install
@@ -89,27 +93,28 @@ build_install_libcxx()
 build()
 {
 	[ "$DISTRO" = "centos" ] && {
-		cd "${srcdir}/nvml"
+		cd_src_pkg_dir nvml
+
 		sed -i 's/CXXFLAGS += -Wno-unknown-attributes/CXXFLAGS += -Wno-ignored-attributes/' ./src/benchmarks/Makefile
 	}
 
-	build_install_valgrind_pmem
-	build_install_ndctl
-	build_install_pmdk
+	valgrind
+	build_ndctl
+	build_pmdk
 	build_install_libcxx
 }
 
 package()
 {
-	benchmark_path="${pkgdir}/lkp/benchmarks"
-	mkdir -p "${benchmark_path}"
-	cp -af "${srcdir}/${pkgname}" "${benchmark_path}"
+	pack_src_pkg_contents
 
-	cd "${srcdir}/valgrind"
-	make DESTDIR="${pkgdir}" install
+	cd_src_pkg_dir valgrind
+	make install DESTDIR="${pkgdir}"
 	cp -af "/usr/local/libcxx" "${pkgdir}/usr/local"
-	cd "${srcdir}/ndctl"
-	make DESTDIR="${pkgdir}" install
-	cd "${srcdir}/pmdk"
-	make DESTDIR="${pkgdir}" install
+
+	cd_src_pkg_dir ndctl
+	make install DESTDIR="${pkgdir}"
+
+	cd_src_pkg_dir pmdk
+	make install DESTDIR="${pkgdir}"
 }
