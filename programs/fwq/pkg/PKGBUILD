@@ -7,12 +7,21 @@ license=('GPL')
 source=("https://github.com/hying-caritas/fwq.git")
 md5sums=('SKIP')
 
-build() {
-	cd "$srcdir/fwq"
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
+
+build()
+{
+	cd_src_pkg_dir
+
 	make
 }
 
-package() {
-	mkdir -p "${pkgdir}/lkp/benchmarks/${pkgname}"
-	cp -af "$srcdir/fwq/t_fwq" "${pkgdir}/lkp/benchmarks/${pkgname}"
+package()
+{
+	pack_src_pkg_contents t_fwq
 }
