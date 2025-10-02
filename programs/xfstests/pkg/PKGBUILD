@@ -13,10 +13,16 @@ md5sums=('SKIP' 'SKIP' 'SKIP' 'SKIP')
 . $LKP_SRC/lib/tests/common.sh
 . $LKP_SRC/lib/tests/pkgbuild.sh
 . $LKP_SRC/lib/install.sh
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
 
 build_install_xfstests()
 {
-	cd ${srcdir}/xfstests-dev || return
+	cd_src_pkg_dir xfstests-dev
 
 	# new tests will be added continuously and lead to new groups to split them.
 	# print current head commit so we can check whether a specific test was introduced at the moment.
@@ -30,37 +36,38 @@ build_install_xfstests()
 build_install_bcachefs_tools()
 {
 	export CARGO_HOME=$pkgdir/cargo
-	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path || return
+	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
 	. "$CARGO_HOME/env"
 
-	cd ${srcdir}/bcachefs-tools || return
-	make || return
+	cd_src_pkg_dir bcachefs-tools
+
+	make
 	make install DESTDIR="${pkgdir}"
 }
 
 build_install_f2fs_tools()
 {
-	cd ${srcdir}/f2fs-tools || return
-	./autogen.sh || return
-	./configure || return
-	make || return
-	make install || return
+	cd_src_pkg_dir f2fs-tools
+
+	./autogen.sh
+	./configure
+	make
+	make install
 	make install DESTDIR="${pkgdir}"
 }
 
 build_install_e2fuzz()
 {
-	cd ${srcdir}/e2fsprogs || return
-	./configure || return
-	make || return
+	cd_src_pkg_dir e2fsprogs
+
+	./configure
+	make
 	cp misc/e2fuzz ${pkgdir}/usr/local/sbin/
 }
 
 # Automatically generate ignore file to skip test cases which can not be enabled at present.
 generate_exclude_files()
 {
-	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
-
 	mkdir $benchmark_path/tests/exclude
 
 	# refer to xfstests-bld/kvm-xfstests/test-appliance/files/root/fs
@@ -68,7 +75,7 @@ generate_exclude_files()
 	# ext2/exclude  ext3/exclude  ext4/exclude  local/exclude  nfs/exclude  reiserfs/exclude  tmpfs/exclude
 	for fs in ext2 ext4
 	do
-		wget --no-check-certificate -O $benchmark_path/tests/exclude/$fs https://git.kernel.org/pub/scm/fs/ext2/xfstests-bld.git/plain/test-appliance/files/root/fs/$fs/exclude || return
+		wget --no-check-certificate -O $benchmark_path/tests/exclude/$fs https://git.kernel.org/pub/scm/fs/ext2/xfstests-bld.git/plain/test-appliance/files/root/fs/$fs/exclude
 	done
 
 	# In xfstests-dev/tests/generic/605 generic/606 generic/607 generic/608 mount options is "dax=always"
@@ -79,9 +86,9 @@ generate_exclude_files()
 	cd -
 
 	# # cifs exclude files, https://wiki.samba.org/index.php/Xfstesting-cifs
-	# wget https://wiki.samba.org/images/d/db/Xfstests.exclude.very-slow.txt -O $benchmark_path/tests/cifs/exclude.very-slow.txt || return
-	# wget https://wiki.samba.org/images/b/b0/Xfstests.exclude.incompatible-smb3.txt -O $benchmark_path/tests/cifs/exclude.incompatible-smb3.txt || return
-	# wget https://wiki.samba.org/images/9/9f/Xfstests.exclude.incompatible-smb2.txt -O $benchmark_path/tests/cifs/exclude.incompatible-smb2.txt || return
+	# wget https://wiki.samba.org/images/d/db/Xfstests.exclude.very-slow.txt -O $benchmark_path/tests/cifs/exclude.very-slow.txt
+	# wget https://wiki.samba.org/images/b/b0/Xfstests.exclude.incompatible-smb3.txt -O $benchmark_path/tests/cifs/exclude.incompatible-smb3.txt
+	# wget https://wiki.samba.org/images/9/9f/Xfstests.exclude.incompatible-smb2.txt -O $benchmark_path/tests/cifs/exclude.incompatible-smb2.txt
 
 	# # download cifs config file
 	# wget https://wiki.samba.org/images/9/99/Xfstests.local.config.txt -O $benchmark_path/cifs-local.config
@@ -124,8 +131,7 @@ pattern_to_test()
 
 generate_special_require_tests()
 {
-	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
-	cd ${srcdir}/xfstests-dev || return
+	cd_src_pkg_dir xfstests-dev
 
 	for fs in generic ext4 udf ocfs2 nfs btrfs xfs overlay shared ceph f2fs perf cifs
 	do
@@ -157,10 +163,8 @@ generate_special_require_tests()
 
 build()
 {
-	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
 	mkdir -p ${benchmark_path}/tests
 
-	cd $srcdir
 	build_install_xfstests
 	build_install_f2fs_tools
 
@@ -174,12 +178,11 @@ build()
 
 package()
 {
-	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
 	cp -af $srcdir/xfstests-dev/* $benchmark_path
 
-	[ -d $CARGO_HOME ] && cp_to_pkg $CARGO_HOME
+	[ -d $CARGO_HOME ] && pack_contents $CARGO_HOME
 
-	wget --no-check-certificate -O $benchmark_path/tools/find-api-violations.sh https://git.kernel.org/pub/scm/fs/xfs/xfsprogs-dev.git/plain/tools/find-api-violations.sh || return
+	wget --no-check-certificate -O $benchmark_path/tools/find-api-violations.sh https://git.kernel.org/pub/scm/fs/xfs/xfsprogs-dev.git/plain/tools/find-api-violations.sh
 
 	generate_exclude_files
 
@@ -190,14 +193,12 @@ package()
 
 generate_tests()
 {
-	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
-
 	for tests in $(get_pkg_dir $pkgname)/addon/tests/*
 	do
 		cat $tests | grep -v '^#' > $benchmark_path/tests/$(basename $tests)
 	done
 
-	generate_special_require_tests || return
+	generate_special_require_tests
 
 	# generate the new add subcase automatically after every upgrade xfstests
 	cd $benchmark_path/tests
@@ -214,10 +215,8 @@ generate_tests()
 # Some files contain too many tests, which are split for easy testing
 split_tests()
 {
-	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
-
 	cd $benchmark_path/tests
-	split_standalone_tests || return
+	split_standalone_tests
 
 	$LKP_SRC/tools/split-tests xfs-all 10 xfs-group-
 	$LKP_SRC/tools/split-tests btrfs-all 10 btrfs-group-
