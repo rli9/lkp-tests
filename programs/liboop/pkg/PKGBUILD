@@ -9,13 +9,25 @@ depends=()
 source=("http://ftp.lysator.liu.se/pub/liboop/${pkgname}-$pkgver.tar.gz")
 md5sums=('f2b3dff17355fd9a6e2229caca8993f0')
 
-build() {
-  cd "$srcdir/$pkgname-$pkgver"
-  ./configure
-  make
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+  rename_versioned_src_pkg_dir
 }
 
-package() {
-  cd "${srcdir}"/$pkgname-$pkgver
-  make DESTDIR="${pkgdir}" install
+build()
+{
+	cd_src_pkg_dir
+
+	./configure
+	make
+}
+
+package()
+{
+	cd_src_pkg_dir
+
+	make install DESTDIR="${pkgdir}"
 }
