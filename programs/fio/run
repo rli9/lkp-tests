@@ -6,15 +6,12 @@
 ## the I/O load one wants to simulate.
 
 . $LKP_SRC/lib/common.sh
+. $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/reproduce-log.sh
 
 task=$(cat /$TMP_RESULT_ROOT/fio.task)
 
-[ -n "$task" ] || {
-	echo "fio task file isn't setup properly!" >&2
-	exit 1
-}
-
-. $LKP_SRC/lib/reproduce-log.sh
+[ -n "$task" ] || die "fio task file isn't setup properly!"
 
 log_echo "\
 echo '$task' | fio --output-format=json -"
