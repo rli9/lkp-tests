@@ -4,10 +4,18 @@ pkgrel=1
 arch=('i386' 'x86_64' 'aarch64')
 url="https://vilimpoc.org/research/ku-latency"
 license=('GPL')
-source=("https://vilimpoc.org/research/ku-latency/send-data.c" "https://vilimpoc.org/research/ku-latency/ku-latency.c")
-md5sums=('SKIP' 'SKIP')
+source=("https://vilimpoc.org/research/ku-latency/send-data.c"
+	"https://vilimpoc.org/research/ku-latency/ku-latency.c",
+	"0001-ku-latency.c-rename-var-index-to-kuIndex.patch")
+md5sums=('SKIP' 'SKIP' 'SKIP')
 
 . $LKP_SRC/lib/install.sh
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
 
 patch_source()
 {
@@ -15,13 +23,13 @@ patch_source()
 	# lrwxrwxrwx 1 root root 48 Feb 26 16:21 send-data.c -> /lkp/lkp/src/programs/ku-latency/pkg/send-data.c
 	# lrwxrwxrwx 1 root root 49 Feb 26 16:21 ku-latency.c -> /lkp/lkp/src/programs/ku-latency/pkg/ku-latency.c
 	cd $(dirname $(realpath ku-latency.c))
-	patch -p1 < "$(get_pkg_dir $pkgname)/0001-ku-latency.c-rename-var-index-to-kuIndex.patch"
+	patch -p1 < "$srcdir/0001-ku-latency.c-rename-var-index-to-kuIndex.patch"
 }
 
-package() {
+package()
+{
 	cd $srcdir
-	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
-	mkdir -p "${benchmark_path}"
+
 	gcc -o ${benchmark_path}/ku-latency ku-latency.c -lrt -Wall -D_GNU_SOURCE
 	gcc -o ${benchmark_path}/send-data send-data.c -lrt -Wall
 }
