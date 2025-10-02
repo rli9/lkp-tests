@@ -8,15 +8,24 @@ license=('GPL2' 'BSD')
 source=("https://github.com/andikleen/pmu-tools.git" "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git")
 md5sums=('SKIP' 'SKIP')
 
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
+
 build_perf()
 {
-    cd "${srcdir}/linux/tools/perf"
+    cd_src_pkg_dir linux/tools/perf
+
     PATH=$BUILD_DIR:$PATH make
 }
 
 bulid_pmu_tools()
 {
-    cd "${srcdir}/pmu-tools"
+    cd_src_pkg_dir
+
     files=$(grep -rl "^#\!\/usr\/bin.*python" ./)
     for file in $files
     do
@@ -24,20 +33,22 @@ bulid_pmu_tools()
         sed -i 's/\/usr\/bin\/python$/\/usr\/bin\/python3/g' "$file"
     done
 
-    cd "${srcdir}/pmu-tools/jevents"
+    cd_src_pkg_dir pmu-tools/jevents
     make
 }
 
-build() {
-    build_perf || return
-    bulid_pmu_tools || return
+build()
+{
+    build_perf
+    bulid_pmu_tools
 }
 
-package() {
-    benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
-    mkdir -p "${benchmark_path}"
-    cd "${srcdir}/${pkgname}"
+package()
+{
+    cd_src_pkg_dir
+
     XDG_CACHE_HOME="$benchmark_path" ./event_download.py -a
-    cp -af "$srcdir/${pkgname}/"* "$benchmark_path"
-    cp -af "$srcdir/linux/tools/perf/perf" "$benchmark_path"
+
+    pack_src_pkg_contents
+    pack_contents "$srcdir/linux/tools/perf/perf" "$benchmark_path"
 }
