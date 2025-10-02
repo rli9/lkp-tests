@@ -8,11 +8,15 @@ kernel_ver=5.9
 source=('http://ck.kolivas.org/apps/kernbench/kernbench-0.50/kernbench' "https://www.kernel.org/pub/linux/kernel/v5.x/linux-${kernel_ver}.tar.xz")
 md5sums=('SKIP' 'SKIP')
 
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
+
 package()
 {
-	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
-	mkdir -p ${benchmark_path}
-
 	#copy the original file instead of link, so don't use -a option
 	cp -f "$srcdir/$pkgname" "$benchmark_path/"
 	chmod a+x "$benchmark_path/$pkgname"
