@@ -8,16 +8,26 @@ license=('GPL')
 source=("https://github.com/ColinIanKing/stress-ng.git")
 md5sums=('SKIP')
 
-build() {
-  cd "$srcdir/$pkgname"
-  make
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
 }
 
-package() {
-  cd "$srcdir/$pkgname"
-  make DESTDIR="$pkgdir" install || return
+build()
+{
+	cd_src_pkg_dir
 
-  mkdir -p "${pkgdir}/lkp/benchmarks/${pkgname}"
-  # stress-watchdog.c
-  ls stress-*.c > "${pkgdir}/lkp/benchmarks/${pkgname}/tests"
+	make
+}
+
+package()
+{
+	cd_src_pkg_dir
+
+	make install DESTDIR="$pkgdir"
+
+	# stress-watchdog.c
+	ls stress-*.c > $benchmark_path/tests
 }
