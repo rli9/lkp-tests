@@ -4,12 +4,19 @@ pkgrel=1
 url='https://github.com/md-raid-utilities/mdadm'
 arch=('i386' 'x86_64' 'aarch64')
 license=('GPL')
-source=('mdadm-selftests'::'https://github.com/md-raid-utilities/mdadm.git')
+source=("$pkgname"::'https://github.com/md-raid-utilities/mdadm.git')
 md5sums=('SKIP')
+
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
 
 build()
 {
-	cd $srcdir/$pkgname
+	cd_src_pkg_dir
 
 	# Remove -Werror to avoid
 	#   <command-line>: error: "_FORTIFY_SOURCE" redefined [-Werror]
@@ -21,8 +28,5 @@ build()
 
 package()
 {
-	cd $srcdir/$pkgname
-
-	mkdir -p "${pkgdir}/lkp/benchmarks/${pkgname}"
-	cp -a ./* "${pkgdir}/lkp/benchmarks/${pkgname}"
+	pack_src_pkg_contents
 }
