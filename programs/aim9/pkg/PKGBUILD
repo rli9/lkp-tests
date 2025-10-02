@@ -7,9 +7,17 @@ license=('GPL')
 source=('http://gentwo.org/benchmark/s9110.tar.Z')
 md5sums=('187ee75a79e0403214e12c3dc215f759')
 
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
+
 build()
 {
-	cd $srcdir/aim9
+	cd_src_pkg_dir
+
 	make <<-END
 
 
@@ -23,11 +31,9 @@ END
 
 package()
 {
-	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
-	mkdir -p ${benchmark_path}
-	cd $srcdir/aim9
-	find . -maxdepth 1 -type f -executable ! -name ".*" \
-		-exec cp -af {} $benchmark_path \;
-	cp fakeh.tar $benchmark_path
-	cp -af s9workfile $benchmark_path/s9workfile.all
+	pack_src_pkg_execs
+	pack_src_pkg_contents fakeh.tar
+
+	cd_src_pkg_dir
+	cp -a s9workfile $benchmark_path/s9workfile.all
 }
