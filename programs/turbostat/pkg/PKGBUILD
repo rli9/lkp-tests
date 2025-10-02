@@ -7,15 +7,20 @@ license=('GPL')
 source=('https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git')
 md5sums=('SKIP')
 
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
+
 build()
 {
-	cd $srcdir/linux/tools/power/x86/turbostat
+	cd_src_pkg_dir linux/tools/power/x86/turbostat
 	make
 }
 
 package()
 {
-	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
-	mkdir -p $benchmark_path
-	cp -af $srcdir/linux/tools/power/x86/turbostat/turbostat $benchmark_path
+	pack_contents $srcdir/linux/tools/power/x86/turbostat/turbostat $benchmark_path
 }
