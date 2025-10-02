@@ -8,13 +8,21 @@ license=('GPL')
 source=("https://git.kernel.org/pub/scm/utils/rt-tests/rt-tests.git")
 md5sums=('SKIP')
 
-build() {
-	cd "$srcdir/$pkgname"
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
+
+build()
+{
+	cd_src_pkg_dir
 	make
 }
 
-package() {
-	cd "$srcdir/$pkgname"
-	make DESTDIR="$pkgdir/" install
+package()
+{
+	cd_src_pkg_dir
+	make install DESTDIR="$pkgdir"
 }
-
