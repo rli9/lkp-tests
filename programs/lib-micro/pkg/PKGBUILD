@@ -8,15 +8,23 @@ license=('CDDL')
 source=("https://github.com/rzezeski/libMicro.git" 'list.patch')
 md5sums=('SKIP' 'SKIP')
 
+. $LKP_SRC/lib/tests/pkgbuild.sh
 
-build() {
-	cd "$srcdir/$pkgname"
+prepare()
+{
+	prepare_benchmark_path
+}
+
+build()
+{
+	cd_src_pkg_dir
+
 	# increase the size of optstr array to avoid buffer overflow error
 	sed -i 's/optstr\[256\]/optstr\[2048\]/g' src/libmicro.c
 	CFLAGS="" make
 }
 
-package() {
-	mkdir -p "$pkgdir/lkp/benchmarks/libMicro"
-	cp -r "$srcdir/$pkgname/"* "$pkgdir/lkp/benchmarks/libMicro"
+package()
+{
+	pack_src_pkg_contents
 }
