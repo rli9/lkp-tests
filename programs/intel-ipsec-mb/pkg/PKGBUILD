@@ -7,14 +7,21 @@ license=('GPL')
 source=("https://github.com/intel/intel-ipsec-mb.git")
 md5sums=('SKIP')
 
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
+
 build()
 {
-	cd "$srcdir/$pkgname"
+	cd_src_pkg_dir
+
 	make SHARED=n
 }
 
 package()
 {
-	mkdir -p "$pkgdir/lkp/benchmarks/intel-ipsec-mb"
-	cp "$srcdir/$pkgname/perf/"ipsec_perf "$pkgdir/lkp/benchmarks/intel-ipsec-mb"
+	pack_src_pkg_contents perf/ipsec_perf
 }
