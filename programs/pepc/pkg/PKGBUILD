@@ -7,9 +7,17 @@ license=('GPL')
 source=('https://github.com/intel/pepc.git')
 md5sums=('SKIP')
 
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
+
 build()
 {
-	cd $srcdir/pepc
+	cd_src_pkg_dir
+
 	git checkout release
 	echo '#!/usr/bin/python3' > pepc
 	git archive --format zip HEAD >> pepc
@@ -18,7 +26,5 @@ build()
 
 package()
 {
-	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}/bin"
-	mkdir -p $benchmark_path
-	cp -af $srcdir/pepc/pepc $benchmark_path
+	pack_src_pkg_contents pepc $benchmark_path/bin
 }
