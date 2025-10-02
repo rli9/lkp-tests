@@ -4,10 +4,16 @@ pkgrel=1
 arch=('i386' 'x86_64' 'aarch64')
 url="https://gitlab.freedesktop.org/drm/igt-gpu-tools"
 license=('GPL')
-source=("https://gitlab.freedesktop.org/drm/igt-gpu-tools.git")
-sha256sums=('SKIP')
+source=("$pkgname"::"https://gitlab.freedesktop.org/drm/igt-gpu-tools.git" 'exclude')
+sha256sums=('SKIP' 'SKIP')
 
 . $LKP_SRC/lib/install.sh
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
 
 build()
 {
@@ -17,7 +23,7 @@ build()
 	python3 -m pip install meson
 	python3 -m pip install ninja
 
-	cd $srcdir/igt-gpu-tools
+	cd_src_pkg_dir
 
 	meson build && ninja -C build
 
@@ -26,7 +32,7 @@ build()
 
 split_tests()
 {
-	cd $srcdir/igt-gpu-tools || return
+	cd_src_pkg_dir
 
 	local standalone="$(get_pkg_dir $pkgname)/addon/tests/standalone"
 	# standalone test
@@ -43,12 +49,9 @@ split_tests()
 
 package()
 {
-	split_tests || return
+	split_tests
 
-	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
-	mkdir -p $benchmark_path
-	cp -af "${srcdir}/igt-gpu-tools/"* $benchmark_path
+	pack_src_pkg_contents
 
-	local pkg_dir="$(get_pkg_dir $pkgname)"
-	cp -af ${pkg_dir}/exclude $benchmark_path
+	pack_contents ${srcdir}/exclude $benchmark_path
 }
