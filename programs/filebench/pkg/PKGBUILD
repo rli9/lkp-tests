@@ -7,8 +7,16 @@ license=('GPL')
 source=("https://github.com/filebench/filebench.git")
 md5sums=('SKIP')
 
-build() {
-	cd "$srcdir/$pkgname"
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
+
+build()
+{
+	cd_src_pkg_dir
 
 	for file in $(ls workloads/*.f); do
 		# Add run command if workload doesn't include run command.  Fix
@@ -20,18 +28,18 @@ build() {
 		sed -ri 's/(.*),cached=\$cached/\1/g' $file
 	done
 
-	libtoolize || return
-	aclocal || return
-	autoheader || return
-	automake --add-missing || return
-	autoconf || return
-	./configure --prefix "/lkp/benchmarks/${pkgname}" || return
-	make || return
+	libtoolize
+	aclocal
+	autoheader
+	automake --add-missing
+	autoconf
+	./configure --prefix $benchmark_path
+	make
 }
 
-package() {
-	cd "$srcdir/$pkgname"
-	make install || return
-	mkdir -p "${pkgdir}/lkp/benchmarks"
-	cp -af "/lkp/benchmarks/${pkgname}" "${pkgdir}/lkp/benchmarks"
+package()
+{
+	cd_src_pkg_dir
+
+	make install
 }

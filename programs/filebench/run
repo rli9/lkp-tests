@@ -2,13 +2,14 @@
 
 . $LKP_SRC/lib/common.sh
 . $LKP_SRC/lib/reproduce-log.sh
+. $LKP_SRC/lib/run.sh
 
-export PATH=$BENCHMARK_ROOT/filebench/bin:$PATH
+prepare_exec_path
 
 task=$(cat /$TMP_RESULT_ROOT/filebench.task)
 [ -n "$task" ] || {
-        echo "filebench task file isn't setup properly!" >&2
-        exit 1
+	echo "filebench task file isn't setup properly!" >&2
+	exit 1
 }
 
 $task
