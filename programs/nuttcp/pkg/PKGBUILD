@@ -8,9 +8,15 @@ license=('GPL')
 source=("http://nuttcp.org/${pkgname}/${pkgname}-${pkgver}/bin/${pkgname}-${pkgver}.fc32.x86_64")
 md5sums=('SKIP')
 
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
+
 package()
 {
-	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
 	cd "${srcdir}"
 	install -D "${pkgname}-${pkgver}.fc32.x86_64" "${benchmark_path}/${pkgname}"
 }
