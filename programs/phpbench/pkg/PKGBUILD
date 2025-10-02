@@ -7,15 +7,23 @@ license=('MIT License')
 source=('http://phoronix-test-suite.com/benchmark-files/phpbench-081-patched2.zip')
 md5sums=('3e5fa1ad60261ff052bb38f505c8c4e5')
 
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
+
 build()
 {
-        mkdir -p "$srcdir/$pkgname/"
-        cd "$srcdir/$pkgname/"
-        unzip -o ../phpbench-081-patched2.zip
+	mkdir -p "$srcdir/$pkgname"
+
+	cd_src_pkg_dir
+
+	unzip -o ../phpbench-081-patched2.zip
 }
 
 package()
 {
-        mkdir -p "$pkgdir/lkp/benchmarks/phpbench"
-        cp -r "$srcdir/$pkgname/phpbench-0.8.1-patched2/"* "$pkgdir/lkp/benchmarks/phpbench"
+	cp -r "$srcdir/$pkgname/phpbench-0.8.1-patched2/"* $benchmark_path
 }
