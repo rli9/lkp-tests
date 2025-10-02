@@ -6,12 +6,12 @@
 # - loops
 
 . $LKP_SRC/lib/reproduce-log.sh
-
-export PATH=$BENCHMARK_ROOT/cyclictest/bin:$PATH
+. $LKP_SRC/lib/run.sh
 
 run_test()
 {
 	log_cmd cyclictest -p $priority -m -c $clock -i $interval -h $histogram -q -l $loops 2>&1
 }
 
+prepare_exec_path
 run_test

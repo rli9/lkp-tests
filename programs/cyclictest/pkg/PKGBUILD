@@ -5,14 +5,26 @@ pkgdesc="Cyclictest is a high resolution test program"
 arch=('i386' 'x86_64' 'riscv64' 'aarch64')
 url="https://git.kernel.org/pub/scm/utils/rt-tests/rt-tests"
 license=('GPL')
-source=("https://git.kernel.org/pub/scm/utils/rt-tests/rt-tests.git")
+source=("$pkgname"::"https://git.kernel.org/pub/scm/utils/rt-tests/rt-tests.git")
 md5sums=('SKIP')
 
-package() {
-	cd "$srcdir/rt-tests"
+. $LKP_SRC/lib/tests/pkgbuild.sh
 
-	git log --oneline -n1
+prepare()
+{
+	prepare_benchmark_path
+}
 
-	make prefix="${pkgdir}/lkp/benchmarks/${pkgname}"
-	make prefix="${pkgdir}/lkp/benchmarks/${pkgname}" install
+build()
+{
+	cd_src_pkg_dir
+
+	make
+}
+
+package()
+{
+	cd_src_pkg_dir
+
+	make install prefix=$benchmark_path
 }
