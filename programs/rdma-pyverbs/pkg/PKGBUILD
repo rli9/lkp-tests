@@ -4,24 +4,24 @@ pkgrel=1
 url='https://github.com/linux-rdma/rdma-core'
 arch=('i386' 'x86_64' 'aarch64')
 license=('GPLv2')
-source=('https://github.com/linux-rdma/rdma-core.git')
+source=("$pkgname"::'https://github.com/linux-rdma/rdma-core.git')
 md5sums=('SKIP')
+
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
 
 build()
 {
-	local pyverbs="/lkp/benchmarks/${pkgname}"
-	cd $srcdir/rdma-core
-	mkdir -p /lkp/benchmarks || return
-	mv $srcdir/rdma-core $pyverbs
-	cd $pyverbs
+	cd_src_pkg_dir
+
 	./build.sh
 }
 
 package()
 {
-	local pyverbs="/lkp/benchmarks/${pkgname}"
-	local benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
-
-	mkdir -p $benchmark_path
-	cp -af $pyverbs/* $benchmark_path
+	pack_src_pkg_contents
 }
