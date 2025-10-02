@@ -9,21 +9,24 @@ depends=()
 source=(https://github.com/facebook/rocksdb.git)
 md5sums=('SKIP')
 
-prepare() {
-  cd rocksdb
-  sed -e 's/\bpython\b/python2/' -i Makefile
+prepare()
+{
+	cd rocksdb
+	sed -e 's/\bpython\b/python2/' -i Makefile
 }
 
-build() {
-  cd rocksdb
-  make release
+build()
+{
+	cd rocksdb
+	make release
 }
 
-package() {
-  cd rocksdb
-  install -d "$pkgdir"/usr/share/rocksdb
-  rm tools/*.o
-  rm tools/*.d
-  cp -r tools "$pkgdir"/usr/share/rocksdb
-  install -m755 -D db_bench "$pkgdir"/usr/share/rocksdb/tools
+package()
+{
+	cd rocksdb
+	install -d "$pkgdir"/usr/share/rocksdb
+	rm tools/*.o
+	rm tools/*.d
+	cp -r tools "$pkgdir"/usr/share/rocksdb
+	install -m755 -D db_bench "$pkgdir"/usr/share/rocksdb/tools
 }
