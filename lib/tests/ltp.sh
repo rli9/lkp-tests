@@ -13,16 +13,6 @@ check_linux_header()
 	ln -sf "$linux_headers_dir" "$build_link"
 }
 
-install_ltp()
-{
-	make install
-	cp testcases/commands/tpm-tools/tpmtoken/tpmtoken_import/tpmtoken_import_openssl.cnf $1/testcases/bin/
-	cp testcases/commands/tpm-tools/tpmtoken/tpmtoken_protect/tpmtoken_protect_data.txt  $1/testcases/bin/
-	# cp file for rebuild dummy_del_mod*.ko
-	mkdir -p $1/testcases/kernel/syscalls/delete_module
-	cp testcases/kernel/syscalls/delete_module/* $1/testcases/kernel/syscalls/delete_module
-}
-
 is_excluded()
 {
 	test=$1

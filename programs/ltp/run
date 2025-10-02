@@ -11,9 +11,9 @@
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/run.sh
 
-cd_benchmark
+prepare_exec_path
 
-export PATH=/lkp/benchmarks/ltp/bin:$PATH
+cd_benchmark
 
 workaround_env
 

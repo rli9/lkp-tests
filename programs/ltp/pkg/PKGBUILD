@@ -10,25 +10,29 @@ md5sums=('SKIP')
 
 . $LKP_SRC/lib/tests/ltp.sh
 . $LKP_SRC/lib/install.sh
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
 
 build_ltp()
 {
 	make autotools
-	./configure --prefix=$1
+	./configure --prefix=$benchmark_path
 	make
 }
 
 build()
 {
-	split_syscalls_tests || return
+	split_syscalls_tests
 
-	cd $srcdir/$pkgname || return
+	cd_src_pkg_dir
 
 	echo build_ltp
 	git log -1
-	build_ltp "${pkgdir}/lkp/benchmarks/${pkgname}" || return
-
-	return 0
+	build_ltp
 }
 
 hide()
@@ -40,14 +44,14 @@ split_syscalls_tests()
 {
 	echo split_syscalls_tests
 
-	cd $srcdir/$pkgname/runtest || return
+	cd_src_pkg_dir $pkgname/runtest
 
-	grep "^setsockopt06" syscalls >> syscalls-setsockopt06 || return
+	grep "^setsockopt06" syscalls >> syscalls-setsockopt06
 	# need 2 numa node
-	grep -Ee "^(mbind|move_pages|migrate_pages|set_mempolicy)" syscalls >> syscalls-numa || return
+	grep -Ee "^(mbind|move_pages|migrate_pages|set_mempolicy)" syscalls >> syscalls-numa
 
 	# delete ioprio_set03 test temporarily since new header files from linux-next are required to compile it.
-	sed -i "/ioprio_set03/d" syscalls || return
+	sed -i "/ioprio_set03/d" syscalls
 
 	# standalone
 	standalone_file=$(get_pkg_dir $pkgname)/addon/tests/syscalls-standalone
@@ -60,7 +64,7 @@ split_syscalls_tests()
 		echo $line > ./"${line//[[:blank:]]/.}"
 	done < <(cat $standalone_file | grep -v '^#')
 
-	grep -v -f syscalls-setsockopt06 -f syscalls-numa syscalls -f $standalone_file > syscalls-rest || return
+	grep -v -f syscalls-setsockopt06 -f syscalls-numa syscalls -f $standalone_file > syscalls-rest
 	$LKP_SRC/tools/split-tests syscalls-rest 8 syscalls-
 	hide syscalls-rest
 	hide syscalls
@@ -70,8 +74,7 @@ split_tests()
 {
 	echo split_tests
 
-	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
-	cd $benchmark_path/runtest || return
+	cd $benchmark_path/runtest
 
 	$LKP_SRC/tools/split-tests dio 4 dio-
 	hide dio
@@ -115,38 +118,44 @@ split_tests()
 	hide cve
 
 	# net_stress.appl
-	grep "ssh" net_stress.appl > net_stress.appl-ssh || return
-	grep "dns" net_stress.appl > net_stress.appl-dns || return
-	grep "http" net_stress.appl > net_stress.appl-http || return
-	grep "ftp" net_stress.appl > net_stress.appl-ftp || return
+	grep "ssh" net_stress.appl > net_stress.appl-ssh
+	grep "dns" net_stress.appl > net_stress.appl-dns
+	grep "http" net_stress.appl > net_stress.appl-http
+	grep "ftp" net_stress.appl > net_stress.appl-ftp
 	grep -v -e ^# -e ^$ -e ssh -e dns -e http -e ftp net_stress.appl && return 1
 	hide net_stress.appl
 
 	# syscalls-ipc
-	grep "msgstress" syscalls-ipc > syscalls-ipc-msgstress || return
-	grep -v "msgstress" syscalls-ipc > syscalls-ipc-00 || return
+	grep "msgstress" syscalls-ipc > syscalls-ipc-msgstress
+	grep -v "msgstress" syscalls-ipc > syscalls-ipc-00
 	hide syscalls-ipc
 
 	# mm
-	grep -e oom mm > mm-oom || return
-	grep -e min_free_kbytes mm > mm-min_free_kbytes || return
-	grep -e mtest06_3 mm > mm-mtest06_3 || return
-	grep -e ksm06 -e ksm04 -e ksm02 -e cpuset01 mm > mm-numa || return
-	grep -v -e oom -e min_free_kbytes -e mtest06_3 -e ksm06 -e ksm04 -e ksm02 -e cpuset01 mm > mm-00 || return
+	grep -e oom mm > mm-oom
+	grep -e min_free_kbytes mm > mm-min_free_kbytes
+	grep -e mtest06_3 mm > mm-mtest06_3
+	grep -e ksm06 -e ksm04 -e ksm02 -e cpuset01 mm > mm-numa
+	grep -v -e oom -e min_free_kbytes -e mtest06_3 -e ksm06 -e ksm04 -e ksm02 -e cpuset01 mm > mm-00
 	hide mm
 
 	# kernel_misc
 	# zram01 costs more than 28min
-	grep -e zram01 kernel_misc > kernel_misc-zram01 || return
+	grep -e zram01 kernel_misc > kernel_misc-zram01
 	sed -i "/zram01/d" kernel_misc
 }
 
 package()
 {
-	cd $srcdir/$pkgname
-	install_ltp "${pkgdir}/lkp/benchmarks/${pkgname}" || return
+	cd_src_pkg_dir
 
-	split_tests || return
+	make install
 
-	return 0
+	pack_contents testcases/commands/tpm-tools/tpmtoken/tpmtoken_import/tpmtoken_import_openssl.cnf \
+		testcases/commands/tpm-tools/tpmtoken/tpmtoken_protect/tpmtoken_protect_data.txt \
+		$benchmark_path/testcases/bin/
+
+	# cp file for rebuild dummy_del_mod*.ko
+	pack_contents testcases/kernel/syscalls/delete_module/* $benchmark_path/testcases/kernel/syscalls/delete_module
+
+	split_tests
 }
