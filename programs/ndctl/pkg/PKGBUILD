@@ -7,15 +7,27 @@ license=('GPL')
 source=("https://github.com/pmem/ndctl.git")
 md5sums=('SKIP')
 
-build() {
-	cd "$srcdir/${pkgname}"
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
+
+build()
+{
+	cd_src_pkg_dir
+
 	[[ -e '/usr/include/iniparser.h' ]] || cp /usr/include/iniparser/* /usr/include/
+
 	meson setup build
 	meson configure -Dtest=enabled -Ddocs=disabled build
 	meson compile -C build
 }
 
-package() {
-	cd "$srcdir/${pkgname}"
+package()
+{
+	cd_src_pkg_dir
+
 	DESTDIR="${pkgdir}" meson install -C build
 }
