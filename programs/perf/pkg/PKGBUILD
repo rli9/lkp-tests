@@ -8,10 +8,16 @@ source=('https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git')
 md5sums=('SKIP')
 
 . $LKP_SRC/lib/env.sh
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
 
 build()
 {
-	cd $srcdir/linux/tools/perf
+	cd_src_pkg_dir linux/tools/perf
 
 	# NO_JEVENTS=1 to support python older than 3.6
 	# NO_LIBTRACEEVENT=1 to support the distributions which have no libtraceevent
@@ -20,7 +26,5 @@ build()
 
 package()
 {
-	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
-	mkdir -p $benchmark_path
-	cp -af $srcdir/linux/tools/perf/perf $benchmark_path
+	pack_contents $srcdir/linux/tools/perf/perf $benchmark_path
 }
