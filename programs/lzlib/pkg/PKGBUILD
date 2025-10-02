@@ -13,17 +13,27 @@ options=('!emptydirs')
 source=(http://download.savannah.gnu.org/releases/lzip/$pkgname/$pkgname-$pkgver.tar.gz) # http://download.savannah.gnu.org/releases/lzip/lzlib/lzlib-1.14.tar.gz
 sha256sums=('SKIP')
 
-build() {
-  cd "${srcdir}"/$pkgname-$pkgver
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+	rename_versioned_src_pkg_dir
+}
+
+build()
+{
+  cd_src_pkg_dir
 
   ./configure --prefix=/usr --enable-shared
   make
 }
 
-package() {
-  cd "${srcdir}"/$pkgname-$pkgver
+package()
+{
+  cd_src_pkg_dir
 
-  make DESTDIR="${pkgdir}" install
+  make install DESTDIR="${pkgdir}"
 
   install -Dm755 minilzip "${pkgdir}"/usr/bin/minilzip
 }
