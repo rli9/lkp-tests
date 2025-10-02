@@ -13,10 +13,16 @@ source=('https://github.com/pmem/valgrind.git'
 md5sums=('SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP')
 
 . $LKP_SRC/lib/env.sh
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
 
 build_install_valgrind_pmem()
 {
-	cd "${srcdir}/valgrind"
+	cd_src_pkg_dir valgrind
 	git submodule init
 	git submodule update
 	./autogen.sh
@@ -27,7 +33,7 @@ build_install_valgrind_pmem()
 
 build_install_libfabric()
 {
-	cd "${srcdir}/libfabric"
+	cd_src_pkg_dir libfabric
 	./autogen.sh
 	./configure --prefix=/usr/local --with-valgrind=/usr/local
 	make
@@ -39,13 +45,13 @@ build_install_libfabric()
 # to get more detail info.
 build_install_libcxx()
 {
-	cd "${srcdir}/libcxxabi"
+	cd_src_pkg_dir libcxxabi
 	git checkout release_39
 
-	cd "${srcdir}/llvm"
+	cd_src_pkg_dir llvm"
 	git checkout release_39
 
-	cd "${srcdir}/libcxx"
+	cd_src_pkg_dir libcxx"
 	git checkout release_39
 
 	export CC=clang
@@ -61,7 +67,7 @@ build_install_libcxx()
 	mkdir -p "${srcdir}/build/abi"
 	mkdir -p "${srcdir}/build/lib"
 
-	cd "${srcdir}/build/abi"
+	cd_src_pkg_dir build/abi
 	$CMAKE -DLLVM_PATH="${srcdir}/llvm" -DCMAKE_INSTALL_PREFIX="${install_path}" "${srcdir}/llvm/projects/libcxxabi/"
 	make
 	make install
@@ -69,7 +75,7 @@ build_install_libcxx()
 	# xlocale.h was removed since libc6-de 2.26: https://sourceware.org/glibc/wiki/Release/2.26#Removal_of_.27xlocale.h.27
 	# here touch a fake header to avoid compiling error.
 	[ -f /usr/include/xlocale.h ] || touch "${srcdir}/llvm/projects/libcxx/include/xlocale.h"
-	cd "${srcdir}/build/lib"
+	cd_src_pkg_dir build/lib
 	$CMAKE -DLLVM_PATH="${srcdir}/llvm" -DLIBCXX_CXX_ABI=libcxxabi -DLIBCXX_CXX_ABI_INCLUDE_PATHS="${srcdir}/llvm/projects/libcxxabi/include" -DCMAKE_INSTALL_PREFIX="${install_path}" -DLIBCXX_CXX_ABI_LIBRARY_PATH="${install_path}/lib" "${srcdir}/llvm/projects/libcxx"
 	make
 	make install
@@ -78,7 +84,7 @@ build_install_libcxx()
 build()
 {
 	[ "$DISTRO" = "centos" ] && {
-		cd "${srcdir}/nvml"
+		cd_src_pkg_dir nvml
 		sed -i 's/CXXFLAGS += -Wno-unknown-attributes/CXXFLAGS += -Wno-ignored-attributes/' ./src/benchmarks/Makefile
 	}
 
@@ -89,14 +95,12 @@ build()
 
 package()
 {
-	benchmark_path="${pkgdir}/lkp/benchmarks"
-	mkdir -p "${benchmark_path}"
-	cp -af "${srcdir}/${pkgname}" "${benchmark_path}"
-	. $LKP_SRC/lib/env.sh
+	pack_src_pkg_contents
 
-	cd "${srcdir}/valgrind"
-	make DESTDIR="${pkgdir}" install
-	cd "${srcdir}/libfabric"
-	make DESTDIR="${pkgdir}" install
+	cd_src_pkg_dir valgrind
+	make install DESTDIR="${pkgdir}"
+
+	cd_src_pkg_dir libfabric
+	make install DESTDIR="${pkgdir}"
 	cp -af "/usr/local/libcxx" "${pkgdir}/usr/local"
 }
