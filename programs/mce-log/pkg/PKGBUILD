@@ -7,9 +7,16 @@ license=('GPL')
 source=("$pkgname"::"https://github.com/andikleen/mcelog.git" "https://git.kernel.org/pub/scm/utils/cpu/mce/mce-inject.git" "https://github.com/aegl/mce-test.git")
 md5sums=('SKIP' 'SKIP' 'SKIP')
 
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
+
 build()
 {
-	cd $srcdir/$pkgname
+	cd_src_pkg_dir
 
 	make
 	make -C ../mce-inject
@@ -18,14 +25,13 @@ build()
 
 package()
 {
-	cd $srcdir/$pkgname
+	pack_src_pkg_contents
 
-	mkdir -p "${pkgdir}/lkp/benchmarks/${pkgname}"
-	cp -af * "${pkgdir}/lkp/benchmarks/${pkgname}" || return
+	cd_src_pkg_dir
 
-	make destdir="$pkgdir" install -C ../mce-inject || return
+	make install destdir="$pkgdir" -C ../mce-inject
 
-	make install -C ../mce-test || return
+	make install -C ../mce-test
 	mkdir -p "${pkgdir}/usr/bin"
-	cp ../mce-test/bin/page-types "${pkgdir}/usr/bin" || return
+	cp ../mce-test/bin/page-types "${pkgdir}/usr/bin"
 }
