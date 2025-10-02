@@ -8,31 +8,41 @@ arch=('i386' 'x86_64' 'aarch64')
 url="http://ebizzy.sourceforge.net/"
 license=('GPL2')
 depends=('glibc')
-source=('http://downloads.sourceforge.net/project/ebizzy/ebizzy/0.3/ebizzy-0.3.tar.gz')
-md5sums=('af038bc506066bb3d28db08aba62bc38') 
+source=("http://downloads.sourceforge.net/project/ebizzy/ebizzy/0.3/$pkgname-0.3.tar.gz" "0001-$pkgname.patch")
+md5sums=('af038bc506066bb3d28db08aba62bc38' 'SKIP')
 
 . $LKP_SRC/lib/install.sh
+. $LKP_SRC/lib/tests/pkgbuild.sh
 
-patch_source() {
-    cd "$srcdir/$pkgname-$pkgver"
-    patch -p1 < "$(get_pkg_dir $pkgname)/0001-${pkgname}.patch"
+prepare()
+{
+	prepare_benchmark_path
+	rename_versioned_src_pkg_dir
 }
 
-build() {
-    cd "$srcdir/$pkgname-$pkgver"
+patch_source()
+{
+    cd_src_pkg_dir
+
+    patch -p1 < $srcdir/0001-$pkgname.patch
+}
+
+build()
+{
+    cd_src_pkg_dir
+
     ./configure
     make
 }
 
-package() {
-    local install_prefix=$pkgdir/lkp/benchmarks/$pkgname
+package()
+{
+    cd_src_pkg_dir
 
-    cd "$srcdir/$pkgname-$pkgver"
+    mkdir -p "$benchmark_path/usr/share/licenses/$pkgname"
+    mkdir -p "$benchmark_path/usr/share/$pkgname"
 
-    mkdir -p "$install_prefix/usr/share/licenses/$pkgname"
-    mkdir -p "$install_prefix/usr/share/$pkgname"
-
-    install -D -m 755 -o root -g root "$pkgname" "$install_prefix/$pkgname"
-    install -D -m 644 -o root -g root "LICENSE" "$install_prefix/usr/share/licenses/$pkgname/LICENSE"
-    install -D -m 644 -o root -g root "README" "$install_prefix/usr/share/$pkgname/README"
+    install -D -m 755 -o root -g root "$pkgname" "$benchmark_path/$pkgname"
+    install -D -m 644 -o root -g root "LICENSE" "$benchmark_path/usr/share/licenses/$pkgname/LICENSE"
+    install -D -m 644 -o root -g root "README" "$benchmark_path/usr/share/$pkgname/README"
 }
