@@ -5,24 +5,28 @@ pkgdesc='interacts with the Linux hugetlbfs to make large pages available to app
 url='https://github.com/libhugetlbfs/libhugetlbfs'
 arch=('i386' 'x86_64' 'aarch64')
 license=('GPL')
-source=("$pkgname"::"https://github.com/libhugetlbfs/libhugetlbfs.git")
-md5sums=('SKIP')
+source=("$pkgname"::"https://github.com/libhugetlbfs/libhugetlbfs.git"
+	'0001-tests-hugetests.h-fix-compile-errors-under-centos.patch')
+md5sums=('SKIP' 'SKIP')
 
 . $LKP_SRC/lib/install.sh
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
 
 patch_source()
 {
-	cd $srcdir/$pkgname
+	cd_src_pkg_dir
 
 	if [ "$DISTRO" = "centos" ]; then
-		patch -p1 < $(get_pkg_dir $pkgname)/0001-tests-hugetests.h-fix-compile-errors-under-centos.patch
+		patch -p1 < $srcdir/0001-tests-hugetests.h-fix-compile-errors-under-centos.patch
 	fi
 }
 
 package()
 {
-	cd $srcdir
-
-	mkdir -p "${pkgdir}/lkp/benchmarks/${pkgname}"
-	cp -af "$pkgname" "${pkgdir}/lkp/benchmarks/"
+	pack_src_pkg_contents
 }
