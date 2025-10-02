@@ -7,16 +7,21 @@ license=('GPL')
 source=('https://github.com/intel/lkvs.git' 'https://github.com/intel/libipt.git')
 md5sums=('SKIP' 'SKIP')
 
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
+
 build()
 {
-	cd $pkgname
+	cd_src_pkg_dir
 
 	git submodule update --init
 }
 
 package()
 {
-	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
-	mkdir -p $benchmark_path
-	cp -af $srcdir/* $benchmark_path
+	pack_contents $srcdir/* $benchmark_path
 }
