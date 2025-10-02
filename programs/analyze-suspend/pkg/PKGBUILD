@@ -9,20 +9,22 @@ source=("https://github.com/intel/pm-graph.git"
 	"https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git")
 md5sums=('SKIP' 'SKIP' 'SKIP')
 
-build() {
-	cd "$srcdir/linux/tools/power/x86/turbostat"
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
+
+build()
+{
+	cd_src_pkg_dir linux/tools/power/x86/turbostat
 	make
 }
 
-package() {
-	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
-	mkdir -p "${benchmark_path}"
-	cp -af "${srcdir}/pm-graph/"* "${benchmark_path}"
-	turbostat_path="${pkgdir}/lkp/benchmarks/turbostat"
-	mkdir -p "${turbostat_path}"
-	cp -a "${srcdir}/linux/tools/power/x86/turbostat/turbostat" "${turbostat_path}"
-
-	firmware_path="${pkgdir}/usr/lib/firmware/"
-	mkdir -p $firmware_path
-	cp -af "${srcdir}/linux-firmware/"* "${firmware_path}"
+package()
+{
+	pack_contents "${srcdir}/pm-graph/"* "${benchmark_path}"
+	pack_contents "${srcdir}/linux/tools/power/x86/turbostat/turbostat" "${pkgdir}/lkp/benchmarks/turbostat"
+	pack_contents "${srcdir}/linux-firmware/"* "${pkgdir}/usr/lib/firmware/"
 }
