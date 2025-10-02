@@ -16,6 +16,11 @@ md5sums=('SKIP' 'SKIP' 'SKIP')
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/tests/pkgbuild.sh
 
+prepare()
+{
+	prepare_benchmark_path
+}
+
 get_kernel_version()
 {
 	# format: X.Y.Z-...
@@ -29,7 +34,7 @@ get_kernel_version()
 
 build_tools()
 {
-	cd "${srcdir}/linux"
+	cd_src_pkg_dir linux
 	if [[ -d .git ]]; then
 		local installed_version="$(get_kernel_version)"
 		git tag | grep -x "${installed_version}" || die "can not bring the download kernel version into correspondence with the installed kernel"
@@ -48,49 +53,42 @@ build_tools()
 
 install_selftests()
 {
-	cd "${srcdir}/linux"
+	cd_src_pkg_dir linux
+
 	local header_dir="/tmp/linux-headers"
 
 	mkdir -p "${header_dir}"
 	make headers_install INSTALL_HDR_PATH="${header_dir}"
 
-	mkdir -p "${benchmark_path}/usr/include"
-	cp -af "${header_dir}/include/"* "${benchmark_path}/usr/include"
+	pack_contents "${header_dir}/include" "${benchmark_path}/usr"
+	pack_contents "${header_dir}/include/asm" "${benchmark_path}/tools/include/uapi"
 
-	mkdir -p "${benchmark_path}/tools/include/uapi/asm"
-	cp -af "${header_dir}/include/asm/"* "${benchmark_path}/tools/include/uapi/asm"
-
-	mkdir -p "${benchmark_path}/tools/testing/selftests"
-	cp -af tools/testing/selftests/* "${benchmark_path}/tools/testing/selftests"
-
-	for d in arch/x86 scripts kernel/bpf samples Makefile tools include lib
+	local dir
+	for dir in arch/x86 scripts kernel/bpf samples Makefile tools include lib
 	do
-		mkdir -p $(dirname ${benchmark_path}/$d)
-		cp -af $d $(dirname ${benchmark_path}/$d)
+		pack_contents $dir $(dirname ${benchmark_path}/$dir)
 	done
 }
 
 build()
 {
-	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
-	mkdir -p "${benchmark_path}"
-	build_iproute2 || return
-	build_tools || return
-	build_pahole || return
-
-	install_selftests
+	build_iproute2
+	build_tools
+	build_pahole
 }
 
 package()
 {
+	install_selftests
+
 	# for hid group
 	pip3_install pytest-tap
 
 	# When using pip to install packages system-wide, they are usually installed
 	# in /usr/local/lib/python3.x/dist-packages or site-packages
-	cp_to_pkg /usr/local/lib
+	pack_contents /usr/local/lib
 
 	# install cpupower command and library
-	cd "${srcdir}/linux/tools/power/cpupower"
-	DESTDIR="$pkgdir" make install
+	cd_src_pkg_dir linux/tools/power/cpupower
+	make install DESTDIR="$pkgdir"
 }
