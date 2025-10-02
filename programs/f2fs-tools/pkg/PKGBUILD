@@ -3,8 +3,7 @@
 # Contributor: figue <ffigue at gmail.com>
 # Contributor: vinibali <vinibali1 at gmail.com>
 
-pkgname=f2fs-tools-git
-_gitname=f2fs-tools
+pkgname=f2fs-tools
 pkgver=git
 pkgrel=1
 pkgdesc="Tools for Flash-Friendly File System (F2FS) (git version)"
@@ -17,16 +16,25 @@ conflicts=('f2fs-tools')
 source=("https://git.kernel.org/pub/scm/linux/kernel/git/jaegeuk/f2fs-tools.git")
 md5sums=('SKIP')
 
-build() {
-  cd $_gitname
-  ./autogen.sh
-  ./configure --prefix=/usr --sbindir=/usr/bin
-  make
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
 }
 
-package() {
-  cd $_gitname
-  make DESTDIR="$pkgdir" sbindir=/usr/bin install
+build()
+{
+	cd_src_pkg_dir
+
+	./autogen.sh
+	./configure --prefix=/usr --sbindir=/usr/bin
+	make
 }
 
-# vim:set ts=2 sw=2 et:
+package()
+{
+	cd_src_pkg_dir
+
+	make install DESTDIR="$pkgdir" sbindir=/usr/bin
+}
