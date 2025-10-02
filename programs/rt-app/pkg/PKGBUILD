@@ -7,21 +7,27 @@ license=('GPL')
 source=("https://github.com/scheduler-tools/rt-app.git")
 md5sums=('SKIP')
 
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
+
 build()
 {
-	cd ${srcdir}/${pkgname}
+	cd_src_pkg_dir
 
-	./autogen.sh || return
-	./configure --prefix=${srcdir}/${pkgname} --with-deadline || return
-	make || return
-	make install
+	./autogen.sh
+	./configure --prefix=$benchmark_path
+	make
 }
 
 package()
 {
-	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
-	mkdir -p ${benchmark_path}/workloads
+	cd_src_pkg_dir
 
-	cp -arf ${srcdir}/${pkgname}/bin ${benchmark_path}/
-	cp -arf ${srcdir}/${pkgname}/doc/examples/*.json ${benchmark_path}/workloads/
+	make install
+
+	pack_contents "doc/examples/*.json" $benchmark_path/workloads
 }
