@@ -7,15 +7,15 @@ license=('custom')
 source=('http://www.phoronix-test-suite.com/benchmark-files/pybench-2018-02-16.tar.gz')
 md5sums=('e3ca0e887e4310896d32dd1cbd258a94')
 
-build()
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
 {
-        mkdir -p "$srcdir/$pkgname/"
-        cd "$srcdir/$pkgname/"
-        tar -zxf ../pybench-2018-02-16.tar.gz
+	prepare_benchmark_path
+	rename_versioned_src_pkg_dir pybench-2018-02-16
 }
 
 package()
 {
-        mkdir -p "$pkgdir/lkp/benchmarks/pybench"
-        cp -r "$srcdir/$pkgname/pybench-2018-02-16/"* "$pkgdir/lkp/benchmarks/pybench"
+	pack_src_pkg_contents
 }
