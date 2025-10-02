@@ -7,9 +7,17 @@ license=('GPL')
 source=('http://nchc.dl.sourceforge.net/project/aimbench/aim-suite7/Initial%20release/s7110.tar.Z')
 md5sums=('2b61bbc62ebc6e93af50f190c3ece119')
 
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
+
 build()
 {
-	cd $srcdir/aim7
+	cd_src_pkg_dir
+
 	make <<-END
 
 
@@ -25,12 +33,8 @@ END
 
 package()
 {
-	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
-	mkdir -p ${benchmark_path}
-	cd $srcdir/aim7
-	find . -maxdepth 1 -type f -executable ! -name ".*" \
-		-exec cp -af {} $benchmark_path \;
-	cp fakeh.tar $benchmark_path
-	mkdir -p "$benchmark_path/workfiles"
-	cp -af workfile.* $benchmark_path/workfiles
+	pack_src_pkg_execs
+	pack_src_pkg_contents fakeh.tar
+
+	pack_src_pkg_contents "workfile.*" $benchmark_path/workfiles
 }
