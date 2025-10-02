@@ -9,19 +9,24 @@
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/env.sh
 . $LKP_SRC/lib/debug.sh
+. $LKP_SRC/lib/run.sh
 
 [ -n "$direct_server_ips" ] && server=$direct_server_ips
 [ -z "$server" ] && server=127.0.0.1
 [ -n "$runtime" ] || runtime=600
 [ -n "$iterations" ] || iterations=1
 
-has_cmd tbench || die "tbench not found"
-[ -f /usr/local/share/client.txt ] || die "can not find load file"
+prepare_exec_path tbench
+
+cd_benchmark dbench
+
+[ -f share/client.txt ] || die "can not find load file"
 
 server=${server%% *}
 for i in $(seq $iterations)
 do
-  log_cmd tbench -t $runtime $nr_threads $server || die "tbench run failed, check run log"
+  log_cmd tbench -c share/client.txt -t $runtime $nr_threads $server || die "tbench run failed, check run log"
 done
+
 log_echo killall -KILL tbench_srv
 killall -KILL tbench_srv

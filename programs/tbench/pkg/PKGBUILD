@@ -1,41 +1,43 @@
-pkgname=dbench
+pkgname=tbench
 pkgver=4
 pkgrel=0
 url='https://www.samba.org/ftp/tridge/dbench'
 arch=('i386' 'x86_64' 'aarch64' 'aarch64')
 license=('GPL')
-source=("https://www.samba.org/ftp/tridge/dbench/${pkgname}-${pkgver}.${pkgrel}.tar.gz")
+source=("https://www.samba.org/ftp/tridge/dbench/dbench-${pkgver}.${pkgrel}.tar.gz")
 md5sums=('SKIP')
+
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+	rename_versioned_src_pkg_dir dbench-$pkgver.$pkgrel
+}
 
 build()
 {
-	cd $srcdir/${pkgname}-$pkgver.$pkgrel
-	cp -a ./*.txt /usr/local/share/
+	cd_src_pkg_dir
 
-	./autogen.sh || return
-	./configure CFLAGS=$(pkg-config --cflags smbclient) || return
+	./autogen.sh
+	./configure CFLAGS=$(pkg-config --cflags smbclient) --prefix $benchmark_path
+
 	# Fix libnfs.c:27:39: error: intptr_t undeclared (first use in this function); did you mean in_port_t?
 	# sed -i '/#include "nfs.h/a #include <stdint.h>' libnfs.c
 	# Fix fatal error: rpc/rpc.h: No such file or directory
-	[[ -e '/usr/include/rpc/rpc.h' ]] || cp /usr/include/tirpc/* /usr/include/ -rf
+	[[ -e '/usr/include/rpc/rpc.h' ]] || cp -rvf /usr/include/tirpc/* /usr/include/
 	sed -i '/^LIBS=/ s/$/ -ltirpc/' Makefile
-	make dbench || return
-	make tbench || return
-	make tbench_srv || return
-	make install
+
+	make dbench
+	make tbench
+	make tbench_srv
 }
 
 package()
 {
-	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
-	usr_path="${pkgdir}/usr"
+	cd_src_pkg_dir
 
-	mkdir -p $benchmark_path
-	mkdir -p $usr_path/local/bin
-	mkdir -p $usr_path/local/share
-
-	cd $srcdir/${pkgname}-$pkgver.$pkgrel
-	cp -a dbench tbench tbench_srv $usr_path/local/bin
-	cp -a /usr/local/share/*.txt $usr_path/local/share
-	touch $benchmark_path/empty
+	# /usr/bin/install -c dbench tbench tbench_srv /tmp/lkp/dbench/pkg/dbench/lkp/benchmarks/dbench/bin
+	# /usr/bin/install -c client.txt /tmp/lkp/dbench/pkg/dbench/lkp/benchmarks/dbench/share
+	make install
 }
