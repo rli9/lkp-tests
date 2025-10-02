@@ -7,6 +7,13 @@ license=('GPL')
 source=("https://raw.githubusercontent.com/torvalds/linux/master/scripts/leaking_addresses.pl")
 md5sums=('SKIP')
 
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
+
 pkgver()
 {
 	# get the last commit of leaking_addresses.pl
@@ -19,6 +26,5 @@ package()
 {
 	cd $srcdir
 
-	mkdir -p "${pkgdir}/lkp/benchmarks/${pkgname}"
-	install -m 755 "${srcdir}"/leaking_addresses.pl "$pkgdir/lkp/benchmarks/${pkgname}/"
+	install -m 755 "${srcdir}"/leaking_addresses.pl $benchmark_path/
 }
