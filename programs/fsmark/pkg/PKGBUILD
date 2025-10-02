@@ -4,16 +4,24 @@ pkgrel=1
 arch=('i386' 'x86_64' 'aarch64')
 url="https://github.com/josefbacik/fs_mark.git"
 license=('GPL')
-source=("https://github.com/josefbacik/fs_mark.git")
+source=("$pkgname"::"https://github.com/josefbacik/fs_mark.git")
 md5sums=('SKIP')
+
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
 
 build()
 {
-	cd "${srcdir}/fs_mark"
+	cd_src_pkg_dir
+
 	make fs_mark
 }
 
-package() {
-	mkdir -p "${pkgdir}/lkp/benchmarks/fsmark"
-	cp -af "$srcdir/fs_mark/"* "${pkgdir}/lkp/benchmarks/fsmark"
+package()
+{
+	pack_src_pkg_contents
 }
