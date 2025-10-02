@@ -10,9 +10,16 @@ source=('https://github.com/leverich/mutilate.git')
 md5sums=('SKIP')
 
 . $LKP_SRC/lib/install.sh
+. $LKP_SRC/lib/tests/pkgbuild.sh
 
-patch_source() {
-	cd "$srcdir/mutilate"
+prepare()
+{
+	prepare_benchmark_path
+}
+
+patch_source()
+{
+	cd_src_pkg_dir
 
 	# if scons isn't python3 version, no need apply patch
 	scons -v | grep -q "python3" || return 0
@@ -22,7 +29,8 @@ patch_source() {
 
 build()
 {
-	cd "$srcdir/mutilate"
+	cd_src_pkg_dir
+
 	scons
 }
 
