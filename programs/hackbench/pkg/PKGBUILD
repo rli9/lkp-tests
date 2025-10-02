@@ -4,11 +4,26 @@ pkgrel=0
 arch=('i386' 'x86_64' 'riscv64' 'aarch64')
 url="https://git.kernel.org/pub/scm/utils/rt-tests/rt-tests"
 license=('GPL')
-source=("https://git.kernel.org/pub/scm/utils/rt-tests/rt-tests.git")
+source=("$pkgname"::"https://git.kernel.org/pub/scm/utils/rt-tests/rt-tests.git")
 sha256sums=('SKIP')
 
-package() {
-	mkdir -p "${pkgdir}/lkp/benchmarks/${pkgname}"
-	cd "$srcdir/rt-tests"
-	make install DESTDIR="${pkgdir}/lkp/benchmarks/${pkgname}"
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
+
+build()
+{
+	cd_src_pkg_dir
+
+	make
+}
+
+package()
+{
+	cd_src_pkg_dir
+
+	make install DESTDIR=$benchmark_path
 }
