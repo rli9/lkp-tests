@@ -21,17 +21,26 @@ source=(http://www.openfabrics.org/downloads/qperf/$pkgname-$pkgver.tar.gz)
 noextract=()
 md5sums=(a9eea1953ee5379e57ae5fd7b09fecf2) #generate with 'makepkg -g'
 
-build() {
-        cd "$srcdir/$pkgname-$pkgver"
-        ./autogen.sh
-        ./configure  --prefix=/usr
-        make
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+	rename_versioned_src_pkg_dir
 }
 
-package() {
-	cd "$srcdir/$pkgname-$pkgver"
-	make  install
-	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
-	mkdir -p ${benchmark_path}
-	cp -a /usr/bin/qperf ${benchmark_path}
+build()
+{
+	cd_src_pkg_dir
+
+	./autogen.sh
+	./configure --prefix=$benchmark_path
+	make
+}
+
+package()
+{
+	cd_src_pkg_dir
+
+	make install
 }
