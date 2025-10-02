@@ -7,20 +7,31 @@ license=('GPL')
 source=("https://github.com/kernelslacker/trinity.git")
 md5sums=('SKIP')
 
-build() {
-	gcc_major=$($(which gcc) -dumpversion | cut -d. -f1)
-	cd "$srcdir/${pkgname}" || return
-	./configure || return
-	make
-	make install
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
 }
 
-package() {
-	cd "$srcdir/${pkgname}" || return
-	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
+build()
+{
+	gcc_major=$($(which gcc) -dumpversion | cut -d. -f1)
+
+	cd_src_pkg_dir
+
+	./configure
+	make
+}
+
+package()
+{
+	cd_src_pkg_dir
+	make install
+
 	bin_path="${pkgdir}/bin"
-	mkdir -p $benchmark_path
 	mkdir -p $bin_path
+
 	cp /bin/trinity $bin_path
 	INSTALL_PREFIX=$benchmark_path make install
 }

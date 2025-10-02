@@ -7,26 +7,35 @@ license=('GPL')
 source=("https://github.com/kernelslacker/trinity.git")
 md5sums=('SKIP')
 
-build() {
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
+
+build()
+{
 	export CC="gcc -m32 -static"
 	gcc_major=$($(which gcc) -dumpversion | cut -d. -f1)
-	cd "$srcdir/trinity" || return
-	./configure || return
+
+	cd "$srcdir/trinity"
+	./configure
 	if [[ "$gcc_major" -ge 8 ]]; then
 		CFLAGS="-Wno-address-of-packed-member -Werror=format-overflow=0" make
 	else
 		make
 	fi
-
-	make install
 }
 
-package() {
-	cd "$srcdir/trinity" || return
-	benchmark_path="${pkgdir}/lkp/benchmarks/${pkgname}"
+package()
+{
+	cd "$srcdir/trinity"
+	make install
+
 	bin_path="${pkgdir}/bin"
-	mkdir -p $benchmark_path
 	mkdir -p $bin_path
+
 	cp /bin/trinity $bin_path
 	INSTALL_PREFIX=$benchmark_path make install
 }
