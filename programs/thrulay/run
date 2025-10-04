@@ -6,14 +6,15 @@
 ## bulk TCP or UDP stream over it.
 
 . $LKP_SRC/lib/reproduce-log.sh
-
-export PATH=$BENCHMARK_ROOT/thrulay/sbin:$BENCHMARK_ROOT/thrulay/bin:$PATH
+. $LKP_SRC/lib/run.sh
 
 [ -n "$runtime" ] || runtime=300
 
 [ -n "$direct_server_ips" ] && server=$direct_server_ips
 [ -z "$server" ] && server=127.0.0.1
 server=${server%% *}
+
+prepare_exec_path
 
 export LD_LIBRARY_PATH=/lkp/benchmarks/thrulay/lib:$LD_LIBRARY_PATH
 log_cmd thrulay -t $runtime $server

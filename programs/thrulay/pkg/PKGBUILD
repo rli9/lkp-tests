@@ -7,15 +7,24 @@ license=('GPL')
 source=("http://jaist.dl.sourceforge.net/project/${pkgname}/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 sha256sums=('373d5613dfe371f6b4f48fc853f6c27701b2981ba4100388c9881cb802d1780d')
 
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+	rename_versioned_src_pkg_dir
+}
+
 build()
 {
-	cd "${srcdir}/thrulay-${pkgver}"
+	cd_src_pkg_dir
+
 	cp /usr/share/misc/config.{guess,sub} .
-	./configure --prefix="${pkgdir}/lkp/benchmarks/${pkgname}"
+	./configure --prefix=$benchmark_path
 }
 
 package()
 {
-	cd "${srcdir}/thrulay-${pkgver}"
+	cd_src_pkg_dir
 	make install
 }
