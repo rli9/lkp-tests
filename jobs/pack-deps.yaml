@@ -1,5 +1,6 @@
 suite: pack-deps
 testcase: pack-deps
+category: other
 
 branch: linus/master
 commit: RELEASE

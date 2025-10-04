@@ -1,5 +1,6 @@
 suite: makepkg
 testcase: makepkg
+category: other
 
 testbox: lkp-skl-fpga01
 branch: linus/master
