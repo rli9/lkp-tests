@@ -40,10 +40,10 @@ module LKP
     class << self
       attr_reader :klass_2_path
 
-      def generate_klass(file_path)
+      def generate_klass(file_path, klass_name = nil)
         @klass_2_path ||= {}
 
-        klass_name = File.basename(file_path).underscore.camelize
+        klass_name ||= File.basename(file_path).underscore.camelize
         return if @klass_2_path.key?(klass_name)
 
         klass = Class.new(self) do
