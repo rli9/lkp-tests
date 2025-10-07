@@ -87,7 +87,7 @@ single_node_test()
 	local test_dir="$(get_pkg_dir ocfs2test)/addon/tests"
 	while read -r test_name
 	do
-		su - ocfs2test -c "$OCFS2TEST_HOME/ocfs2/bin/single_run-WIP.sh -k $OCFS2TEST_HOME/linux-kernel.tar.gz \
+		su - ocfs2test -c "cd $OCFS2TEST_HOME/ocfs2/bin && ./single_run-WIP.sh -k $OCFS2TEST_HOME/linux-kernel.tar.gz \
 		  -m /mnt/ocfs2 -l $OCFS2TEST_HOME/ocfs2log -t $test_name -d $partition"
 	done < $test_dir/$test
 
