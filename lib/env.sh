@@ -80,10 +80,7 @@ set_perf_path()
 	if [ -x "$1" ]; then
 		perf="$1"
 	else
-		perf=$(cmd_path perf) || {
-			. $LKP_SRC/lib/debug.sh
-			die "Can not find perf command"
-		}
+		perf=$(cmd_path perf) || die "Can not find perf command"
 	fi
 }
 
