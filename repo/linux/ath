@@ -1,11 +1,9 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git
 owner:
 - Jeff Johnson <jjohnson@kernel.org>
-- Kalle Valo <kvalo@kernel.org>
 git_am_branch: ath-next
 mail_cc:
 - Jeff Johnson <jjohnson@kernel.org>
-- Kalle Valo <kvalo@kernel.org>
 - ath12k@lists.infradead.org
 subsystems:
 - ath10k
