@@ -72,6 +72,7 @@ phoronix-test-suite\..+\.bogo_ops_s: 1
 phoronix-test-suite\..+\.byte_s: 1
 phoronix-test-suite\..+\.cg_mflops: 1
 phoronix-test-suite\..+\.clocks: -1
+phoronix-test-suite\..+\.cycles_hash: 1
 phoronix-test-suite\..+\.cycles_per_byte: 1
 phoronix-test-suite\..+\.days_ns: -1
 phoronix-test-suite\..+\.figure_of_merit: 1
@@ -113,6 +114,7 @@ phoronix-test-suite\..+\.mbytes_s: 1
 phoronix-test-suite\..+\.mbyte_s: 1
 phoronix-test-suite\..+\.MB\/s: 1
 phoronix-test-suite\..+\.mb_s: 1
+phoronix-test-suite\..+\.mcells_s: 1
 phoronix-test-suite\..+\.megapixels_sec: 1
 phoronix-test-suite\..+\.mflops: 1
 phoronix-test-suite\..+\.mib_s: 1
@@ -148,7 +150,9 @@ phoronix-test-suite\..+\.op_s: 1
 phoronix-test-suite\..+\.points: -1
 phoronix-test-suite\..+\.quips: 1
 phoronix-test-suite\..+\.real_c_s: 1
+phoronix-test-suite\..+\.receiving_messages_s: 1
 phoronix-test-suite\..+\.records_s: 1
+phoronix-test-suite\..+\.render_ratio: 1
 phoronix-test-suite\..+\.runs_s: 1
 phoronix-test-suite\..+\.samples: 1
 phoronix-test-suite\..+\.samples_sec: 1
