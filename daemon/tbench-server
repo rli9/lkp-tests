@@ -1,6 +1,9 @@
 #!/bin/sh
 
 . $LKP_SRC/lib/reproduce-log.sh
+. $LKP_SRC/lib/run.sh
+
+prepare_exec_path tbench_srv
 
 log_eval "tbench_srv &"
 

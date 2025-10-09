@@ -18,7 +18,7 @@
 
 prepare_exec_path tbench
 
-cd_benchmark dbench
+cd_benchmark
 
 [ -f share/client.txt ] || die "can not find load file"
 
