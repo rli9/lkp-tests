@@ -1,8 +1,8 @@
-suite: phoronix-test-suite
-testcase: phoronix-test-suite
+suite: pts
+testcase: pts
 category: benchmark
 
-phoronix-test-suite:
+pts:
   - test: svt-av1-2.11.1
     option_a:
       - 1 # Preset 13 [Fastest]

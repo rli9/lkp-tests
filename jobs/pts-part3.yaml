@@ -1,10 +1,10 @@
-suite: phoronix-test-suite
-testcase: phoronix-test-suite
+suite: pts
+testcase: pts
 category: benchmark
 
 need_memory: 8G
 
-phoronix-test-suite:
+pts:
   - test:
     - build-gcc-1.4.0
     - mnn-2.1.0

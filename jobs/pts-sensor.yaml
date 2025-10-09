@@ -1,9 +1,9 @@
-suite: phoronix-test-suite
-testcase: phoronix-test-suite
+suite: pts
+testcase: pts
 category: benchmark
 
 need_memory: 8G
 
-phoronix-test-suite:
+pts:
   test:
     - idle-power-usage-1.0.0 # The test run did not produce a result

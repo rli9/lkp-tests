@@ -76,7 +76,7 @@ perf-sanity-tests: perf
 perf-stat: perf
 perf::
 pft::
-phoronix-test-suite::
+pts::
 phpbench::
 piglit::
 pm-qa::

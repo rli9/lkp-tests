@@ -17,8 +17,8 @@ oltp\.latency_max_ms: -0.1
 oltp\.latency_min_ms: -0.1
 perf-bench-futex\.avg_per_thread_latency_ms: -0.1
 pgbench\.latency_ms: -0.1
-phoronix-test-suite\..+\.9th_latency_percentile: -0.1
-phoronix-test-suite\..+\.max_latency_ms: -0.1
+pts\..+\.9th_latency_percentile: -0.1
+pts\..+\.max_latency_ms: -0.1
 pmbench\..+\.latency\..+\.ns: -0.1
 pmbench\.latency\.ns\.average: -0.1
 qperf\..+\.latency: -0.3

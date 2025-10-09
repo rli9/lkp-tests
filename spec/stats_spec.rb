@@ -31,7 +31,7 @@ describe 'stats' do
     it 'should match the correct value' do
       change_percentage = 1
       a = 'aim9.add_float.ops_per_sec'
-      b = 'phoronix-test-suite.aobench.0.seconds'
+      b = 'pts.aobench.0.seconds'
       c = 'aim9.test'
 
       expect(kpi_stat_direction(a, change_percentage)).to eq 'improvement'

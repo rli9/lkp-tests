@@ -1,8 +1,8 @@
-suite: phoronix-test-suite
-testcase: phoronix-test-suite
+suite: pts
+testcase: pts
 category: benchmark
 
-phoronix-test-suite:
+pts:
   # - test:
     # - lulesh-cl-1.0.1 # The test quit with a non-zero exit status.
     # - xsbench-cl-1.0.0 # Could not initialize OpenCL: error = -1001

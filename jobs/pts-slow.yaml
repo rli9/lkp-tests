@@ -1,10 +1,10 @@
-suite: phoronix-test-suite
-testcase: phoronix-test-suite
+suite: pts
+testcase: pts
 category: benchmark
 
 need_memory: 8G
 
-phoronix-test-suite:
+pts:
   - test:
     - nwchem-1.1.1 # runtime > 1h on lkp-csl-2sp7
     - numpy-1.2.1 # runtime > 1h

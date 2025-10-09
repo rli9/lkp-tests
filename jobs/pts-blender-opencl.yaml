@@ -1,10 +1,10 @@
-suite: phoronix-test-suite
-testcase: phoronix-test-suite
+suite: pts
+testcase: pts
 category: benchmark
 
 need_memory: 8G
 
-phoronix-test-suite:
+pts:
   - test: blender-4.0.0
     option_a:
       - BMW27 # BMW27-Intel_oneAPI. E: Error: Found no Cycles device of the specified type

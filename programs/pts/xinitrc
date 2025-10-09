@@ -1,10 +1,8 @@
 #!/bin/bash
 
 . $LKP_SRC/lib/debug.sh
-. $LKP_SRC/lib/tests/phoronix-test-suite.sh
+. $LKP_SRC/lib/tests/pts.sh
 . $LKP_SRC/lib/reproduce-log.sh
-
-## See 'tests/phoronix-test-suite'.
 
 start_time=$(date +%s.%N)
 environment_directory="/var/lib/phoronix-test-suite/installed-tests/"

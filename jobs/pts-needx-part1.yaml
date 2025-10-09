@@ -1,10 +1,10 @@
-suite: phoronix-test-suite
-testcase: phoronix-test-suite
+suite: pts
+testcase: pts
 category: benchmark
 
 need_x: true
 
-phoronix-test-suite:
+pts:
   - test: quadray-1.0.0
     option_a:
       - 1

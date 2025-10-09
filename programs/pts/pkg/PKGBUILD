@@ -8,13 +8,20 @@ source=("http://phoronix-test-suite.com/releases/${pkgname}-${pkgver}.${pkgrel}.
 md5sums=('7dc8f085701122f031516e03c439d347')
 
 . $LKP_SRC/lib/env.sh
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+	rename_versioned_src_pkg_dir ${pkgname}-$pkgver.$pkgrel
+}
 
 package()
 {
-	cd "${srcdir}/${pkgname}"
+	cd_src_pkg_dir
+
 	sh install-sh
-	mkdir -p "${pkgdir}/usr/bin"
-	cp -af "/usr/bin/${pkgname}" ${pkgdir}/usr/bin
-	mkdir -p "${pkgdir}/usr/share"
-	cp -af "/usr/share/${pkgname}" ${pkgdir}/usr/share
+
+	pack_contents "/usr/bin/${pkgname}" ${pkgdir}/usr/bin
+	pack_contents "/usr/share/${pkgname}" ${pkgdir}/usr/share
 }
