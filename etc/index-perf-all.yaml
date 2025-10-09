@@ -1,5 +1,4 @@
 .+\.throughput: 1
-.+\.virtual\.relative_stddev: -1
 adrestia\.wakeup_cost_periodic_us: -1
 adrestia\.wakeup_cost_single_us: -1
 aim7\.jobs-per-min: 1
