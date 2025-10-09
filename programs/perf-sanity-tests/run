@@ -1,14 +1,51 @@
 #!/bin/sh
+# - perf_compiler
+# - group
 
 ## perf began as a tool for using the performance counters subsystem in Linux,
 ## and this perf-sanity-tests are the built-in sanity tests from perf tool.
 
 . $LKP_SRC/lib/env.sh
 . $LKP_SRC/lib/reproduce-log.sh
+. $LKP_SRC/lib/tests/perf_sanity_tests.sh
 
-set_perf_path '/usr/bin/perf'
+prepare_test_range()
+{
+	[[ -x "$perf" ]] || die "\"$perf\" is not executable"
 
-$perf --version
+	local last_num=$($perf test list 2>&1 | tail -1 | awk '{print $1}' | cut -d : -f 1)
+	echo "last_num=$last_num"
+
+	if [[ $group ]]; then
+		group_number=$(echo $group | cut -d '-' -f 2)
+
+		group_size=30
+
+		start=$((group_number * group_size + 1))
+		end=$((start + group_size - 1))
+
+		[[ $end -gt $last_num ]] && end=$last_num
+	else
+		start=1
+		end=$last_num
+	fi
+
+	[[ $start -gt $end ]] && die "invalid start $start and end $end"
+}
+
+has_cmd rngd && {
+	rngd -f &>/dev/null &
+}
+
+prepare_perf || exit
+prepare_vmlinux || exit
+prepare_test_range
 
 # redirect stderr to stdout, since perf test output logs to stderr
-log_cmd $perf test 2>&1
+# linux version from v4.11-rc1 to v4.11 will return 255 at this script without sudo
+# the first bad commit is ecc4c5614b24ee8ebaa35b834b5768dc9302ee3e
+# FIXME: using sudo to workaround it temporarily.
+for num in $(seq $start $end)
+do
+	log_cmd sudo $perf test $num -v 2>&1
+done
