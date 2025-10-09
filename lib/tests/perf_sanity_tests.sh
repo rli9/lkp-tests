@@ -6,7 +6,7 @@
 
 prepare_perf()
 {
-	set_perf_path '/usr/bin/perf'
+	set_perf_path "/lkp/benchmarks/perf/perf"
 
 	$perf --version
 }
