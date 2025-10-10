@@ -61,6 +61,12 @@ perf-bench-numa-mem\.GB_sec_total: 1
 perf-bench-sched-pipe\.ops_per_sec: 1
 pft\.faults_per_sec_per_cpu: 1
 pgbench\.tps: 1
+pmbench\.throughput\.aps: 1
+postmark\.transactions: 1
+power-idle\.turbostat\.Busy%: -1
+power-idle\.turbostat\.Bzy_MHz: -1
+power-idle\.turbostat\.PkgTemp: -1
+power-idle\.turbostat\.PkgWatt: -1
 pts\..+\..+_per_second: 1
 pts\..+\.activity_level: 1
 pts\..+\.average_mbytes_sec: 1
@@ -176,12 +182,6 @@ pts\..+\.vgr_performance_metric: 1
 pts\..+\.vkmark_score: 1
 pts\..+\.voices: 1
 pts\..+\.z_s: 1
-pmbench\.throughput\.aps: 1
-postmark\.transactions: 1
-power-idle\.turbostat\.Busy%: -1
-power-idle\.turbostat\.Bzy_MHz: -1
-power-idle\.turbostat\.PkgTemp: -1
-power-idle\.turbostat\.PkgWatt: -1
 qperf\..+\.bw: 1
 qperf\..+_bw: 1
 rcurefscale\..+-ref-scale\.duration_per_loop\.ns: -1

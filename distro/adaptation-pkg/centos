@@ -79,12 +79,12 @@ perf-sanity-tests: perf
 perf-stat: perf
 perf::
 pft::
-pts::
 phpbench::
 piglit::
 pm-qa::
 pmbench::
 pmu-tools::
+pts::
 pybench::
 qat::
 qemu-next::

@@ -60,7 +60,6 @@ perf-bench-sched-pipe
 perf-event-tests
 pft
 pgbench
-pts
 phpbench
 pigz
 pixz
@@ -68,6 +67,7 @@ plzip
 pmbench
 postmark
 power-idle
+pts
 pxz
 pybench
 qperf
