@@ -163,7 +163,7 @@ pts:
       - Stitching
       - Video
 
-  - test: openfoam-1.2.0 # The test quit with a non-zero exit status.
+  - test: openfoam-1.2.0
     option_a: # Input
       - 1 # motorBike                         [Simple, not as demanding as drivaerFastback]
       # - 2 # drivaerFastback, Small Mesh Size  [Less time consuming, still needs a powerful CPU]
