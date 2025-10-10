@@ -18,7 +18,6 @@ stress-ng:
     - nop
     - "null"
     - numa
-    - oom-pipe
     - opcode
     - pagemove
     - pageswap
@@ -69,3 +68,10 @@ stress-ng:
     - rotate
     - rseq
     - rtc
+
+---
+nr_threads: 50%
+
+stress-ng:
+  test:
+    - oom-pipe
