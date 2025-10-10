@@ -11,7 +11,7 @@
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/run.sh
 
-prepare_exec_path
+prepare_exec_path runltp
 
 cd_benchmark
 
