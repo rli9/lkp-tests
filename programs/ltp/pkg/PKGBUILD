@@ -91,7 +91,7 @@ split_tests()
 	$LKP_SRC/tools/split-tests scsi_debug.part1 4 scsi_debug.part1-
 	hide scsi_debug.part1
 
-	$LKP_SRC/tools/split-tests ltp-aiodio.part2 2 ltp-aiodio.part2-
+	$LKP_SRC/tools/split-tests ltp-aiodio.part2 4 ltp-aiodio.part2-
 	hide ltp-aiodio.part2
 
 	# DOR tests are slow and may cost hundreds of seconds
