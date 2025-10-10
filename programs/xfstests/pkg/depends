@@ -32,6 +32,7 @@ locales
 lvm2
 man-db
 ocfs2-tools
+parted
 psmisc
 quota
 sed
