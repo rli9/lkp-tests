@@ -10,11 +10,11 @@ swap:
 swapin_setup:
   size:
     - 2G
-    - 8G
-    - 32G
+    - 4G
+    # - 32G
   nr_task:
     - 1
     - 8
-    - 72
+    # - 72
 
 swapin:
