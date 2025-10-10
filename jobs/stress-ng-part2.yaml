@@ -39,7 +39,6 @@ stress-ng:
     - led
     - list
     - llc-affinity
-    - loadavg
     - lockbus
     - lockmix
     - logmath
@@ -86,6 +85,13 @@ stress-ng:
     - mtx
     - munmap
     - mutex
+
+---
+nr_threads: 20%
+
+stress-ng:
+  test:
+    - loadavg
 
 ---
 nr_threads: 50%
