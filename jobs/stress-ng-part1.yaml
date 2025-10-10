@@ -25,7 +25,6 @@ stress-ng:
     - bsearch
     - bubblesort
     - cache
-    - cachehammer
     - cacheline
     - cap
     - cgroup
@@ -92,3 +91,10 @@ stress-ng:
 # stress-ng:
 #   test:
 #     - env
+
+---
+nr_threads: 50%
+
+stress-ng:
+  test:
+    - cachehammer
