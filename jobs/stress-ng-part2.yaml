@@ -56,7 +56,6 @@ stress-ng:
     - memfd
     - memhotplug
     - memrate
-    - memthrash
     - mergesort
     - min-nanosleep
     - mincore
@@ -69,6 +68,7 @@ stress-ng:
     - mmapfiles
     - mmapfixed
     - mmapfork
+    - mmaphuge
     - mmaprandom
     - mmaptorture
     # - module # require open RUNTIME_TESTING_MENU and TEST_LKM
@@ -98,4 +98,4 @@ nr_threads: 50%
 
 stress-ng:
   test:
-    - mmaphuge
+    - memthrash
