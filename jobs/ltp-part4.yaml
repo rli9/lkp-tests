@@ -5,6 +5,7 @@ category: functional
 need_memory: 4G
 
 disk: 1HDD
+
 fs:
   - ext4
   - xfs
@@ -20,6 +21,9 @@ ltp:
     - fs_bind
     - fs_perms_simple
     - ltp-aiodio.part4-00
+    - ltp-aiodio.part4-01
+    - ltp-aiodio.part4-02
+    - ltp-aiodio.part4-03
     - ltp-aiodio.part4-DOR000
     - ltp-aiodio.part4-DOR001
     - ltp-aiodio.part4-DOR002

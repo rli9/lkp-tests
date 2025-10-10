@@ -111,7 +111,7 @@ split_tests()
 
 	# remaining tests of ltp-aiodio.part4 may costs up to 1500s
 	# split to two groups
-	$LKP_SRC/tools/split-tests ltp-aiodio.part4 2 ltp-aiodio.part4-
+	$LKP_SRC/tools/split-tests ltp-aiodio.part4 4 ltp-aiodio.part4-
 	hide ltp-aiodio.part4
 
 	$LKP_SRC/tools/split-tests cve 8 cve-

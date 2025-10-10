@@ -2,6 +2,8 @@ suite: ltp
 testcase: ltp
 category: functional
 
+need_memory: 32G
+
 disk: 1HDD
 
 fs:
@@ -9,13 +11,6 @@ fs:
   - xfs
   - btrfs
   - f2fs
-
-ltp:
-  test:
-    - ltp-aiodio.part4-01
-
----
-need_memory: 32G
 
 ltp:
   test:
