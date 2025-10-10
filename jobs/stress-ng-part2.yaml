@@ -69,7 +69,6 @@ stress-ng:
     - mmapfiles
     - mmapfixed
     - mmapfork
-    - mmapmany
     - mmaprandom
     - mmaptorture
     # - module # require open RUNTIME_TESTING_MENU and TEST_LKM
@@ -92,6 +91,7 @@ nr_threads: 20%
 stress-ng:
   test:
     - loadavg
+    - mmapmany
 
 ---
 nr_threads: 50%
