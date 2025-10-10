@@ -4,6 +4,7 @@ attr
 bc
 btrfs-progs
 btrfs-tools
+build-essential
 dbench
 devscripts
 dump
