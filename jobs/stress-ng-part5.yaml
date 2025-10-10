@@ -13,6 +13,7 @@ stress-ng:
     - time-warp
     - timer
     - timerfd
+    - timermix
     - tlb-shootdown
     - tmpfs
     - tree
