@@ -184,7 +184,7 @@ pts:
       # - 4 # 10000
       # - 5 # 25000 [Intended for very large servers.]
     option_b: # Clients
-      - 1
+      # - 1
       # - 50
       # - 100
       # - 250
@@ -194,7 +194,7 @@ pts:
       # - 5000
     option_c: # Mode
       - Read Write
-      # - Read Only # E: pgbench: error: could not create connection for setup
+      - Read Only
 
   - test: helsing-1.0.2
     option_a:
