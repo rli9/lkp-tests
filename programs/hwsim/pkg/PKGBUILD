@@ -70,12 +70,9 @@ build_hwsim_tests()
 
 package()
 {
-	cp -af $srcdir/wmediumd/* $benchmark_path
-	cp -af $srcdir/hostap/* $benchmark_path
-
-	usr_path="${pkgdir}/usr"
-	mkdir -p $usr_path/bin
-	cp /usr/bin/wmediumd $usr_path/bin
+	pack_contents "$srcdir/wmediumd/*" $benchmark_path
+	pack_contents "$srcdir/hostap/*" $benchmark_path
+	pack_contents /usr/bin/wmediumd ${pkgdir}/usr/bin
 
 	split_tests
 }
