@@ -109,7 +109,7 @@ def check_all(kernel_kconfigs, needed_kconfigs)
   kconfigs_yaml = KernelTag.kconfigs_yaml
   kconfig_constraints = load_kconfig_constraints(kconfigs_yaml)
 
-  uncompiled_kconfigs = needed_kconfigs.map do |e|
+  unsatisfied_kconfigs = needed_kconfigs.map do |e|
     config_name, config_options = parse_needed_kconfig(e)
     config_options = split_constraints(config_options)
 
@@ -132,16 +132,19 @@ def check_all(kernel_kconfigs, needed_kconfigs)
 
     uncompiled_kconfig = expected_kernel_kconfig
     uncompiled_kconfig += " (#{expected_kernel_versions.join(', ').delete('"')})" if expected_kernel_versions
-    uncompiled_kconfig
+
+    actual_kconfig = kernel_kconfigs.split("\n").grep(/CONFIG_#{config_name}[=\s]/).first
+
+    [uncompiled_kconfig, actual_kconfig]
   end
 
-  uncompiled_kconfigs = uncompiled_kconfigs.compact.sort.uniq
-  return if uncompiled_kconfigs.empty?
+  unsatisfied_kconfigs = unsatisfied_kconfigs.compact.sort.uniq.to_h
+  return if unsatisfied_kconfigs.empty?
 
-  kconfigs_error_message = "#{File.basename __FILE__}: #{uncompiled_kconfigs} has not been compiled by this kernel (#{context.kernel_version} based)"
+  kconfigs_error_message = "#{unsatisfied_kconfigs.keys} has not been compiled by #{context.kernel_version} based kernel #{unsatisfied_kconfigs.values}"
   raise Job::ParamError, kconfigs_error_message.to_s unless __FILE__ =~ /suggest_kconfig/
 
-  puts "suggest kconfigs: #{uncompiled_kconfigs}"
+  puts "suggest kconfigs: #{unsatisfied_kconfigs.keys}"
 end
 
 def arch_constraints
