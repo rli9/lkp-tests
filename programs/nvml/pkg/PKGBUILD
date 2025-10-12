@@ -102,5 +102,6 @@ package()
 
 	cd_src_pkg_dir libfabric
 	make install DESTDIR="${pkgdir}"
-	cp -af "/usr/local/libcxx" "${pkgdir}/usr/local"
+
+	pack_contents "/usr/local/libcxx" "${pkgdir}/usr/local"
 }
