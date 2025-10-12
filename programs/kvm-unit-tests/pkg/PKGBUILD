@@ -7,15 +7,23 @@ license=('GPL')
 source=("https://gitlab.com/kvm-unit-tests/kvm-unit-tests.git")
 md5sums=('SKIP')
 
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
+
 build()
 {
-	cd "${srcdir}/${pkgname}"
+	cd_src_pkg_dir
+
 	./configure
 	unset LDFLAGS
 	make
 }
 
-package() {
-	mkdir -p "${pkgdir}/lkp/benchmarks"
-	cp -af "${srcdir}/${pkgname}" "${pkgdir}/lkp/benchmarks"
+package()
+{
+	pack_src_pkg_contents
 }
