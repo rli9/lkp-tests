@@ -28,14 +28,11 @@ build()
 	cd_src_pkg_dir
 
 	./bootstrap
-	LDFLAGS=-laio \
-	./configure --prefix=$benchmark_path
+	LDFLAGS=-laio ./configure --prefix=$benchmark_path
 	make CFLAGS="-fcommon -I$srcdir/$pkgname/include -D_GNU_SOURCE -lm"
 }
 
 package()
 {
-	cd_src_pkg_dir
-
-	pack_contents src/reaim data scripts $benchmark_path
+	pack_src_pkg_contents src/reaim data scripts $benchmark_path
 }
