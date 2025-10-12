@@ -13,8 +13,6 @@ get_benchmark_path()
 prepare_benchmark_path()
 {
 	export benchmark_path=$(get_benchmark_path)
-
-	mkdir -p $benchmark_path
 }
 
 get_src_pkg_dir()
