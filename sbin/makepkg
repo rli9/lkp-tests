@@ -3902,10 +3902,11 @@ elif (( !REPKG )); then
 		basever=$(get_full_version)
 		check_build_status
 	fi
-	run_patch_source
 	if (( PREPAREFUNC )); then
 		run_prepare
 	fi
+
+	run_patch_source
 fi
 
 if (( NOBUILD )); then
