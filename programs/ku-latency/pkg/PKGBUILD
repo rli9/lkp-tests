@@ -5,7 +5,7 @@ arch=('i386' 'x86_64' 'aarch64')
 url="https://vilimpoc.org/research/ku-latency"
 license=('GPL')
 source=("https://vilimpoc.org/research/ku-latency/send-data.c"
-	"https://vilimpoc.org/research/ku-latency/ku-latency.c",
+	"https://vilimpoc.org/research/ku-latency/ku-latency.c"
 	"0001-ku-latency.c-rename-var-index-to-kuIndex.patch")
 md5sums=('SKIP' 'SKIP' 'SKIP')
 
@@ -30,6 +30,7 @@ package()
 {
 	cd $srcdir
 
+	mkdir -p $benchmark_path
 	gcc -o ${benchmark_path}/ku-latency ku-latency.c -lrt -Wall -D_GNU_SOURCE
 	gcc -o ${benchmark_path}/send-data send-data.c -lrt -Wall
 }
