@@ -32,6 +32,6 @@ package()
 	make install destdir="$pkgdir" -C ../mce-inject
 
 	make install -C ../mce-test
-	mkdir -p "${pkgdir}/usr/bin"
-	cp ../mce-test/bin/page-types "${pkgdir}/usr/bin"
+
+	pack_contents ../mce-test/bin/page-types "${pkgdir}/usr/bin"
 }
