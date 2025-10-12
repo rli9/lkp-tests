@@ -46,6 +46,7 @@ iputils-clockdiff: iputils
 iputils-ping: iputils
 iputils-tracepath: iputils
 ipv6toolkit: thc-ipv6
+isc-dhcp-client: dhclient
 isc-dhcp-server: dhcp-server
 javahelper:
 jfsutils:
