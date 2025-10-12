@@ -26,6 +26,8 @@ build()
 
 package()
 {
+	cd_src_pkg_dir
+
 	make install
 
 	pack_src_pkg_contents loadfiles
