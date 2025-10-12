@@ -25,5 +25,5 @@ build()
 
 package()
 {
-	cp -r "$srcdir/$pkgname/phpbench-0.8.1-patched2/"* $benchmark_path
+	pack_src_pkg_contents "phpbench-0.8.1-patched2/*"
 }
