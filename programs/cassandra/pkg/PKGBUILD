@@ -1,4 +1,4 @@
-pkgname=apache-cassandra
+pkgname=cassandra
 pkgver=5.0.5
 pkgrel=0
 pkgdesc="The Apache Cassandra database is the right choice when you need scalability and high availability without compromising performance."
@@ -6,16 +6,19 @@ arch=('i386' 'x86_64' 'aarch64')
 url="http://cassandra.apache.org/"
 license=(Apache)
 # https://dlcdn.apache.org/cassandra/4.1.4/apache-cassandra-4.1.4-bin.tar.gz
-source=(https://dlcdn.apache.org/cassandra/$pkgver/$pkgname-$pkgver-bin.tar.gz)
+source=(https://dlcdn.apache.org/cassandra/$pkgver/apache-$pkgname-$pkgver-bin.tar.gz)
 md5sums=('SKIP')
 
-build()
+. $LKP_SRC/lib/reproduce-log.sh
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
 {
-    tar -xvf $pkgname-$pkgver-bin.tar.gz
+	prepare_benchmark_path
+    rename_versioned_src_pkg_dir apache-$pkgname-$pkgver
 }
 
 package()
 {
-    mkdir -p "$pkgdir/lkp/benchmarks/cassandra"
-    cp -af "$srcdir/$pkgname-$pkgver/"* "$pkgdir/lkp/benchmarks/cassandra/"
+	pack_src_pkg_contents
 }
