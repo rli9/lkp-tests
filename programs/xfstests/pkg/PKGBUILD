@@ -14,6 +14,7 @@ md5sums=('SKIP' 'SKIP' 'SKIP' 'SKIP')
 . $LKP_SRC/lib/tests/pkgbuild.sh
 . $LKP_SRC/lib/install.sh
 . $LKP_SRC/lib/tests/pkgbuild.sh
+. $LKP_SRC/lib/detect-system.sh
 
 prepare()
 {
@@ -171,6 +172,7 @@ build()
 	build_install_e2fuzz
 
 	# skip the build on debian 13
+	detect_system
 	[ $_system_name_lowercase = 'debian' ] && [ $_system_version -ge 13 ] && return
 
 	build_install_bcachefs_tools
@@ -178,9 +180,9 @@ build()
 
 package()
 {
-	cp -af $srcdir/xfstests-dev/* $benchmark_path
+	pack_contents "$srcdir/xfstests-dev/*" $benchmark_path
 
-	[ -d $CARGO_HOME ] && pack_contents $CARGO_HOME
+	[ -d "$CARGO_HOME" ] && pack_contents $CARGO_HOME
 
 	wget --no-check-certificate -O $benchmark_path/tools/find-api-violations.sh https://git.kernel.org/pub/scm/fs/xfs/xfsprogs-dev.git/plain/tools/find-api-violations.sh
 
