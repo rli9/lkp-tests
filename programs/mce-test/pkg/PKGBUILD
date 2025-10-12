@@ -27,10 +27,8 @@ package()
 	cd_src_pkg_dir
 
 	make install
-
-	pack_src_pkg_contents
-
 	make install destdir="$pkgdir" -C ../mce-inject
 
-	cp -af ../ltp $benchmark_path
+	pack_src_pkg_contents
+	pack_contents $srcdir/ltp $benchmark_path
 }
