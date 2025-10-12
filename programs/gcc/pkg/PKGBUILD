@@ -19,7 +19,7 @@ source=(#ftp://gcc.gnu.org/pub/gcc/releases/gcc-${pkgver}/gcc-${pkgver}.tar.bz2
         #ftp://gcc.gnu.org/pub/gcc/snapshots/${_snapshot}/gcc-${_snapshot}.tar.bz2
         #http://isl.gforge.inria.fr/isl-${_islver}.tar.bz2
         #http://www.bastoul.net/cloog/pages/download/cloog-${_cloogver}.tar.gz
-        git://gitmirror/gcc)
+        https://github.com/gcc-mirror/gcc.git)
         #gcc-4.8-filename-output.patch)
 md5sums=('SKIP')
          #'6810bb9b2252f03e6c98d9a671d94589')
