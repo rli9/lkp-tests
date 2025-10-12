@@ -9,10 +9,17 @@ depends=('')
 source=('https://github.com/iovisor/bpftrace.git')
 md5sums=('SKIP')
 
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
+
 package()
 {
-    targetdir="${pkgdir}/lkp/benchmarks/${pkgname}"
-    mkdir -p $targetdir
-    wget -O $targetdir/bpftrace https://github.com/iovisor/bpftrace/releases/download/v0.17.0/bpftrace
-    chmod +x $targetdir/bpftrace
+    mkdir -p $benchmark_path
+
+    wget -O $benchmark_path/bpftrace https://github.com/iovisor/bpftrace/releases/download/v0.17.0/bpftrace
+    chmod +x $benchmark_path/bpftrace
 }
