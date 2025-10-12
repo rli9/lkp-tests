@@ -29,5 +29,6 @@ package()
 	make install DESTDIR="$pkgdir"
 
 	# stress-watchdog.c
+	mkdir -p $benchmark_path
 	ls stress-*.c > $benchmark_path/tests
 }
