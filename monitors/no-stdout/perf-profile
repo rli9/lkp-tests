@@ -97,6 +97,9 @@ cat > "$TMP_RESULT_ROOT/post-run.perf-profile" <<EOF
 		[ "$debug_mode" = 1 ] && cp $perf_data $TMP_RESULT_ROOT
 		cp /proc/kallsyms $TMP_RESULT_ROOT
 	}
-[ "$kptr_restrict" -ne 0 ] && echo "$kptr_restrict" > "$kptr_restrict_file"
+
+	[ "$kptr_restrict" -ne 0 ] && echo "$kptr_restrict" > "$kptr_restrict_file"
+
+	rm -f $perf_data
 }
 EOF

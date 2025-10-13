@@ -48,5 +48,7 @@ cat > "$TMP_RESULT_ROOT/post-run.perf-c2c" <<EOF
 		cp $perf_c2c_data $TMP_RESULT_ROOT
 		cp /proc/kallsyms $TMP_RESULT_ROOT
 	}
+
+	rm -f $perf_c2c_data
 }
 EOF
