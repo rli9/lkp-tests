@@ -5,16 +5,16 @@ category: benchmark
 need_x: true
 
 pts:
-  - test: luxmark-1.2.1 # require opengl
-    option_a:
-      - CPU
-      - GPU
-      - CPU+GPU
-      - Hybrid GPU
-    option_b:
-      - Luxball HDR
-      - Microphone
-      - Hotel
+  # - test: luxmark-1.2.1 # require opengl
+  #   option_a:
+  #     - CPU
+  #     - GPU
+  #     - CPU+GPU
+  #     - Hybrid GPU
+  #   option_b:
+  #     - Luxball HDR
+  #     - Microphone
+  #     - Hotel
 
   - test: financebench-1.1.1
     option_a:
@@ -48,7 +48,12 @@ pts:
   #     - Caustic3
   #     - Cornell
 
-  - test: indigobench-1.1.0
-    option_a:
-      - CPU
-      - OpenCL GPU
+  # - test: indigobench-1.1.0
+  #   option_a:
+  #     # CPU-Supercar # E: Error: Builder: out of primitive memory
+  #     # CPU-Bedroom # E: Error: cannot encode triangle, ID too large
+  #     - CPU
+  #     - OpenCL GPU # runtime > 4h
+  #   option_b:
+  #     - Supercar
+  #     - Bedroom
