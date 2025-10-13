@@ -23,17 +23,13 @@ prepare()
 
 build()
 {
-  cd_src_pkg_dir
-
-  ./configure --prefix=/usr --enable-shared
-  make
+  make_src_pkg --prefix=/usr --enable-shared
 }
 
 package()
 {
+  make_install_src_pkg DESTDIR="${pkgdir}"
+
   cd_src_pkg_dir
-
-  make install DESTDIR="${pkgdir}"
-
   install -Dm755 minilzip "${pkgdir}"/usr/bin/minilzip
 }

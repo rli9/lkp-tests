@@ -25,6 +25,6 @@ package()
 	# drwxrwxr-x 24 root root 740 Oct 11  2020 linux-5.9
 	# lrwxrwxrwx  1 root root  45 Oct 12 11:15 kernbench -> /lkp/lkp/src/programs/kernbench/pkg/kernbench
 	# lrwxrwxrwx  1 root root  52 Oct 12 11:15 linux-5.9.tar.xz -> /lkp/lkp/src/programs/kernbench/pkg/linux-5.9.tar.xz
-	cp -f "$srcdir/$pkgname" "$benchmark_path"
+	pack_contents -L "$srcdir/$pkgname" "$benchmark_path"
 	chmod a+x "$benchmark_path/$pkgname"
 }

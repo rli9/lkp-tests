@@ -35,9 +35,7 @@ build()
 
 package()
 {
-	cd_src_pkg_dir
-
 	# /usr/bin/install -c dbench tbench tbench_srv /tmp/lkp/dbench/pkg/dbench/lkp/benchmarks/dbench/bin
 	# /usr/bin/install -c client.txt /tmp/lkp/dbench/pkg/dbench/lkp/benchmarks/dbench/share
-	make install
+	make_install_src_pkg
 }

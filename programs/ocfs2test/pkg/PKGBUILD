@@ -68,8 +68,7 @@ package()
 {
 	pack_contents $srcdir/timing-0.0.1.tar.gz $benchmark_path
 
-	cd_src_pkg_dir
-	make install DESTDIR=$benchmark_path/ocfs2 2>&1
+	make_install_src_pkg DESTDIR=$benchmark_path/ocfs2 2>&1
 
 	pack_contents /usr/local/bin/reflink $benchmark_path
 }

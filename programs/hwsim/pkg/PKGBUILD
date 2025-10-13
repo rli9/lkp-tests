@@ -18,8 +18,6 @@ build()
 {
 	cd_src_pkg_dir wmediumd
 	make
-	# binary will be installed into /usr/bin/wmediumd
-	make install
 
 	cd_src_pkg_dir hostap
 
@@ -72,7 +70,11 @@ package()
 {
 	pack_contents "$srcdir/wmediumd/*" $benchmark_path
 	pack_contents "$srcdir/hostap/*" $benchmark_path
-	pack_contents /usr/bin/wmediumd ${pkgdir}/usr/bin
+
+	# binary will be installed into /usr/bin/wmediumd
+	cd_src_pkg_dir wmediumd
+	make install
+	pack_contents /usr/bin/wmediumd
 
 	split_tests
 }

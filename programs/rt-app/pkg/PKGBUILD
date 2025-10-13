@@ -16,18 +16,12 @@ prepare()
 
 build()
 {
-	cd_src_pkg_dir
-
-	./autogen.sh
-	./configure --prefix=$benchmark_path
-	make
+	make_src_pkg --prefix=$benchmark_path
 }
 
 package()
 {
-	cd_src_pkg_dir
+	make_install_src_pkg
 
-	make install
-
-	pack_contents "doc/examples/*.json" $benchmark_path/workloads
+	DESTDIR=$benchmark_path/workloads pack_src_pkg_contents "doc/examples/*.json"
 }

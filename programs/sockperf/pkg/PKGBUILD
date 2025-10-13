@@ -4,7 +4,7 @@ pkgrel=1
 url="https://github.com/Mellanox/sockperf"
 arch=('x86_64' 'i386' 'aarch64')
 license=('GPL')
-source=("https://github.com/Mellanox/sockperf.git")
+source=("https://github.com/Mellanox/sockperf.git#branch=sockperf_v2")
 md5sums=('SKIP')
 
 . $LKP_SRC/lib/tests/pkgbuild.sh
@@ -16,12 +16,7 @@ prepare()
 
 build()
 {
-	cd_src_pkg_dir
-
-	git checkout -q -b build origin/sockperf_v2
-	./autogen.sh
-	./configure
-	make
+	make_src_pkg
 }
 
 package()

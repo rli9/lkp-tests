@@ -25,16 +25,10 @@ prepare()
 
 build()
 {
-	cd_src_pkg_dir
-
-	./autogen.sh
-	./configure --prefix=/usr --sbindir=/usr/bin
-	make
+	make_src_pkg --prefix=/usr --sbindir=/usr/bin
 }
 
 package()
 {
-	cd_src_pkg_dir
-
-	make install DESTDIR="$pkgdir" sbindir=/usr/bin
+	make_install_src_pkg DESTDIR="$pkgdir" sbindir=/usr/bin
 }

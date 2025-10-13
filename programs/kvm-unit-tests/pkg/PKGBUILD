@@ -16,11 +16,7 @@ prepare()
 
 build()
 {
-	cd_src_pkg_dir
-
-	./configure
-	unset LDFLAGS
-	make
+	LDFLAGS= make_src_pkg
 }
 
 package()

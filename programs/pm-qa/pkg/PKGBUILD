@@ -17,10 +17,9 @@ prepare()
 
 build()
 {
-	cd_src_pkg_dir
-	make -C cpuidle cpuidle_killer
+	make_src_pkg -- -C cpuidle cpuidle_killer
 
-	cd utils
+	cd_src_pkg_dir $pkgname/utils
 	make
 }
 

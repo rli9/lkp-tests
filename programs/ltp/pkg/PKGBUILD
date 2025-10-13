@@ -146,16 +146,14 @@ split_tests()
 
 package()
 {
-	cd_src_pkg_dir
+	make_install_src_pkg
 
-	make install
-
-	pack_contents testcases/commands/tpm-tools/tpmtoken/tpmtoken_import/tpmtoken_import_openssl.cnf \
-		testcases/commands/tpm-tools/tpmtoken/tpmtoken_protect/tpmtoken_protect_data.txt \
-		$benchmark_path/testcases/bin/
+	DESTDIR=$benchmark_path/testcases/bin pack_src_pkg_contents \
+		testcases/commands/tpm-tools/tpmtoken/tpmtoken_import/tpmtoken_import_openssl.cnf \
+		testcases/commands/tpm-tools/tpmtoken/tpmtoken_protect/tpmtoken_protect_data.txt
 
 	# cp file for rebuild dummy_del_mod*.ko
-	pack_contents testcases/kernel/syscalls/delete_module/* $benchmark_path/testcases/kernel/syscalls/delete_module
+	DESTDIR=$benchmark_path/testcases/kernel/syscalls pack_src_pkg_contents testcases/kernel/syscalls/delete_module
 
 	split_tests
 }

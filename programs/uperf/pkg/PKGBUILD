@@ -24,9 +24,7 @@ build()
 
 package()
 {
-	cd_src_pkg_dir
+	make_install_src_pkg
 
-	make install
-
-	pack_contents uperf_web.xml "$benchmark_path"
+	pack_contents -L $srcdir/uperf_web.xml "$benchmark_path"
 }

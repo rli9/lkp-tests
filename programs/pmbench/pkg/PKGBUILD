@@ -9,18 +9,24 @@ depends=()
 source=('https://bitbucket.org/hying-caritas/pmbench.git')
 md5sums=('SKIP')
 
+. $LKP_SRC/lib/tests/pkgbuild.sh
+
+prepare()
+{
+	prepare_benchmark_path
+}
+
 build()
 {
-  cd "${srcdir}"/pmbench
   if [[ $CARCH == 'x86_64' ]]; then
-    march=64 make pmbench
+    march=64 make_src_pkg -- pmbench
   else
-    march=32 make pmbench
+    march=32 make_src_pkg -- pmbench
   fi
 }
 
 package()
-{ 
+{
   install -D ${srcdir}/$pkgname/pmbench $pkgdir/usr/local/bin/pmbench
   install -m664 -D ${srcdir}/$pkgname/doc/pmbench.1 ${pkgdir}/usr/local/share/man/man1/pmbench.1
 }

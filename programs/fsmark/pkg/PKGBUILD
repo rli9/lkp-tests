@@ -16,9 +16,7 @@ prepare()
 
 build()
 {
-	cd_src_pkg_dir
-
-	make fs_mark
+	make_src_pkg -- fs_mark
 }
 
 package()

@@ -29,10 +29,7 @@ patch_source()
 
 build()
 {
-    cd_src_pkg_dir
-
-    ./configure
-    make
+    make_src_pkg
 }
 
 package()

@@ -17,18 +17,12 @@ prepare()
 
 build()
 {
-  cd_src_pkg_dir
-
-  ./autogen.sh
   # running oltp by sysbench may get "Illegal instruction"
   # error on some arches so avoid it by --without-gcc-arch
-  ./configure --prefix=/usr --without-gcc-arch --without-mysql
-  make
+  make_src_pkg --prefix=/usr --without-gcc-arch --without-mysql
 }
 
 package()
 {
-  cd_src_pkg_dir
-
-  make install DESTDIR=$pkgdir
+  make_install_src_pkg DESTDIR=$pkgdir
 }

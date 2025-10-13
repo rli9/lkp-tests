@@ -17,8 +17,7 @@ prepare()
 
 build()
 {
-	cd_src_pkg_dir
-	make all
+	make_src_pkg -- all
 }
 
 package()

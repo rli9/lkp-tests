@@ -17,12 +17,10 @@ prepare()
 
 build()
 {
-	cd_src_pkg_dir
-	make
+	make_src_pkg
 }
 
 package()
 {
-	cd_src_pkg_dir
-	make install DESTDIR="$pkgdir"
+	make_install_src_pkg DESTDIR="$pkgdir"
 }

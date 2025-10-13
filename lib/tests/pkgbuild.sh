@@ -37,6 +37,37 @@ rename_versioned_src_pkg_dir()
 	log_cmd mv "$srcdir/$versioned_pkgname" "$srcdir/$pkgname"
 }
 
+# Args: everything before '--' goes to configure, everything after to make
+make_src_pkg()
+{
+	local configure_args=()
+	local make_args=()
+	local args_name="configure_args"
+
+	for arg in "$@"; do
+		if [[ "$arg" == "--" ]]; then
+			args_name="make_args"
+			continue
+		fi
+
+		eval "${args_name}+=(\"$arg\")"
+	done
+
+	cd_src_pkg_dir
+
+	[[ -x "autogen.sh" ]] && ./autogen.sh
+	[[ -x "configure" ]] && ./configure "${configure_args[@]}"
+
+	make -j$(nproc) "${make_args[@]}"
+}
+
+make_install_src_pkg()
+{
+	cd_src_pkg_dir
+
+	make install $@
+}
+
 pip3_install()
 {
 	local package=$1
@@ -171,13 +202,16 @@ pack_contents()
 
 pack_src_pkg_contents()
 {
+	local dst_dir=${DESTDIR:-$benchmark_path}
+	local src_pkg_dir=$(get_src_pkg_dir)
+
 	if [[ "$#" == 0 ]]; then
-		pack_contents "$(get_src_pkg_dir)/." "$benchmark_path"
+		pack_contents "$src_pkg_dir/." "$dst_dir"
 	else
 		(
-			cd $(get_src_pkg_dir)
+			cd $src_pkg_dir
 
-			pack_contents $@ "$benchmark_path"
+			pack_contents $@ "$dst_dir"
 		)
 	fi
 }

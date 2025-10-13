@@ -16,19 +16,12 @@ prepare()
 
 build()
 {
-	cd_src_pkg_dir
-
-	./autogen.sh
-	./configure --prefix $benchmark_path
-
-	make dbench
+	make_src_pkg --prefix $benchmark_path -- dbench
 }
 
 package()
 {
-	cd_src_pkg_dir
-
-	make install
+	make_install_src_pkg
 
 	pack_src_pkg_contents loadfiles
 }

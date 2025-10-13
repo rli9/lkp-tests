@@ -22,6 +22,6 @@ package()
 
 	sh install-sh
 
-	pack_contents "/usr/bin/${pkgname}" ${pkgdir}/usr/bin
-	pack_contents "/usr/share/${pkgname}" ${pkgdir}/usr/share
+	pack_contents "/usr/bin/${pkgname}"
+	pack_contents "/usr/share/${pkgname}"
 }

@@ -16,9 +16,7 @@ prepare()
 
 build()
 {
-	cd_src_pkg_dir
-
-	CC=clang CFLAGS="" make
+	CC=clang CFLAGS="" make_src_pkg
 }
 
 package()

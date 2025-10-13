@@ -17,14 +17,12 @@ prepare()
 
 build()
 {
-	cd_src_pkg_dir
+	cp /usr/share/misc/config.{guess,sub} $(get_src_pkg_dir)
 
-	cp /usr/share/misc/config.{guess,sub} .
-	./configure --prefix=$benchmark_path
+	make_src_pkg --prefix=$benchmark_path
 }
 
 package()
 {
-	cd_src_pkg_dir
-	make install
+	make_install_src_pkg
 }

@@ -16,22 +16,17 @@ prepare()
 
 build()
 {
-	cd_src_pkg_dir
-
-	make
-	make -C ../mce-inject
-	CPPFLAGS="" make -C ../mce-test
+	make_src_pkg
+	make_src_pkg -- -C ../mce-inject
+	CPPFLAGS="" make_src_pkg -- -C ../mce-test
 }
 
 package()
 {
 	pack_src_pkg_contents
 
-	cd_src_pkg_dir
+	make_install_src_pkg destdir="$pkgdir" -C ../mce-inject
+	make_install_src_pkg -C ../mce-test
 
-	make install destdir="$pkgdir" -C ../mce-inject
-
-	make install -C ../mce-test
-
-	pack_contents ../mce-test/bin/page-types "${pkgdir}/usr/bin"
+	DESTDIR=${pkgdir}/usr/bin pack_src_pkg_contents ../mce-test/bin/page-types
 }

@@ -36,5 +36,5 @@ package()
 	pack_src_pkg_execs
 	pack_src_pkg_contents fakeh.tar
 
-	pack_src_pkg_contents "workfile.*" $benchmark_path/workfiles
+	DESTDIR=$benchmark_path/workfiles pack_src_pkg_contents "workfile.*"
 }

@@ -16,11 +16,9 @@ prepare()
 
 build()
 {
-	cd_src_pkg_dir
+	make_src_pkg
 
-	make
-
-	cd ../filebench
+	cd_src_pkg_dir filebench
 	git checkout 1.4.9.1
 	libtoolize
 	aclocal
@@ -29,10 +27,10 @@ build()
 	autoconf
 	./configure --prefix ${benchmark_path}/filebench
 	make
-	make install
 }
 
 package()
 {
+	make_install_src_pkg
 	pack_src_pkg_contents
 }

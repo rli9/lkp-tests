@@ -18,20 +18,13 @@ build()
 {
 	gcc_major=$($(which gcc) -dumpversion | cut -d. -f1)
 
-	cd_src_pkg_dir
-
-	./configure
-	make
+	make_src_pkg
 }
 
 package()
 {
-	cd_src_pkg_dir
-	make install
+	make_install_src_pkg
 
-	bin_path="${pkgdir}/bin"
-	mkdir -p $bin_path
-
-	cp /bin/trinity $bin_path
-	INSTALL_PREFIX=$benchmark_path make install
+	pack_contents /bin/trinity "${pkgdir}/bin"
+	INSTALL_PREFIX=$benchmark_path make_install_src_pkg
 }

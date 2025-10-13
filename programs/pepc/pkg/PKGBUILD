@@ -26,5 +26,5 @@ build()
 
 package()
 {
-	pack_src_pkg_contents pepc $benchmark_path/bin
+	DESTDIR=$benchmark_path/bin pack_src_pkg_contents pepc
 }
