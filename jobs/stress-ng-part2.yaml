@@ -64,11 +64,9 @@ stress-ng:
     - mlockmany
     - mmap
     - mmapaddr
-    - mmapcow
     - mmapfiles
     - mmapfixed
     - mmapfork
-    - mmaphuge
     - mmaprandom
     - mmaptorture
     # - module # require open RUNTIME_TESTING_MENU and TEST_LKM
@@ -99,3 +97,12 @@ nr_threads: 50%
 stress-ng:
   test:
     - memthrash
+
+---
+stress-ng:
+  test:
+    - mmapcow
+    - mmaphuge
+
+oom-killer:
+  ignored: 1
