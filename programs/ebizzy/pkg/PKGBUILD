@@ -20,26 +20,19 @@ prepare()
 	rename_versioned_src_pkg_dir
 }
 
-patch_source()
-{
-    cd_src_pkg_dir
-
-    patch -p1 < $srcdir/0001-$pkgname.patch
-}
-
 build()
 {
-    make_src_pkg
+	make_src_pkg
 }
 
 package()
 {
-    cd_src_pkg_dir
+	cd_src_pkg_dir
 
-    mkdir -p "$benchmark_path/usr/share/licenses/$pkgname"
-    mkdir -p "$benchmark_path/usr/share/$pkgname"
+	mkdir -p "$benchmark_path/usr/share/licenses/$pkgname"
+	mkdir -p "$benchmark_path/usr/share/$pkgname"
 
-    install -D -m 755 -o root -g root "$pkgname" "$benchmark_path/$pkgname"
-    install -D -m 644 -o root -g root "LICENSE" "$benchmark_path/usr/share/licenses/$pkgname/LICENSE"
-    install -D -m 644 -o root -g root "README" "$benchmark_path/usr/share/$pkgname/README"
+	install -D -m 755 -o root -g root "$pkgname" "$benchmark_path/$pkgname"
+	install -D -m 644 -o root -g root "LICENSE" "$benchmark_path/usr/share/licenses/$pkgname/LICENSE"
+	install -D -m 644 -o root -g root "README" "$benchmark_path/usr/share/$pkgname/README"
 }

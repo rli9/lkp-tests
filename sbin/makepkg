@@ -1726,7 +1726,15 @@ run_patch_source()
 
 patch_source()
 {
+	_patch_source
+}
+
+# shellcheck disable=SC2120
+_patch_source()
+{
 	echo "$FUNCNAME: PWD=$PWD, startdir=$startdir, pkgname=$pkgname, srcdir=$srcdir"
+
+	local item_name=${1:-$pkgname}
 
 	local patches=$(ls $startdir/*.patch 2>/dev/null)
 	[[ -z "$patches" ]] && return 0
@@ -1736,7 +1744,7 @@ patch_source()
 	cd "${srcdir}"
 
 	local dir
-	local item=$(find . -maxdepth 1 -mindepth 1 -name "$pkgname")
+	local item=$(find . -maxdepth 1 -mindepth 1 -name "$item_name")
 	if [[ -d "$item" ]]; then
 		dir="$item"
 	elif [[ -f "$item" ]]; then

@@ -6,8 +6,8 @@ arch=('i386' 'x86_64' 'aarch64')
 url="https://github.com/leverich/mutilate"
 license=(BSD 3-clause "New" or "Revised" License)
 depends=(scons libevent-dev gengetopt libzmq-dev memcached)
-source=('https://github.com/leverich/mutilate.git')
-md5sums=('SKIP')
+source=('https://github.com/leverich/mutilate.git' '0001-SConstruct-update-to-python3-version.patch')
+md5sums=('SKIP' 'SKIP')
 
 . $LKP_SRC/lib/install.sh
 . $LKP_SRC/lib/tests/pkgbuild.sh
@@ -19,12 +19,10 @@ prepare()
 
 patch_source()
 {
-	cd_src_pkg_dir
-
 	# if scons isn't python3 version, no need apply patch
 	scons -v | grep -q "python3" || return 0
 
-	patch -p1 < "$(get_pkg_dir ${pkgname})/0001-SConstruct-update-to-python3-version.patch"
+	_patch_source
 }
 
 build()

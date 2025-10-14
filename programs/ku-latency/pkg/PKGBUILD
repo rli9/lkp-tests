@@ -22,8 +22,7 @@ patch_source()
 	# PWD=/tmp/lkp/ku-latency/src, srcdir=/tmp/lkp/ku-latency/src
 	# lrwxrwxrwx 1 root root 48 Feb 26 16:21 send-data.c -> /lkp/lkp/src/programs/ku-latency/pkg/send-data.c
 	# lrwxrwxrwx 1 root root 49 Feb 26 16:21 ku-latency.c -> /lkp/lkp/src/programs/ku-latency/pkg/ku-latency.c
-	cd $(dirname $(realpath ku-latency.c))
-	patch -p1 < "$srcdir/0001-ku-latency.c-rename-var-index-to-kuIndex.patch"
+	_patch_source ku-latency.c
 }
 
 package()

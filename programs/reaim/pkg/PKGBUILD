@@ -13,14 +13,7 @@ md5sums=('925eb6675ce86cb011699f38468a1fd1' 'SKIP')
 prepare()
 {
 	prepare_benchmark_path
-	rename_versioned_src_pkg_dir osdl-aim-$pkgver
-}
-
-patch_source()
-{
-	cd_src_pkg_dir
-
-	patch -p1 < "$srcdir/${pkgname}.patch"
+	rename_versioned_src_pkg_dir osdl-aim-7
 }
 
 build()

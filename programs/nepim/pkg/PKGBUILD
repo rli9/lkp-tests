@@ -23,19 +23,19 @@ prepare()
 
 patch_source()
 {
-	cd_src_pkg_dir $pkgname/src
-	patch -p1 < "$srcdir/0001-src-Makefile-change-sequence-of-options-for-gcc.patch"
+	_patch_source src
 }
 
 build()
 {
 	cd_src_pkg_dir $pkgname/src
-	unset LDFLAGS
-	make OOP_BASE=/usr
+
+	LDFLAGS= make OOP_BASE=/usr
 }
 
 package()
 {
 	cd_src_pkg_dir $pkgname/src
+
 	install -Dm755 nepim "$benchmark_path"
 }
