@@ -31,7 +31,6 @@ stress-ng:
     - chroot
     - chyperbolic
     - clock
-    - clone
     - close
     - context
     - cpu
@@ -65,10 +64,8 @@ stress-ng:
     - fifo
     - filerace
     - flipflop
-    - flushcache
     - fma
     - fork
-    - forkheavy
     - fp
     - fp-error
     - fractal
@@ -97,4 +94,14 @@ nr_threads: 50%
 
 stress-ng:
   test:
+    - clone
+
+---
+stress-ng:
+  test:
     - cachehammer
+    - flushcache
+    - forkheavy
+
+oom-killer:
+  ignored: 1

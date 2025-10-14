@@ -15,7 +15,6 @@ stress-ng:
     - cacheline
     - dekker
     - far-branch
-    - flushcache
     - heapsort
     - hsearch
     - icache
@@ -49,3 +48,11 @@ stress-ng:
     - vecwide
     - wcs
     - zlib
+
+---
+stress-ng:
+  test:
+    - flushcache
+
+oom-killer:
+  ignored: 1
