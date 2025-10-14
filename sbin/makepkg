@@ -1726,10 +1726,10 @@ run_patch_source()
 
 patch_source()
 {
-	echo "PWD=$PWD, startdir=$startdir, pkgname=$pkgname, srcdir=$srcdir"
+	echo "$FUNCNAME: PWD=$PWD, startdir=$startdir, pkgname=$pkgname, srcdir=$srcdir"
 
 	local patches=$(ls $startdir/*.patch 2>/dev/null)
-	[ -z "$patches" ] && return 0
+	[[ -z "$patches" ]] && return 0
 	echo "patches="$patches
 
 	ls -lrt ${srcdir}
@@ -1737,17 +1737,18 @@ patch_source()
 
 	local dir
 	local item=$(find . -maxdepth 1 -mindepth 1 -name "$pkgname")
-	if [ -d "$item" ]; then
+	if [[ -d "$item" ]]; then
 		dir="$item"
-	elif [ -f "$item" ]; then
+	elif [[ -f "$item" ]]; then
 		dir=$(dirname $(realpath "$item"))
 	else
 		need_patching=1
 		return
 	fi
+
 	echo "item=$item, dir=$dir"
 
-	if [ -n "$dir" ]; then
+	if [[ -n "$dir" ]]; then
 		cd "$dir"
 		for patch in $patches; do
 			echo "$FUNCNAME: patch $patch"
