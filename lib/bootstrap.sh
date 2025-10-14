@@ -428,6 +428,10 @@ mount_rootfs_partition()
 {
 	mkdir -p $ROOTFS_DIR
 
+	modprobe btrfs || {
+		echo_to_tty "fail to modprobe btrfs"
+	}
+
 	mount $rootfs_partition $ROOTFS_DIR && return
 
 	mkfs.btrfs -f $rootfs_partition || return
