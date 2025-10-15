@@ -12,7 +12,6 @@ lkvs:
     - edac
     - fred
     - hotplug
-    - idxd
     # - instruction-check
     - isst
     - pcie

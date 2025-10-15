@@ -43,8 +43,8 @@ build_lkvs()
 {
 	build_lkvs_tools || return
 
-	# BM/idxd and BM/dsa need accel-config tool
-	[[ $test = idxd || $test = dsa ]] && build_accel_config
+	# BM/dsa need accel-config tool
+	[[ $test = dsa ]] && build_accel_config
 
 	# only BM/pt needs the 3rd party library libipt
 	[[ $test = pt ]] && build_libipt
