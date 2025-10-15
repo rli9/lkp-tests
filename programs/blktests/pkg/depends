@@ -1,6 +1,7 @@
 blktrace
 bsdextrautils
 build-essential
+fdisk
 fio
 gawk
 git
