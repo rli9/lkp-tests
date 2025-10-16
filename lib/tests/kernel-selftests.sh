@@ -595,11 +595,18 @@ fixup_tc_testing()
 	modprobe netdevsim
 }
 
+fixup_drivers_net_netdevsim()
+{
+	find drivers/net/netdevsim -type f -name "*.sh" -exec chmod +x {} \;
+}
+
 fixup_drivers_net_bonding()
 {
 	# selftests: drivers/net/bonding: bond-break-lacpdu-tx.sh
 	# ./bond-break-lacpdu-tx.sh: 26: source: not found
 	sed -i 's/bin\/sh/bin\/bash/' drivers/net/bonding/bond-break-lacpdu-tx.sh
+
+	find drivers/net/bonding -type f -name "*.sh" -exec chmod +x {} \;
 }
 
 fixup_drivers_net()
@@ -608,6 +615,8 @@ fixup_drivers_net()
 
 	# drivers/net/xdp.py calls bpftool
 	build_bpftool
+
+	find drivers/net -type f -name "*.sh" -exec chmod +x {} \;
 }
 
 build_tools()
@@ -661,6 +670,7 @@ fixup_test_group()
 
 	local fixup_handler="fixup_${group//[\/-]/_}"
 	if declare -f "$fixup_handler" > /dev/null; then
+		echo "$FUNCNAME: $fixup_handler $PWD"
 		$fixup_handler || return
 	fi
 
