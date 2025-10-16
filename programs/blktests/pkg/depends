@@ -1,6 +1,7 @@
 blktrace
 bsdextrautils
 build-essential
+dosfstools
 e2fsprogs
 fdisk
 fio
