@@ -1,6 +1,7 @@
 blktrace
 bsdextrautils
 build-essential
+e2fsprogs
 fdisk
 fio
 gawk
