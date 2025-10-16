@@ -843,4 +843,13 @@ need_kconfig:
 - XFRM_SUB_POLICY: y
 - XFRM_USER
 - ZEROPLUS_FF: y
+% elsif ___.group == "sched_ext"
+- SCHED_CLASS_EXT: y
+- CGROUPS: y
+- CGROUP_SCHED: y
+- EXT_GROUP_SCHED: y
+- BPF: y
+- BPF_SYSCALL: y
+- DEBUG_INFO: y
+- DEBUG_INFO_BTF: y, x86_64
 % end

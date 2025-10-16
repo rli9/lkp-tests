@@ -6,8 +6,11 @@ category: functional
 # Currently, these value came from the meminfo.max_used_kB during runtime
 # on debian rootfs
 need_memory: 12G
+
 need_cpu: 2
+
 kernel-selftests-bpf:
   group:
     - bpf
     - hid
+    - sched_ext

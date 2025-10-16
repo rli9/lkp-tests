@@ -84,7 +84,6 @@ kernel-selftests:
 
     - safesetid
     - sched
-    - sched_ext
     - seccomp
     - sgx
     - signal

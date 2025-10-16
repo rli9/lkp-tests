@@ -213,6 +213,11 @@ fixup_hid()
 	ulimit -n 102400
 }
 
+fixup_sched_ext()
+{
+	prepare_for_bpf
+}
+
 fixup_net()
 {
 	prepare_for_bpf
@@ -607,7 +612,6 @@ fixup_drivers_net()
 
 build_tools()
 {
-
 	make allyesconfig		|| return
 	make prepare			|| return
 	# install cpupower command
@@ -744,6 +748,9 @@ run_tests()
 			log_cmd make -j${nr_cpu} TARGETS=$group 2>&1 || continue
 
 			log_cmd resctrl/resctrl_tests 2>&1
+		elif [[ $group = sched_ext ]]; then
+			log_cmd make -j${nr_cpu} -C $group 2>&1 || continue
+			log_cmd make run_tests -j${nr_cpu} -C $group 2>&1
 		elif [[ $group = bpf ]]; then
 			# Order correspond to 'make run_tests' order
 			# TEST_GEN_PROGS = test_verifier test_tag test_maps test_lru_map test_lpm_map test_progs \
