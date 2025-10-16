@@ -75,6 +75,7 @@ pesign
 pkg-config
 python
 python-docutils
+python-drgn
 python-hid
 python-jsonschema
 python-pytest
