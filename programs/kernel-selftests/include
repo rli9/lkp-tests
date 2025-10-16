@@ -333,7 +333,7 @@ need_kconfig:
 - VETH
 
 # drivers/net/virtio_net
-- VIRTIO_DEBUG
+- VIRTIO_DEBUG: y
 
 % elsif ___.group == "wireguard"
 - IP_ADVANCED_ROUTER: y
