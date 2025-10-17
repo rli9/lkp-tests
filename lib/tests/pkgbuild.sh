@@ -220,10 +220,12 @@ pack_src_pkg_execs()
 {
 	local exec_prefix=${1:-.}
 
+	mkdir -p $benchmark_path
+
 	(
 		cd $(get_src_pkg_dir)
 
-		find . -maxdepth 1 -type f -executable ! -name "${exec_prefix}*" -exec cp -af {} $benchmark_path \;
+		find . -maxdepth 1 -type f -executable ! -name "${exec_prefix}*" -exec cp -a {} $benchmark_path \;
 	)
 }
 
