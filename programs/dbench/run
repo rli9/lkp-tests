@@ -51,10 +51,13 @@ run_nfsdbench()
 	load_file=loadfiles/nfs_2.load
 	[ -f "$load_file" ] || die "can not find $load_file"
 
-	dbench --help
 	log_cmd dbench -B nfs --server=127.0.0.1 --export=/export"$nfs_export_paths" --protocol=tcp --loadfile=$load_file -t 60 $nr_threads
 }
 
 prepare_exec_path
+
+dbench --help
+
+cd_benchmark
 
 run_"$fs2"dbench
