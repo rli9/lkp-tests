@@ -521,9 +521,6 @@ fixup_mm()
 		[[ $iterations -le 0 || ($nr_threads != "\$NUM_CPUS" && $nr_threads -le 0) ]] && die "Paramters: iterations or nr_threads must > 0"
 		sed -i 's/^STRESS_PARAM="nr_threads=$NUM_CPUS test_repeat_count=20"/STRESS_PARAM="nr_threads='$nr_threads' test_repeat_count='$iterations'"/' mm/test_vmalloc.sh
 	fi
-
-	# vm selftests may needs to run for more than 150s on some specific platforms and exceeds the default timeout 45s
-	echo 'timeout=600' > mm/settings
 }
 
 fixup_x86()
