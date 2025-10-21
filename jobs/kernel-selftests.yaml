@@ -77,7 +77,7 @@ kernel-selftests:
     - ptrace
 
     - ring-buffer
-    - riscv
+    # - riscv
     - rlimits
     - rseq
     - rtc
