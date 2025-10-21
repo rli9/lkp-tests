@@ -228,11 +228,6 @@ fixup_net()
 
 	skip_standalone_net_tests
 
-	# v4.18-rc1 introduces fib_tests.sh, which doesn't have execute permission
-	# Warning: file fib_tests.sh is not executable
-	# Warning: file test_ingress_egress_chaining.sh is not executable
-	chmod +x net/*.sh
-
 	ulimit -l 10240
 	modprobe -q fou
 	modprobe -q nf_conntrack_broadcast
@@ -356,12 +351,6 @@ cleanup_for_firmware()
 
 fixup_memfd()
 {
-	# at v4.14-rc1, it introduces run_tests.sh, which doesn't have execute permission
-	# here is to fix the permission
-	[[ -f memfd/run_tests.sh ]] && {
-		[[ -x memfd/run_tests.sh ]] || chmod +x memfd/run_tests.sh
-	}
-
 	# before v4.13-rc1, we need to compile fuse_mnt first
 	# check whether there is target "fuse_mnt" at Makefile
 	grep -wq '^fuse_mnt:' memfd/Makefile || return 0
@@ -476,13 +465,6 @@ fixup_kvm()
 	lsmod | grep -q 'kvm_intel' || modprobe kvm_intel
 }
 
-fixup_damon()
-{
-	# Warning: file debugfs_attrs.sh is not executable
-	# Warning: file damos_apply_interval.py is not executable
-	chmod +x damon/*.sh damon/*.py
-}
-
 prepare_for_selftest_mfs()
 {
 	# kvm Makefile doesn't include lib.mk
@@ -595,9 +577,9 @@ fixup_tc_testing()
 	modprobe netdevsim
 }
 
-fixup_drivers_net_netdevsim()
+fixup_non_executable_script()
 {
-	find drivers/net/netdevsim -type f -name "*.sh" -exec chmod +x {} \;
+	find "$1" -type f \( -name "*.sh" -o -name "*.py" \) ! -executable -exec chmod +x {} \;
 }
 
 fixup_drivers_net_bonding()
@@ -605,8 +587,6 @@ fixup_drivers_net_bonding()
 	# selftests: drivers/net/bonding: bond-break-lacpdu-tx.sh
 	# ./bond-break-lacpdu-tx.sh: 26: source: not found
 	sed -i 's/bin\/sh/bin\/bash/' drivers/net/bonding/bond-break-lacpdu-tx.sh
-
-	find drivers/net/bonding -type f -name "*.sh" -exec chmod +x {} \;
 }
 
 fixup_drivers_net()
@@ -615,8 +595,6 @@ fixup_drivers_net()
 
 	# drivers/net/xdp.py calls bpftool
 	build_bpftool
-
-	find drivers/net -type f -name "*.sh" -exec chmod +x {} \;
 }
 
 build_tools()
@@ -667,6 +645,8 @@ pack_selftests()
 fixup_test_group()
 {
 	local group=$1
+
+	fixup_non_executable_script "$group"
 
 	local fixup_handler="fixup_${group//[\/-]/_}"
 	if declare -f "$fixup_handler" > /dev/null; then
