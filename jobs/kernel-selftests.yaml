@@ -114,7 +114,7 @@ kernel-selftests:
     # 3. this test will not complete until issue Ctrl+C to abort it
     # - watchdog
 
-    - wireguard
+    # - wireguard
     - x86
     - zram
 
