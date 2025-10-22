@@ -523,6 +523,11 @@ fixup_mm()
 	fi
 }
 
+fixup_intel_pstate()
+{
+	echo 'timeout=900' >> $group/settings
+}
+
 fixup_x86()
 {
 	# List cpus that supported SGX
