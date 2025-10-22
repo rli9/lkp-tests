@@ -6,6 +6,7 @@ bison
 build-essential
 clang
 conntrack
+coreutils
 dc
 dropwatch
 e2fsprogs
@@ -16,6 +17,7 @@ flex
 fuse
 gcc-multilib
 iperf3
+iproute
 iptables
 iputils-ping
 ipv6toolkit
@@ -42,8 +44,11 @@ libevdev
 libfuse-dev
 libhugetlbfs-dev
 libkeyutils-dev
+libmbedtls-dev
 libmnl-dev
 libmount-dev
+libnl-3-dev
+libnl-genl-3-dev
 libnuma-dev
 libpci3
 libpopt-dev
@@ -67,6 +72,7 @@ llvm-dev
 ndisc6
 net-tools
 netcat-openbsd
+netperf
 netsniff-ng
 nftables
 openvswitch-common
@@ -78,6 +84,7 @@ python-docutils
 python-drgn
 python-hid
 python-jsonschema
+python-pyroute2
 python-pytest
 python-pyudev
 python-scapy
@@ -88,6 +95,8 @@ sudo
 tcpdump
 traceroute
 tshark
+udev
+util-linux
 uuid-runtime
 xz-utils
 zlib1g-dev
