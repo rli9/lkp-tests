@@ -26,7 +26,6 @@ kernel-selftests:
 
     - damon
     - devices
-    - dma
     - dmabuf-heaps
     - drivers
     - dt

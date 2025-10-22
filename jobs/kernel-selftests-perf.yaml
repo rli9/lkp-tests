@@ -23,3 +23,8 @@ kernel-selftests:
     - mm
   test:
     - vmalloc-stress
+
+---
+kernel-selftests:
+  group:
+    - dma
