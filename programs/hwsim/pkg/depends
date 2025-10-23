@@ -6,6 +6,7 @@ dbus
 ebtables
 gtk3
 iproute
+iputils-ping
 iw
 libconfig-dev
 libcurl4-openssl-dev
