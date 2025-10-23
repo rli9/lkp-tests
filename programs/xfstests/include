@@ -22,6 +22,8 @@ need_kconfig:
 - OCFS2_FS_O2CB: m
 - OCFS2_FS_USERSPACE_CLUSTER: m
 - OCFS2_FS_STATS: y
+% elsif job['fs'] == "btrfs"
+- DM_DUST
 % elsif job['fs'] == "bcachefs"
 - BCACHEFS_FS: m
 % end
