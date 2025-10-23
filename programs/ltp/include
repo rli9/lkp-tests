@@ -13,6 +13,7 @@ need_kconfig:
 - ZRAM: m
 % elsif ___.test == "net.tcp_cmds"
 - DUMMY: m
+- NET_SCH_TEQL: m
 - VETH: m
 - TUN: m
 % elsif ___.test == "net.features"
