@@ -101,8 +101,6 @@ prepare_for_bpf()
 
 prepare_for_commands()
 {
-	export PATH=/lkp/benchmarks/kernel-selftests/kernel-selftests/iproute2-next/sbin:$PATH
-
 	# temporarily workaround compile error on gcc-6
 	has_cmd gcc-5 && log_cmd ln -sf /usr/bin/gcc-5 /usr/bin/gcc
 	# fix cc: command not found
@@ -567,14 +565,6 @@ fixup_tc_testing()
 	# newer tc output: action order 1: bpf action.o:[action-ok] id 64 name  tag bcf7977d3b93787c jited default-action pipe
 	# upstream commit: https://git.kernel.org/netdev/net/c/ac2944abe4d7
 	sed -i 's/\[0-9\]\* tag/[0-9].* tag/g' tc-testing/tc-tests/actions/bpf.json
-	# As description of tdc_config.py, we can replace our own tc and ip
-	# $ grep sbin/tc -B1 tdc_config.py
-	#  # Substitute your own tc path here
-	#  'TC': '/sbin/tc',
-	if [ -e /lkp/benchmarks/kernel-selftests/kernel-selftests/iproute2-next/sbin/tc ]; then
-		sed -i s,/sbin/tc,/lkp/benchmarks/kernel-selftests/kernel-selftests/iproute2-next/sbin/tc,g tc-testing/tdc_config.py
-		sed -i s,/sbin/ip,/lkp/benchmarks/kernel-selftests/kernel-selftests/iproute2-next/sbin/ip,g tc-testing/tdc_config.py
-	fi
 
 	modprobe netdevsim
 }
