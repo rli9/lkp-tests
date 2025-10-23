@@ -2,6 +2,7 @@ binutils-dev
 bridge-utils
 build-essential
 crda
+dbus
 ebtables
 gtk3
 iproute
