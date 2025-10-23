@@ -10,6 +10,7 @@ libbabeltrace-dev
 libcap-dev
 libcapstone-dev
 libclang-dev
+libdebuginfod-dev
 libdw-dev
 libdw1
 libgtk2.0-dev
