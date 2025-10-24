@@ -50,8 +50,8 @@ stress
 sudo
 systemtap-sdt-dev
 trace-cmd
-vim-common
 uuid-dev
+vim-common
 xmlto
 xxd
 zlib1g-dev
