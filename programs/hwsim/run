@@ -58,6 +58,16 @@ mcc)
 	;;
 esac
 
+# restart dbus service to fix
+# 	Skip test case: Could not connect to D-Bus: org.freedesktop.DBus.Error.FileNotFound: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+log_cmd systemctl status dbus.service
+log_cmd systemctl restart dbus.service
+ls -lht /run/dbus/system_bus_socket
+
+# sleep to allow service is fully started to avoid
+# 	Skip test case: Could not connect to D-Bus: org.freedesktop.DBus.Error.NoReply: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy
+sleep 10
+
 # longer sleep time in line 166 to 0.5
 # vi lkp/benchmarks/hwsim/tests/hwsim/start.sh
 #162 for i in 0 1 2 3 4 5 6 7 8 9; do
