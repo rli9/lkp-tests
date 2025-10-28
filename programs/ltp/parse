@@ -1,70 +1,20 @@
-#!/usr/bin/awk -f
+#!/usr/bin/env ruby
 
-BEGIN {
-	tc_name = "unknown"
-	rst_tpass = rst_tfail = rst_tblock = 0
-	termid_pass = termid_fail = termid_block = 0
-}
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.dirname(File.realpath($PROGRAM_NAME))))
 
-/^tag=/ {
-	tc_name = substr($1,5)
-}
+require "#{LKP_SRC}/lib/string"
+require "#{LKP_SRC}/lib/tests/stats"
 
-$2 ~ /[0-9]*/ && $3 ~ /TFAIL/ {
-	rst_tfail++
-}
+stats = LKP::Stats.new
 
-$2 ~ /[0-9]*/ && $3 ~ /TBROK/ {
-	rst_tblock++
-}
+while (line = $stdin.gets)
+  line = line.resolve_invalid_bytes.uncolorize
+  warn line
 
-$2 ~ /[0-9]*/ && $3 ~ /TPASS/ {
-	rst_tpass++
-}
+  # ftrace_regression01: pass | tainted  (1.585s)
+  next unless line =~ /^(.+): (pass|fail|broken|warn|conf|skip) | .+ \(.+s\)/
 
-$2 ~ /[0-9]*/ && $3 ~ /TCONF/ {
-	rst_tblock++
-}
+  stats.add $1, $2, overwrite: true
+end
 
-# Treat termination_id=32 as block result
-#define TPASS	0	/* Test passed flag */
-#define TFAIL	1	/* Test failed flag */
-#define TBROK	2	/* Test broken flag */
-#define TWARN	4	/* Test warning flag */
-#define TINFO	16	/* Test information flag */
-#define TCONF	32	/* Test not appropriate for configuration flag */
-
-/termination_type=exited termination_id=0/ {
-	termid_pass++
-}
-
-/termination_type=exited termination_id=[1-9]+/ {
-	termid_fail++
-}
-
-/termination_type=exited termination_id=(2|6|18|32|34|36|48) / {
-	termid_fail--
-	termid_block++
-}
-
-/<<<test_end>>>/ {
-	if ( rst_tfail ) {
-		printf("%s.fail: 1\n", tc_name)
-	} else if ( rst_tblock ) {
-		printf("%s.block: 1\n", tc_name)
-	} else if ( rst_tpass ) {
-		printf("%s.pass: 1\n", tc_name)
-	} else if ( termid_fail ) {
-		printf("%s.fail: 1\n", tc_name)
-	} else if ( termid_block ) {
-		printf("%s.block: 1\n", tc_name)
-	}  else if ( termid_pass ) {
-		printf("%s.pass: 1\n", tc_name)
-	} else {
-		printf("%s.unknown: 1\n", tc_name)
-	}
-
-	tc_name = "unknown"
-	rst_tpass = rst_tfail = rst_tblock = 0
-	termid_pass = termid_fail = termid_block = 0
-}
+stats.dump

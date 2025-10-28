@@ -226,12 +226,11 @@ cleanup_ltp()
 		log_cmd testcases/bin/cleanup_lvm.sh
 		;;
 	mm-oom|mm-min_free_kbytes)
-		dmesg -C || exit
+		dmesg -C
 		;;
 	syscalls-0*)
 		[ "$relatime" != "" ] && mount -o remount,relatime,user_xattr /tmp
 		[ "$noatime" != "" ] && mount -o remount,noatime,user_xattr /tmp
 		;;
 	esac
-
 }
