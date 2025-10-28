@@ -127,8 +127,7 @@ build_edk2()
 
 	source edksetup.sh BaseTools
 
-	git submodule init
-	git submodule update --recursive
+	git submodule update --init --recursive
 
 	log_cmd make -C BaseTools/Source/C 2>&1
 

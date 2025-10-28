@@ -18,7 +18,7 @@ build()
 {
 	cd_src_pkg_dir
 
-	git submodule update --init
+	git submodule update --init --recursive
 }
 
 package()

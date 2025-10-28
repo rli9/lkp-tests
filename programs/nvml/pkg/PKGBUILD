@@ -23,8 +23,9 @@ prepare()
 build_install_valgrind_pmem()
 {
 	cd_src_pkg_dir valgrind
-	git submodule init
-	git submodule update
+
+	git submodule update --init --recursive
+
 	./autogen.sh
 	./configure --prefix=/usr/local CFLAGS="-fno-stack-protector"
 	make
