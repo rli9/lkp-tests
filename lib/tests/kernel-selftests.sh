@@ -22,10 +22,8 @@ build_selftests()
 	cd ../../..
 }
 
-prepare_test_env()
+prepare_kselftests_dir()
 {
-	has_cmd make || return
-
 	# lkp qemu needs linux-selftests_dir and linux_headers_dir to reproduce kernel-selftests.
 	# when reproduce bug reported by kernel test robot, the downloaded linux-selftests file is stored at /usr/src/linux-selftests
 	linux_selftests_dir=(/usr/src/linux-selftests-*)
@@ -62,6 +60,13 @@ prepare_test_env()
 	else
 		linux_selftests_dir="/lkp/benchmarks/kernel-selftests"
 	fi
+}
+
+prepare_test_env()
+{
+	has_cmd make || return
+
+	prepare_kselftests_dir || return
 
 	# Only update llvm for bpf test
 	[ "$group" = "bpf" -o "$group" = "net" -o "$group" = "tc-testing" ] && {
