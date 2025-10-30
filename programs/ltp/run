@@ -15,9 +15,9 @@ prepare_exec_path kirk
 
 cd_benchmark
 
-workaround_env
+fixup_env
+fixup_test $test
 
-test_setting $test
 create_single_test_file $test
 is_excluded $test
 

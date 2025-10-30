@@ -150,8 +150,11 @@ package()
 		testcases/commands/tpm-tools/tpmtoken/tpmtoken_import/tpmtoken_import_openssl.cnf \
 		testcases/commands/tpm-tools/tpmtoken/tpmtoken_protect/tpmtoken_protect_data.txt
 
-	# cp file for rebuild dummy_del_mod*.ko
-	DESTDIR=$benchmark_path/testcases/kernel/syscalls pack_src_pkg_contents testcases/kernel/syscalls/delete_module
+	# cp files for building external module
+	# grep -l 'include.*module\.mk' $(find testcases/ -type f -name 'Makefile')
+	DESTDIR=$benchmark_path/testcases pack_src_pkg_contents testcases/kernel
+	DESTDIR=$benchmark_path/testcases/commands pack_src_pkg_contents testcases/commands/insmod
+	DESTDIR=$benchmark_path/testcases/commands pack_src_pkg_contents testcases/commands/lsmod
 
 	split_tests
 }

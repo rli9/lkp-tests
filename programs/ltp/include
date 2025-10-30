@@ -1,5 +1,6 @@
 initrds+:
 - linux_headers
+- linux_selftests
 
 need_kconfig:
 % if ___.test == "net_stress.ipsec_dccp"

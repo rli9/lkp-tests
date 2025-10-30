@@ -4,13 +4,25 @@
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/env.sh
 
-check_linux_header()
+fixup_kdir()
 {
-	# is exist linux_header, link to /lib/modulers/`uname -r`/build
-	linux_headers_dir=$(ls -d /usr/src/linux-headers*-bpf)
+	# link /lib/modulers/`uname -r`/build to linux_headers_dir
+	local linux_headers_dir=$(ls -d /usr/src/linux-headers*-bpf)
 	[ -z "$linux_headers_dir" ] && return
-	build_link="/lib/modules/$(uname -r)/build"
-	ln -sf "$linux_headers_dir" "$build_link"
+
+	kdir="/lib/modules/$(uname -r)/build"
+	ln -svf "$linux_headers_dir" "$kdir"
+}
+
+build_module()
+{
+	local mdir=$1
+
+	local benchmark_path=$(get_benchmark_path)
+
+	log_cmd make -j${nr_cpu} -C $kdir M=$benchmark_path/$mdir
+
+	cp $benchmark_path/$mdir/*.ko $benchmark_path/testcases/bin/
 }
 
 is_excluded()
@@ -39,13 +51,8 @@ is_excluded()
 	done
 }
 
-workaround_env()
+fixup_env()
 {
-	# some LTP sh scripts actually need bash. Fixes
-	# > netns_childns.sh: 38: .: cmdlib.sh: not found
-	[ "$(cmd_path bash)" = '/bin/bash' ] && [ $(readlink -e /bin/sh) != '/bin/bash' ] &&
-	ln -fs bash /bin/sh
-
 	# install mkisofs which is linked to genisoimage
 	has_cmd mkisofs || {
 		genisoimage=$(cmd_path genisoimage)
@@ -83,7 +90,7 @@ create_single_test_file()
 	}
 }
 
-test_setting()
+fixup_test()
 {
 	# group test: syscalls-05
 	# single test of a group: syscalls-05/ioprio_set03
@@ -92,6 +99,22 @@ test_setting()
 	case "$test" in
 	cpuhotplug)
 		mkdir -p /usr/src/linux/
+		;;
+	commands)
+		fixup_kdir && {
+			build_module "testcases/commands/insmod"
+			build_module "testcases/commands/lsmod"
+		}
+		;;
+	kernel_misc)
+		fixup_kdir && {
+			build_module "testcases/kernel/device-drivers/acpi"
+			build_module "testcases/kernel/device-drivers/block/block_dev_kernel"
+			build_module "testcases/kernel/device-drivers/pci/tpci_kernel"
+			build_module "testcases/kernel/device-drivers/tbio/tbio_kernel"
+			build_module "testcases/kernel/device-drivers/uaccess"
+			build_module "testcases/kernel/firmware/fw_load_kernel"
+		}
 		;;
 	fs_readonly-0*)
 		[ -z "$fs" ] && exit
@@ -180,12 +203,12 @@ test_setting()
 		[ -e /dev/log ] && rm /dev/log
 		ln -s /run/systemd/journal/dev-log /dev/log
 
-		# rebuild dummy_del_mod*.ko if exist linux header
-		check_linux_header || return 0
-		local module_build_dir=/lib/modules/`uname -r`/build
-		[ -f $module_build_dir/vmlinux ] || cp /sys/kernel/btf/vmlinux $module_build_dir/
-		make -j${nr_cpu} -C $module_build_dir M=${PWD}/testcases/kernel/syscalls/delete_module
-		cp ${PWD}/testcases/kernel/syscalls/delete_module/*.ko ${PWD}/testcases/bin/
+		fixup_kdir && {
+			# rebuild dummy_del_mod*.ko
+			build_module "testcases/kernel/syscalls/delete_module"
+			build_module "testcases/kernel/syscalls/finit_module"
+			build_module "testcases/kernel/syscalls/init_module"
+		}
 		;;
 	net.ipv6_lib)
 		iface=$(ifconfig -s | awk '{print $1}' | grep ^eth | head -1)
