@@ -251,6 +251,7 @@ Spectre_v2_mitigation
 ^libhugetlbfs-test\..+\.killed_by_signal
 ^lkvs\..*\.na
 ^lock_stat\.
+^ltp\..*\.broken
 ^max_iostat\.
 ^meminfo\.
 ^mpstat\.
