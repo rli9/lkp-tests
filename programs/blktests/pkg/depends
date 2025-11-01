@@ -1,10 +1,13 @@
 blktrace
 bsdextrautils
 build-essential
+cryptsetup
 dosfstools
 e2fsprogs
+f2fs-tools
 fdisk
 fio
+fscrypt
 gawk
 git
 init-system-helpers
