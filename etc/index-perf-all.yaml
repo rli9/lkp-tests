@@ -67,7 +67,11 @@ power-idle\.turbostat\.Busy%: -1
 power-idle\.turbostat\.Bzy_MHz: -1
 power-idle\.turbostat\.PkgTemp: -1
 power-idle\.turbostat\.PkgWatt: -1
+pts\..+\..+_max_teps: 1
+pts\..+\..+_median_teps: 1
 pts\..+\..+_per_second: 1
+pts\..+\..+_time_-_seconds: 1
+pts\..+\..+___sec: 1
 pts\..+\.activity_level: 1
 pts\..+\.average_mbytes_sec: 1
 pts\..+\.average_msg_sec: 1
@@ -87,7 +91,6 @@ pts\..+\.final_score: 1
 pts\..+\.flops_rank: 1
 pts\..+\.fps: 1
 pts\..+\.frames: 1
-pts\..+\.frames___sec: 1
 pts\..+\.gbps: 1
 pts\..+\.gb_s: 1
 pts\..+\.gfinst_s: 1
@@ -97,18 +100,14 @@ pts\..+\.ghash_s: 1
 pts\..+\.giops: 1
 pts\..+\.global_score: 1
 pts\..+\.gmpbench_score: 1
-pts\..+\.hydro_cycle_time_-_seconds: -1
 pts\..+\.h_s: 1
 pts\..+\.images_sec: 1
-pts\..+\.images___sec: 1
 pts\..+\.iops: 1
 pts\..+\.ips: 1
-pts\..+\.items___sec: 1
 pts\..+\.iterations_per_minute: 1
 pts\..+\.iterations_sec: 1
 pts\..+\.kb: 1
 pts\..+\.kh_s: 1
-pts\..+\.kpos___sec: 1
 pts\..+\.k_s: 1
 pts\..+\.lookups_s: 1
 pts\..+\.loop_time: -1
@@ -116,6 +115,7 @@ pts\..+\.lps: 1
 pts\..+\.major_kernels_total_rate: 1
 pts\..+\.marks: 1
 pts\..+\.mbits_sec: 1
+pts\..+\.mbps: 1
 pts\..+\.mbytes_s: 1
 pts\..+\.mbyte_s: 1
 pts\..+\.MB\/s: 1
@@ -129,9 +129,7 @@ pts\..+\.microseconds: -1
 pts\..+\.milli-seconds: -1
 pts\..+\.milliseconds: 1
 pts\..+\.milliwatts: -1
-pts\..+\.mipolys___sec: 1
 pts\..+\.mips: 1
-pts\..+\.mivoxels___sec: 1
 pts\..+\.mpix_sec: 1
 pts\..+\.mpx_s: 1
 pts\..+\.mp_s: 1
@@ -148,7 +146,6 @@ pts\..+\.new_orders_per_minute: 1
 pts\..+\.nodes_second: 1
 pts\..+\.ns: -1
 pts\..+\.ns_per_event: 1
-pts\..+\.operations___second: 1
 pts\..+\.ops_per_sec: 1
 pts\..+\.ops_s: 1
 pts\..+\.ops_sec: 1
