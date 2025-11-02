@@ -19,8 +19,17 @@ fsmark:
   filesize:
     - 9B
     - 8K
-    - 16MB
-  test_size: 16G
+    - 16M
+  test_size: {{
+               case filesize
+               when '9B',
+                 then '256M'
+               when '8K'
+                 then '1G'
+               when '16MB'
+                 then '16G'
+               end
+             }}
   sync_method:
     - fsyncBeforeClose
     - NoSync
