@@ -33,8 +33,8 @@ lmbench3:
     - CONNECT
     # Case UDP can get test result when nr_threads=1, if nr_threads set as 50%,100%, can't get correct result, showing "Recv timed out".
     - UDP
-    # MEM is about cache and memory latency related case, it will take more than 2 hours on test machine lkp-bdw-ep4.
-    - MEM
+    # # MEM is about cache and memory latency related case, it will take more than 2 hours on test machine lkp-bdw-ep4.
+    # - MEM
 
 ---
 nr_threads:
