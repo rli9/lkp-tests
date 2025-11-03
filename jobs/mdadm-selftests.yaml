@@ -26,7 +26,7 @@ mdadm-selftests:
     - "06"
     - "07auto"
     - "07changelevelintr"
-    - "07changelevels"
+    # - "07changelevels" # runtime > 4h
     - "07layout"
     - "07reshape"
     - "07revert"
