@@ -21,13 +21,10 @@ fsmark:
     - 8K
     - 16M
   test_size: {{
-               case filesize
-               when '9B',
-                 then '256M'
-               when '8K'
-                 then '1G'
-               when '16MB'
-                 then '16G'
+               case fsmark.filesize
+               when '9B' then '256M'
+               when '8K' then '1G'
+               when '16MB' then '16G'
                end
              }}
   sync_method:
