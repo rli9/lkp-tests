@@ -86,8 +86,9 @@ runtests()
 {
 	# for glxgears on centos, which is located at /usr/lib64/mesa/glxgears
 	export PATH="$PATH:/usr/lib64/mesa"
-	# libipt.so.2 is installed in /usr/local/lib
+	# libipt.so.2 is installed in /usr/local/lib or /usr/local/lib64
 	export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+	export LD_LIBRARY_PATH=/usr/local/lib64:$LD_LIBRARY_PATH
 
 	cd_benchmark $suite/lkvs/BM
 
