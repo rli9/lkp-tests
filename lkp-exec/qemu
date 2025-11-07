@@ -172,7 +172,7 @@ max_sane_qemu_memory()
 setup_vdisk_root()
 {
 	vm_name=$testbox
-	
+
 	if [[ "$opt_vdiskpath" ]]; then
 		[[ -d "$opt_vdiskpath" ]] || {
 			echo "$opt_vdiskpath: no such directory"
@@ -227,8 +227,8 @@ fi
 
 create_lkp_src_initrd()
 {
-	if [[ "$kconfig" =~ ^(i386|x86_64)- ]]; then
-		local arch=${kconfig%%-*}
+	if [[ "$rootfs" =~ (i386|x86_64)- ]]; then
+		local arch=${BASH_REMATCH[1]}
 	else
 		local arch=$(arch)
 	fi
