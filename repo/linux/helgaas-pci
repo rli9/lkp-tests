@@ -1,3 +1,4 @@
 url: https://git.kernel.org/pub/scm/linux/kernel/git/helgaas/pci.git
 owner: Bjorn Helgaas <bhelgaas@google.com>
 notify_build_success_branch: .*
+private_report_branch: review/.*
