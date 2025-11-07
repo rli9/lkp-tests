@@ -1,3 +1,4 @@
 url: https://github.com/jlelli/linux.git
 owner: Juri Lelli <juri.lelli@redhat.com>
 notify_build_success_branch: .*
+private_report_branch: .*
