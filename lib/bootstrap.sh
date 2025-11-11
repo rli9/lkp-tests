@@ -263,6 +263,8 @@ redirect_stdout_stderr()
 	exec  > /tmp/stdout
 	exec 2> /tmp/stderr
 
+	[ "$no_redirect_to_kmsg" = "1" ] && return
+
 	local sed_u=
 	sed -h 2>&1|grep -q -- -u && sed_u='-u'
 
