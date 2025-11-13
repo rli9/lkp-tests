@@ -19,7 +19,7 @@ build()
 {
 	cd_src_pkg_dir
 
-	gcc -O2 -o bust_shm_exit bust_shm_exit.c -lpthread
+	gcc -Wno-return-mismatch -O2 -o bust_shm_exit bust_shm_exit.c -lpthread
 }
 
 package()
