@@ -9,7 +9,6 @@ stats = LKP::Stats.new
 
 while (line = $stdin.gets)
   line = line.resolve_invalid_bytes.uncolorize
-  warn line
 
   # ftrace_regression01: pass | tainted  (1.585s)
   next unless line =~ /^(.+): (pass|fail|broken|warn|conf|skip) | .+ \(.+s\)/
