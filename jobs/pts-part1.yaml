@@ -625,10 +625,10 @@ pts:
     option_a:
       - 50
       - 100
-      - 500
+      # - 500 # The test run did not produce a result.
     option_b:
-      - 1:10
-      - 1:5
-      - 1:1
-      - 5:1
-      - 10:1
+      - 1 # 1:10
+      - 2 # 1:5
+      - 3 # 1:1
+      - 4 # 5:1
+      - 5 # 10:1
