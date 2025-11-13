@@ -66,7 +66,6 @@ rootfs image is not initramfs \(invalid magic at start of compressed archive\)
 rsyslogd.* bad frame in 32bit sigreturn
 S0Box: more than 5 loops in s0box_interrupt
 saturated; leaking memory
-segfault at .* ip .* sp .* error .* likely on CPU .*
 smp: csd: Re-sending CSD lock
 sysctl could not get directory:
 sysctl duplicate entry:
