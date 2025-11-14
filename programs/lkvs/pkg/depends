@@ -1,5 +1,6 @@
 asciidoc
 bison
+bsdutils
 build-essential
 clang
 cmake
