@@ -9,6 +9,7 @@ md5sums=('925eb6675ce86cb011699f38468a1fd1' 'SKIP')
 
 . $LKP_SRC/lib/install.sh
 . $LKP_SRC/lib/tests/pkgbuild.sh
+. $LKP_SRC/lib/reproduce-log.sh
 
 prepare()
 {
@@ -21,11 +22,11 @@ build()
 	cd_src_pkg_dir
 
 	./bootstrap
-	LDFLAGS=-laio ./configure --prefix=$benchmark_path
-	make CFLAGS="-fcommon -I$srcdir/$pkgname/include -D_GNU_SOURCE -lm"
+	LDFLAGS=-laio ./configure
+	log_cmd make CFLAGS="-Wno-implicit-int -Wno-int-conversion -fcommon -I$srcdir/$pkgname/include -D_GNU_SOURCE -lm"
 }
 
 package()
 {
-	pack_src_pkg_contents src/reaim data scripts $benchmark_path
+	pack_src_pkg_contents src/reaim data scripts
 }
