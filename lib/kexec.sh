@@ -116,27 +116,8 @@ download_initrd()
 
 	for _initrd in $(echo $initrd $tbox_initrd $job_initrd $lkp_initrd $bm_initrd $modules_initrd $testing_nvdimm_modules_initrd $linux_headers_initrd $linux_selftests_initrd $linux_perf_initrd $ucode_initrd | tr , ' ')
 	do
-		_initrd=$(echo $_initrd | sed 's/^\///')
-		local file=$CACHE_DIR/$_initrd
-		if [ "$LKP_LOCAL_RUN" = "1" ] && [ -e $file ]; then
-			echo "skip downloading $file"
-		else
-			http_get_newer "$_initrd" $file || {
-				rm -f $file
-				set_job_state "wget_initrd_fail"
-				echo Failed to download $_initrd
-				return 1
-			}
-		fi
-
-		initrd_is_correct $file || {
-			rm -f $file && echo "remove the the broken initrd: $file"
-
-			set_job_state "initrd_broken"
-			echo_info "WARNING: lkp next download broken!"
-
-			return 1
-		}
+		local file
+		_download_initrd $_initrd || return
 
 		initrds="${initrds}$file "
 	done
@@ -151,6 +132,35 @@ download_initrd()
 		initrd_option="--initrd=$concatenate_initrd"
 
 		cat $initrds > $concatenate_initrd
+	}
+
+	return 0
+}
+
+_download_initrd()
+{
+	local initrd=$1
+	initrd=$(echo $initrd | sed 's/^\///')
+
+	file=$CACHE_DIR/$initrd
+	if [ "$LKP_LOCAL_RUN" = "1" ] && [ -e $file ]; then
+		echo "skip downloading $file"
+	else
+		http_get_newer "$initrd" $file || {
+			rm -f $file
+			set_job_state "wget_initrd_fail"
+			echo Failed to download $initrd
+			return 1
+		}
+	fi
+
+	initrd_is_correct $file || {
+		rm -f $file && echo "remove the the broken initrd: $file"
+
+		set_job_state "initrd_broken"
+		echo_info "WARNING: lkp next download broken!"
+
+		return 1
 	}
 
 	return 0
