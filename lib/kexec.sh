@@ -114,7 +114,7 @@ download_initrd()
 
 	use_local_modules_initrds
 
-	for _initrd in $(echo $initrd $tbox_initrd $job_initrd $lkp_initrd $bm_initrd $modules_initrd $testing_nvdimm_modules_initrd $linux_headers_initrd $linux_selftests_initrd $linux_perf_initrd $ucode_initrd | tr , ' ')
+	for _initrd in $(echo $initrd $tbox_initrd $job_initrd $lkp_initrd $bm_initrd $keep_initrds $modules_initrd $testing_nvdimm_modules_initrd $linux_headers_initrd $linux_selftests_initrd $linux_perf_initrd $ucode_initrd | tr , ' ')
 	do
 		local file
 		_download_initrd $_initrd || return
@@ -272,7 +272,7 @@ kexec_to_next_job()
 	download_errno=$?
 
 	[ $download_errno -eq 0 ] && {
-		download_initrd
+		keep_initrds='' download_initrd
 		download_errno=$?
 	}
 

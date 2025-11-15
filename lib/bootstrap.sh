@@ -8,6 +8,7 @@
 . $LKP_SRC/lib/tbox.sh
 . $LKP_SRC/lib/network.sh
 . $LKP_SRC/lib/detect-system.sh
+. $LKP_SRC/lib/kexec.sh
 
 # borrowed from linux/tools/testing/selftests/rcutorture/doc/initrd.txt
 # Author: Paul E. McKenney <paulmck@linux.vnet.ibm.com>
@@ -284,6 +285,40 @@ redirect_stdout_stderr()
 	else
 		redirect_stdout_stderr_directly
 	fi
+}
+
+install_initrd()
+{
+	[ -n "$keep_initrds" ] || return 0
+
+	local keep_initrd_dir="$CACHE_DIR/keep-initrd"
+
+	rm -rf $keep_initrd_dir
+	mkdir $keep_initrd_dir
+
+	local initrd
+	for initrd in $(echo $keep_initrds | tr , ' ')
+	do
+		local file
+		_download_initrd $initrd || return
+
+		echo "gzip -dc $file | cpio -dimu"
+		(cd $keep_initrd_dir && gzip -dc $file | cpio -dimu)
+	done
+
+	mkdir -vp /lkp/benchmarks
+
+	local dir
+	for dir in $keep_initrd_dir/lkp/benchmarks/*/
+	do
+		[ -d "$dir" ] || continue
+
+		dir="${dir%/}"
+		# rli9 FIXME /lkp/benchmarks/$(basename $dir) could exist
+		ln -svf $dir /lkp/benchmarks/$(basename $dir)
+	done
+
+	return 0
 }
 
 install_deb()
@@ -709,4 +744,6 @@ boot_init()
 	netconsole_init
 
 	mount_rootfs
+
+	install_initrd
 }
