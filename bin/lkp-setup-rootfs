@@ -33,7 +33,7 @@ EOF
 boot_init || {
 	echo_to_tty "LKP: rebooting due to boot init failure"
 
-	set_tbox_wtmp 'rebooting'
+	set_tbox_wtmp 'rebooting_boot_init_fail'
 	start_reboot_watchdog
 	reboot_tbox 2>/dev/null && exit 1
 }
@@ -83,7 +83,11 @@ downgrade_ucode()
 
 lkp_reboot()
 {
-	set_tbox_wtmp 'rebooting'
+	local tbox_state="rebooting"
+	[ -n "$1" ] && tbox_state="rebooting_$1"
+
+	set_tbox_wtmp $tbox_state
+
 	# Avoid get stuck in yocto minimal rootfs.
 	# LKP: rebooting
 	# [    8.124081] LKP: rebooting
@@ -104,10 +108,14 @@ while true; do
 	echo_to_tty "$LKP_DEBUG_PREFIX $LKP_SRC/bin/run-lkp $job"
 	$LKP_DEBUG_PREFIX $LKP_SRC/bin/run-lkp $job
 
-	if tbox_cant_kexec || job_force_reboot; then
-		echo_to_tty "LKP: rebooting forcely"
+	if tbox_cant_kexec; then
+		echo_to_tty "LKP: tbox cant kexec and rebooting forcely"
+		lkp_reboot "cant_kexec"
+	fi
 
-		lkp_reboot
+	if job_force_reboot; then
+		echo_to_tty "LKP: current job forces reboot"
+		lkp_reboot "job_force_reboot"
 	fi
 
 	if [ -n "$LKP_DEBUG" ]; then
@@ -121,14 +129,14 @@ while true; do
 
 	next_job || {
 		echo "reboot tbox due to next job download failure"
-		lkp_reboot
+		lkp_reboot "next_job_fail"
 	}
 
 	rsync_rootfs
 
 	reboot_for_next_job && {
 		echo_to_tty "LKP: rebooting for next job"
-		lkp_reboot
+		lkp_reboot "for_next_job"
 	}
 
 	job_does_not_need_reboot || break
@@ -136,9 +144,7 @@ done
 
 if downgrade_ucode; then
 	echo "reboot tbox to downgrade ucode"
-	set_job_state 'downgrade_ucode'
-	sleep 5
-	lkp_reboot
+	lkp_reboot 'downgrade_ucode'
 fi
 
 set_tbox_wtmp 'kexec_to_next_job'
