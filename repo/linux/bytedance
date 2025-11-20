@@ -1,8 +1,6 @@
 url: https://github.com/bytedance/kernel.git
 test_old_branches: .*
 arch_denylist: .*
-arch_allowlist: x86_64|arm64|loongarch
-branch_allowlist: 5.15-velinux|6.6-velinux
 branch_denylist: .*
 no_merge_branch: .*
 compiler: gcc
