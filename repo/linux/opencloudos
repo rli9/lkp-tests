@@ -6,6 +6,7 @@ branch_allowlist: linux-5.4/lts/5.4.119-20.0009.spr|next
 branch_denylist: .*
 compiler: gcc
 belongs_to: downstream
+category: downstream
 mail_to:
 - kaixuxia@tencent.com
 - frankjpliu@tencent.com

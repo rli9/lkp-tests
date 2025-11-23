@@ -5,6 +5,7 @@ branch_denylist: .*
 no_merge_branch: .*
 compiler: gcc
 belongs_to: downstream
+category: downstream
 mail_to:
 - jason.zeng@intel.com
 private_report_branch: .*

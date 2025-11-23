@@ -2,3 +2,4 @@ url: https://git.kernel.org/pub/scm/linux/kernel/git/cip/linux-cip.git
 mail_to:
 - Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>
 private_report_branch: .*
+category: downstream

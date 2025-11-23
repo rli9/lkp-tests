@@ -12,6 +12,7 @@ report_picked_commit: .*
 private_report_branch: .*
 notify_build_success_branch: .*
 belongs_to: downstream
+category: downstream
 mail_to:
 - aubrey.li@linux.intel.com
 tests:
