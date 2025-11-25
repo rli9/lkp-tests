@@ -4,6 +4,7 @@ build-essential
 cryptsetup
 dosfstools
 e2fsprogs
+ethtool
 f2fs-tools
 fdisk
 fio
