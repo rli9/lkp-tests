@@ -6,3 +6,4 @@ mail_cc:
 - Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 integration_testing_branches:
 - rust-next
+branch_denylist: pr/.*
