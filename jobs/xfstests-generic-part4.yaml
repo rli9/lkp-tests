@@ -40,6 +40,7 @@ xfstests:
     - generic-group-75
     - generic-group-76
     - generic-group-77
+    - generic-group-78
     - generic-no-xfs-bug-on-assert
 
 ---
@@ -135,6 +136,7 @@ xfstests:
     - generic-metadata-journaling-35
     - generic-metadata-journaling-37
     - generic-metadata-journaling-38
+    - generic-metadata-journaling-39
 
 ---
 fs:

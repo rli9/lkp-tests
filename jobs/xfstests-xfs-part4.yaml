@@ -39,3 +39,4 @@ xfstests:
     - xfs-group-80
     - xfs-group-81
     - xfs-group-82
+    - xfs-group-83

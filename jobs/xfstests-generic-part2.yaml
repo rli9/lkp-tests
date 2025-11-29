@@ -81,3 +81,4 @@ xfstests:
     - generic-scratch-reflink-33
     - generic-scratch-reflink-35
     - generic-scratch-reflink-36
+    - generic-scratch-reflink-38
