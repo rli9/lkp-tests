@@ -1,4 +1,4 @@
-url: git://anongit.freedesktop.org/drm/drm
+url: https://gitlab.freedesktop.org/drm/kernel.git
 integration_testing_branches:
 - drm-next
 mail_cc:

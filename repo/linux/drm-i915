@@ -1,10 +1,15 @@
-url: https://gitlab.freedesktop.org/drm/i915/kernel
+url: https://gitlab.freedesktop.org/drm/i915/kernel.git
 integration_testing_branches:
 - for-linux-next
 - for-linux-next-fixes
+mail_cc:
+- intel-gfx@lists.freedesktop.org
+- dri-devel@lists.freedesktop.org
+owner: Daniel Vetter <daniel.vetter@ffwll.ch>
 subsystems:
 - drm
 - i915
 - bxt
 - gen8
 belongs_to: i915
+no_merge_branch: topic/.*

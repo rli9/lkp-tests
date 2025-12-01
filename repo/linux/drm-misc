@@ -1,4 +1,4 @@
-url: git://anongit.freedesktop.org/drm/drm-misc
+url: https://gitlab.freedesktop.org/drm/misc/kernel.git
 owner: Thomas Zimmermann <tzimmermann@suse.de>
 git_am_branch: drm-misc-next
 mail_cc:

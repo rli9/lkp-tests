@@ -1,1 +1,10 @@
-url: https://gitlab.freedesktop.org/drm/tegra
+url: https://gitlab.freedesktop.org/drm/tegra.git
+owner: Thierry Reding <thierry.reding@gmail.com>
+integration_testing_branches:
+- drm/tegra/for-next
+mail_cc:
+- dri-devel@lists.freedesktop.org
+- linux-tegra@vger.kernel.org
+subsystems:
+- tegra
+- host1x
