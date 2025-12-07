@@ -438,8 +438,7 @@ def unite_params(result_root)
   begin
     YAML.load_file(params_file)
   rescue StandardError => e
-    log_warn e.message
-    log_warn "failed to load #{params_file} after save params from #{result_root}/job.yaml"
+    log_warn "#{e.message}: failed to load #{params_file} after saving params from #{result_root}/job.yaml"
   end
 end
 
