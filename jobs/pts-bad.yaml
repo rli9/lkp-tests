@@ -11,6 +11,7 @@ pts:
     # - caffe-1.5.0 # install failed
     # - comd-cl-1.0.0 # install failed
     # - compress-zstd-1.6.0 # install failed
+    - encode-mp3-1.7.4 # The test quit with a non-zero exit status
     - iperf-1.2.0 # The test quit with a non-zero exit status.
     - java-gradle-perf-1.1.0 # Exception in thread "main" java.net.ConnectException: Connection refused
     # - java-jmh-1.0.1 # install failed

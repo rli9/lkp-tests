@@ -35,7 +35,6 @@ pts:
     - dolfyn-1.0.3
     - ebizzy-1.0.4
     - encode-flac-1.9.0
-    - encode-mp3-1.7.4
     - encode-wavpack-1.5.0
     - espeak-1.7.0
     - ffte-1.2.1
