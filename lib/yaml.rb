@@ -153,7 +153,7 @@ def load_json(file, cache: false)
       mtime = File.mtime(file)
       unless $json_cache[file] && $json_mtime[file] == mtime
         obj = if file =~ /\.json$/
-                JSON.load File.read(file)
+                JSON.load File.read(file, encoding: 'UTF-8')
               else
                 JSON.load `zcat #{file}`
               end
@@ -166,10 +166,12 @@ def load_json(file, cache: false)
     rescue SignalException
       raise
     rescue StandardError
-      tempfile = "#{file}-bad"
       log_warn "Failed to load JSON file: #{file}"
+
+      tempfile = "#{file}-bad"
       log_debug "Kept corrupted JSON file for debugging: #{tempfile}"
       FileUtils.mv file, tempfile, force: true
+
       raise
     end
     nil
