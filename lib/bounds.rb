@@ -3,6 +3,7 @@
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
 require "#{LKP_SRC}/lib/lkp_path"
+require "#{LKP_SRC}/lib/yaml"
 
 def valid_stats_range?(stats_field, num)
   monitor = stats_field.split('.')[0]
