@@ -57,4 +57,4 @@ end
 
 puts 'has_stderr: 1' unless error_ids.empty?
 
-log_warn "noisy stderr, check #{ENV['RESULT_ROOT']}/stderr" if error_ids.size > 100
+# log_warn "noisy stderr, check #{ENV['RESULT_ROOT']}/stderr" if error_ids.size > 100
