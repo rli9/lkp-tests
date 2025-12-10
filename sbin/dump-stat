@@ -69,7 +69,7 @@ while (line = $stdin.gets)
   v = v.index('.') ? v.to_f : v.to_i
   unless valid_stats_range? k, v
     invalid_records.push record_index
-    warn_stat 'outside valid range', monitor, k, v
+    warn_stat 'outside valid range', monitor, k, v unless %w[turbostat vmstat].include?(monitor)
 
     next
   end
