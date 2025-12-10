@@ -11,7 +11,8 @@ while (line = $stdin.gets)
   line = line.resolve_invalid_bytes.uncolorize
 
   # ftrace_regression01: pass | tainted  (1.585s)
-  next unless line =~ /^(.+): (pass|fail|broken|warn|conf|skip) | .+ \(.+s\)/
+  # landlock04: skip | tainted  (2m 40s)
+  next unless line =~ /^(.+): (pass|fail|broken|warn|conf|skip) \| .+ \(.+s\)/
 
   stats.add $1, $2, overwrite: true
 end
