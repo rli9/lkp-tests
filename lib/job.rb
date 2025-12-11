@@ -679,7 +679,7 @@ class Job
   def run_filter(_hash, _key, _val, script)
     Bash.call2(@filter_env, script, unsetenv_others: true) do |stdout, _stderr, status|
       puts stdout
-      raise Job::ParamError, "#{script}: exitstatus #{status}"
+      raise Job::ParamError, "#{script}: exitstatus #{status.exitstatus}"
     end
   end
 
