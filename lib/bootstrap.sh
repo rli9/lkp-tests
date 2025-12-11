@@ -1,14 +1,14 @@
 #!/bin/sh
 
-. $LKP_SRC/lib/mount.sh
-. $LKP_SRC/lib/http.sh
-. $LKP_SRC/lib/env.sh
-. $LKP_SRC/lib/reboot.sh
-. $LKP_SRC/lib/ucode.sh
-. $LKP_SRC/lib/tbox.sh
-. $LKP_SRC/lib/network.sh
 . $LKP_SRC/lib/detect-system.sh
+. $LKP_SRC/lib/env.sh
+. $LKP_SRC/lib/http.sh
 . $LKP_SRC/lib/kexec.sh
+. $LKP_SRC/lib/mount.sh
+. $LKP_SRC/lib/network.sh
+. $LKP_SRC/lib/reboot.sh
+. $LKP_SRC/lib/tbox.sh
+. $LKP_SRC/lib/ucode.sh
 
 # borrowed from linux/tools/testing/selftests/rcutorture/doc/initrd.txt
 # Author: Paul E. McKenney <paulmck@linux.vnet.ibm.com>
