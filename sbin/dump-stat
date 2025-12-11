@@ -93,6 +93,8 @@ result.each do |key, val|
     min_cols = val.size
     min_cols_stat = key
   end
+
+  next if key =~ /^dmesg\.timestamp/ # timestamp:last: 0.000000
   next if val[0] != 0
   next if val[-1] != 0
   next if val.sum != 0
