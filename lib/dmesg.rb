@@ -2,6 +2,8 @@
 
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
+require 'fileutils'
+require 'tempfile'
 require "#{LKP_SRC}/lib/yaml"
 require "#{LKP_SRC}/lib/constant"
 require "#{LKP_SRC}/lib/string"
@@ -16,9 +18,6 @@ LKP_SRC_ETC ||= LKP::Path.src('etc')
 # /c/linux% git grep '"[a-z][a-z_]\+%d"'|grep -o '"[a-z_]\+'|cut -c2-|sort -u
 LINUX_DEVICE_NAMES = IO.read("#{LKP_SRC_ETC}/linux-device-names").split("\n")
 LINUX_DEVICE_NAMES_RE = /\b(#{LINUX_DEVICE_NAMES.join('|')})\d+/.freeze
-
-require 'fileutils'
-require 'tempfile'
 
 def fixup_dmesg(line)
   line.chomp!
