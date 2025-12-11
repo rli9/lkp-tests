@@ -25,7 +25,7 @@ while (line = $stdin.gets)
   when /^make: \*\*\* (.*) (Error \d+|Stop\.)$/,
        /make failed/
     # make: *** [Makefile:11: all] Error 2
-    stats.add 'make', 'fail'
+    stats.add 'make', 'fail', overwrite: true
   when /\.\/run_tests\.sh/
     stats.add 'make', 'pass'
   end
