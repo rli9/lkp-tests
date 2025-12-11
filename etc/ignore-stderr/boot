@@ -1,2 +1,2 @@
 modprobe: FATAL: Module nfs not found in directory /lib/modules/.*
-URL:http://.*/cgi-bin/.* "/dev/null"
+URL:http://.*/cgi-bin/.* "/dev/null".*
