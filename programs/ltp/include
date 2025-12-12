@@ -54,7 +54,7 @@ need_kconfig:
 % if ___.test != "kvm"
 - BLK_DEV_LOOP
 - CAN: m
-- CAN_DEV: m
+- CAN_DEV: y
 - CAN_RAW: m
 - CAN_VCAN: m
 - MINIX_FS: m
