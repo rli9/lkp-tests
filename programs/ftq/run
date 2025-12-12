@@ -30,6 +30,7 @@ cd_benchmark
 
 samples=${samples%%ss}
 
+[ -f "ftq_$test" ] || die "can not find ftq_$test"
 log_cmd ./ftq_$test $opt_freq -n $samples $opt_task $opt_arg
 
 upload_files -t results $BENCHMARK_ROOT/ftq/*.dat
