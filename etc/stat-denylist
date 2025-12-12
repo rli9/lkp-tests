@@ -259,6 +259,7 @@ Spectre_v2_mitigation
 ^numa-numastat\.
 ^numa-vmstat\.
 ^pagetypeinfo\.
+^perf-event-tests\..*\.unimplemented
 ^perf-profile.
 ^perf-stat\.
 ^pmeter\.fail
