@@ -115,6 +115,7 @@ warn_empty_stats()
 	[[ $program = 'ftrace' ]] && return
 	[[ $program = 'turbostat' ]] && return
 	[[ $program = 'perf-profile' ]] && return
+	[[ $program = 'perf-stat' ]] && return
 	[[ -s $RESULT_ROOT/time ]] || return
 	[[ -s $RESULT_ROOT/last_state ]] && return
 	grep -q "^$program\." $LKP_SRC_ETC/failure && return
