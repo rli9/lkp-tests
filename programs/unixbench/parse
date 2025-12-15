@@ -43,7 +43,7 @@ while (line = $stdin.gets)
 end
 
 if duration.nil? || throughput.nil?
-  log_error 'miss duration or throughput'
+  log_warn "miss duration or throughput: #{ENV['RESULT_ROOT']}"
   exit
 end
 
