@@ -52,7 +52,7 @@ stress-ng:
     - workload
     - x86cpuid
     - x86syscall
-    - yield
+    # - yield # less meaningful test per PeterZ and Chenyu
     - zero
     - zlib
     - zombie

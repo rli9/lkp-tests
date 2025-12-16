@@ -59,7 +59,7 @@ stress-ng:
     - regex
     - regs
     - remap
-    - resched
+    # - resched # less meaningful test per PeterZ and Chenyu
     - resources
     - revio
     - ring-pipe
