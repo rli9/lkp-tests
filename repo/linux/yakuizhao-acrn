@@ -1,3 +1,0 @@
-url: https://github.com/yakuizhao/acrn-kernel.git
-notify_build_success_branch: .*
-owner: Zhao Yakui <yakui.zhao@intel.com>
