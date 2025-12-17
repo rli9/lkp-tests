@@ -10,3 +10,4 @@ mail_cc:
 - Dan Williams <dan.j.williams@intel.com>
 - linux-cxl@vger.kernel.org
 report_to_domain_branch: preview
+prioritized_branch: .*
