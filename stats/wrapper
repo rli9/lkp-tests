@@ -121,6 +121,7 @@ warn_empty_stats()
 	grep -q "^$program\." $LKP_SRC_ETC/failure && return
 	grep -q "^$program\." $LKP_SRC_ETC/pass && return
 
+	is_empty_stats=1
 	log_warn "$program: empty stats" "$log"
 }
 
@@ -254,7 +255,7 @@ dump_stat()
 }
 
 # cleanup program raw data
-[[ $lite_mode = 1 ]] && {
+[[ $is_empty_stats != 1 && $lite_mode == 1 ]] && {
     rm -f $RESULT_ROOT/$program
     rm -f $RESULT_ROOT/$program.xz
     rm -f $RESULT_ROOT/$program.gz
