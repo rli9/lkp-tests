@@ -10,3 +10,8 @@ maintained_subsystems:
 notify_build_success_branch: mm-new
 mail_to: David Hildenbrand <david@kernel.org>
 prioritized_branch: mm-new
+tests:
+  - branch: mm-new
+    parameters:
+      mail_to:
+        - david@kernel.org
