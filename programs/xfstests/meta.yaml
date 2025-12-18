@@ -17,7 +17,7 @@ description: |
   - Test/machine hung
   - Machine oops
 
-homepage: git://git.kernel.org/pub/scm/fs/xfs/xfstests-dev.git
+homepage: https://git.kernel.org/pub/scm/fs/xfs/xfstests-dev.git
 
 parameters:
   test:
