@@ -18,7 +18,17 @@ if [ "$need_x" = true ]; then
 	chmod 1777 /tmp/.X11-unix
 	chown root:root /tmp/.X11-unix
 
-	xinit $LKP_SRC/programs/unixbench/xinitrc
+	xinit $LKP_SRC/programs/unixbench/xinitrc 2>&1
+	exit_status=$?
+
+	xinitrc_exit_status_file=/tmp/unixbench.xinitrc.exit-status
+	[ -f "$xinitrc_exit_status_file" ] && {
+		exit_status=$(cat $xinitrc_exit_status_file)
+		rm -vf $xinitrc_exit_status_file
+	}
 else
 	$LKP_SRC/programs/unixbench/xinitrc
+	exit_status=$?
 fi
+
+exit $exit_status

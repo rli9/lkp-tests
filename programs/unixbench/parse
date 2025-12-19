@@ -39,15 +39,24 @@ while (line = $stdin.gets)
     throughput = $1.to_f
   when /^.+ Benchmarks Index Score .* ([0-9.]+)$/
     score = $1.to_f
+  when /Run: "2D graphics: .+ (aborting|broken)/
+    # Run: "2D graphics: aa polygons": command returned status 2816; aborting
+    # Run: "2D graphics: images and blits": X connection to :0 broken (explicit kill or server shutdown).
+    fail = true
   end
 end
 
 if duration.nil? || throughput.nil?
-  log_warn "miss duration or throughput: #{ENV['RESULT_ROOT']}"
+  puts 'test.fail: 1'
+  log_warn "miss duration or throughput: #{ENV['RESULT_ROOT']}" unless fail
+
   exit
 end
+
+log_warn "unexpected fail flag: #{ENV['RESULT_ROOT']}" if fail
 
 workload = duration * throughput
 puts "score: #{score}" if score
 puts "throughput: #{throughput}"
 puts "workload: #{workload}"
+puts 'test.pass: 1'

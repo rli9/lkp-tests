@@ -31,4 +31,5 @@ exit_status=$?
 
 upload_files -t results $BENCHMARK_ROOT/unixbench/UnixBench/results/*
 
+echo $exit_status > /tmp/unixbench.xinitrc.exit-status
 exit $exit_status
