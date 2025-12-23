@@ -16,7 +16,7 @@ $stdin.each_line do |line|
 
   # /proc/meminfo is replaced as 'test_klp_atomic_replace: this has been live patched'
   # from time to time in kernel-selftests/livepatch testing. ignore them.
-  when /^test_klp_atomic_replace:/
+  when /^(test_klp_atomic_replace:|entries)/
     next
   when /^time:/
     puts line
