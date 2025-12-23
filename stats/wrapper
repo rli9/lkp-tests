@@ -117,6 +117,7 @@ warn_empty_stats()
 	[[ $program = 'perf-profile' ]] && return
 	[[ $program = 'perf-stat' ]] && return
 	[[ $program = 'perf-sched' ]] && return
+	[[ $program = 'meminfo' ]] && return
 
 	[[ -s $RESULT_ROOT/time ]] || return
 	[[ -s $RESULT_ROOT/last_state ]] && return
