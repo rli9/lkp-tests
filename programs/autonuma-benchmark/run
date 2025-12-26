@@ -5,6 +5,9 @@
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/run.sh
+. $LKP_SRC/lib/env.sh
+
+has_cmd gawk || die "gawk: command not found"
 
 cd_benchmark
 
