@@ -230,21 +230,8 @@ setup_cross_vars()
 			;;
 		mips)
 			if is_config_enabled CONFIG_64BIT; then
-				if is_config_enabled CONFIG_CPU_LITTLE_ENDIAN; then
-					cross_pkg=mips64el-linux-gnuabi64
-					crosstool=mips64el-linux
-				else
-					cross_pkg=mips64-linux-gnuabi64
-					crosstool=mips64-linux
-				fi
-			elif is_config_enabled CONFIG_32BIT; then
-				if is_config_enabled CONFIG_CPU_LITTLE_ENDIAN; then
-					cross_pkg=mipsel-linux-gnu
-					crosstool=mipsel-linux
-				else
-					cross_pkg=mips-linux-gnu
-					crosstool=mips-linux
-				fi
+				cross_pkg=mips64-linux-gnuabi64
+				crosstool=mips64-linux
 			else
 				cross_pkg=mips-linux-gnu
 				crosstool=mips-linux
@@ -252,13 +239,8 @@ setup_cross_vars()
 			;;
 		powerpc|powerpc64)
 			if is_config_enabled CONFIG_PPC64; then
-				if is_config_enabled CONFIG_CPU_LITTLE_ENDIAN; then
-					cross_pkg=powerpc64le-linux-gnu
-					crosstool=powerpc64le-linux
-				else
-					cross_pkg=powerpc64-linux-gnu
-					crosstool=powerpc64-linux
-				fi
+				cross_pkg=powerpc64-linux-gnu
+				crosstool=powerpc64-linux
 			else
 				cross_pkg=powerpc-linux-gnu
 				crosstool=powerpc-linux
