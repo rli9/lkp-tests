@@ -103,6 +103,8 @@ EOF
 	exit 1
 }
 
+umask 002
+
 script_name=$(basename $0)
 [[ $# = 0 ]] && usage
 
