@@ -201,18 +201,21 @@ class Job
   end
 
   def load(jobfile, expand_template: false)
+    raise ArgumentError, "empty jobfile #{jobfile}" unless File.size?(jobfile)
+
     yaml = File.read jobfile
     # give a chance
-    if yaml.empty? && !File.size(jobfile).zero?
-      log_error "start reload #{jobfile}"
+    if yaml.empty?
+      log_debug "start reload #{jobfile}"
       yaml = File.read jobfile
       if yaml.empty?
-        log_error "reload #{jobfile} failed"
+        log_debug "reload #{jobfile} failed"
       else
-        log_error "reload #{jobfile} succeed"
+        log_debug "reload #{jobfile} succeed"
       end
     end
-    raise ArgumentError, "empty jobfile #{jobfile}" if yaml.empty?
+
+    raise ArgumentError, "nothing to load from #{jobfile}" if yaml.empty?
 
     # keep comment lines as symbols
     yaml.gsub!(/\n\n#([! ][-a-zA-Z0-9 !|\/?@<>.,_+=%~]+)$/, "\n:#\\1: ")
