@@ -2,8 +2,7 @@ url: https://gitee.com/anolis/intel-cloud-kernel.git
 arch_denylist: .*
 arch_allowlist: x86_64
 compiler: gcc
-randconfig_denylist: .*
-randconfig_allowlist: ^$
+kconfig_denylist: randconfig
 test_old_branches: .*
 no_merge_branch: .*
 branch_allowlist: devel-5.10|devel-6.6|intel-5.10-.*|intel-6.6-.*
