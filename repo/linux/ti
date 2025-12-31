@@ -5,3 +5,4 @@ mail_cc:
 - nm@ti.com
 mail_recipient: ti.com
 category: downstream
+report_picked_commit: .*

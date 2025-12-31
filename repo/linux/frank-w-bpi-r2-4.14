@@ -3,3 +3,4 @@ owner: Frank Wunderlich <frank-w@public-files.de>
 mail_to: Frank Wunderlich <frank-w@public-files.de>
 private_report_branch: .*
 category: downstream
+report_picked_commit: .*

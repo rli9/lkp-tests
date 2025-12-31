@@ -13,3 +13,4 @@ private_report_branch: .*
 mail_to: Otavio Salvador <otavio@ossystems.com.br>
 branch_denylist: pr/.*
 category: downstream
+report_picked_commit: .*

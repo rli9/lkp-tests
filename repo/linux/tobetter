@@ -1,3 +1,4 @@
 url: https://github.com/tobetter/linux
 owner: tobetter <tobetter@gmail.com>
 category: downstream
+report_picked_commit: .*

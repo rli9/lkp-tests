@@ -3,3 +3,4 @@ mail_to:
 - Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>
 private_report_branch: .*
 category: downstream
+report_picked_commit: .*
