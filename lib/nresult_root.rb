@@ -1,14 +1,14 @@
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
 require "#{LKP_SRC}/lib/common"
-require "#{LKP_SRC}/lib/property"
-require "#{LKP_SRC}/lib/yaml"
-require "#{LKP_SRC}/lib/job"
-require "#{LKP_SRC}/lib/result"
-require "#{LKP_SRC}/lib/data_store"
-require "#{LKP_SRC}/lib/matrix"
-require "#{LKP_SRC}/lib/stats"
 require "#{LKP_SRC}/lib/constant"
+require "#{LKP_SRC}/lib/data_store"
+require "#{LKP_SRC}/lib/job"
+require "#{LKP_SRC}/lib/matrix"
+require "#{LKP_SRC}/lib/property"
+require "#{LKP_SRC}/lib/result"
+require "#{LKP_SRC}/lib/stats"
+require "#{LKP_SRC}/lib/yaml"
 
 # Common Result Root
 # to share code between original ResultRoot and NResultRoot

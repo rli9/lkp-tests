@@ -2,13 +2,13 @@
 
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
+require "#{LKP_SRC}/lib/bash"
+require "#{LKP_SRC}/lib/bisect_kpi"
+require "#{LKP_SRC}/lib/dirable"
 require "#{LKP_SRC}/lib/result"
 require "#{LKP_SRC}/lib/ruby"
 require "#{LKP_SRC}/lib/string"
 require "#{LKP_SRC}/lib/test_result_definition"
-require "#{LKP_SRC}/lib/bisect_kpi"
-require "#{LKP_SRC}/lib/bash"
-require "#{LKP_SRC}/lib/dirable"
 
 module LKP
   # rli9 FIXME need better name for XTestResult, results, etc

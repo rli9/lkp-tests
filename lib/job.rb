@@ -2,19 +2,19 @@
 
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
-require "#{LKP_SRC}/lib/run_env"
-require "#{LKP_SRC}/lib/common"
-require "#{LKP_SRC}/lib/result"
-require "#{LKP_SRC}/lib/constant"
-require "#{LKP_SRC}/lib/hash"
-require "#{LKP_SRC}/lib/erb"
-require "#{LKP_SRC}/lib/log"
-require "#{LKP_SRC}/lib/bash"
+require 'English'
 require 'fileutils'
-require 'yaml'
 require 'json'
 require 'set'
-require 'English'
+require 'yaml'
+require "#{LKP_SRC}/lib/bash"
+require "#{LKP_SRC}/lib/common"
+require "#{LKP_SRC}/lib/constant"
+require "#{LKP_SRC}/lib/erb"
+require "#{LKP_SRC}/lib/hash"
+require "#{LKP_SRC}/lib/log"
+require "#{LKP_SRC}/lib/result"
+require "#{LKP_SRC}/lib/run_env"
 
 def restore(ah, copy)
   if ah.instance_of?(Hash)

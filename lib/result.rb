@@ -3,10 +3,10 @@
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
 require 'set'
-require "#{LKP_SRC}/lib/lkp_git"
-require "#{LKP_SRC}/lib/run_env"
 require "#{LKP_SRC}/lib/constant"
+require "#{LKP_SRC}/lib/lkp_git"
 require "#{LKP_SRC}/lib/lkp_path"
+require "#{LKP_SRC}/lib/run_env"
 
 def tbox_group(hostname)
   if hostname =~ /.+-\d+$/

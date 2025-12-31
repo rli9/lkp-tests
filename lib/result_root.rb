@@ -1,14 +1,13 @@
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
 require 'time'
-
-require "#{LKP_SRC}/lib/string"
 require "#{LKP_SRC}/lib/common"
-require "#{LKP_SRC}/lib/property"
-require "#{LKP_SRC}/lib/yaml"
-require "#{LKP_SRC}/lib/result"
-require "#{LKP_SRC}/lib/nresult_root"
 require "#{LKP_SRC}/lib/constant"
+require "#{LKP_SRC}/lib/nresult_root"
+require "#{LKP_SRC}/lib/property"
+require "#{LKP_SRC}/lib/result"
+require "#{LKP_SRC}/lib/string"
+require "#{LKP_SRC}/lib/yaml"
 
 def rt_create_time_from_job(job)
   end_time = job['end_time']

@@ -6,12 +6,12 @@ MAX_MATRIX_COLS = 100
 STATS_SOURCE_KEY = 'stats_source'.freeze
 
 require 'set'
-require "#{LKP_SRC}/lib/log"
-require "#{LKP_SRC}/lib/run_env"
 require "#{LKP_SRC}/lib/constant"
 require "#{LKP_SRC}/lib/lkp_path"
-require "#{LKP_SRC}/lib/yaml"
 require "#{LKP_SRC}/lib/lkp_pattern"
+require "#{LKP_SRC}/lib/log"
+require "#{LKP_SRC}/lib/run_env"
+require "#{LKP_SRC}/lib/yaml"
 
 LKP_SRC_ETC ||= LKP::Path.src('etc')
 

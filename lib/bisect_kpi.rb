@@ -3,10 +3,10 @@
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
 require 'ostruct'
-require "#{LKP_SRC}/lib/stats"
-require "#{LKP_SRC}/lib/statistics"
 require "#{LKP_SRC}/lib/constant"
 require "#{LKP_SRC}/lib/lkp_path"
+require "#{LKP_SRC}/lib/statistics"
+require "#{LKP_SRC}/lib/stats"
 
 module LKP
   class PerfKpi

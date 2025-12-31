@@ -3,6 +3,8 @@
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(__dir__))
 
 require "#{LKP_SRC}/lib/cache"
+require "#{LKP_SRC}/lib/git/base"
+require "#{LKP_SRC}/lib/git/object"
 
 module Git
   class Base

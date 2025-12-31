@@ -2,16 +2,15 @@ LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
 ## common utilities
 
-require 'timeout'
-require 'pathname'
-require 'fileutils'
-require 'stringio'
+require 'English'
 require 'fiddle'
-
+require 'fileutils'
+require 'pathname'
+require 'stringio'
+require 'timeout'
 require "#{LKP_SRC}/lib/array"
 require "#{LKP_SRC}/lib/log"
 require "#{LKP_SRC}/lib/string"
-require 'English'
 
 def deepcopy(o)
   Marshal.load(Marshal.dump(o))

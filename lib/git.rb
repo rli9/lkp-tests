@@ -3,12 +3,12 @@
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
 require 'git'
-require "#{LKP_SRC}/lib/git/base"
-require "#{LKP_SRC}/lib/git/object"
-require "#{LKP_SRC}/lib/git/lib"
-require "#{LKP_SRC}/lib/git/author"
-require "#{LKP_SRC}/lib/git/cache"
 require "#{LKP_SRC}/lib/constant"
+require "#{LKP_SRC}/lib/git/author"
+require "#{LKP_SRC}/lib/git/base"
+require "#{LKP_SRC}/lib/git/cache"
+require "#{LKP_SRC}/lib/git/lib"
+require "#{LKP_SRC}/lib/git/object"
 
 module Git
   class << self

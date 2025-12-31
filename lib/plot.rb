@@ -4,8 +4,8 @@ LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
 require 'gnuplot'
 require "#{LKP_SRC}/lib/common"
-require "#{LKP_SRC}/lib/property"
 require "#{LKP_SRC}/lib/matrix"
+require "#{LKP_SRC}/lib/property"
 
 PLOT_SIZE_X = 80
 PLOT_SIZE_Y = 20

@@ -1,8 +1,8 @@
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
 require 'English'
-require 'shellwords'
 require 'open3'
+require 'shellwords'
 
 # rli9 FIXME: find a way to combine w/ misc
 module Bash

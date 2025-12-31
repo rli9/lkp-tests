@@ -4,14 +4,14 @@ LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
 require 'fileutils'
 require 'tempfile'
-require "#{LKP_SRC}/lib/yaml"
 require "#{LKP_SRC}/lib/constant"
-require "#{LKP_SRC}/lib/string"
 require "#{LKP_SRC}/lib/lkp_path"
+require "#{LKP_SRC}/lib/lkp_pattern"
 require "#{LKP_SRC}/lib/log"
 require "#{LKP_SRC}/lib/programs"
-require "#{LKP_SRC}/lib/lkp_pattern"
+require "#{LKP_SRC}/lib/string"
 require "#{LKP_SRC}/lib/tests/stats"
+require "#{LKP_SRC}/lib/yaml"
 
 LKP_SRC_ETC ||= LKP::Path.src('etc')
 

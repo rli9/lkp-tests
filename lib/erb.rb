@@ -1,15 +1,12 @@
 #!/usr/bin/env ruby
 
-require 'erb'
-require 'yaml'
-
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
+require 'erb'
+require 'yaml'
 require "#{LKP_SRC}/lib/hashugar"
-
-# bring in functions usable for ERB code segments
-require "#{LKP_SRC}/lib/unit"
 require "#{LKP_SRC}/lib/string"
+require "#{LKP_SRC}/lib/unit"
 
 # Support references to variables (with real values) defined in the same job.
 #
