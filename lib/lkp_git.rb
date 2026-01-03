@@ -15,7 +15,6 @@ require "#{LKP_SRC}/lib/cache"
 require "#{LKP_SRC}/lib/constant"
 require "#{LKP_SRC}/lib/git"
 require "#{LKP_SRC}/lib/lkp_path"
-require "#{LKP_SRC}/lib/ruby"
 require "#{LKP_SRC}/lib/run_env"
 require "#{LKP_SRC}/lib/yaml"
 
@@ -34,7 +33,7 @@ def git_committer_name(commit)
 end
 
 def __git_parents(commit)
-  `#{GIT} rev-list --parents -n1 "#{commit}"`.chomp.split[1..-1]
+  `#{GIT} rev-list --parents -n1 "#{commit}"`.chomp.split[1..]
 end
 
 def git_parents(commit)

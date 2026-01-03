@@ -3,7 +3,6 @@
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(__dir__))
 
 require 'git'
-require "#{LKP_SRC}/lib/ruby"
 
 module Git
   class Base
@@ -128,7 +127,7 @@ module Git
     def release_tags_with_order
       unless @release_tags_with_order
         tags = sort_tags(release_tag_pattern, release_tags)
-        @release_tags_with_order = Hash[tags.map.with_index { |tag, i| [tag, -i] }]
+        @release_tags_with_order = tags.map.with_index { |tag, i| [tag, -i] }.to_h
       end
 
       @release_tags_with_order

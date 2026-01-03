@@ -5,7 +5,6 @@ LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAM
 require 'fileutils'
 require 'yaml'
 require "#{LKP_SRC}/lib/lkp_path"
-require "#{LKP_SRC}/lib/ruby"
 
 RESULT_ROOT = ENV['RESULT_ROOT']
 TIME_DELTA  = YAML.unsafe_load_file("#{RESULT_ROOT}/job.yaml")['time_delta'].to_f

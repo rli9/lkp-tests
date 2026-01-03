@@ -1,7 +1,6 @@
 require 'spec_helper'
 require 'timeout'
 require "#{LKP_SRC}/lib/yaml"
-require "#{LKP_SRC}/lib/ruby"
 
 TEST_YAML_FILE = '/tmp/test.yaml'.freeze
 

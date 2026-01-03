@@ -167,7 +167,7 @@ class MResultRoot
       job.axes
     else
       rp = ResultPath.parse @path
-      Hash[rp.to_a]
+      rp.to_a.to_h
     end
   end
 

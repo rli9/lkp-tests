@@ -17,7 +17,7 @@ LKP_SRC_ETC ||= LKP::Path.src('etc')
 
 # /c/linux% git grep '"[a-z][a-z_]\+%d"'|grep -o '"[a-z_]\+'|cut -c2-|sort -u
 LINUX_DEVICE_NAMES = IO.read("#{LKP_SRC_ETC}/linux-device-names").split("\n")
-LINUX_DEVICE_NAMES_RE = /\b(#{LINUX_DEVICE_NAMES.join('|')})\d+/.freeze
+LINUX_DEVICE_NAMES_RE = /\b(#{LINUX_DEVICE_NAMES.join('|')})\d+/
 
 def fixup_dmesg(line)
   line.chomp!
@@ -71,15 +71,15 @@ CALLTRACE_COMMON_CONTEXT = "
 CALLTRACE_PATTERN = /(
   #{CALLTRACE_COMMON_CONTEXT}
   SyS_[a-z0-9_]+
-)\+0x/x.freeze
+)\+0x/x
 
 CALLTRACE_IGNORE_PATTERN = /(
   #{CALLTRACE_COMMON_CONTEXT}
   worker_thread|
   warn_slowpath_.*
-)\+0x/x.freeze
+)\+0x/x
 
-OOM_PATTERN = /invoked oom-killer: gfp_mask=|Out of memory and no killable processes.../.freeze
+OOM_PATTERN = /invoked oom-killer: gfp_mask=|Out of memory and no killable processes.../
 
 def grep_cmd(dmesg_file)
   if dmesg_file =~ /\.xz$/
@@ -421,7 +421,7 @@ def get_crash_stats(dmesg_file)
 
     # message:WARNING:at_kernel/locking/lockdep.c:#lock_release: [   11.858566 ] WARNING: CPU: 0 PID: 11 at kernel/locking/lockdep.c:3536 lock_release+0x179/0x3b7
     #
-    oops_map[id] = line.split(': ')[1..-1].join(': ')
+    oops_map[id] = line.split(': ')[1..].join(': ')
   end
 
   FileUtils.rm uncompressed_dmesg if uncompressed_dmesg

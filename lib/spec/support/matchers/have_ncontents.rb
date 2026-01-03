@@ -6,8 +6,7 @@ RSpec::Matchers.define :have_ncontents do |expected|
 
     # https://www.relishapp.com/rspec/rspec-expectations/v/3-5/docs/custom-matchers/define-diffable-matcher
     # redefine @actual in order for diffable to output clearer message
-    @actual = expected.map { |expected_k, _expected_v| [expected_k, ncontents.count { |k, _v| k =~ /\.#{expected_k}$/i }] }
-    @actual = Hash[@actual]
+    @actual = expected.to_h { |expected_k, _expected_v| [expected_k, ncontents.count { |k, _v| k =~ /\.#{expected_k}$/i }] }
 
     @json_path = actual.json_path
 

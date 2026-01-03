@@ -19,7 +19,6 @@ require "#{LKP_SRC}/lib/stats"
 require "#{LKP_SRC}/lib/result"
 require "#{LKP_SRC}/lib/constant"
 require "#{LKP_SRC}/lib/programs"
-require "#{LKP_SRC}/lib/ruby"
 
 ABS_WIDTH = 10
 REL_WIDTH = 10
@@ -31,7 +30,7 @@ PERF_INDEX_KCONFIG = 'x86_64-rhel'.freeze
 # If a monitor contains various stats with the same logical class of values and
 # hence can be compared with each other, it's a good candidate to show and sort
 # by absolute changes.
-ABS_CHANGE_STATS_RE = /^(perf-profile)/.freeze
+ABS_CHANGE_STATS_RE = /^(perf-profile)/
 
 $opt_dimension = 'commit'
 $opt_field = nil
@@ -651,7 +650,7 @@ def show_delta(stat, key_g)
   end
   return if $cases.empty?
 
-  $cases = Hash[$cases.sort]
+  $cases = $cases.sort.to_h
 
   unless $group_by_test
     $dims.each do |dim, name|
@@ -791,7 +790,7 @@ def setup_stats_priority(stats)
   end
 
   # convert the array to a hash with array index as values
-  $stats_priority = Hash[all_stats.map.with_index.to_a]
+  $stats_priority = all_stats.map.with_index.to_a.to_h
 end
 
 def stat_priority(stat)

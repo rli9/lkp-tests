@@ -60,7 +60,7 @@ class StressorStater
                 .split
 
     # unit is "write128_MB/sec" and it has variable length
-    unit = LKP::Stats.normalize(items[5..-1].join('_'))
+    unit = LKP::Stats.normalize(items[5..].join('_'))
 
     stressor = items[3]
 

@@ -1,6 +1,7 @@
 require: rubocop-performance
 
 AllCops:
+  TargetRubyVersion: 3.1
   NewCops: disable
   SuggestExtensions: false
 
@@ -104,10 +105,6 @@ Style/FloatDivision:
   Exclude:
     - 'programs/pmbench/parse'
 
-# Required Ruby version: 2.6
-Style/SlicingWithRange:
-  Enabled: false
-
 Security/Eval:
   Enabled: false
 
@@ -121,10 +118,6 @@ Lint/UnderscorePrefixedVariableName:
   Enabled: false
 
 Lint/ShadowingOuterLocalVariable:
-  Enabled: false
-
-# Required Ruby version: 2.6
-Lint/ErbNewArguments:
   Enabled: false
 
 Lint/RedundantCopDisableDirective:
@@ -162,6 +155,5 @@ Naming/MethodParameterName:
 Naming/HeredocDelimiterNaming:
   Enabled: false
 
-# Required Ruby version: 2.4
 Performance/RegexpMatch:
   Enabled: false

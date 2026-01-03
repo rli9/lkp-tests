@@ -21,11 +21,11 @@ $stdin.each_line do |line|
       key = if values[0] =~ /^ *[0-9]+:$/
               #   0:         20          0          0          0  IR-IO-APIC-edge      timer
               #   1:     643896          0          0          0  IR-IO-APIC-edge      i8042
-              values[0] + values[(cpus.size + 1)..-1].join('.').gsub(',.', ',')
+              values[0] + values[(cpus.size + 1)..].join('.').gsub(',.', ',')
             else
               # NMI:       3706      12681      27809       7041   Non-maskable interrupts
               # LOC:   55868703   55172274   59522354   57162831   Local timer interrupts
-              values[0] + values[(cpus.size + 1)..-1].join('_')
+              values[0] + values[(cpus.size + 1)..].join('_')
             end
       sum = 0
       cpus.each_with_index do |cpu, i|

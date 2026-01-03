@@ -10,7 +10,6 @@ require "#{LKP_SRC}/lib/assert"
 require "#{LKP_SRC}/lib/common"
 require "#{LKP_SRC}/lib/erb"
 require "#{LKP_SRC}/lib/log"
-require "#{LKP_SRC}/lib/ruby"
 
 def compress_file(file)
   system "gzip #{file} < /dev/null"
@@ -28,11 +27,7 @@ def load_yaml(file, template_context = nil)
   yaml = expand_yaml_template(yaml, file, template_context) if template_context
 
   begin
-    result = if Psych::VERSION > '4.0'
-               YAML.unsafe_load(yaml)
-             else
-               YAML.load(yaml)
-             end
+    result = YAML.unsafe_load(yaml)
   rescue Psych::SyntaxError => e
     log_debug "failed to parse file #{file} | #{e}"
     raise
@@ -111,7 +106,7 @@ def yaml_merge_included_files(yaml, relative_to, search_paths = nil)
     indented = [prefix]
     to_merge.split("\n").each do |line|
       indented << if line =~ /^%([!%]*)$/
-                    "%#{indent}#{line[1..-1]}"
+                    "%#{indent}#{line[1..]}"
                   else
                     indent + line
                   end

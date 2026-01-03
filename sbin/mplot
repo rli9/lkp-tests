@@ -61,14 +61,15 @@ def stats_with_most_variation(matrix)
 
     stats[field] = (max - min) / mean
   end
-  Hash[stats.sort { |a, b| b[1] <=> a[1] }]
+
+  stats.sort { |a, b| b[1] <=> a[1] }.to_h
 end
 
 $matrix = load_json ARGV[0]
 
 if ARGV[1]
   $stats = {}
-  ARGV[1..-1].each { |stat| $stats[stat] = nil }
+  ARGV[1..].each { |stat| $stats[stat] = nil }
 else
   $stats = stats_with_most_variation $matrix
 end

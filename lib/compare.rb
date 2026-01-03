@@ -8,7 +8,6 @@ require "#{LKP_SRC}/lib/constant"
 require "#{LKP_SRC}/lib/enumerator"
 require "#{LKP_SRC}/lib/log"
 require "#{LKP_SRC}/lib/result_root"
-require "#{LKP_SRC}/lib/ruby"
 require "#{LKP_SRC}/lib/stats"
 require "#{LKP_SRC}/lib/tests"
 

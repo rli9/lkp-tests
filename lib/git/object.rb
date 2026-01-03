@@ -156,7 +156,7 @@ module Git
         tag
       end
 
-      RE_BY_CC = /(?:by|[Cc][Cc]):\s*([^<\r\n]+) <([^>\r\n]+@[^>\r\n]+)>\s*$/.freeze
+      RE_BY_CC = /(?:by|[Cc][Cc]):\s*([^<\r\n]+) <([^>\r\n]+@[^>\r\n]+)>\s*$/
 
       def by_cc
         m = message

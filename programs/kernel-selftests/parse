@@ -53,7 +53,7 @@ class Stater
   # ok 1 selftests: clone3: clone3
   # ok 18 selftests: kvm: kvm_create_max_vcpus
   # not ok 2 selftests: pstore: pstore_post_reboot_tests # SKIP
-  LEVEL_0_TEST_RESULT_PATTERN = /^(?<result>ok|not ok).*selftests: (?<test_parts>.+)/.freeze
+  LEVEL_0_TEST_RESULT_PATTERN = /^(?<result>ok|not ok).*selftests: (?<test_parts>.+)/
 
   # # ok 6 [1246] Result (-22) matches expectation (-22)
   # # ok 3 # SKIP System does not support SGX2
@@ -61,7 +61,7 @@ class Stater
   # # ok 11 enclave.augment_via_eaccept # SKIP SGX2 not supported
   # # ok 2 MADV_POPULATE_WRITE with PROT_READ
   # # ok 1 [RUN]	test_alloc_timeline
-  LEVEL_N_TEST_RESULT_PATTERN = /^(?:# )+(?<result>ok|not ok) \d+ (?<test_parts>.+)/.freeze
+  LEVEL_N_TEST_RESULT_PATTERN = /^(?:# )+(?<result>ok|not ok) \d+ (?<test_parts>.+)/
 
   attr_reader :stats, :test_level
 

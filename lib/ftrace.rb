@@ -9,9 +9,9 @@ LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 #    76.094231 |   0)   usemem-842   |               |  /* softirq_entry: vec=1 [action=TIMER] */
 
 class TPSample
-  RES_ARG = /([^{\[(=,: \t\n]+)=([^}\])=,: \t\n]+)/.freeze
-  RE_SAMPLE = /^\s*(.*)-(\d+)\s+\[(\d+)\]\s+\S+\s+([0-9.]+): ([^: ]+): (.*)$/.freeze
-  RE_SAMPLE2 = /^\s*([0-9.]+)\s+\|\s+(\d).\s+(.+)-(\d+)\s+\|\s+([0-9.]*).+\|\s+\/\*\s([^: ]+): (.*)\s\*\/.*/.freeze
+  RES_ARG = /([^{\[(=,: \t\n]+)=([^}\])=,: \t\n]+)/
+  RE_SAMPLE = /^\s*(.*)-(\d+)\s+\[(\d+)\]\s+\S+\s+([0-9.]+): ([^: ]+): (.*)$/
+  RE_SAMPLE2 = /^\s*([0-9.]+)\s+\|\s+(\d).\s+(.+)-(\d+)\s+\|\s+([0-9.]*).+\|\s+\/\*\s([^: ]+): (.*)\s\*\/.*/
 
   attr_reader :cmd, :pid, :cpu, :timestamp, :type, :raw_data, :data
 
@@ -54,32 +54,28 @@ class TPSample
       return if raw_data.nil?
 
       arg_pair_strs = raw_data.scan self::RES_ARG
-      arg_pairs = arg_pair_strs.map do |k, v|
-        [k.intern, v]
-      end
-      data = Hash[arg_pairs]
+      data = arg_pair_strs.transform_keys(&:intern)
       new cmd, pid, cpu, timestamp, type, raw_data, data
     end
   end
 end
 
 class TPEventFormat
-  RE_FMT = /^print fmt: "(.*)", /.freeze
-  RE_NAME = /^name: ([^=,: \n]+)/.freeze
-  RE_INT_FMT = /^(?:0[xX])?%.*[xud]$/.freeze
+  RE_FMT = /^print fmt: "(.*)", /
+  RE_NAME = /^name: ([^=,: \n]+)/
+  RE_INT_FMT = /^(?:0[xX])?%.*[xud]$/
 
   attr_reader :name
 
   def initialize(name, args_desc)
     @name = name
-    conv = args_desc.map do |arg, format|
+    @args_conv = args_desc.to_h do |arg, format|
       if format =~ RE_INT_FMT
         [arg, Object.method(:Integer)]
       else
         [arg, ->(x) { x }]
       end
     end
-    @args_conv = Hash[conv]
   end
 
   def convert_data(data)
@@ -98,10 +94,7 @@ class TPEventFormat
         fmt = self::RE_FMT.match line
         if fmt
           arg_pair_strs = fmt[1].scan TPSample::RES_ARG
-          arg_pairs = arg_pair_strs.map do |k, v|
-            [k.intern, v]
-          end
-          args = Hash[arg_pairs]
+          args = arg_pair_strs.transform_keys(&:intern)
         end
         name && fmt && (return new(name[1].strip.intern, args))
       end
@@ -142,8 +135,8 @@ end
 
 # Funcgraph Duration sample
 class FGSample
-  RE_SAMPLE = /^\s*([^|]+)-(\d+)\s*\|\s*([0-9.]+)[us ]*\|[} \/*]*([a-zA-Z0-9_]+)/.freeze
-  RE_SAMPLE2 = /^\s*([0-9.]+)\s+\|\s+(\d).\s+(.+)-(\d+)\s+\|\s+([0-9.]*).+\|[} \/*]*([a-zA-Z0-9_]+)/.freeze
+  RE_SAMPLE = /^\s*([^|]+)-(\d+)\s*\|\s*([0-9.]+)[us ]*\|[} \/*]*([a-zA-Z0-9_]+)/
+  RE_SAMPLE2 = /^\s*([0-9.]+)\s+\|\s+(\d).\s+(.+)-(\d+)\s+\|\s+([0-9.]*).+\|[} \/*]*([a-zA-Z0-9_]+)/
 
   attr_reader :cmd, :pid, :duration, :func
 
@@ -187,7 +180,7 @@ end
 #  swapper/0-1     [000] ....  90515845662: cpu_up <-smp_init
 
 class FuncSample
-  RE_SAMPLE = /^\s*([^\s]+)-(\d+)\s+\[(\d+)\]\s+([^\s]+)\s+([0-9.]+)\s*:\s*(.+)\s*<-(.+)\s*/.freeze
+  RE_SAMPLE = /^\s*([^\s]+)-(\d+)\s+\[(\d+)\]\s+([^\s]+)\s+([0-9.]+)\s*:\s*(.+)\s*<-(.+)\s*/
 
   attr_reader :task, :pid, :cpu, :timestamp, :func, :callerfunc
 

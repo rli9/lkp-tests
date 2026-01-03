@@ -6,7 +6,6 @@ require 'yaml'
 require 'shellwords'
 require 'optparse'
 require 'ostruct'
-require "#{LKP_SRC}/lib/ruby"
 
 $opt_name_prefix = ''
 

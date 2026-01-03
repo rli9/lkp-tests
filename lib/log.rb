@@ -6,7 +6,7 @@ require 'logger'
 
 log_formatter = proc do |severity, datetime, _progname, msg|
   msg = if msg.is_a? Exception
-          ["#{msg.backtrace.first}: #{msg.message.split("\n").first} (#{msg.class.name})", msg.backtrace[1..-1].map { |m| "\tfrom #{m}" }].flatten
+          ["#{msg.backtrace.first}: #{msg.message.split("\n").first} (#{msg.class.name})", msg.backtrace[1..].map { |m| "\tfrom #{m}" }].flatten
         else
           msg.to_s.split("\n")
         end

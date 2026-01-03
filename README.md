@@ -18,7 +18,7 @@
 	ls lkp-tests/jobs
 
 	# install the common dependencies for lkp
-	# Note: lkp doesn't support ruby >= 3.0, default ruby version should be 2.x
+	# Note: lkp support ruby >= 3.1
 	lkp install
 ```
 

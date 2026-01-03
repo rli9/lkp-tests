@@ -11,12 +11,10 @@ class TestResultDefinition
     # {"pass"=>{"*"=>"pass"}, "fail"=>{"*"=>"fail failed", "xfstests"=>"crash crashed warn"}, "skip"=>{"*"=>"skip block", "xfstests"=>"inconsistent_fs"}}
     @definitions = definitions.instance_of?(Hash) ? definitions : YAML.load_file(definitions)
 
-    regexps = @definitions.map do |type, hash|
+    @regexps = @definitions.to_h do |type, hash|
       regexps = hash.map { |k, v| Regexp.new("^#{k == '*' ? '[^.]+' : k}\\.(.+\\.)*(#{v.split(' ').join('|')})$", true) }
       [type, Regexp.union(regexps)]
     end
-
-    @regexps = Hash[regexps]
 
     instance_eval do
       @regexps.each do |type, regexp|

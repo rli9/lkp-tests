@@ -23,7 +23,7 @@ while (line = $stdin.gets)
     jobs = 0
   when /^[ \d.]+$/
     data = line.split
-    data[1..-1].each_with_index do |v, i|
+    data[1..].each_with_index do |v, i|
       results[keys[i]] ||= []
       results[keys[i]] << v.to_f
     end
