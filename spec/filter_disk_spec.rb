@@ -27,14 +27,14 @@ describe 'filter/disk' do
   context 'when do not need disk' do
     it 'does not filter the job' do
       job = generate_job('testcase' => 'testcase')
-      job.expand_params
+      expect { job.expand_params }.not_to raise_error
     end
   end
 
   context 'when disk: 1HDD, nr_hdd_partitions: 1' do
     it 'does not filter the job' do
       job = generate_job('testcase' => 'testcase', 'nr_hdd_partitions' => '1', 'disk' => '1HDD')
-      job.expand_params
+      expect { job.expand_params }.not_to raise_error
     end
   end
 

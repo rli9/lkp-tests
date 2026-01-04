@@ -6,6 +6,7 @@ require "#{LKP_SRC}/lib/bash"
 
 describe 'log_cmd' do
   let(:log_cmd) { "#{LKP_SRC}/bin/log_cmd " }
+
   before(:all) do
     @pwd = Dir.pwd
     @tmp_dir = LKP::TmpDir.new('log-cmd-spec-src-')
@@ -14,11 +15,16 @@ describe 'log_cmd' do
     Dir.chdir(@tmp_dir.to_s)
   end
 
+  after(:all) do
+    @tmp_dir.cleanup!
+    Dir.chdir(@pwd)
+  end
+
   it 'creates multi dirs' do
     was_good = Bash.call2("#{log_cmd}mkdir a b")
     expect(was_good).to be_truthy
-    expect(Dir).to be_exist('a')
-    expect(Dir).to be_exist('b')
+    expect(Dir).to exist('a')
+    expect(Dir).to exist('b')
     Dir.delete('a')
     Dir.delete('b')
   end
@@ -26,7 +32,7 @@ describe 'log_cmd' do
   it 'creates dir with space' do
     was_good = Bash.call2("#{log_cmd}mkdir \"a b\"")
     expect(was_good).to be_truthy
-    expect(Dir).to be_exist('a b')
+    expect(Dir).to exist('a b')
     Dir.delete('a b')
   end
 
@@ -34,7 +40,7 @@ describe 'log_cmd' do
     dir = '"a'
     was_good = Bash.call2("#{log_cmd}mkdir #{Shellwords.escape(dir)}")
     expect(was_good).to be_truthy
-    expect(Dir).to be_exist('"a')
+    expect(Dir).to exist('"a')
     Dir.delete('"a')
   end
 
@@ -42,7 +48,7 @@ describe 'log_cmd' do
     dir = '"a b"'
     was_good = Bash.call2("#{log_cmd}mkdir #{Shellwords.escape(dir)}")
     expect(was_good).to be_truthy
-    expect(Dir).to be_exist('"a b"')
+    expect(Dir).to exist('"a b"')
     Dir.delete('"a b"')
   end
 
@@ -54,10 +60,5 @@ describe 'log_cmd' do
   it 'execute built-in command' do
     was_good = Bash.call2("#{log_cmd}cd .")
     expect(was_good).to be_truthy
-  end
-
-  after(:all) do
-    @tmp_dir.cleanup!
-    Dir.chdir(@pwd)
   end
 end

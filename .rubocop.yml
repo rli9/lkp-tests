@@ -1,4 +1,6 @@
-require: rubocop-performance
+require:
+  - rubocop-performance
+  - rubocop-rspec
 
 AllCops:
   TargetRubyVersion: 3.1
@@ -157,3 +159,32 @@ Naming/HeredocDelimiterNaming:
 
 Performance/RegexpMatch:
   Enabled: false
+
+RSpec/DescribeClass:
+  Enabled: false
+
+RSpec/MultipleDescribes:
+  Enabled: false
+
+RSpec/InstanceVariable:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Enabled: false
+
+RSpec/NestedGroups:
+  Enabled: false
+
+RSpec/ContextWording:
+  Enabled: false
+
+RSpec/BeforeAfterAll:
+  Enabled: false
+
+RSpec/NoExpectationExample:
+  AllowedPatterns:
+    - ^expect_
+    - ^verify_

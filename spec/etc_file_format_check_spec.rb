@@ -12,10 +12,6 @@ describe 'check the format correctness of etc files' do
     file !~ /\.\w+$/ && Bash.call("head -1 #{file}") !~ %r{#!(/bin/bash|/bin/sh|/usr/bin/ruby)}
   end
 
-  before(:all) do
-    expect(File).to be_exist(LKP_SRC)
-  end
-
   it 'yaml file loaded as yaml' do
     Bash.call("find #{LKP_SRC}/etc -type f").split("\n").select { |file| yaml_file?(file) }.each do |file|
       expect { load_yaml(file) }.not_to raise_error

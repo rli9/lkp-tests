@@ -4,12 +4,12 @@ require 'tmpdir'
 require "#{LKP_SRC}/lib/job"
 
 describe 'filter/need_kernel_version.rb' do
-  before(:each) do
+  before do
     @tmp_dir = LKP::TmpDir.new('filter-need-kernel-version-spec-src-')
     @tmp_dir.add_permission
   end
 
-  after(:each) do
+  after do
     @tmp_dir.cleanup!
   end
 
@@ -43,6 +43,7 @@ need_kernel_version:
 - '>= v4.16.1, gcc'
 - '>= v5.12, clang'
         EOF
+
         expect { job.expand_params }.to raise_error Job::ParamError
       end
     end
@@ -57,7 +58,8 @@ need_kernel_version:
 - '>= v4.17, gcc'
 - '>= v5.12.112, clang'
         EOF
-        job.expand_params
+
+        expect { job.expand_params }.not_to raise_error
       end
     end
   end
@@ -71,6 +73,7 @@ need_kernel_version:
 - '>= v6.3-rc1, gcc'
 - '>= v6.3-rc1, clang'
         EOF
+
         expect { job.expand_params }.to raise_error Job::ParamError
       end
     end
@@ -83,7 +86,8 @@ need_kernel_version:
 - '>= v6.3-rc1, gcc'
 - '>= v6.3-rc1, clang'
         EOF
-        job.expand_params
+
+        expect { job.expand_params }.not_to raise_error
       end
     end
   end

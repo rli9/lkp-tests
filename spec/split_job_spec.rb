@@ -20,24 +20,24 @@ describe 'lkp-split-job' do
     @tmp_src_dir.cleanup!
   end
 
-  before(:each) do
+  before do
     @tmp_dir = LKP::TmpDir.new('split-job-spec-')
   end
 
-  after(:each) do
+  after do
     @tmp_dir.cleanup!
   end
 
-  def execute_test(id)
+  def verify_split_job_output(id)
     `LKP_SRC=#{@tmp_src_dir} LKP_CORE_SRC=#{@tmp_src_dir} #{@tmp_src_dir}/bin/lkp split-job -t lkp-tbox -o #{@tmp_dir} spec/split-job/#{id}.yaml`
 
     Dir[@tmp_dir.path("#{id}-*.yaml")].each do |actual_yaml|
       `sed -i 's/:#! /#!/g' #{actual_yaml}`
 
       actual = YAML.load_file(actual_yaml)
-      expect = YAML.load_file("#{LKP_SRC}/spec/split-job/#{File.basename(actual_yaml)}")
+      expected = YAML.load_file("#{LKP_SRC}/spec/split-job/#{File.basename(actual_yaml)}")
 
-      expect(actual).to eq expect
+      expect(actual).to eq expected
     end
   end
 
@@ -48,21 +48,21 @@ describe 'lkp-split-job' do
       # delete machine specific settings
       %w[testbox tbox_group local_run memory nr_cpu ssd_partitions hdd_partitions].each { |s| `sed -i '/#{s}:/d' #{@tmp_dir.path(new_yaml)}` }
       actual = YAML.load_file(@tmp_dir.path(new_yaml))
-      expect = YAML.load_file("#{LKP_SRC}/spec/split-job/#{new_yaml}")
+      expected = YAML.load_file("#{LKP_SRC}/spec/split-job/#{new_yaml}")
 
-      expect(actual).to eq expect
+      expect(actual).to eq expected
     end
   end
 
   it "split job['split-job']['test'] only" do
-    execute_test(1)
+    verify_split_job_output(1)
   end
 
   it "split job['split-job']['test'] and job['split-job']['group']" do
-    execute_test(2)
+    verify_split_job_output(2)
   end
 
   it "split job['fs'] only" do
-    execute_test(3)
+    verify_split_job_output(3)
   end
 end

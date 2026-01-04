@@ -9,10 +9,10 @@ describe TestResultDefinition do
 
   describe '.initialize' do
     it 'defines singleton methods' do
-      expect(@test_result_definition).to be_respond_to(:pass?)
-      expect(@test_result_definition).to be_respond_to(:skipped?)
+      expect(@test_result_definition).to respond_to(:pass?)
+      expect(@test_result_definition).to respond_to(:skipped?)
 
-      expect(described_class.new({})).not_to be_respond_to(:pass?)
+      expect(described_class.new({})).not_to respond_to(:pass?)
     end
   end
 

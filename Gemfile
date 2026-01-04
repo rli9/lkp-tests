@@ -8,11 +8,12 @@ gem 'pry-doc'
 gem 'rake'
 gem 'term-ansicolor'
 
-group :test do
+group :development, :test do
   gem 'ci_reporter_rspec'
   gem 'rspec'
-  gem 'rubocop'
+  gem 'rubocop', require: false
   gem 'rubocop-performance', require: false
+  gem 'rubocop-rspec', require: false
   gem 'simplecov'
   gem 'simplecov-rcov'
 end

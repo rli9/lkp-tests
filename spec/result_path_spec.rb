@@ -20,6 +20,7 @@ describe ResultPath do
           expect(result_path['commit']).to eq '0f57d86787d8b1076ea8f9cbdddda2a46d534a27'
         end
       end
+
       context 'when invalid result root' do
         it 'fails' do
           result_path = described_class.new
@@ -67,6 +68,7 @@ describe ResultPath do
           expect(result_path['tbox_group']).to eq 'lkp-bdw-ep6'
         end
       end
+
       context 'when invalid result root' do
         it 'fails' do
           result_path = described_class.new
@@ -87,6 +89,7 @@ describe ResultPath do
           expect(result_path['llvm_project_commit']).to eq '073dbaae39724ea860b5957fe47ecc1c2a84b197'
         end
       end
+
       context 'when invalid result root' do
         it 'fails' do
           result_path = described_class.new
@@ -111,6 +114,7 @@ describe ResultPath do
           expect(result_path['linux_commit']).to eq '2595646791c319cadfdbf271563aac97d0843dc7'
         end
       end
+
       context 'when invalid result root' do
         it 'fails' do
           result_path = described_class.new
@@ -130,6 +134,7 @@ describe ResultPath do
           expect(result_path['path_params']).to eq '__date_+%F_-d_yesterday_'
         end
       end
+
       context 'when invalid result root' do
         it 'fails' do
           result_path = described_class.new
@@ -164,7 +169,7 @@ describe ResultPath do
       test_desc = result_path.parse_test_desc('xfstests/4HDD-xfs-xfs-group17/vm-snb/e93c9c99a629c61837d5a7fc2120cd2b6c70dbdd')
       expect(test_desc['path_params']).to eq '4HDD-xfs-xfs-group17'
       expect(test_desc['tbox_group']).to eq 'vm-snb'
-      expect(result_path['commit']).to eq nil
+      expect(result_path['commit']).to be_nil
     end
 
     it 'handles test desc with dim_not_a_param=false' do

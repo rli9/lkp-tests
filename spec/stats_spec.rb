@@ -28,7 +28,7 @@ describe 'stats' do
   end
 
   describe 'kpi_stat_direction' do
-    it 'should match the correct value' do
+    it 'matches the correct value' do
       change_percentage = 1
       a = 'aim9.add_float.ops_per_sec'
       b = 'pts.aobench.0.seconds'

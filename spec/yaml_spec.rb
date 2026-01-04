@@ -5,10 +5,15 @@ require "#{LKP_SRC}/lib/yaml"
 TEST_YAML_FILE = '/tmp/test.yaml'.freeze
 
 describe 'load_yaml_with_flock' do
-  before(:example) do
+  before do
     File.open(TEST_YAML_FILE, 'w') do |f|
       f.write("key1: value1\nkey2: value2\n")
     end
+  end
+
+  after do
+    FileUtils.rm TEST_YAML_FILE
+    FileUtils.rm "#{TEST_YAML_FILE}.lock"
   end
 
   it 'returns correct value' do
@@ -23,15 +28,15 @@ describe 'load_yaml_with_flock' do
     expect { Timeout.timeout(0.001) { load_yaml_with_flock TEST_YAML_FILE } }.to raise_error(Timeout::Error)
     f.close
   end
-
-  after(:example) do
-    FileUtils.rm TEST_YAML_FILE
-    FileUtils.rm "#{TEST_YAML_FILE}.lock"
-  end
 end
 
 describe 'save_yaml_with_flock' do
   let(:test_yaml_obj) { { 'key1' => 'value1', 'key2' => 'value2' } }
+
+  after do
+    FileUtils.rm_rf TEST_YAML_FILE
+    FileUtils.rm_rf "#{TEST_YAML_FILE}.lock"
+  end
 
   it 'saves yaml file' do
     save_yaml_with_flock test_yaml_obj, TEST_YAML_FILE
@@ -44,11 +49,6 @@ describe 'save_yaml_with_flock' do
     f.flock(File::LOCK_EX)
     expect { Timeout.timeout(0.001) { save_yaml_with_flock test_yaml_obj, TEST_YAML_FILE } }.to raise_error(Timeout::Error)
     f.close
-  end
-
-  after(:example) do
-    FileUtils.rm_rf TEST_YAML_FILE
-    FileUtils.rm_rf "#{TEST_YAML_FILE}.lock"
   end
 end
 

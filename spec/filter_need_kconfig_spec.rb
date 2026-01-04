@@ -5,7 +5,7 @@ require "#{LKP_SRC}/lib/kernel_tag"
 require "#{LKP_SRC}/lib/job"
 
 describe 'filters/need_kconfig.rb' do
-  before(:each) do
+  before do
     @tmp_dir = LKP::TmpDir.new('filter-need-kconfig-spec-src-')
     @tmp_dir.add_permission
 
@@ -20,7 +20,7 @@ describe 'filters/need_kconfig.rb' do
     allow(KernelTag).to receive(:kconfigs_yaml).and_return(@tmp_dir.path('kconfigs.yaml'))
   end
 
-  after(:each) do
+  after do
     @tmp_dir.cleanup!
   end
 
@@ -59,7 +59,7 @@ need_kconfig:
 - X: n, x86_64
       EOF
 
-      job.expand_params
+      expect { job.expand_params }.not_to raise_error
     end
   end
 
@@ -82,7 +82,7 @@ need_kconfig:
 - X: n, i386
       EOF
 
-      job.expand_params
+      expect { job.expand_params }.not_to raise_error
     end
   end
 
@@ -96,7 +96,7 @@ need_kconfig:
 - X: n, x86_64
         EOF
 
-        job.expand_params
+        expect { job.expand_params }.not_to raise_error
       end
     end
   end
@@ -108,7 +108,8 @@ need_kconfig:
 - Z1
 - Z2
       EOF
-      job.expand_params
+
+      expect { job.expand_params }.not_to raise_error
     end
   end
 
@@ -120,7 +121,8 @@ need_kconfig:
 need_kconfig:
 - Z1: v4.9 # support kernel >=v4.9
       EOF
-      job.expand_params
+
+      expect { job.expand_params }.not_to raise_error
     end
   end
 
@@ -130,6 +132,7 @@ need_kconfig:
 need_kconfig:
 - X: 200
       EOF
+
       expect { job.expand_params }.to raise_error Job::ParamError
     end
   end
@@ -140,7 +143,8 @@ need_kconfig:
 need_kconfig:
 - Y: 200
       EOF
-      job.expand_params
+
+      expect { job.expand_params }.not_to raise_error
     end
   end
 
@@ -150,6 +154,7 @@ need_kconfig:
 need_kconfig:
 - Y: 100
       EOF
+
       expect { job.expand_params }.to raise_error Job::ParamError
     end
   end
@@ -175,7 +180,7 @@ need_kconfig:
   - X: y
         EOF
 
-        job.expand_params
+        expect { job.expand_params }.not_to raise_error
       end
     end
 
@@ -188,7 +193,7 @@ need_kconfig:
 - X: y
         EOF
 
-        job.expand_params
+        expect { job.expand_params }.not_to raise_error
       end
     end
 
@@ -199,27 +204,27 @@ need_kconfig:
 need_kconfig: X=y
         EOF
 
-        job.expand_params
+        expect { job.expand_params }.not_to raise_error
 
         job = generate_job <<-EOF
 need_kconfig: X
         EOF
 
-        job.expand_params
+        expect { job.expand_params }.not_to raise_error
 
         job = generate_job <<-EOF
 need_kconfig:
 - X: y
         EOF
 
-        job.expand_params
+        expect { job.expand_params }.not_to raise_error
 
         job = generate_job <<-EOF
 need_kconfig:
 - X
         EOF
 
-        job.expand_params
+        expect { job.expand_params }.not_to raise_error
       end
     end
   end
@@ -247,7 +252,7 @@ need_kconfig:
 - Y: m
         EOF
 
-        job.expand_params
+        expect { job.expand_params }.not_to raise_error
       end
     end
 
@@ -265,7 +270,7 @@ need_kconfig: Y=m
       it 'does not filter the job' do
         job = generate_job
 
-        job.expand_params
+        expect { job.expand_params }.not_to raise_error
       end
     end
   end
@@ -277,7 +282,7 @@ need_kconfig:
 - H: "0x1000000"
       EOF
 
-      job.expand_params
+      expect { job.expand_params }.not_to raise_error
     end
   end
 

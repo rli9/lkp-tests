@@ -28,117 +28,116 @@ describe 'local run' do
     File.open(@hostfile, 'w') { |file| file.write(content) }
   end
 
+  after(:all) do
+    @tmp_dir.cleanup!
+  end
+
   describe 'local_run' do
+    after do
+      FileUtils.rm_f(@hostfile)
+      ENV[LOCAL_RUN_ENV] = nil
+    end
+
     it 'first run without host file or ENV' do
-      expect(local_run?).to eq(false)
+      expect(local_run?).to be(false)
     end
 
     it 'first run with host file with local_run: 1' do
       write_host_file("local_run: 1\n")
-      expect(local_run?).to eq(true)
+      expect(local_run?).to be(true)
     end
 
     it 'first run with host file with local_run: 0' do
       write_host_file("local_run: 0\n")
-      expect(local_run?).to eq(false)
+      expect(local_run?).to be(false)
     end
 
     it 'first run with host file without local_run' do
       write_host_file("hdd_partitions: \nssd_partitions: \n")
-      local_run?
-      expect(local_run?).to eq(false)
+      expect(local_run?).to be(false)
     end
 
     it 'second run without host file or ENV' do
       local_run?
-      expect(local_run?).to eq(false)
+      expect(local_run?).to be(false)
     end
 
     it 'second run with host file with local_run: 1' do
       write_host_file("local_run: 1\n")
       local_run?
-      expect(local_run?).to eq(true)
+      expect(local_run?).to be(true)
     end
 
     it 'second run with host file with local_run: 0' do
       write_host_file("local_run: 0\n")
       local_run?
-      expect(local_run?).to eq(false)
+      expect(local_run?).to be(false)
     end
 
     it 'second run with host file without local_run' do
       write_host_file("hdd_partitions: \nssd_partitions: \n")
       local_run?
-      expect(local_run?).to eq(false)
-    end
-
-    after(:each) do
-      FileUtils.rm_f(@hostfile)
-      ENV[LOCAL_RUN_ENV] = nil
+      expect(local_run?).to be(false)
     end
   end
 
   describe 'local_run ENV 0' do
-    before(:each) do
+    before do
       ENV[LOCAL_RUN_ENV] = '0'
     end
 
+    after do
+      FileUtils.rm_f(@hostfile)
+      ENV[LOCAL_RUN_ENV] = nil
+    end
+
     it 'first run without host file' do
-      expect(local_run?).to eq(false)
+      expect(local_run?).to be(false)
     end
 
     it 'first run with host file of local_run: 1' do
       write_host_file("local_run: 1\n")
-      expect(local_run?).to eq(false)
+      expect(local_run?).to be(false)
     end
 
     it 'first run with host file of local_run: 0' do
       write_host_file("local_run: 0\n")
-      expect(local_run?).to eq(false)
+      expect(local_run?).to be(false)
     end
 
     it 'first run with host file without local_run' do
       write_host_file("hdd_partitions: \nssd_partitions: \n")
-      expect(local_run?).to eq(false)
-    end
-
-    after(:each) do
-      FileUtils.rm_f(@hostfile)
-      ENV[LOCAL_RUN_ENV] = nil
+      expect(local_run?).to be(false)
     end
   end
 
   describe 'local_run ENV 1' do
-    before(:each) do
+    before do
       ENV[LOCAL_RUN_ENV] = '1'
     end
 
+    after do
+      FileUtils.rm_f @hostfile
+      ENV[LOCAL_RUN_ENV] = nil
+    end
+
     it 'first run without host file' do
-      expect(local_run?).to eq(true)
+      expect(local_run?).to be(true)
     end
 
     it 'first run with host file of local_run: 1' do
       write_host_file("local_run: 1\n")
-      expect(local_run?).to eq(true)
+      expect(local_run?).to be(true)
     end
 
     it 'first run with host file of local_run: 0' do
       write_host_file("local_run: 0\n")
-      expect(local_run?).to eq(true)
+      expect(local_run?).to be(true)
     end
 
     it 'first run with host file without local_run' do
       write_host_file("hdd_partitions: \nssd_partitions: \n")
-      expect(local_run?).to eq(true)
+      expect(local_run?).to be(true)
     end
-
-    after(:each) do
-      FileUtils.rm_f @hostfile
-      ENV[LOCAL_RUN_ENV] = nil
-    end
-  end
-
-  after(:all) do
-    @tmp_dir.cleanup!
   end
 end
