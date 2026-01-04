@@ -87,7 +87,7 @@ begin
     MResultRootTableSet.create_tables_layout
     convert_mrt(target)
 
-    user = ENV['USER']
+    user = ENV.fetch('USER', nil)
     Dir[File.join(target, '*', 'job.yaml')].each { |path| save_paths(File.dirname(path), user) }
 
     puts "Result root ##{i + 1}: #{target}"

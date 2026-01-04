@@ -21,7 +21,7 @@ require "#{LKP_SRC}/lib/result_root"
 require "#{LKP_SRC}/lib/common"
 require "#{LKP_SRC}/lib/log"
 
-ENV['PATH'] = ENV['PATH'] + ":#{LKP_SRC}/bin"
+ENV['PATH'] = ENV.fetch('PATH', nil) + ":#{LKP_SRC}/bin"
 ENV['BENCHMARK_ROOT'] = '/lkp/benchmarks'
 
 $not_unite = false

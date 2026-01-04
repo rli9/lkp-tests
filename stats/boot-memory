@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-RESULT_ROOT = ENV['RESULT_ROOT']
+RESULT_ROOT = ENV.fetch('RESULT_ROOT', nil)
 
 require 'json'
 

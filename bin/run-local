@@ -26,7 +26,7 @@ require "#{LKP_SRC}/lib/result_root"
 require "#{LKP_SRC}/lib/common"
 require "#{LKP_SRC}/lib/log"
 
-ENV['PATH'] = ENV['PATH'] + ":#{LKP_SRC}/bin"
+ENV['PATH'] = ENV.fetch('PATH', nil) + ":#{LKP_SRC}/bin"
 ENV['BENCHMARK_ROOT'] = '/lkp/benchmarks'
 
 $opt_result_root = 'result'
@@ -148,7 +148,7 @@ File.open(job_script, 'w', 0o775) do |file|
   file.puts jobx.to_shell
 end
 
-user = ENV['USER']
+user = ENV.fetch('USER', nil)
 save_paths(result_root, user)
 
 system 'killall', '-q', "#{LKP_SRC}/bin/event/wakeup"
@@ -162,7 +162,7 @@ job.save "#{result_root}/job.yaml"
 
 system job_script, 'extract_stats'
 
-stats = create_stats_matrix ENV['RESULT_ROOT']
+stats = create_stats_matrix ENV.fetch('RESULT_ROOT', nil)
 stats['stats_source'] = "#{result_root}/stats.json"
 unite_to(stats, _result_root)
 system("#{LKP_SRC}/sbin/unite-params", result_root)

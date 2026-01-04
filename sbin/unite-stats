@@ -31,6 +31,6 @@ end
 
 opts.parse!(ARGV)
 
-result_root = ARGV[0] || ENV['RESULT_ROOT']
+result_root = ARGV[0] || ENV.fetch('RESULT_ROOT', nil)
 
 unite_stats result_root, delete: delete

@@ -25,7 +25,7 @@ module Git
     ENV_VARIABLE_NAMES = %w(GIT_DIR GIT_WORK_TREE GIT_INDEX_FILE GIT_SSH).freeze unless defined? ENV_VARIABLE_NAMES
 
     def command(cmd, opts = [], redirect = '', chdir: true, &block)
-      system_env_variables = ENV_VARIABLE_NAMES.to_h { |name| [name, ENV[name]] }
+      system_env_variables = ENV_VARIABLE_NAMES.to_h { |name| [name, ENV.fetch(name, nil)] }
 
       orig_command(cmd, opts, chdir, redirect, &block)
     ensure

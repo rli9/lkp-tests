@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 _rt = ARGV.first
-_rt ||= ENV['RESULT_ROOT']
+_rt ||= ENV.fetch('RESULT_ROOT', nil)
 _rt ||= Dir.pwd
 
 PDEL = 10

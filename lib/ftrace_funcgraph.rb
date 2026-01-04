@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
-LKP_SRC ||= ENV['LKP_SRC']
-RESULT_ROOT ||= ENV['RESULT_ROOT']
+LKP_SRC ||= ENV.fetch('LKP_SRC', nil)
+RESULT_ROOT ||= ENV.fetch('RESULT_ROOT', nil)
 
 require "#{LKP_SRC}/lib/common"
 require "#{LKP_SRC}/lib/data_analysis"

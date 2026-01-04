@@ -32,7 +32,7 @@ RSpec::Core::RakeTask.new do |t|
   ENV['LKP_SRC'] ||= File.expand_path File.dirname(__FILE__).to_s
 
   puts "PWD = #{Dir.pwd}"
-  puts "ENV['LKP_SRC'] = #{ENV['LKP_SRC']}"
+  puts "ENV['LKP_SRC'] = #{ENV.fetch('LKP_SRC', nil)}"
 
   spec = ENV['spec'] || '*'
   t.pattern = "spec/**{,/*/**}/#{spec}_spec.rb"
@@ -110,6 +110,6 @@ namespace :docker do
     # image is in the form of debian/buster
     raise "ENV['image'] can't be #{ENV['image'].inspect}" unless ENV['image']
 
-    bash "docker build . -f docker/#{ENV['image'].split('/').first}/Dockerfile -t lkp-tests/#{ENV['image']} --build-arg base_image=#{ENV['image'].sub('/', ':')}"
+    bash "docker build . -f docker/#{ENV['image'].split('/').first}/Dockerfile -t lkp-tests/#{ENV.fetch('image', nil)} --build-arg base_image=#{ENV['image'].sub('/', ':')}"
   end
 end

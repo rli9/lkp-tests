@@ -13,7 +13,7 @@ def __local_run?
 end
 
 def local_run?
-  env_is_local = ENV[LOCAL_RUN_ENV]
+  env_is_local = ENV.fetch(LOCAL_RUN_ENV, nil)
   if env_is_local != '1' && env_is_local != '0'
     env_is_local = __local_run? ? '1' : '0'
     ENV[LOCAL_RUN_ENV] = env_is_local

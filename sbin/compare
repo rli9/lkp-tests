@@ -50,7 +50,7 @@ $header_shown = {}
 def expand_possible_commit(s)
   return s unless commit_name? s
 
-  git = Git.open(working_dir: ENV['SRC_ROOT'])
+  git = Git.open(working_dir: ENV.fetch('SRC_ROOT', nil))
   return s unless git.commit_exist? s
 
   git.gcommit(s).sha
@@ -828,7 +828,7 @@ if $opt_all || $opt_index
   setup_changed_stats
 
   if $opt_save_changes
-    cs_file = "/tmp/cs-#{dim_name $opt_dims[0]}.vs.#{dim_name $opt_dims[1]}-#{ENV['USER']}.yaml"
+    cs_file = "/tmp/cs-#{dim_name $opt_dims[0]}.vs.#{dim_name $opt_dims[1]}-#{ENV.fetch('USER', nil)}.yaml"
 
     save_yaml $all_changed_stats, cs_file
     puts "saved all changed stats to #{cs_file}"

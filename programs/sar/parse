@@ -4,7 +4,7 @@ LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.dirname(File.realpath
 require 'time'
 require 'json'
 require "#{LKP_SRC}/lib/string"
-RESULT_ROOT = ENV['RESULT_ROOT']
+RESULT_ROOT = ENV.fetch('RESULT_ROOT', nil)
 
 # The below is part of the sar json file, read it then parse it into hash data.
 # {"sysstat": {

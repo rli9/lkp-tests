@@ -453,7 +453,7 @@ module ResultStddev
 
     # Only save for release tags
     proj = 'linux'
-    git = Git.open(project: proj, working_dir: ENV['SRC_ROOT'])
+    git = Git.open(project: proj, working_dir: ENV.fetch('SRC_ROOT', nil))
     return unless git.gcommit(commit).release_tag
 
     avg_stddev = _rt.kpi_avg_stddev

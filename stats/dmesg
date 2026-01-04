@@ -28,7 +28,7 @@ require "#{LKP_SRC}/lib/string"
 if ARGV[0]
   kmsg_file = ARGV[0]
   dmesg_file = ARGV[0]
-  RESULT_ROOT = ENV['RESULT_ROOT']
+  RESULT_ROOT = ENV.fetch('RESULT_ROOT', nil)
 elsif ENV['RESULT_ROOT']
   RESULT_ROOT = ENV['RESULT_ROOT']
   serial_file = "#{RESULT_ROOT}/dmesg"

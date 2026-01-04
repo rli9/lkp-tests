@@ -1,4 +1,4 @@
-LKP_SRC ||= ENV['LKP_SRC']
+LKP_SRC ||= ENV.fetch('LKP_SRC', nil)
 
 require 'rspec'
 require "#{LKP_SRC}/lib/lkp_tmpdir"

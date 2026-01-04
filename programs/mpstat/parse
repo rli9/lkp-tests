@@ -62,7 +62,7 @@ rescue JSON::ParserError
   # If mpstat file end with "}", need to complete the missing string
   # "\n\t\t\t\]\n\t\t\}\n\t\]\n\}\}\n".
   begin
-    mpstat_update = ENV['RESULT_ROOT'] ? File.join(ENV['RESULT_ROOT'], 'mpstat_update') : "/tmp/mpstat_update-#{ENV['USER']}"
+    mpstat_update = ENV['RESULT_ROOT'] ? File.join(ENV['RESULT_ROOT'], 'mpstat_update') : "/tmp/mpstat_update-#{ENV.fetch('USER', nil)}"
 
     FileUtils.cp(mpstat, mpstat_update)
     File.open(mpstat_update, 'r+') do |io|

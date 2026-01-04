@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-LKP_SRC = ENV['LKP_SRC']
+LKP_SRC = ENV.fetch('LKP_SRC', nil)
 
 while (line = $stdin.gets)
   case line.chomp!

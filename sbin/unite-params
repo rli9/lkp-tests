@@ -7,6 +7,6 @@ LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAM
 require "#{LKP_SRC}/lib/job"
 require "#{LKP_SRC}/lib/matrix"
 
-result_root = ARGV[0] || ENV['RESULT_ROOT']
+result_root = ARGV[0] || ENV.fetch('RESULT_ROOT', nil)
 
 unite_params result_root

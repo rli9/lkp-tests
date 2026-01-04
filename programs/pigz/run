@@ -11,7 +11,7 @@
 require 'base64'
 
 runtime = (ENV['runtime'] || 300).to_i
-nr_threads = ENV['nr_threads'] || ENV['nr_cpu']
+nr_threads = ENV['nr_threads'] || ENV.fetch('nr_cpu', nil)
 blocksize = (ENV['blocksize'] || 128).to_i
 total_iterations = (ENV['iterations'] || 0).to_i
 

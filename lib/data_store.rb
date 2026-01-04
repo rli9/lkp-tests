@@ -841,7 +841,7 @@ module DataStore
   end
 
   def self.test
-    tbl_path = File.join(ENV['HOME'], 'tbl1')
+    tbl_path = File.join(ENV.fetch('HOME', nil), 'tbl1')
     FileUtils.rm_rf tbl_path
     layout = Layout.create_new tbl_path
     layout.add_map(Map::NAME => 'default',

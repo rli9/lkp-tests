@@ -51,12 +51,12 @@ end
 
 if duration.nil? || throughput.nil?
   puts 'test.fail: 1'
-  log_warn "miss duration or throughput: #{ENV['RESULT_ROOT']}" unless fail
+  log_warn "miss duration or throughput: #{ENV.fetch('RESULT_ROOT', nil)}" unless fail
 
   exit
 end
 
-log_warn "unexpected fail flag: #{ENV['RESULT_ROOT']}" if fail
+log_warn "unexpected fail flag: #{ENV.fetch('RESULT_ROOT', nil)}" if fail
 
 workload = duration * throughput
 puts "score: #{score}" if score
