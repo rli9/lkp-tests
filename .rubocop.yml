@@ -143,10 +143,6 @@ Layout/FirstArrayElementIndentation:
 Layout/HeredocIndentation:
   Enabled: false
 
-# Disable this temporarily to let rubocop 1.12.1 work with ruby3.2
-Layout/BlockAlignment:
-  Enabled: false
-
 Naming/AccessorMethodName:
   Exclude:
     - 'lib/property.rb'
