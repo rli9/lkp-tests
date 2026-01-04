@@ -17,7 +17,7 @@ describe 'local run' do
       f.each_line { |l| s += l.gsub(/\#{LKP_SRC}\/hosts\//, "#{@tmp_dir}/") } # rubocop:disable Lint/InterpolationCheck
       f.rewind
     end
-    File.open(@tmp_file, 'w') { |f| f.write s }
+    File.write(@tmp_file, s)
 
     require @tmp_file
     @hostname = `hostname`.chomp
@@ -25,7 +25,7 @@ describe 'local run' do
   end
 
   def write_host_file(content)
-    File.open(@hostfile, 'w') { |file| file.write(content) }
+    File.write(@hostfile, content)
   end
 
   after(:all) do

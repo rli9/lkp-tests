@@ -23,6 +23,7 @@ $stat_absolute_changes = [
 
 class AxesGrouper
   include Property
+
   prop_with :group_axis_keys, :axes_data, :ignore_common_axes, :compare_runs
 
   private
@@ -120,6 +121,7 @@ module Compare
 
   class Comparer
     include Property
+
     # following properties are parameters for compare
     prop_reader :stat_calc_funcs
     prop_with :mresult_roots, :compare_axis_keys, :compare_different_rts, :compare_runs,
@@ -177,7 +179,7 @@ module Compare
         if !_rt.respond_to?(:path)
           # class MMResultRoot
           mrts << _rt
-        elsif File.exist?(_rt.path)
+        elsif File.exist?(_rt.path) # rubocop:disable Lint/DuplicateBranch
           # class NMResultRoot
           mrts << _rt
         elsif ENV['LKP_VERBOSE']
@@ -221,15 +223,15 @@ module Compare
                       .set_ignore_common_axes(@compare_different_rts)
                       .set_group_axis_keys(@compare_axis_keys)
                       .group
-      groups.map do |g|
+      groups.filter_map do |g|
         next if g.axes_data.size < 2
 
-        Group.new self, g.axes, g.group_axeses, g.axes_data, \
-                  'compare_runs' => @compare_runs, \
-                  'stats_field' => @stats_field, \
-                  'allowed_stat' => @allowed_stat, \
+        Group.new self, g.axes, g.group_axeses, g.axes_data,
+                  'compare_runs' => @compare_runs,
+                  'stats_field' => @stats_field,
+                  'allowed_stat' => @allowed_stat,
                   'exclude_result_roots' => convert_exclude_result_roots
-      end.compact
+      end
     end
 
     def global_common_axes
@@ -638,6 +640,7 @@ module Compare
   class GroupResult
     class MatrixExporter
       include Property
+
       prop_with :data_types, :data_type, :include_axes, :axes_as_num,
                 :axis_prefix, :sort, :sort_stat_key,
                 :include_runs, :data_type_in_key, :group_result
@@ -686,7 +689,7 @@ module Compare
         cas_keys = cas[0].keys
         if @sort
           sort_key = @sort_stat_key ||
-                     @axis_prefix + cas_keys[0]
+                     (@axis_prefix + cas_keys[0])
         end
         axis_converter = lambda { |axis_key|
           if @axes_as_num && (@axes_as_num == true ||
@@ -756,7 +759,7 @@ module Compare
     runs = stat[RUNS]
     reproduce0 = fs[0].to_f / runs[0]
     stat[CHANGES] = fs.drop(1).each_with_index.map do |f, i|
-      100 * (f.to_f / runs[i] - reproduce0)
+      100 * ((f.to_f / runs[i]) - reproduce0)
     end
   end
 
@@ -1198,10 +1201,10 @@ module Compare
 
       if _rts.uniq.size == 1
         path = _rts.first.mresult_root_path
-        options[:compare_runs] = job_dirs.map do |job_dir|
+        options[:compare_runs] = job_dirs.filter_map do |job_dir|
           dir = job_dir.sub(/\/$/, '')
           "#{path}/#{dir.split('/').last}" == File.realpath(dir) ? dir.split('/').last : nil
-        end.compact
+        end
       end
     end
     options[:mresult_roots] = _rts

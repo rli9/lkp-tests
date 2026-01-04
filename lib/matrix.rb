@@ -163,7 +163,7 @@ def create_stats_matrix(result_root)
                  elsif event_counter? k
                    v[-1] - v[0]
                  else
-                   v.sum.to_f / stats_part_len
+                   v.sum(0.0) / stats_part_len
                  end
       stats["#{k}.max"] = v.max if add_max_latency?(k)
     end
@@ -360,14 +360,7 @@ def read_matrix_from_csv_file(file_name)
   return {} unless File.exist? file_name
 
   convert = lambda do |input|
-    %i[Integer Float].each do |m|
-      begin
-        return send(m, input)
-      rescue StandardError
-        next
-      end
-    end
-    input
+    Integer(input, exception: false) || Float(input, exception: false) || input
   end
 
   File.readlines(file_name).each do |line|

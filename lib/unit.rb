@@ -19,7 +19,7 @@ def to_seconds(time_spec)
     n * 60
   when 's'
     n
-  else
+  else # rubocop:disable Lint/DuplicateBranch
     n
   end
 end

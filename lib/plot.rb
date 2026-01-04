@@ -91,6 +91,7 @@ class MatrixPlotterBase
   end
 
   include Property
+
   prop_with :pixel_size, :inch_size, :char_size
 
   def setup_output(plot, file_name)
@@ -113,11 +114,11 @@ class MatrixPlotterBase
     end
   end
 
-  def open_gnuplot(file_name = nil, &blk)
+  def open_gnuplot(file_name = nil, &)
     if file_name && file_name.end_with?('.plt')
-      File.open(file_name, 'w', &blk)
+      File.open(file_name, 'w', &)
     else
-      Gnuplot.open(&blk)
+      Gnuplot.open(&)
     end
   end
 end
@@ -292,8 +293,8 @@ class MMatrixPlotter < MatrixPlotterBase
             ds.notitle
           end
         ]
-        y_max = (y_max / y_base * 100 + 5).round
-        y_min = (y_min / y_base * 100 - 5).round
+        y_max = ((y_max / y_base * 100) + 5).round
+        y_min = ((y_min / y_base * 100) - 5).round
         p.yrange "[#{y_min}:#{y_max}]"
         p.y2range "[#{y_min}:#{y_max}]"
       end

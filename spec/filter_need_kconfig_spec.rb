@@ -9,13 +9,9 @@ describe 'filters/need_kconfig.rb' do
     @tmp_dir = LKP::TmpDir.new('filter-need-kconfig-spec-src-')
     @tmp_dir.add_permission
 
-    File.open(@tmp_dir.path('context.yaml'), 'w') do |f|
-      f.write({ 'rc_tag' => 'v5.0-rc1', 'kconfig' => 'i386-randconfig' }.to_yaml)
-    end
+    File.write(@tmp_dir.path('context.yaml'), { 'rc_tag' => 'v5.0-rc1', 'kconfig' => 'i386-randconfig' }.to_yaml)
 
-    File.open(@tmp_dir.path('.config'), 'w') do |f|
-      f.write("CONFIG_X=y\nCONFIG_Y=200\nCONFIG_Z1=m\nCONFIG_Z2=y\nCONFIG_H=0x1000000")
-    end
+    File.write(@tmp_dir.path('.config'), "CONFIG_X=y\nCONFIG_Y=200\nCONFIG_Z1=m\nCONFIG_Z2=y\nCONFIG_H=0x1000000")
 
     allow(KernelTag).to receive(:kconfigs_yaml).and_return(@tmp_dir.path('kconfigs.yaml'))
   end

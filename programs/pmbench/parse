@@ -26,9 +26,9 @@ $stdin.each_line do |line|
   when /^  Page latency during benchmark \(inc. gen\): (\d+\.\d+) us \(\d+ clks\)/
     latencies << $1.to_f
   when / Benchmark done - took (\d+\.\d+) sec for (\d+) page access/
-    throughputs << $2.to_f / $1.to_f
+    throughputs << ($2.to_f / $1.to_f)
   when /nitialization took (\d+\.\d+) ms/
-    init_times << $1.to_f / 1000
+    init_times << ($1.to_f / 1000)
   when /^2\^\((\d+),(\d+)\) ns: (\d+)  \[(.*)\]/
     end_n = $2.to_i
     cnt = $3.to_i
@@ -106,7 +106,7 @@ percentiles = percentile_strs.map(&:to_f)
         res = v / sum * 100
         hist_cum += res
         while pi < percentiles.length && hist_cum >= percentiles[pi]
-          puts "#{mode}.latency.#{percentile_strs[pi]}%.ns: #{2**(i + 8) + j * 2**(i + 4)}"
+          puts "#{mode}.latency.#{percentile_strs[pi]}%.ns: #{(2**(i + 8)) + (j * (2**(i + 4)))}"
           pi += 1
         end
       end
@@ -121,7 +121,7 @@ percentiles = percentile_strs.map(&:to_f)
 end
 
 unless latencies.empty?
-  latency_avg = latencies.reduce(:+) / latencies.length
+  latency_avg = latencies.sum / latencies.length
   puts "latency.ns.average: #{latency_avg * 1000}"
 end
 
@@ -129,6 +129,6 @@ puts "throughput.aps: #{throughputs.sum}"
 puts "throughput.std_dev%: #{throughputs.standard_deviation * 100 / throughputs.average}"
 
 unless init_times.empty?
-  init_time_avg = init_times.reduce(:+) / init_times.length
+  init_time_avg = init_times.sum / init_times.length
   puts "init_time.avg: #{init_time_avg}"
 end

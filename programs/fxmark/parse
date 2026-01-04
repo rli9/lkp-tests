@@ -26,7 +26,7 @@ while (line = $stdin.gets)
     datas = $stdin.gets if datas.length == 1
 
     # make sure the value is corresponding to correct subtest
-    next unless datas.split(' ')[0] == cpu
+    next unless datas.split[0] == cpu
 
     datas = datas.split
     i = 0

@@ -20,7 +20,7 @@ def histogram(data, range = nil, params = {})
   range ||= auto_range
   total = data.size
   start = 0
-  hist = range.map do |lc|
+  hist = range.filter_map do |lc|
     next nil if start >= total
 
     nstart = data.index { |l| l >= lc } || total
@@ -31,7 +31,7 @@ def histogram(data, range = nil, params = {})
           end
     start = nstart
     num
-  end.compact
+  end
   if start < data.size
     hist += [data.size - start]
   else

@@ -245,7 +245,7 @@ class << MResultRootTable
   end
 
   def open(name)
-    super table_dir(name)
+    super(table_dir(name))
   end
 end
 

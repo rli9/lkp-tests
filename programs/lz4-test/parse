@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.dirname(File.realpath($PROGRAM_NAME))))
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.realpath($PROGRAM_NAME), 3)
 
 require "#{LKP_SRC}/lib/log"
 require "#{LKP_SRC}/lib/statistics"
@@ -17,9 +17,9 @@ while (line = $stdin.gets)
 end
 
 stats.each do |k, v|
-  if k != 'compression_level'
-    puts "#{k}: #{v.average.round(2)}"
-  else
+  if k == 'compression_level'
     puts "#{k}: #{v}"
+  else
+    puts "#{k}: #{v.average.round(2)}"
   end
 end

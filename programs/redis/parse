@@ -124,7 +124,7 @@ def show_latencies(latencies, name)
     sum = ps.sum
     next unless sum != 0
 
-    avg = sum.to_f / ps.length
+    avg = sum(0.0) / ps.length
     puts "#{name}_latency_#{i}ms%: #{avg}"
     while pi < PERCENTILES.length && avg > PERCENTILES[pi]
       puts "#{name}_latency_#{PERCENTILE_STRS[pi]}%_ms: #{i}"

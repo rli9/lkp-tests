@@ -4,7 +4,7 @@ require 'English'
 
 Signal.trap('INT') { exit! }
 
-LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.realpath($PROGRAM_NAME), 2)
 
 require 'optparse'
 require 'ostruct'
@@ -207,13 +207,8 @@ end
 
 def dim_name(dim)
   case $opt_dimension
-  when 'commit'
+  when 'commit', /_commit$/
     tag = Git.open(project: $project, working_dir: GIT_WORK_TREE).gcommit(dim).tag if Dir.exist?(GIT_WORK_TREE)
-    tag || dim[0..(REL_WIDTH + ABS_WIDTH + ERR_WIDTH)]
-  when /_commit$/
-    # FIXME: rli9 duplicated code below, need refactoring
-    tag = Git.open(project: $project, working_dir: GIT_WORK_TREE).gcommit(dim).tag if Dir.exist?(GIT_WORK_TREE)
-
     tag || dim[0..(REL_WIDTH + ABS_WIDTH + ERR_WIDTH)]
   else
     dim
@@ -290,10 +285,10 @@ def add_stats(path)
     result_path['path_params'] = path_params[0] + $first_dim + path_params[2]
   end
   _rt = result_path._result_root
-  if !$cases.key?(_rt)
-    $cases[_rt] = { dim => field_value }
-  else
+  if $cases.key?(_rt)
     $cases[_rt][dim] = field_value
+  else
+    $cases[_rt] = { dim => field_value }
   end
 end
 
@@ -522,7 +517,7 @@ def show_one_diff(stat, dim, v0, v, v0_stddev, v_stddev, is_float: false, is_exp
             format "%#{REL_WIDTH - 1}.0g ", v - v0
           elsif p.abs < 3
             sprintf ' ' * REL_WIDTH
-          elsif p.abs < 100_000
+          elsif p.abs < 100_000 # rubocop:disable Lint/DuplicateBranch
             format "%#{REL_WIDTH - 2}.0f%% ", p
           else
             format "%#{REL_WIDTH - 2}.0g%% ", p
@@ -753,7 +748,7 @@ def call_mmplot
     expand_matrix(matrix1, 'stat' => $opt_field)
     matrix2 = load_json file.sub($opt_dims[0], $opt_dims[1])
     expand_matrix(matrix2, 'stat' => $opt_field)
-    mmplot(matrix2, matrix1, [$opt_field], File.dirname(File.dirname(_rt)))
+    mmplot(matrix2, matrix1, [$opt_field], File.dirname(_rt, 2))
   end
 end
 

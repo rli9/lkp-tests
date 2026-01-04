@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(File.dirname(File.realpath($PROGRAM_NAME))))
+LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.realpath($PROGRAM_NAME), 3)
 
 require "#{LKP_SRC}/lib/log"
 require "#{LKP_SRC}/lib/string"
@@ -37,8 +37,8 @@ module LKP
       end
     end
 
-    def method_missing(sym, *args, &block)
-      @stats.send(sym, *args, &block)
+    def method_missing(sym, ...)
+      @stats.send(sym, ...)
     end
 
     # def exit(warn)

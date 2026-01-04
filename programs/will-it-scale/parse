@@ -2,7 +2,7 @@
 
 # will-it-scale.workload is defined as the total number of operation for
 # all processes/threads
-LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.dirname(File.realpath($PROGRAM_NAME))))
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.realpath($PROGRAM_NAME), 3)
 
 require "#{LKP_SRC}/lib/statistics"
 
@@ -39,10 +39,10 @@ while (line = $stdin.gets)
     next if processes.zero? && threads.zero?
 
     linear = values[-1].to_i
-    scalability << values[0].to_f / linear if linear != 0 && nr_task != '1'
-    per_process << processes.to_f / nr_task.to_i
+    scalability << (values[0].to_f / linear) if linear != 0 && nr_task != '1'
+    per_process << (processes.to_f / nr_task.to_i)
     workload += processes.to_f
-    per_thread << threads.to_f / nr_task.to_i
+    per_thread << (threads.to_f / nr_task.to_i)
     workload += threads.to_f
 
     names.each_with_index do |name, i|

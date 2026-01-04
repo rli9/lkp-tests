@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.realpath($PROGRAM_NAME), 2)
 
 require 'time'
 require 'json'
@@ -72,10 +72,10 @@ rescue JSON::ParserError
       when ",\n"
         io.seek(-2, IO::SEEK_END)
         io.truncate(io.pos)
-        io.puts "\n\t\t\t\]\n\t\t\}\n\t\]\n\}\}\n"
-      when "\t\}"
+        io.puts "\n\t\t\t]\n\t\t}\n\t]\n}}\n"
+      when "\t}"
         io.seek(0, IO::SEEK_END)
-        io.puts "\n\t\t\t\]\n\t\t\}\n\t\]\n\}\}\n"
+        io.puts "\n\t\t\t]\n\t\t}\n\t]\n}}\n"
       end
     end
 

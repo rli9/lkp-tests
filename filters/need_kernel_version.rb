@@ -10,7 +10,7 @@ def check_kernel_version
   context_file = File.join(File.dirname(File.realpath(self['kernel'])), 'context.yaml')
   raise Job::ParamError, "context.yaml doesn't exist: #{context_file}" unless File.exist?(context_file)
 
-  context = YAML.load(File.read(context_file))
+  context = YAML.load_file(context_file)
   kernel_version = context['rc_tag']
   kernel_version += ".#{context['kernel_patch_level'].to_i}" unless context['kernel_patch_level'].to_i.zero?
 

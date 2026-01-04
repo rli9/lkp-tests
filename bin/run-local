@@ -7,7 +7,7 @@ require 'ostruct'
 require 'fileutils'
 require 'shellwords'
 
-LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.realpath($PROGRAM_NAME), 2)
 LKP_USER = ENV['USER'] || `whoami`.chomp
 
 require "#{LKP_SRC}/lib/distro_info"
@@ -118,7 +118,7 @@ job['rootfs'] ||= if File.exist? '/etc/os-release'
                     distro
                   end
 job['nr_cpu'] ||= `nproc`.to_i
-job['memory'] ||= `grep -w '^memory:' #{LKP_SRC}/hosts/#{HOSTNAME}`.split(' ')[1].chomp
+job['memory'] ||= `grep -w '^memory:' #{LKP_SRC}/hosts/#{HOSTNAME}`.split[1].chomp
 job['compiler'] ||= File.realpath('/usr/bin/gcc').match(/gcc.*/).to_s
 job['compiler'] = 'gcc' if job['compiler'].empty?
 job['NO_NETWORK'] = 1

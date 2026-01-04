@@ -40,8 +40,8 @@ alias log log_info
   end
 end
 
-def log_verbose(*args, &block)
+def log_verbose(...)
   return unless ENV['LKP_VERBOSE']
 
-  $log.debug(*args, &block)
+  $log.debug(...)
 end

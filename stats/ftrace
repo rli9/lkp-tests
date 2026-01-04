@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.realpath($PROGRAM_NAME), 2)
 
 require 'fileutils'
 require 'yaml'
@@ -58,7 +58,7 @@ end
 
 def normlize_event_data(event, event_data, records)
   begin
-    key_prefix_items = KEY_PREFIX_MAPPING[event].split(' ')
+    key_prefix_items = KEY_PREFIX_MAPPING[event].split
   rescue StandardError
     key_prefix_items = []
   end
@@ -91,7 +91,7 @@ def parse_event(event_fmt, records)
   return if fmt.nil?
 
   event = File.basename(event_fmt, '.fmt')
-  pattern = " ([0-9]\+\\.[0-9]\+): #{event}: .*"
+  pattern = " ([0-9]+\\.[0-9]+): #{event}: .*"
   replace = 'time: \\1\\n'
   index = 2
   while fmt =~ /([a-zA-Z_]+[ =]%(s|l?[ud]):? *)/
@@ -104,8 +104,8 @@ def parse_event(event_fmt, records)
   end
 
   pattern = pattern.gsub('%s', '(.*)')
-  pattern = pattern.gsub(/%l?u/, "([0-9]\+)")
-  pattern = pattern.gsub(/%l?d/, "(\-?[0-9]\+)")
+  pattern = pattern.gsub(/%l?u/, '([0-9]+)')
+  pattern = pattern.gsub(/%l?d/, '(-?[0-9]+)')
   replace += '\\n'
 
   event_parser     = "#{FMT_DIR}#{event}.sh"

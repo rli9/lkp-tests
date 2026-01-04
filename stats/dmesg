@@ -19,7 +19,7 @@
 # on kmsg and falls back to dmesg) to catch 50000+ printk messages whose level
 # is >= KERN_WARNING.
 
-LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.realpath($PROGRAM_NAME), 2)
 
 require "#{LKP_SRC}/lib/dmesg"
 require "#{LKP_SRC}/lib/log"
@@ -36,7 +36,7 @@ elsif ENV['RESULT_ROOT']
   if File.exist? serial_file
     dmesg_file = serial_file
 
-    if File.size?(kmsg_file) && File.size(serial_file).zero?
+    if File.size?(kmsg_file) && File.empty?(serial_file)
       log_error "unexpected 0-sized serial file #{serial_file}"
       dmesg_file = kmsg_file
     else

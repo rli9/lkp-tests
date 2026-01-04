@@ -28,7 +28,7 @@ module Enumerable
 
   def sample_variance
     avg = average
-    sum = inject(0) { |acc, i| acc + (i - avg)**2 }
+    sum = inject(0) { |acc, i| acc + ((i - avg)**2) }
     1 / length.to_f * sum
   end
 
@@ -41,7 +41,7 @@ module Enumerable
   end
 
   def harmonic_mean
-    inv_sum = inject(0) { |res, i| res + 1 / i }
+    inv_sum = inject(0) { |res, i| res + (1 / i) }
     length / inv_sum
   end
 end

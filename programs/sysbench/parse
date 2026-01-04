@@ -68,11 +68,11 @@ $stdin.each_line do |line|
 end
 
 $results_total.each do |key, vals|
-  puts "#{key}: #{vals.inject(0.0, :+)}"
+  puts "#{key}: #{vals.sum(0.0)}"
 end
 
 $results_avg.each do |key, vals|
-  puts "#{key}: #{vals.inject(0.0, :+) / vals.length}"
+  puts "#{key}: #{vals.sum(0.0) / vals.length}"
 end
 
 $results_min.each do |key, vals|

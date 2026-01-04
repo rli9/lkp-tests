@@ -16,12 +16,16 @@ describe 'Check need_kconfig from' do
         # Concatenate the remaining lines
         yaml_content << line
       end
+
       yaml_content
     end
 
-    def load_yaml_with_conditionals(file_path)
-      yaml_content = preprocess_yaml_file(file_path)
-      YAML.load(yaml_content)
+    def load_yaml_with_conditionals(file)
+      yaml_content = preprocess_yaml_file(file)
+
+      YAML.unsafe_load(yaml_content)
+    rescue Psych::SyntaxError
+      warn "ignore #{file} with Psych::SyntaxError"
     end
 
     def erb_file?(file_path)

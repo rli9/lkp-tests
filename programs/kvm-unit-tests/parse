@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.dirname(File.realpath($PROGRAM_NAME))))
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.realpath($PROGRAM_NAME), 3)
 
 require "#{LKP_SRC}/lib/statistics"
 require "#{LKP_SRC}/lib/string"
@@ -16,7 +16,7 @@ while (line = $stdin.gets)
     # PASS vmexit_tscdeadline
 
     test_result = $1.split(':')[0]
-    test_name = $2.split(' ')[0]
+    test_name = $2.split[0]
 
     stats.add test_name, test_result
   end

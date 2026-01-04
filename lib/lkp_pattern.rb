@@ -15,7 +15,7 @@ module LKP
     end
 
     def contain?(content)
-      return unless regexp
+      return false unless regexp
 
       Array(content).any? { |line| line =~ regexp }
     end
@@ -49,7 +49,7 @@ module LKP
           include Singleton
 
           def initialize
-            super self.class.superclass.klass_2_path[self.class.name]
+            super(self.class.superclass.klass_2_path[self.class.name])
           end
         end
 

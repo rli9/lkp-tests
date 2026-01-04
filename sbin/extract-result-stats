@@ -3,7 +3,7 @@
 # This is a simplified version of extract-stats + stats/wrapper.
 # It could potentially be expanded to replace extract-stats.
 
-LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.realpath($PROGRAM_NAME), 2)
 
 require 'tempfile'
 require "#{LKP_SRC}/lib/programs"

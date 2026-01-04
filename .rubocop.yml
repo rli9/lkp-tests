@@ -4,11 +4,43 @@ require:
 
 AllCops:
   TargetRubyVersion: 3.1
-  NewCops: disable
+  NewCops: enable
   SuggestExtensions: false
 
-Metrics/MethodLength:
-  Max: 50
+# Layout/IndentFirstArrayElement:
+#   Enabled: false
+
+Layout/FirstArrayElementIndentation:
+  Enabled: false
+
+# Layout/IndentHeredoc:
+#   Enabled: false
+
+Layout/HeredocIndentation:
+  Enabled: false
+
+Layout/LineLength:
+  Enabled: false
+
+Lint/AmbiguousRange:
+  Enabled: false
+
+Lint/FloatComparison:
+  Enabled: false
+
+Lint/OrAssignmentToConstant:
+  Enabled: false
+
+Lint/RedundantCopDisableDirective:
+  Enabled: false
+
+Lint/ShadowingOuterLocalVariable:
+  Enabled: false
+
+Lint/ToEnumArguments:
+  Enabled: false
+
+Lint/UnderscorePrefixedVariableName:
   Enabled: false
 
 Metrics/AbcSize:
@@ -32,6 +64,13 @@ Metrics/BlockLength:
     - 'spec/**/*.rb'
   Enabled: false
 
+Metrics/BlockNesting:
+  Exclude:
+    - lib/hash.rb
+
+Metrics/ClassLength:
+  Enabled: false
+
 Metrics/CyclomaticComplexity:
   Max: 30 # 6 by default
   Exclude:
@@ -39,6 +78,16 @@ Metrics/CyclomaticComplexity:
     - lib/matrix.rb
     - lib/stats.rb
     - sbin/compare
+
+Metrics/MethodLength:
+  Max: 50
+  Enabled: false
+
+Metrics/ModuleLength:
+  Enabled: false
+
+Metrics/ParameterLists:
+  Enabled: false
 
 Metrics/PerceivedComplexity:
   Max: 30
@@ -48,29 +97,104 @@ Metrics/PerceivedComplexity:
     - lib/stats.rb
     - sbin/compare
 
-Metrics/BlockNesting:
+Naming/AccessorMethodName:
   Exclude:
-    - lib/hash.rb
+    - 'lib/property.rb'
 
-Metrics/ClassLength:
+Naming/HeredocDelimiterNaming:
   Enabled: false
 
-Metrics/ParameterLists:
+Naming/MethodParameterName:
   Enabled: false
 
-Metrics/ModuleLength:
+Naming/PredicateMethod:
   Enabled: false
 
-Style/EvalWithLocation:
+Performance/CollectionLiteralInLoop:
+  Enabled: false
+
+Performance/RegexpMatch:
+  Enabled: false
+
+Performance/StringInclude:
+  Enabled: false
+
+RSpec/BeforeAfterAll:
+  Enabled: false
+
+RSpec/ContextWording:
+  Enabled: false
+
+RSpec/DescribeClass:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/InstanceVariable:
+  Enabled: false
+
+RSpec/MultipleDescribes:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Enabled: false
+
+RSpec/NestedGroups:
+  Enabled: false
+
+RSpec/NoExpectationExample:
+  AllowedPatterns:
+    - ^expect_
+    - ^verify_
+
+Security/Eval:
+  Enabled: false
+
+Security/JSONLoad:
+  Enabled: false
+
+Security/YAMLLoad:
   Enabled: false
 
 Style/Documentation:
   Enabled: false
 
+Style/DocumentDynamicEvalDefinition:
+  Enabled: false
+
+Style/EvalWithLocation:
+  Enabled: false
+
+Style/FloatDivision:
+  Exclude:
+    - 'programs/pmbench/parse'
+
+Style/FormatStringToken:
+  Enabled: false
+
 Style/FrozenStringLiteralComment:
   Enabled: false
 
-Style/SafeNavigation:
+Style/GlobalVars:
+  Enabled: false
+
+# Style/MethodMissing:
+#   Enabled: false
+
+Style/MissingRespondToMissing:
+  Enabled: false
+
+Style/NumericPredicate:
+  Exclude:
+    - 'lib/job2sh.rb'
+    - 'lib/matrix.rb'
+    - 'lib/stats.rb'
+
+Style/OpenStructUse:
+  Enabled: false
+
+Style/PercentLiteralDelimiters:
   Enabled: false
 
 Style/PerlBackrefs:
@@ -82,105 +206,5 @@ Style/RedundantBegin:
 Style/RegexpLiteral:
   Enabled: false
 
-Style/PercentLiteralDelimiters:
+Style/SafeNavigation:
   Enabled: false
-
-Style/GlobalVars:
-  Enabled: false
-
-Style/NumericPredicate:
-  Exclude:
-    - 'lib/job2sh.rb'
-    - 'lib/matrix.rb'
-    - 'lib/stats.rb'
-
-# Style/MethodMissing:
-#   Enabled: false
-
-Style/MissingRespondToMissing:
-  Enabled: false
-
-Style/FormatStringToken:
-  Enabled: false
-
-Style/FloatDivision:
-  Exclude:
-    - 'programs/pmbench/parse'
-
-Security/Eval:
-  Enabled: false
-
-Security/JSONLoad:
-  Enabled: false
-
-Security/YAMLLoad:
-  Enabled: false
-
-Lint/UnderscorePrefixedVariableName:
-  Enabled: false
-
-Lint/ShadowingOuterLocalVariable:
-  Enabled: false
-
-Lint/RedundantCopDisableDirective:
-  Enabled: false
-
-Lint/FloatComparison:
-  Enabled: false
-
-Layout/LineLength:
-  Enabled: false
-
-# Layout/IndentFirstArrayElement:
-#   Enabled: false
-
-Layout/FirstArrayElementIndentation:
-  Enabled: false
-
-# Layout/IndentHeredoc:
-#   Enabled: false
-
-Layout/HeredocIndentation:
-  Enabled: false
-
-Naming/AccessorMethodName:
-  Exclude:
-    - 'lib/property.rb'
-
-Naming/MethodParameterName:
-  Enabled: false
-
-Naming/HeredocDelimiterNaming:
-  Enabled: false
-
-Performance/RegexpMatch:
-  Enabled: false
-
-RSpec/DescribeClass:
-  Enabled: false
-
-RSpec/MultipleDescribes:
-  Enabled: false
-
-RSpec/InstanceVariable:
-  Enabled: false
-
-RSpec/ExampleLength:
-  Enabled: false
-
-RSpec/MultipleExpectations:
-  Enabled: false
-
-RSpec/NestedGroups:
-  Enabled: false
-
-RSpec/ContextWording:
-  Enabled: false
-
-RSpec/BeforeAfterAll:
-  Enabled: false
-
-RSpec/NoExpectationExample:
-  AllowedPatterns:
-    - ^expect_
-    - ^verify_

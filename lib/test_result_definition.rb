@@ -12,7 +12,7 @@ class TestResultDefinition
     @definitions = definitions.instance_of?(Hash) ? definitions : YAML.load_file(definitions)
 
     @regexps = @definitions.to_h do |type, hash|
-      regexps = hash.map { |k, v| Regexp.new("^#{k == '*' ? '[^.]+' : k}\\.(.+\\.)*(#{v.split(' ').join('|')})$", true) }
+      regexps = hash.map { |k, v| Regexp.new("^#{k == '*' ? '[^.]+' : k}\\.(.+\\.)*(#{v.split.join('|')})$", true) }
       [type, Regexp.union(regexps)]
     end
 
@@ -39,8 +39,8 @@ class TestResultDefinition
   end
 
   def patterns(type, test)
-    @definitions[type].select { |k, _v| ['*', test].include?(k) } # {"*"=>"fail failed", "xfstests"=>"crash crashed warn"}
+    @definitions[type].slice('*', test) # {"*"=>"fail failed", "xfstests"=>"crash crashed warn"}
                       .values
-                      .flat_map { |v| v.split(' ') }
+                      .flat_map(&:split)
   end
 end

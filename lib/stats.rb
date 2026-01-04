@@ -23,9 +23,9 @@ MAX_RATIO = 5
 
 LKP_SRC_ETC ||= LKP::Path.src('etc')
 
-$metric_add_max_latency = IO.read("#{LKP_SRC_ETC}/add-max-latency").split("\n")
-$metric_failure = IO.read("#{LKP_SRC_ETC}/failure").split("\n")
-$metric_pass = IO.read("#{LKP_SRC_ETC}/pass").split("\n")
+$metric_add_max_latency = File.read("#{LKP_SRC_ETC}/add-max-latency").split("\n")
+$metric_failure = File.read("#{LKP_SRC_ETC}/failure").split("\n")
+$metric_pass = File.read("#{LKP_SRC_ETC}/pass").split("\n")
 $perf_metrics_threshold = YAML.load_file "#{LKP_SRC_ETC}/perf-metrics-threshold.yaml"
 $index_perf = load_yaml "#{LKP_SRC_ETC}/index-perf-all.yaml"
 $index_latency = load_yaml "#{LKP_SRC_ETC}/index-latency-all.yaml"
@@ -84,7 +84,7 @@ def reasonable_perf_change?(name, delta, max)
       return delta > 100_000
     when /time/
       return delta > 1_000
-    else
+    else # rubocop:disable Lint/DuplicateBranch
       return delta > 10_000
     end
   when /^interrupts/, /^softirqs/
@@ -130,15 +130,11 @@ def changed_stats?(sorted_a, min_a, mean_a, max_a,
   if options['variance']
     return true if len_a * mean_b > options['variance'] * len_b * mean_a
     return true if len_b * mean_a > options['variance'] * len_a * mean_b
-  elsif options['distance']
-    cs = LKP::ChangedStat.new stat, sorted_a, sorted_b, options
-
-    return true if cs.change?
   elsif options['gap']
     gap = options['gap']
     return true if min_b > max_a && (min_b - max_a) > (mean_b - mean_a) * gap
     return true if min_a > max_b && (min_a - max_b) > (mean_a - mean_b) * gap
-  else
+  else # options['distance']
     cs = LKP::ChangedStat.new stat, sorted_a, sorted_b, options
 
     return true if cs.change?
@@ -177,9 +173,7 @@ def sort_stats(stat_records)
 end
 
 def matrix_cols(hash_of_array)
-  if hash_of_array.nil?
-    0
-  elsif hash_of_array.empty?
+  if hash_of_array.nil? || hash_of_array.empty?
     0
   elsif hash_of_array['stats_source']
     hash_of_array['stats_source'].size
@@ -331,21 +325,19 @@ def load_base_matrix(matrix_path, head_matrix, options)
     break if tag =~ /-rc1$/ && cols >= 3
   end
 
-  if !matrix.empty?
-    if cols >= 3 ||
-       (cols >= 1 && functional_test?(rp['testcase'])) ||
-       head_matrix['last_state.is_incomplete_run'] ||
-       head_matrix['dmesg.boot_failures'] ||
-       head_matrix['stderr.has_stderr']
-      log_debug "compare with release matrix: #{matrix_path} #{tags_merged}"
-      options['good_commit'] = tags_merged.first
-      matrix
-    else
-      log_debug "release matrix too small: #{matrix_path} #{tags_merged}"
-      nil
-    end
-  else
+  if matrix.empty?
     log_debug "no release matrix was found: #{matrix_path}"
+    nil
+  elsif cols >= 3 ||
+        (cols >= 1 && functional_test?(rp['testcase'])) ||
+        head_matrix['last_state.is_incomplete_run'] ||
+        head_matrix['dmesg.boot_failures'] ||
+        head_matrix['stderr.has_stderr']
+    log_debug "compare with release matrix: #{matrix_path} #{tags_merged}"
+    options['good_commit'] = tags_merged.first
+    matrix
+  else
+    log_debug "release matrix too small: #{matrix_path} #{tags_merged}"
     nil
   end
 end
@@ -523,7 +515,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
       # base rt stats should contain 'packetdrill.packetdrill/gtests/net/tcp/mtu_probe/basic-v6_ipv6.pass'
       stat_base = k.sub(/\.[^.]*$/, '')
       # only consider pass and fail temporarily
-      next if k =~ /\.(error|warn|fail)$/ && b.keys.none? { |stat| stat == "#{stat_base}.pass" }
+      next if k =~ /\.(error|warn|fail)$/ && b.keys.none?("#{stat_base}.pass")
       next if k =~ /\.pass$/ && b.keys.none? { |stat| stat =~ /^#{stat_base}\.(error|warn|fail)$/ }
     end
 
@@ -550,7 +542,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
                 is_function_stat ||
                 (k =~ /^(lock_stat|perf-profile)\./ && b_monitors[$1])
 
-    b_k = b[k] || [0] * cols_b
+    b_k = b[k] || ([0] * cols_b)
     b_k << 0 while b_k.size < cols_b
     v << 0 while v.size < cols_a
 
@@ -757,7 +749,7 @@ end
 
 def samples_fill_missing_zeros(matrix, key)
   size = matrix_cols matrix
-  samples = matrix[key] || [0] * size
+  samples = matrix[key] || ([0] * size)
   samples << 0 while samples.size < size
   samples
 end

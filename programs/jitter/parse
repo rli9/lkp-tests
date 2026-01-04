@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.dirname(File.realpath($PROGRAM_NAME))))
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.realpath($PROGRAM_NAME), 3)
 
 require "#{LKP_SRC}/lib/statistics"
 
@@ -13,8 +13,8 @@ abs_max = []
 
 def percentile(values, percentile)
   sorted = values.sort
-  a = (percentile * (sorted.length - 1) + 1).floor - 1
-  b = (percentile * (sorted.length - 1) + 1).modulo(1)
+  a = ((percentile * (sorted.length - 1)) + 1).floor - 1
+  b = ((percentile * (sorted.length - 1)) + 1).modulo(1)
   sorted[a] + (b * (sorted[a + 1] - sorted[a]))
 end
 

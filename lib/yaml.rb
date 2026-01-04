@@ -84,7 +84,7 @@ def search_file_in_paths(file, relative_to = nil, search_paths = nil)
     return file
   end
 
-  search_paths ||= [File.dirname(File.dirname(__FILE__))]
+  search_paths ||= [File.dirname(__FILE__, 2)]
   search_paths.unshift(relative_to)
 
   search_paths.each do |search_path|
@@ -121,9 +121,7 @@ end
 
 def save_yaml(object, file, compress: false)
   temp_file = File.join('/tmp', ".#{File.basename(file)}-#{tmpname}")
-  File.open(temp_file, 'w') do |f|
-    f.write(YAML.dump(object))
-  end
+  File.write(temp_file, YAML.dump(object))
   FileUtils.mv temp_file, file, force: true
 
   return unless compress
@@ -180,9 +178,7 @@ end
 
 def save_json(object, file, compress: false)
   temp_file = dot_file(file) + "-#{tmpname}"
-  File.open(temp_file, 'w') do |file|
-    file.write(JSON.pretty_generate(object, allow_nan: true))
-  end
+  File.write(temp_file, JSON.pretty_generate(object, allow_nan: true))
   FileUtils.mv temp_file, file, force: true
 
   return unless compress
@@ -205,7 +201,7 @@ end
 
 class JSONFileNotExistError < StandardError
   def initialize(path)
-    super "Failed to load JSON for #{path}"
+    super("Failed to load JSON for #{path}")
     @path = path
   end
 

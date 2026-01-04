@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.realpath($PROGRAM_NAME), 2)
 
 require 'gnuplot'
 require 'optparse'
@@ -106,7 +106,7 @@ def plot_it(matrix_stat_arr)
       next unless ys
 
       dys = ($opt_diff_distance...ys.length).map { |i| ys[i] - ys[i - $opt_diff_distance] }
-      matrix[dstat] = [0] * $opt_diff_distance + dys
+      matrix[dstat] = ([0] * $opt_diff_distance) + dys
       stat = dstat
     elsif $y_relative
       rstat = "rel-#{stat}"

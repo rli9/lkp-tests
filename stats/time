@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.realpath($PROGRAM_NAME), 2)
 
 require "#{LKP_SRC}/lib/string"
 
@@ -21,7 +21,7 @@ while (line = $stdin.gets)
   when 'elapsed_time'
     times = val.split ':'
     val = times.inject(0) do |tt, t|
-      tt * 60 + t.to_f
+      (tt * 60) + t.to_f
     end
   when 'percent_of_cpu_this_job_got'
     val.chomp!("%\n")

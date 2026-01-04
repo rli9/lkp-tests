@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.realpath($PROGRAM_NAME), 2)
 
 require "#{LKP_SRC}/lib/job"
 require "#{LKP_SRC}/lib/log"
@@ -59,7 +59,7 @@ options.parse!(ARGV)
 # formal -s 'key: value' in scripts.
 ARGV.delete_if do |arg|
   if arg.index '='
-    opt_set_key_value.merge! YAML.load arg.sub(/=/, ': ')
+    opt_set_key_value.merge! YAML.load arg.sub('=', ': ')
     true
   else
     false
@@ -112,7 +112,7 @@ ARGV.each do |jobfile|
   jobs.overrides = opt_set_key_value
   jobs.each_jobs do |job|
     unit_jobfile = "#{prefix}-#{job.path_params}"
-    Job::EXPAND_DIMS.select { |dim| dim =~ /commit/ }
+    Job::EXPAND_DIMS.grep(/commit/)
                     .each { |dim| unit_jobfile += "-#{job[dim]}" if job[dim] }
     unit_jobfile += "-#{rootfs_filename(job['rootfs'])}" if job['rootfs']
     unit_jobfile += '.yaml'

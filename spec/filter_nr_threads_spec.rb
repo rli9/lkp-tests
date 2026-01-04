@@ -15,9 +15,7 @@ describe 'filter/nr_threads' do
   end
 
   def generate_job(contents)
-    File.open(@test_yaml_file, 'w') do |f|
-      f.write(contents.to_yaml)
-    end
+    File.write(@test_yaml_file, contents.to_yaml)
     Job.open(@test_yaml_file)
   end
 

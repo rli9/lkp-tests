@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.realpath($PROGRAM_NAME), 2)
 
 require 'yaml'
 require 'erb'
@@ -26,7 +26,7 @@ class ItemDesc
     @desc = v['description']
     case v['choices']
     when Array
-      @choices = v['choices'].map { |e| [e, nil] }.to_h
+      @choices = v['choices'].to_h { |e| [e, nil] }
     when Hash
       @choices = v['choices']
     end

@@ -6,7 +6,7 @@ while (line = $stdin.gets)
   case line
   when /^(ext4-frags).*(pass)/
     stats_type = $2
-    stats << $1 + ".#{stats_type}: 1"
+    stats << ($1 + ".#{stats_type}: 1")
   end
 end
 

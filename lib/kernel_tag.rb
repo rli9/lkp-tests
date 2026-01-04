@@ -6,6 +6,7 @@ require "#{LKP_SRC}/lib/lkp_path"
 
 class KernelTag
   include Comparable
+
   attr_reader :kernel_tag
 
   def initialize(kernel_tag)
@@ -21,9 +22,9 @@ class KernelTag
   def numerize_kernel_tag(kernel_tag)
     match = kernel_tag.match(/v(?<major_version>[0-9])\.(?<minor_version>\d+)\.?(?<patch_level>\d+)?(?:-rc(?<prerelease_version>\d+))?/)
 
-    match[:major_version].to_i * 1_000_000_000 + \
-      match[:minor_version].to_i * 1_000_000 + \
-      match[:patch_level].to_i * 1_000 + \
+    (match[:major_version].to_i * 1_000_000_000) +
+      (match[:minor_version].to_i * 1_000_000) +
+      (match[:patch_level].to_i * 1_000) +
       (match[:prerelease_version] || 999).to_i
   end
 

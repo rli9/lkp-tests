@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.realpath($PROGRAM_NAME), 2)
 
 require "#{LKP_SRC}/lib/log"
 require "#{LKP_SRC}/lib/string"
@@ -27,7 +27,7 @@ $stdin.each_line do |line|
     value = value.to_i
     mtotal ||= value if key == 'MemTotal'
     if key == 'MemFree'
-      mused << mtotal - value
+      mused << (mtotal - value)
       munit ||= unit
       puts "Memused: #{mused.last}"
       puts "max_used_#{munit}: #{mused.max}"

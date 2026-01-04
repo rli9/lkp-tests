@@ -88,7 +88,7 @@ module Property
     end
   end
 
-  def with_prop(prop, *values, &b)
-    send :"with_#{prop}", *values, &b
+  def with_prop(prop, *values, &)
+    send(:"with_#{prop}", *values, &)
   end
 end

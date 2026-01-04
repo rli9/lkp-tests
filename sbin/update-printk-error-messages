@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.realpath($PROGRAM_NAME), 2)
 
 require 'optparse'
 require 'ostruct'
@@ -147,7 +147,7 @@ kmsg_denylist = File.read(LKP::Path.src('etc', 'kmsg-denylist.raw')).split "\n"
   line = line[1..-3]
   next if line =~ /"/
 
-  line.sub!(/\\t/, "\t")
+  line.sub!('\\t', "\t")
   lines = line.split '\\n'
   lines.each do |line|
     strs = line.split '%'

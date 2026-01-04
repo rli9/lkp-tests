@@ -6,9 +6,7 @@ TEST_YAML_FILE = '/tmp/test.yaml'.freeze
 
 describe 'load_yaml_with_flock' do
   before do
-    File.open(TEST_YAML_FILE, 'w') do |f|
-      f.write("key1: value1\nkey2: value2\n")
-    end
+    File.write(TEST_YAML_FILE, "key1: value1\nkey2: value2\n")
   end
 
   after do

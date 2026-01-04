@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.dirname(File.realpath($PROGRAM_NAME))))
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.realpath($PROGRAM_NAME), 3)
 
 require "#{LKP_SRC}/lib/log"
 require "#{LKP_SRC}/lib/string"
@@ -16,7 +16,7 @@ while (line = $stdin.gets)
     key = line.split[0].gsub(/:$/, '_ms')
     stats[key] = line.split[2].remove(/ms/)
   when /^Totals/
-    key = line.split[0].gsub(/s:/, '_ms')
+    key = line.split[0].gsub('s:', '_ms')
     stats[key] = line.split[2].remove(/ms/)
   end
 end

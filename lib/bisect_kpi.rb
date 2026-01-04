@@ -297,7 +297,7 @@ module LKP
     attr_reader :regexp, :direction
 
     def initialize(regexp, direction)
-      @regexp = regexp.instance_of?(Regexp) ? regexp : Regexp.new(/^#{regexp}$/)
+      @regexp = regexp.instance_of?(Regexp) ? regexp : /^#{regexp}$/
       @direction = direction
     end
 

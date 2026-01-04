@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.dirname(File.realpath($PROGRAM_NAME))))
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.realpath($PROGRAM_NAME), 3)
 
 require "#{LKP_SRC}/lib/log"
 require "#{LKP_SRC}/lib/string"
@@ -23,15 +23,15 @@ while (line = $stdin.gets)
     values = line[1].split('/')
     single_key = "single_random_read_#{line[0]}_block"
     dual_key = "dual_random_read_#{line[0]}_block"
-    if !stats.key?("#{single_key}_nohugepage")
-      stats["#{single_key}_nohugepage"] = values[0].remove(/[ ns]/)
-    else
+    if stats.key?("#{single_key}_nohugepage")
       stats["#{single_key}_hugepage"] = values[0].remove(/[ ns]/)
-    end
-    if !stats.key?("#{dual_key}_nohugepage")
-      stats["#{dual_key}_nohugepage"] = values[1].remove(/[ ns]/)
     else
+      stats["#{single_key}_nohugepage"] = values[0].remove(/[ ns]/)
+    end
+    if stats.key?("#{dual_key}_nohugepage")
       stats["#{dual_key}_hugepage"] = values[1].remove(/[ ns]/)
+    else
+      stats["#{dual_key}_nohugepage"] = values[1].remove(/[ ns]/)
     end
   end
 end

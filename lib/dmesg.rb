@@ -16,7 +16,7 @@ require "#{LKP_SRC}/lib/yaml"
 LKP_SRC_ETC ||= LKP::Path.src('etc')
 
 # /c/linux% git grep '"[a-z][a-z_]\+%d"'|grep -o '"[a-z_]\+'|cut -c2-|sort -u
-LINUX_DEVICE_NAMES = IO.read("#{LKP_SRC_ETC}/linux-device-names").split("\n")
+LINUX_DEVICE_NAMES = File.read("#{LKP_SRC_ETC}/linux-device-names").split("\n")
 LINUX_DEVICE_NAMES_RE = /\b(#{LINUX_DEVICE_NAMES.join('|')})\d+/
 
 def fixup_dmesg(line)
@@ -196,7 +196,7 @@ def common_error_id(line)
       .gsub(/([^a-zA-Z0-9])\ /, '\1')
       .gsub(/\ ([^a-zA-Z])/, '\1')
       .remove(/^\ /)
-      .gsub(/\  _/, '_')
+      .gsub('  _', '_')
       .tr(' ', '_')
       .remove(/[-_.,;:#!*\[(]+$/)
 end
@@ -212,10 +212,9 @@ def oops_to_bisect_pattern(line)
   patterns = []
   words.each do |w|
     case w
-    when /([a-zA-Z0-9_]+)\.(isra|constprop|part)\.[0-9]+\+0x/
-      patterns << $1
-      break
-    when /([a-zA-Z0-9_]+\+0x)/, /([a-zA-Z0-9_]+=)/
+    when /([a-zA-Z0-9_]+)\.(isra|constprop|part)\.[0-9]+\+0x/,
+         /([a-zA-Z0-9_]+\+0x)/,
+         /([a-zA-Z0-9_]+=)/
       patterns << $1
       break
     when /^([a-zA-Z\/._-]*):[0-9]/
@@ -277,19 +276,17 @@ def analyze_error_id(line)
        /(Kernel panic - not syncing: No init found.)  Try passing init= option to kernel. /
     line = $1
     bug_to_bisect = line
-  when /(BUG: key )[0-9a-f]+ (not in .data)/
-    line = $1 + $2
-    bug_to_bisect = "#{$1}.* #{$2}"
-  when /(UBSAN: .+)/
+  when /(UBSAN: .+)/,
+       /(BUG: using smp_processor_id\(\) in preemptible)/,
+       /^[0-9a-z]+>\] (.+)/
     # UBSAN: Undefined behaviour in ../include/linux/bitops.h:110:33
     # UBSAN: shift-out-of-bounds in drivers/of/unittest.c:1893:36
+    # [   13.708945 ] [<0000000013155f90>] usb_hcd_irq
     line = $1
     bug_to_bisect = oops_to_bisect_pattern line
-  when /(BUG: using smp_processor_id\(\) in preemptible)/
-    line = $1
-    bug_to_bisect = oops_to_bisect_pattern line
-  # printk(KERN_ERR "BUG: Dentry %p{i=%lx,n=%pd} still in use (%d) [unmount of %s %s]\n"
-  when /(BUG: Dentry ).* (still in use) .* \[unmount of /
+  when /(BUG: key )[0-9a-f]+ (not in .data)/,
+       /(BUG: Dentry ).* (still in use) .* \[unmount of /
+    # printk(KERN_ERR "BUG: Dentry %p{i=%lx,n=%pd} still in use (%d) [unmount of %s %s]\n"
     line = $1 + $2
     bug_to_bisect = "#{$1}.* #{$2}"
   when /^backtrace:([a-zA-Z0-9_]+)/,
@@ -324,10 +321,6 @@ def analyze_error_id(line)
     # [   12.344185 ] INFO: Slab 0x(____ptrval____) objects=22 used=11 fp=0x(____ptrval____) flags=0x10201
     bug_to_bisect = oops_to_bisect_pattern line
     line = "#{$1}(#) #{$2}"
-  when /^[0-9a-z]+>\] (.+)/
-    # [   13.708945 ] [<0000000013155f90>] usb_hcd_irq
-    line = $1
-    bug_to_bisect = oops_to_bisect_pattern line
   when /(.*) \]---(.*)/
     # [    0.049111 ][    T0 ] ---[ end Kernel panic - not syncing: Fatal exception ]---
     line = "#{$1}#{$2}"
@@ -384,7 +377,7 @@ def generate_error_id(line)
 
   error_id.gsub!(/([a-z]:)[0-9]+\b/, '\1') # WARNING: at arch/x86/kernel/cpu/perf_event.c:1077 x86_pmu_start+0xaa/0x110()
   error_id.remove!(/#:\[<#>\]\[<#>\]/) # RIP: 0010:[<ffffffff91906d8d>]  [<ffffffff91906d8d>] validate_chain+0xed/0xe80
-  error_id.gsub!(/RIP:#:/, 'RIP:') # RIP: 0010:__might_sleep+0x72/0x80
+  error_id.gsub!('RIP:#:', 'RIP:') # RIP: 0010:__might_sleep+0x72/0x80
   error_id.gsub!(/[^\/a-zA-Z0-9_]\w[0-9]+\W/, '#') # dmesg.BUG:soft_lockup-CPU##stuck_for#s![trinity-c0:#]
   error_id.gsub!(/\W\w[0-9]+[^\/a-zA-Z0-9_]/, '#') # dmesg.BUG:soft_lockup-CPU##stuck_for#s![kworker/u258:#:#]
 

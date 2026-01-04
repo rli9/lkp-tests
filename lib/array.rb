@@ -16,7 +16,7 @@ class Array
   end
 
   def mean
-    ave = sum.to_f / size
+    ave = sum(0.0) / size
     (ave * 100).round / 100.0
   end
 

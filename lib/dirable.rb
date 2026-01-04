@@ -48,13 +48,13 @@ module LKP
                           .find { |path| File.exist? path }
       end
 
-      def open_content(content_path, &blk)
+      def open_content(content_path, &)
         if content_path.end_with? '.gz'
-          Zlib::GzipReader.open(content_path, &blk)
+          Zlib::GzipReader.open(content_path, &)
         elsif content_path.end_with? '.xz'
-          IO.popen("xzcat #{content_path}", &blk)
+          IO.popen("xzcat #{content_path}", &)
         else
-          File.open(content_path, &blk)
+          File.open(content_path, &)
         end
       end
     end

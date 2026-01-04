@@ -22,12 +22,13 @@ class ResultRoot < CResultRoot
   JOB_FILE = 'job.yaml'.freeze
 
   include Property
+
   prop_reader :axes
 
   private
 
   def initialize(path)
-    super(path)
+    super
 
     @axes = calc_axes
   end

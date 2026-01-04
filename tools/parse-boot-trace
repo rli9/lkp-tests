@@ -6,7 +6,7 @@
 # Default mode: 'analysis'
 # Default unit: 'cycles'
 
-LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.realpath($PROGRAM_NAME), 2)
 
 require "#{LKP_SRC}/lib/ftrace"
 require "#{LKP_SRC}/lib/statistics"
@@ -14,7 +14,7 @@ require 'English'
 require 'optparse'
 
 class ApBootInfo
-  attr_accessor :cpu_id, :cpu_up_time, :bringup_cpu_time, :sched_cpu_starting_time, \
+  attr_accessor :cpu_id, :cpu_up_time, :bringup_cpu_time, :sched_cpu_starting_time,
                 :cpuhp_online_idle_time, :global_param
 
   def initialize(id: -1, cu: 0, buc: 0, scs: 0, coi: 0, gp: nil)
@@ -39,18 +39,18 @@ class ApBootInfo
   end
 
   def boot_start
-    if !@global_param[:smp_init_time].zero?
-      @cpu_up_time - @global_param[:smp_init_time]
-    else
+    if @global_param[:smp_init_time].zero?
       printf("Please set smp_init_time for cpu %d first\n", @cpu_id)
+    else
+      @cpu_up_time - @global_param[:smp_init_time]
     end
   end
 
   def bp_boot_start
-    if !@global_param[:smp_init_time].zero?
-      @cpuhp_online_idle_time - @global_param[:smp_init_time]
-    else
+    if @global_param[:smp_init_time].zero?
       printf("Please set smp_init_time for cpu %d first\n", @cpu_id)
+    else
+      @cpuhp_online_idle_time - @global_param[:smp_init_time]
     end
   end
 end
@@ -84,7 +84,7 @@ class CpuBootLogParser
   end
 
   def process_global_params(timestamp, func)
-    @global_param["#{func}_time".to_sym] = timestamp / @normalized
+    @global_param[:"#{func}_time"] = timestamp / @normalized
   end
 
   def process_cpu_up(timestamp)
@@ -175,7 +175,7 @@ class BootTraceParser
 
       cpu_parser.parse(func, timestamp, cpu_id)
 
-      @func_arr.push(Array.[](cpu_id, (timestamp - cpu_parser.global_param[:smp_init_time]) / @normalized, func))
+      @func_arr.push([cpu_id, (timestamp - cpu_parser.global_param[:smp_init_time]) / @normalized, func])
     end
 
     @global_param = cpu_parser.global_param
@@ -204,7 +204,7 @@ def print_analysis(parser, options)
   printf("%3s  %15s  %24s\n", 'Cpu.ID', 'Measurement', "Normalized Time(#{options[:unit]})")
   (1..total_ap).each do |i|
     %w(boot_duration early_boot_duration bp_boot_duration boot_start bp_boot_start).each do |stat|
-      printf("CPU.%03d  %-20s  %-12.1f %s\n", \
+      printf("CPU.%03d  %-20s  %-12.1f %s\n",
              i, stat, parser.apbootinfo_hash[i].send(stat), options[:unit])
     end
   end

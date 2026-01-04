@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.realpath($PROGRAM_NAME), 2)
 
 require "#{LKP_SRC}/lib/statistics"
 
@@ -26,7 +26,8 @@ while (line = $stdin.gets)
     puts line
     prefix = ''
     @sample = {}
-  when /^Sched Debug Version:/
+  when /^Sched Debug Version:/,
+       /^runnable tasks:/
     next
   when /^\s*(\S+)\s*:\s+([0-9.-]+)/
     next if prefix.index ':/autogroup-'
@@ -39,8 +40,6 @@ while (line = $stdin.gets)
     else
       puts "#{key}: #{$2}"
     end
-  when /^runnable tasks:/
-    next
   else
     values = line.split
     next if values.empty?

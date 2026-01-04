@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(__dir__))
+LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__, 2)
 
 require 'git'
 
@@ -138,7 +138,7 @@ module Git
     end
 
     def ordered_official_release_tags
-      release_tags_with_order.keys.select { |k| k =~ /^v[0-9]*\.[0-9]*(|\.[0-9]*)$/ }
+      release_tags_with_order.keys.grep(/^v[0-9]*\.[0-9]*(|\.[0-9]*)$/)
     end
 
     def release_shas

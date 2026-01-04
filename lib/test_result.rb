@@ -71,7 +71,7 @@ module LKP
                      end
 
       # support both /result and /result/bad path
-      raise ArgumentError, "Invalid path #{path}" unless @result_path.parse_result_root(path.sub(/^#{RESULT_ROOT_DIR}(\/bad)?/, ''), is_local_run: is_local_run)
+      raise ArgumentError, "Invalid path #{path}" unless @result_path.parse_result_root(path.sub(/^#{RESULT_ROOT_DIR}(\/bad)?/o, ''), is_local_run: is_local_run)
 
       @result_path
     end

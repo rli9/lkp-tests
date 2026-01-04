@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.dirname(File.realpath($PROGRAM_NAME))))
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.realpath($PROGRAM_NAME), 3)
 
 require 'ostruct'
 require "#{LKP_SRC}/lib/statistics"
@@ -135,7 +135,7 @@ class Stater
 
   # # ok 3 # SKIP System does not support SGX2
   def count_leading_hashes(line)
-    line.scan(/^(?:# )+/).first.to_s.scan(/# /).size
+    line.scan(/^(?:# )+/).first.to_s.scan('# ').size
   end
 
   def parse_make_result(result)
@@ -149,7 +149,7 @@ class Stater
   end
 
   def parse_test_result(m)
-    test_parts = Array(curr_test.parts) + Array(m[:test_parts].split(/# SKIP/))
+    test_parts = Array(curr_test.parts) + Array(m[:test_parts].split('# SKIP'))
     test_parts = fixup_test_parts(test_parts)
 
     test_name = test_name(test_prefix, *test_parts)
@@ -270,7 +270,7 @@ class NetStater < Stater
       end
     end
 
-    super(test_parts)
+    super
   end
 end
 
@@ -384,7 +384,7 @@ class MptcpStater < Stater
       part.sub(/ # time=\d+ms$/, '')
     end
 
-    super(test_parts)
+    super
   end
 end
 
@@ -434,7 +434,7 @@ class SgxStater < Stater
   def fixup_test_parts(test_parts)
     # ignore the 2nd part which is SKIP reason if exists
     #   ["", "System does not support SGX2"]
-    super [test_parts.first]
+    super([test_parts.first])
   end
 end
 
@@ -454,7 +454,7 @@ class CapabilitiesStater < Stater
 
   def fixup_test_parts(test_parts)
     # ignore the 'Passed'
-    super(test_parts.reject { |part| part =~ /Passed/ })
+    super(test_parts.grep_v(/Passed/))
   end
 end
 
@@ -484,7 +484,7 @@ class MqueueStater < Stater
   attr_accessor :mqueue_speed
 
   def initialize(test, test_script, stats)
-    super(test, test_script, stats)
+    super
 
     @mqueue_speed = {}
   end
@@ -531,7 +531,7 @@ class BpfStater < Stater
     # "Test   0: mov ... "
     test_parts = Array(test_parts).map { |part| part.sub(' ...', '') }
 
-    super(test_parts)
+    super
   end
 end
 
@@ -539,7 +539,7 @@ class VmallocStater < Stater
   attr_accessor :tmp_stats
 
   def initialize(test, test_script, stats)
-    super(test, test_script, stats)
+    super
 
     @tmp_stats = {}
   end

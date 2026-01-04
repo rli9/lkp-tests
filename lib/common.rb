@@ -33,7 +33,7 @@ module AddCachedMethod
 end
 
 def instance_variable_sym(str)
-  "@#{str}".intern
+  :"@#{str}"
 end
 
 def with_set_globals(*var_val_list)
@@ -124,7 +124,7 @@ def format_number(number)
         '%.2f'
       elsif an < 100_000_000
         '%.1f'
-      else
+      else # rubocop:disable Lint/DuplicateBranch
         '%.4g'
       end
     s = format(fmt, number)
@@ -167,22 +167,22 @@ module DirObject
     File.join @path, *sub
   end
 
-  def open(sub, *args, &b)
+  def open(sub, ...)
     sub = ensure_array(sub)
-    File.open path(*sub), *args, &b
+    File.open(path(*sub), ...)
   end
 
-  def glob(pattern, flags = nil, &b)
+  def glob(pattern, flags = nil, &)
     fpattern = path pattern
     if flags
-      Dir.glob fpattern, flags, &b
+      Dir.glob(fpattern, flags, &)
     else
-      Dir.glob fpattern, &b
+      Dir.glob(fpattern, &)
     end
   end
 
-  def chdir(&b)
-    Dir.chdir @path, &b
+  def chdir(&)
+    Dir.chdir(@path, &)
   end
 
   def run_in(cmd)
@@ -231,10 +231,10 @@ def monitor_file(file, history = 10)
   system 'tail', '-f', '-n', history.to_s, file
 end
 
-def zopen(fn, mode = 'r', &blk)
+def zopen(fn, mode = 'r', &)
   fn.sub!(/(\.xz|\.gz)$/, '')
   if File.exist?(fn)
-    File.open(fn, mode, &blk)
+    File.open(fn, mode, &)
   elsif File.exist?("#{fn}.xz")
     IO.popen("xzcat #{"#{fn}.xz"}", mode, &blk)
   elsif File.exist?("#{fn}.gz")
@@ -299,7 +299,7 @@ def make_relative_symlink(src, dst)
   src_comps = split_path(src)
   dst_comps = split_path(dst)
   src_comps, dst_comps = remove_common_head(src_comps, dst_comps)
-  rsrc = File.join(['..'] * (dst_comps.size - 1) + src_comps)
+  rsrc = File.join((['..'] * (dst_comps.size - 1)) + src_comps)
   File.symlink(rsrc, dst)
 end
 
@@ -318,7 +318,7 @@ def with_flock(lock_file, timeout = nil)
 end
 
 def delete_file_if_exist(file)
-  File.delete(file) if File.exist?(file)
+  FileUtils.rm_f(file)
 end
 
 module THP

@@ -4,7 +4,7 @@ require 'optparse'
 require 'fileutils'
 require 'tmpdir'
 
-LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.realpath($PROGRAM_NAME), 2)
 
 require "#{LKP_SRC}/lib/job"
 require "#{LKP_SRC}/lib/result_root"
@@ -65,7 +65,7 @@ end
 
 ret = 0
 begin
-  rts = Dir["#{result_root_dir}/**/[0-9]*/job.yaml"].map { |f| File.realpath(File.dirname(File.dirname(f))) }.sort.uniq
+  rts = Dir["#{result_root_dir}/**/[0-9]*/job.yaml"].map { |f| File.realpath(File.dirname(f, 2)) }.sort.uniq
   rts.each_with_index do |source, i|
     job_file = Dir[File.join(source, '*', 'job.yaml')].first
     job = Job.open(job_file)

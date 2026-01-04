@@ -17,9 +17,7 @@ describe 'filter/need_kernel_version.rb' do
     dir = @tmp_dir.path(compiler)
     FileUtils.mkdir_p(dir)
     FileUtils.touch("#{dir}/vmlinuz")
-    File.open(File.join(dir, 'context.yaml'), 'w') do |f|
-      f.write({ 'rc_tag' => kernel_version }.to_yaml)
-    end
+    File.write(File.join(dir, 'context.yaml'), { 'rc_tag' => kernel_version }.to_yaml)
   end
 
   def generate_job(compiler, contents = "\n")

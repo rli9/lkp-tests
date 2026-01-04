@@ -1,4 +1,4 @@
-LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(__dir__))
+LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__, 2)
 
 require 'rspec'
 require 'yaml'

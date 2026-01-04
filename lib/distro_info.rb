@@ -18,6 +18,7 @@ module LKP
   #
   class DistroInfo
     include Singleton
+
     attr_reader :systemname, :systemnamel, :systemversion, :systemarch
 
     def initialize(rootfs = '/')

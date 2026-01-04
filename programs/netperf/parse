@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.dirname(File.realpath($PROGRAM_NAME))))
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.realpath($PROGRAM_NAME), 3)
 
 # netperf.workload is defined as the total transaction number or the total
 # packet number depended on transmission protocal used in netperf
@@ -74,7 +74,7 @@ end
 both_throughput = throughput + recv_throughput
 
 workload = both_throughput * time
-workload = workload * 10**6 / 8.0 / pkt_size if unit == 'Mbps'
+workload = workload * (10**6) / 8.0 / pkt_size if unit == 'Mbps'
 puts "Throughput_#{unit}: #{avg_throughput}"
 puts "ThroughputRecv_#{unit}: #{avg_recv_throughput}"
 puts "ThroughputBoth_#{unit}: #{avg_both_throughput}"

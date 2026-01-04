@@ -17,7 +17,7 @@ def tbox_group(hostname)
 end
 
 def tbox_group?(hostname)
-  return unless hostname.is_a?(String) && !hostname.empty?
+  return false unless hostname.is_a?(String) && !hostname.empty?
 
   Dir[LKP::Path.src('hosts', hostname)][0]
 end
@@ -44,7 +44,7 @@ class ResultPath < Hash
   end
 
   def parse_result_root(rt, is_local_run: false)
-    dirs = rt.sub(/#{RESULT_ROOT_DIR}/, '').split('/')
+    dirs = rt.sub(/#{RESULT_ROOT_DIR}/o, '').split('/')
     dirs.shift if dirs[0] == ''
 
     self['testcase'] = dirs.shift
@@ -104,7 +104,7 @@ class ResultPath < Hash
   def test_desc(dim, dim_not_a_param)
     keys = test_desc_keys(dim, dim_not_a_param)
 
-    keys.map { |key| self[key] }.compact.join '/'
+    keys.filter_map { |key| self[key] }.join '/'
   end
 
   def parse_test_desc(desc, dim: 'commit', dim_not_a_param: true)

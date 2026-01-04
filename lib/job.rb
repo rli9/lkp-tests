@@ -169,7 +169,7 @@ end
 class JobFileSyntaxError < RuntimeError
   def initialize(jobfile, syn_msg)
     @jobfile = jobfile
-    super "Jobfile: #{jobfile}, syntax error: #{syn_msg}"
+    super("Jobfile: #{jobfile}, syntax error: #{syn_msg}")
   end
 
   attr_reader :jobfile
@@ -507,20 +507,20 @@ class Job
     yield job
   end
 
-  def each_jobs(&block)
+  def each_jobs(&)
     each_job_init
     load_hosts_config
     job = deepcopy(@job)
     @job2 = {}
     load_defaults
     each_job_init
-    each_job(&block)
+    each_job(&)
     @jobs.each do |hash|
       @job = deepcopy(job)
       @job2 = hash
       load_defaults
       each_job_init
-      each_job(&block)
+      each_job(&)
     end
   end
 
@@ -565,8 +565,8 @@ class Job
     end
   end
 
-  def each(&block)
-    @job.each(&block)
+  def each(&)
+    @job.each(&)
   end
 
   def monitor_params
@@ -738,11 +738,7 @@ class Job
 
     as['rootfs'] = rootfs_filename as['rootfs'] if as.key? 'rootfs'
     each_param do |k, v, option_type|
-      if option_type == '='
-        as[k] = v.to_s
-      elsif v
-        as[k] = v.to_s
-      end
+      as[k] = v.to_s if option_type == '=' || v
     end
     as
   end
@@ -826,7 +822,7 @@ class Job
 end
 
 class JobEval < Job
-  def method_missing(method, *args, &_block)
+  def method_missing(method, *args, &)
     job = @job
     method = method.to_s
     if method.chomp!('=')

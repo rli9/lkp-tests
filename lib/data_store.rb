@@ -25,6 +25,7 @@ module DataStore
     ALL_OTHERS_KEY = :__all_others__
 
     include Property
+
     prop_accessor(*PROPS)
 
     def initialize(params)
@@ -250,7 +251,7 @@ module DataStore
     end
 
     def node_dir_to_table_dir(node_dir)
-      storage_dir = File.dirname(File.dirname(node_dir))
+      storage_dir = File.dirname(node_dir, 2)
       if File.basename(storage_dir) == 'storage'
         File.dirname(storage_dir)
       elsif symlink? node_dir
@@ -315,10 +316,10 @@ module DataStore
       {}
     end
 
-    def with_index_lock(&blk)
+    def with_index_lock(&)
       file = path(LOCK_FILE)
       begin
-        with_flock(file, 1800, &blk)
+        with_flock(file, 1800, &)
       rescue Timeout::Error
         puts "with_index_lock timeout: #{file}"
       end
@@ -406,13 +407,13 @@ module DataStore
       end
     end
 
-    def each(conditions, date = nil, &blk)
+    def each(conditions, date = nil, &)
       return enum_for(__method__) unless block_given?
 
       if conditions.empty?
-        each_for_all(&blk)
+        each_for_all(&)
       else
-        grep(conditions, index_files(date), &blk)
+        grep(conditions, index_files(date), &)
       end
     end
   end
@@ -475,7 +476,7 @@ module DataStore
       delete_str str, ifn
     end
 
-    def each(conditions, _date = nil, &blk)
+    def each(conditions, _date = nil, &)
       return enum_for(__method__) unless block_given?
 
       ifn = index_file conditions
@@ -484,7 +485,7 @@ module DataStore
 
       nconds = conditions.dup
       nconds.delete @axis_keys.first
-      grep(conditions, [ifn], &blk)
+      grep(conditions, [ifn], &)
     end
   end
 
@@ -500,6 +501,7 @@ module DataStore
     LOCK_FILE = '.lock'.freeze
 
     include DirObject
+
     prop_reader :table, :axes
 
     private
@@ -841,7 +843,7 @@ module DataStore
   end
 
   def self.test
-    tbl_path = File.join(ENV.fetch('HOME', nil), 'tbl1')
+    tbl_path = File.join(Dir.home, 'tbl1')
     FileUtils.rm_rf tbl_path
     layout = Layout.create_new tbl_path
     layout.add_map(Map::NAME => 'default',

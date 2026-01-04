@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.dirname(File.realpath($PROGRAM_NAME))))
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.realpath($PROGRAM_NAME), 3)
 
 require "#{LKP_SRC}/lib/string"
 require "#{LKP_SRC}/lib/log"
@@ -15,20 +15,20 @@ while (line = $stdin.gets)
   line = line.resolve_invalid_bytes
 
   case line
-  when /^#{TEST_PATTERN}\s+\[failed, /, # btrfs/005 [failed, exit status 1]- output mismatch (see /lkp/benchmarks/xfstests/results//btrfs/005.out.bad)
-       /^#{TEST_PATTERN}\s+- output mismatch/, # btrfs/158 - output mismatch (see /lkp/benchmarks/xfstests/results//btrfs/158.out.bad)
-       /^#{TEST_PATTERN}\s+_check_dmesg: something found in dmesg/, # xfs/385 _check_dmesg: something found in dmesg (see /lkp/benchmarks/xfstests/results//xfs/385.dmesg)
+  when /^#{TEST_PATTERN}\s+\[failed, /o, # btrfs/005 [failed, exit status 1]- output mismatch (see /lkp/benchmarks/xfstests/results//btrfs/005.out.bad)
+       /^#{TEST_PATTERN}\s+- output mismatch/o, # btrfs/158 - output mismatch (see /lkp/benchmarks/xfstests/results//btrfs/158.out.bad)
+       /^#{TEST_PATTERN}\s+_check_dmesg: something found in dmesg/o, # xfs/385 _check_dmesg: something found in dmesg (see /lkp/benchmarks/xfstests/results//xfs/385.dmesg)
        /^_check_generic_filesystem: filesystem on .+ is inconsistent \(see .+\/([a-z]+)\/([0-9]+)\.full\)/,
-       /^#{TEST_PATTERN}\s+_check.+: filesystem on .+ has dirty log/, # xfs/027 _check_xfs_filesystem: filesystem on /dev/sda5 has dirty log
-       /^#{TEST_PATTERN}\s+_check.+: filesystem on .+ is inconsistent/ # btrfs/002 _check_btrfs_filesystem: filesystem on /dev/sda2 is inconsistent
+       /^#{TEST_PATTERN}\s+_check.+: filesystem on .+ has dirty log/o, # xfs/027 _check_xfs_filesystem: filesystem on /dev/sda5 has dirty log
+       /^#{TEST_PATTERN}\s+_check.+: filesystem on .+ is inconsistent/o # btrfs/002 _check_btrfs_filesystem: filesystem on /dev/sda2 is inconsistent
     stats.add "#{$1}.#{$2}", 'fail'
-  when /^#{TEST_PATTERN}\s+\[not run\]/
+  when /^#{TEST_PATTERN}\s+\[not run\]/o
     # xfs/161 [not run] Assuming DMAPI modules are not loaded
     stats.add "#{$1}.#{$2}", 'skip'
-  when /^#{TEST_PATTERN}\s+\[expunged\]/
+  when /^#{TEST_PATTERN}\s+\[expunged\]/o
     # generic/387       [expunged]
     stats.add "#{$1}.#{$2}", 'expunged'
-  when /^#{TEST_PATTERN}\s+(\d+)s/
+  when /^#{TEST_PATTERN}\s+(\d+)s/o
     # btrfs/011        3434s
     stats.add "#{$1}.#{$2}", 'pass'
   end

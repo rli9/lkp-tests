@@ -2,9 +2,7 @@
 
 def axis_key_project(axis_key)
   case axis_key
-  when 'commit'
-    'linux'
-  when 'head_commit', 'base_commit'
+  when 'commit', 'head_commit', 'base_commit'
     'linux'
   when /_commit$/
     axis_key.sub(/_commit$/, '')

@@ -35,7 +35,7 @@ class Hashugar
     end
   end
 
-  def method_missing(method, *args, &_block)
+  def method_missing(method, *args, &)
     method = method.to_s
     if method.chomp!('=')
       @table[method] = args.first
@@ -55,11 +55,11 @@ class Hashugar
   end
 
   def respond_to?(key)
-    super(key) || @table.key?(stringify(key))
+    super || @table.key?(stringify(key))
   end
 
-  def each(&block)
-    @table_with_original_keys.each(&block)
+  def each(&)
+    @table_with_original_keys.each(&)
   end
 
   def to_hash

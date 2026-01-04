@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.dirname(File.realpath($PROGRAM_NAME))))
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.realpath($PROGRAM_NAME), 3)
 
 require "#{LKP_SRC}/lib/string"
 
@@ -75,10 +75,10 @@ def calc_latency(stem, stem1, results_sum, value, results_nr, interval, interval
 
   # Need to deal with _INSERTSS == 0
   latency_key = "#{prefix}#{stem}_latency_ns"
-  latency = if value != 0
-              occupancy / value / (ticks_sum / (ticks_nr / interval_nr)) * 1e+9 * interval
-            else
+  latency = if value.zero?
               $latency_prev[latency_key]
+            else
+              occupancy / value / (ticks_sum / (ticks_nr / interval_nr)) * 1e+9 * interval
             end
   $latency_prev[latency_key] = latency
   puts "#{latency_key}: #{latency}"

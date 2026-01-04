@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(File.dirname(__dir__))
+LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__, 2)
 
 require 'git'
 require "#{LKP_SRC}/lib/string"

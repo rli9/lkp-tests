@@ -48,9 +48,8 @@ File.foreach("#{RESULT_ROOT}/kmsg") do |line|
     puts "bss: #{$8}"
     puts "reserved: #{$9}"
     puts "highmem: #{$11}" if $10
-  when /^(\[[0-9. ]+\] )?Freeing .* memory: (\d+)K /
-    freed += $2.to_i
-  when /^(\[[0-9. ]+\] )?Freeing .*: (\d+)k freed$/
+  when /^(\[[0-9. ]+\] )?Freeing .* memory: (\d+)K /,
+       /^(\[[0-9. ]+\] )?Freeing .*: (\d+)k freed$/
     freed += $2.to_i
   end
 end

@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.dirname(File.realpath($PROGRAM_NAME))))
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.realpath($PROGRAM_NAME), 3)
 
 require "#{LKP_SRC}/lib/string"
 require "#{LKP_SRC}/lib/log"
@@ -76,10 +76,10 @@ while (line = $stdin.gets)
 
     unit = unit.downcase.tr(' ', '_').tr('/', '_')
 
-    if !test_subname.empty?
-      stats["#{test_name}.#{test_subname.at(test_id)}.#{unit}"] = value
-    else
+    if test_subname.empty?
       stats["#{test_name}.#{test_id}.#{unit}"] = value
+    else
+      stats["#{test_name}.#{test_subname.at(test_id)}.#{unit}"] = value
     end
   when /Final: ([0-9.]+) (.*)/
     value = Regexp.last_match[1]
@@ -88,10 +88,10 @@ while (line = $stdin.gets)
       is_begin_of_subtest = false
     end
 
-    if !test_subname.empty?
-      stats["#{test_name}.#{test_subname.at(test_id)}.Final"] = value
-    else
+    if test_subname.empty?
       stats["#{test_name}.#{test_id}.Final"] = value
+    else
+      stats["#{test_name}.#{test_subname.at(test_id)}.Final"] = value
     end
   when /Final: ([A-Z]+)/
     result = $1.downcase
@@ -101,17 +101,16 @@ while (line = $stdin.gets)
       is_begin_of_subtest = false
     end
 
-    if !test_subname.empty?
-      stats["#{test_name}.#{test_subname.at(test_id)}.Final.#{result}"] = 1
-    else
+    if test_subname.empty?
       stats["#{test_name}.#{test_id}.Final.#{result}"] = 1
+    else
+      stats["#{test_name}.#{test_subname.at(test_id)}.Final.#{result}"] = 1
     end
   when /The following tests failed to properly run:/
     stats["#{test_name}.fail"] = 1
-  when /(idle-[\d.]+seconds): ([\d.]+)/
+  when /(idle-[\d.]+seconds): ([\d.]+)/,
+       /(smart-[\d.]+seconds): ([\d.]+)/
     # idle-1.1.0.seconds: 36.055191180
-    stats[$1] = $2
-  when /(smart-[\d.]+seconds): ([\d.]+)/
     # smart-1.0.0.seconds: 7.252623981
     stats[$1] = $2
   when /The test run did not produce a result|The test quit with a non-zero exit status/

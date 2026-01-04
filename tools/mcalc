@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.dirname(File.realpath($PROGRAM_NAME)))
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.realpath($PROGRAM_NAME), 2)
 
 require 'optparse'
 require "#{LKP_SRC}/lib/statistics"
@@ -30,8 +30,8 @@ class MatrixCalculator
     @nmatrix = {}
   end
 
-  def do(&blk)
-    instance_eval(&blk)
+  def do(&)
+    instance_eval(&)
   end
 
   def _get(*stats)
