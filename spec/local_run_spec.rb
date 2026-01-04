@@ -14,7 +14,7 @@ describe 'local run' do
     FileUtils.cp "#{LKP_SRC}/lib/run_env.rb", @tmp_file
     s = ''
     File.open(@tmp_file, 'r') do |f|
-      f.each_line { |l| s += l.gsub(/\#{LKP_SRC}\/hosts\//, "#{@tmp_dir}/") } # rubocop:disable Lint/InterpolationCheck
+      f.each_line { |l| s += l.gsub(/\#{LKP_SRC}\/hosts\//, "#{@tmp_dir}/") }
       f.rewind
     end
     File.write(@tmp_file, s)

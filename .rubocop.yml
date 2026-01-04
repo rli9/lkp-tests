@@ -31,9 +31,6 @@ Lint/FloatComparison:
 Lint/OrAssignmentToConstant:
   Enabled: false
 
-Lint/RedundantCopDisableDirective:
-  Enabled: false
-
 Lint/ShadowingOuterLocalVariable:
   Enabled: false
 
