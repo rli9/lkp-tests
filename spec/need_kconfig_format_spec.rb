@@ -51,38 +51,38 @@ describe 'Check need_kconfig from' do
   # Check the config format in include/ dir
   Dir["#{LKP_SRC}/include/**/*", "#{LKP_SRC}/programs/*/include"].select { |file| File.file?(file) }
                                                                  .each do |file|
-    begin
-      yaml_data = load_yaml_with_conditionals(file)
-      # next if yaml_data.nil? || !yaml_data.is_a?(Hash) || erb_file?(file)
-      next unless yaml_data.is_a?(Hash) && !erb_file?(file)
+                                                                   begin
+                                                                     yaml_data = load_yaml_with_conditionals(file)
+                                                                     # next if yaml_data.nil? || !yaml_data.is_a?(Hash) || erb_file?(file)
+                                                                     next unless yaml_data.is_a?(Hash) && !erb_file?(file)
 
-      kconfig_section = yaml_data['need_kconfig']
+                                                                     kconfig_section = yaml_data['need_kconfig']
 
-      next if kconfig_section.nil?
+                                                                     next if kconfig_section.nil?
 
-      it file do
-        case kconfig_section
-        when String
-          check_config_name(kconfig_section)
-        when Array
-          kconfig_section.each do |config|
-            var_name, var_val = config.is_a?(String) ? config.split(':').map(&:strip) : [config.keys[0], config.values[0]]
-            check_config_name(var_name)
+                                                                     it file do
+                                                                       case kconfig_section
+                                                                       when String
+                                                                         check_config_name(kconfig_section)
+                                                                       when Array
+                                                                         kconfig_section.each do |config|
+                                                                           var_name, var_val = config.is_a?(String) ? config.split(':').map(&:strip) : [config.keys[0], config.values[0]]
+                                                                           check_config_name(var_name)
 
-            # If value is array
-            if var_val.is_a?(Array)
-              var_val.each do |val|
-                check_config_value(val)
-              end
-            else
-              check_config_value(var_val)
-            end
-          end
-        end
-      end
-    rescue Psych::SyntaxError
-      # Expecting need_kconfig will be put in yaml file, so files like include/md/raid_level will be skipped
-      next
-    end
+                                                                           # If value is array
+                                                                           if var_val.is_a?(Array)
+                                                                             var_val.each do |val|
+                                                                               check_config_value(val)
+                                                                             end
+                                                                           else
+                                                                             check_config_value(var_val)
+                                                                           end
+                                                                         end
+                                                                       end
+                                                                     end
+                                                                   rescue Psych::SyntaxError
+                                                                     # Expecting need_kconfig will be put in yaml file, so files like include/md/raid_level will be skipped
+                                                                     next
+                                                                   end
   end
 end

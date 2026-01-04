@@ -127,23 +127,23 @@ module LKP
       test_contents.reject { |test_stat, _values| LKP::StatDenylist.instance.contain?(test_stat) }
                    .select { |test_stat, _values| test_stat =~ /^#{self['testcase']}/ && self.class.test_result_definition.result?(test_stat) }
                    .to_h do |test_stat, values|
-        result = self.class.test_result_definition.type(test_stat)
+                     result = self.class.test_result_definition.type(test_stat)
 
-        # "kmsg.XFS(pmem#):EXPERIMENTAL_online_scrub_feature_in_use.Use_at_your_own_risk": 1,
-        #
-        # "xfstests.generic.413.pass": 1,
-        #
-        # kernel-selftests.android.run.sh.fail: {
-        #   0,
-        #   1
-        # }
-        # "kernel-selftests.kvm.make.fail": [
-        #   1
-        # ]
-        values = Array(values)
-        log_warn "#{test_stat} value is unexpected | #{values}" unless values.any?(&:positive?)
+                     # "kmsg.XFS(pmem#):EXPERIMENTAL_online_scrub_feature_in_use.Use_at_your_own_risk": 1,
+                     #
+                     # "xfstests.generic.413.pass": 1,
+                     #
+                     # kernel-selftests.android.run.sh.fail: {
+                     #   0,
+                     #   1
+                     # }
+                     # "kernel-selftests.kvm.make.fail": [
+                     #   1
+                     # ]
+                     values = Array(values)
+                     log_warn "#{test_stat} value is unexpected | #{values}" unless values.any?(&:positive?)
 
-        [test_stat, FuncTestResult.new(test_stat.sub(/\.(pass|fail|skip)$/, ''), result => values.sum)]
+                     [test_stat, FuncTestResult.new(test_stat.sub(/\.(pass|fail|skip)$/, ''), result => values.sum)]
       end
     end
 
@@ -152,24 +152,24 @@ module LKP
 
       test_results = test_contents.select { |test_stat, _values| test_stat =~ /^(dmesg\.boot_failures|last_state\.is_incomplete_run)/ }
                                   .to_h do |test_stat, values|
-        result = self.class.test_result_definition.type(test_stat)
-        values = Array(values)
+                                    result = self.class.test_result_definition.type(test_stat)
+                                    values = Array(values)
 
-        test = case test_stat
-               when /dmesg/
-                 # it's possible the test result is impacted by early error/warning
-                 # or such error/warning makes further test uninterested, one example
-                 # is below
-                 #   "dmesg.boot_failures": 1,
-                 #   "dmesg.WARNING:at_mm/slab_common.c:#kmem_cache_create_usercopy": 1,
-                 #   "kernel-selftests.x86.single_step_syscall_32.pass": 1,
-                 #   "kernel-selftests.x86.syscall_nt_32.fail": 1,
-                 'dmesg.oops'
-               when /last_state/
-                 'last_state'
-               end
+                                    test = case test_stat
+                                           when /dmesg/
+                                             # it's possible the test result is impacted by early error/warning
+                                             # or such error/warning makes further test uninterested, one example
+                                             # is below
+                                             #   "dmesg.boot_failures": 1,
+                                             #   "dmesg.WARNING:at_mm/slab_common.c:#kmem_cache_create_usercopy": 1,
+                                             #   "kernel-selftests.x86.single_step_syscall_32.pass": 1,
+                                             #   "kernel-selftests.x86.syscall_nt_32.fail": 1,
+                                             'dmesg.oops'
+                                           when /last_state/
+                                             'last_state'
+                                           end
 
-        [test_stat, BootTestResult.new(test, result => values.sum)]
+                                    [test_stat, BootTestResult.new(test, result => values.sum)]
       end
 
       if %w[boot fuzz].include?(rectified_category)
@@ -188,7 +188,7 @@ module LKP
       test_contents.reject { |test_stat, _values| LKP::StatDenylist.instance.contain?(test_stat) }
                    .select { |test_stat, _values| test_stat =~ /^#{self['testcase']}/ && bisect_kpi.match?(test_stat) }
                    .to_h do |test_stat, values|
-        [test_stat, PerfTestResult.new(test_stat, values)]
+                     [test_stat, PerfTestResult.new(test_stat, values)]
       end
     end
 
