@@ -114,7 +114,7 @@ while (line = $stdin.gets)
     break
   else
     begin
-      stater.stat(line) if stater
+      stater&.stat(line)
     rescue StandardError => e
       log_warn e.message
       exit 1

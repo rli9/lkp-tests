@@ -121,7 +121,7 @@ class TPTrace
     @file.each_line do |line|
       (sample = TPSample.parse(line)) || next
       fmt = @formats[sample.type]
-      fmt && fmt.convert(sample)
+      fmt&.convert(sample)
       yield sample
     end
   end

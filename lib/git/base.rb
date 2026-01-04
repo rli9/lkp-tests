@@ -80,7 +80,7 @@ module Git
       if version && version >= 2
         tag = "v#{version}.#{patch_level}"
         tag += ".#{sub_level}" if version == 2
-        tag += "-rc#{rc}" if rc && rc.positive?
+        tag += "-rc#{rc}" if rc&.positive?
 
         [tag, false]
       else

@@ -255,10 +255,8 @@ end
 class << LinuxMResultRootTable
   def create_layout(name, force: false)
     layout = super
-    if layout
-      layout.add_index(DataStore::AxisIndex, 'commit') do |index|
-        index.set_axis_keys ['commit']
-      end
+    layout&.add_index(DataStore::AxisIndex, 'commit') do |index|
+      index.set_axis_keys ['commit']
     end
     layout
   end

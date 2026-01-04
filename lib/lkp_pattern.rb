@@ -75,7 +75,7 @@ module LKP
 
     def key(value)
       find = @keys_patterns.find { |_k, regexp| value =~ regexp }
-      find && find.first
+      find&.first
     end
 
     def value(key)

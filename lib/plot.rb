@@ -115,7 +115,7 @@ class MatrixPlotterBase
   end
 
   def open_gnuplot(file_name = nil, &)
-    if file_name && file_name.end_with?('.plt')
+    if file_name&.end_with?('.plt')
       File.open(file_name, 'w', &)
     else
       Gnuplot.open(&)

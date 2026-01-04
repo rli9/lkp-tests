@@ -128,7 +128,7 @@ def __last_linus_release_tag(commit)
     return
   end
 
-  tag += "-rc#{rc}" if rc && rc.positive?
+  tag += "-rc#{rc}" if rc&.positive?
   [tag, false]
 end
 

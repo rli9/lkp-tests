@@ -16,14 +16,12 @@ def valid_stats_range?(stats_field, num)
 
   stats_range = $__valid_range_cache[range_file]
 
-  if stats_range
-    stats_range.each do |k, v|
-      next unless stats_field =~ %r{^#{k}$}
+  stats_range&.each do |k, v|
+    next unless stats_field =~ %r{^#{k}$}
 
-      min = v[0]
-      max = v[1]
-      return false if num < min || num > max
-    end
+    min = v[0]
+    max = v[1]
+    return false if num < min || num > max
   end
 
   true

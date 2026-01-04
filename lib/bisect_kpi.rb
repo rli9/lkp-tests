@@ -159,12 +159,12 @@ module LKP
     # if curr has && base has, the percentage is 0
     # if curr has && base doesn't have, the percentage is 100
     def change(base_matrix, matrix)
-      return unless matrix[stat] && matrix[stat].max.positive?
+      return unless matrix[stat]&.max&.positive?
 
       values = matrix[stat]
       base_values = base_matrix[stat]
 
-      percentage = if base_values && base_values.max.positive?
+      percentage = if base_values&.max&.positive?
                      ((values.max - base_values.max) / base_values.max * 100) * pattern.sign # this must/should be 0
                    else
                      values.max * 100 * pattern.sign
@@ -244,16 +244,16 @@ module LKP
     # if curr has && base has, the percentage is 0
     # if curr has && base doesn't have, the percentage is 100
     def change(base_matrix, matrix)
-      return unless matrix[stat] && matrix[stat].max.positive?
+      return unless matrix[stat]&.max&.positive?
 
       values = matrix[stat]
       base_values = base_matrix[stat]
 
-      if base_values && base_values.max.positive?
+      if base_values&.max&.positive?
         percentage = ((values.max - base_values.max) / base_values.max * 100) * pattern.sign # this must/should be 0
       else
         base_values = base_matrix[reverse_stat(stat)]
-        return unless base_values && base_values.max.positive?
+        return unless base_values&.max&.positive?
 
         percentage = values.max * 100 * pattern.sign
       end

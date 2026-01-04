@@ -73,7 +73,7 @@ class ResultPath < Hash
     ]
 
     path_scheme.each do |key|
-      next if skip_keys && skip_keys.include?(key)
+      next if skip_keys&.include?(key)
 
       dirs << self[key]
     end
