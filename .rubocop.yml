@@ -197,8 +197,5 @@ Style/PercentLiteralDelimiters:
 Style/PerlBackrefs:
   Enabled: false
 
-Style/RedundantBegin:
-  Enabled: false
-
 Style/RegexpLiteral:
   Enabled: false
