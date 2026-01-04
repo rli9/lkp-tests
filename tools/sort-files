@@ -5,6 +5,8 @@
 echo "LKP_SRC=$LKP_SRC"
 
 (
+	echo $LKP_SRC/.gitignore
+
 	find $LKP_SRC/distro/adaptation -type f ! -name README.md
 	find $LKP_SRC/distro/adaptation-pkg -type f
 	echo $LKP_SRC/distro/keep-deb
