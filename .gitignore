@@ -1,4 +1,6 @@
-update
-deploy
-bin/event/wakeup
 .src_git_version
+.vscode
+bin/event/wakeup
+deploy
+Gemfile.lock
+update
