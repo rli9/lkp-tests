@@ -146,9 +146,9 @@ def load_json(file, cache: false)
       mtime = File.mtime(file)
       unless $json_cache[file] && $json_mtime[file] == mtime
         obj = if file =~ /\.json$/
-                JSON.load File.read(file, encoding: 'UTF-8')
+                JSON.parse File.read(file, encoding: 'UTF-8')
               else
-                JSON.load `zcat #{file}`
+                JSON.parse `zcat #{file}`
               end
         return obj unless cache
 

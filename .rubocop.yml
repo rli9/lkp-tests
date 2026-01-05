@@ -7,14 +7,8 @@ AllCops:
   NewCops: enable
   SuggestExtensions: false
 
-# Layout/IndentFirstArrayElement:
-#   Enabled: false
-
 Layout/FirstArrayElementIndentation:
   Enabled: false
-
-# Layout/IndentHeredoc:
-#   Enabled: false
 
 Layout/HeredocIndentation:
   Enabled: false
@@ -148,12 +142,6 @@ RSpec/NoExpectationExample:
 Security/Eval:
   Enabled: false
 
-Security/JSONLoad:
-  Enabled: false
-
-Security/YAMLLoad:
-  Enabled: false
-
 Style/Documentation:
   Enabled: false
 
@@ -175,9 +163,6 @@ Style/FrozenStringLiteralComment:
 
 Style/GlobalVars:
   Enabled: false
-
-# Style/MethodMissing:
-#   Enabled: false
 
 Style/MissingRespondToMissing:
   Enabled: false
