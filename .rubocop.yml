@@ -39,7 +39,6 @@ Metrics/AbcSize:
   Exclude:
     - lib/changed_stat.rb
     - lib/compare.rb
-    - lib/hash.rb
     - lib/job.rb
     - lib/job2sh.rb
     - lib/matrix.rb
@@ -54,10 +53,6 @@ Metrics/BlockLength:
     - '**/*.rake'
     - 'spec/**/*.rb'
   Enabled: false
-
-Metrics/BlockNesting:
-  Exclude:
-    - lib/hash.rb
 
 Metrics/ClassLength:
   Enabled: false

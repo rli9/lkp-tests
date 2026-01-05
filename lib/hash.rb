@@ -69,6 +69,21 @@ def merge_accumulative(a, b)
   a
 end
 
+def handle_minus_key(original, k, v)
+  kk = k[0..-2]
+  parent, pkey, hash, key, _keys = lookup_hash(original, kk)
+  return unless hash.include? key
+
+  if v
+    keys = v.is_a?(Hash) ? v.keys : Array(v)
+    keys.each { |del_key| hash[key].delete del_key }
+    hash[key] = nil if hash[key].empty?
+  else
+    hash.delete key
+    parent[pkey] = nil if hash.empty? && !parent.object_id.equal?(hash.object_id)
+  end
+end
+
 # "overwrite_top_keys = true" will have the same semantics with
 # original.update(revisions) except for the special *+, *-, a.b.c
 # notions and accumulative keys.
@@ -101,22 +116,7 @@ def revise_hash(original, revisions, overwrite_top_keys: true)
         end
     case k[-1]
     when '-'
-      kk = k[0..-2]
-      parent, pkey, hash, key, _keys = lookup_hash(original, kk)
-      if hash.include? key
-        if v
-          keys = if v.is_a? Hash
-                   v.keys
-                 else
-                   Array(v)
-                 end
-          keys.each { |k| hash[key].delete k }
-          hash[key] = nil if hash[key].empty?
-        else
-          hash.delete key
-          parent[pkey] = nil if hash.empty? && !parent.object_id.equal?(hash.object_id)
-        end
-      end
+      handle_minus_key(original, k, v)
       next false
     when '+'
       kk = k.chomp '+'

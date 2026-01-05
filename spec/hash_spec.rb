@@ -132,3 +132,60 @@ describe 'hash lookup/revise' do
     end
   end
 end
+
+describe 'lookup_hash' do
+  let(:hash) { { 'a' => { 'b' => { 'c' => 1 } } } }
+
+  it 'finds existing key' do
+    _parent, _pkey, h, key, keys = lookup_hash(hash, 'a.b.c')
+    expect(h[key]).to eq 1
+    expect(keys).to be_empty
+  end
+
+  it 'returns partial path for missing key' do
+    _parent, _pkey, h, key, keys = lookup_hash(hash, 'a.b.d')
+    expect(h).to eq({ 'c' => 1 })
+    expect(key).to eq 'd'
+    expect(keys).to be_empty
+  end
+
+  it 'creates missing keys if requested' do
+    _parent, _pkey, _h, key, _keys = lookup_hash(hash, 'a.x.y', create_missing: true)
+    expect(hash['a']['x']).to be_a(Hash)
+    expect(key).to eq 'y'
+  end
+end
+
+describe 'merge_accumulative' do
+  it 'concatenates arrays' do
+    expect(merge_accumulative([1], [2])).to eq [1, 2]
+  end
+
+  it 'merges hashes' do
+    expect(merge_accumulative({ a: 1 }, { b: 2 })).to eq({ a: 1, b: 2 })
+  end
+
+  it 'converts scalar to array when merging with array' do
+    expect(merge_accumulative(1, [2])).to eq [1, 2]
+  end
+end
+
+describe 'handle_minus_key' do
+  it 'deletes a key' do
+    hash = { 'a' => 1, 'b' => 2 }
+    handle_minus_key(hash, 'a-', nil)
+    expect(hash).to eq({ 'b' => 2 })
+  end
+
+  it 'deletes specific values from array' do
+    hash = { 'a' => [1, 2, 3] }
+    handle_minus_key(hash, 'a-', 2)
+    expect(hash).to eq({ 'a' => [1, 3] })
+  end
+
+  it 'deletes nested key' do
+    hash = { 'a' => { 'b' => 1 } }
+    handle_minus_key(hash, 'a.b-', nil)
+    expect(hash).to eq({ 'a' => nil })
+  end
+end
