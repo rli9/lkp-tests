@@ -1,24 +1,23 @@
 #!/usr/bin/env ruby
 
-require 'English'
-
 Signal.trap('INT') { exit! }
 
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.realpath($PROGRAM_NAME), 2)
 
+require 'English'
+require 'gnuplot'
 require 'optparse'
 require 'ostruct'
-require 'yaml'
-require 'gnuplot'
 require 'set'
 require 'term/ansicolor'
-require "#{LKP_SRC}/lib/lkp_git"
-require "#{LKP_SRC}/lib/yaml"
-require "#{LKP_SRC}/lib/plot"
-require "#{LKP_SRC}/lib/stats"
-require "#{LKP_SRC}/lib/result"
+require 'yaml'
 require "#{LKP_SRC}/lib/constant"
+require "#{LKP_SRC}/lib/lkp_git"
+require "#{LKP_SRC}/lib/plot"
 require "#{LKP_SRC}/lib/programs"
+require "#{LKP_SRC}/lib/result"
+require "#{LKP_SRC}/lib/stats"
+require "#{LKP_SRC}/lib/yaml"
 
 ABS_WIDTH = 10
 REL_WIDTH = 10
@@ -90,13 +89,9 @@ opt_parser = OptionParser.new do |opts|
     $opt_vgrep.push Regexp.new(expand_possible_commit(pattern))
   end
 
-  opts.on('-p', '--plot', 'plot bar graph') do
-    $opt_plot = true
-  end
+  opts.on('-p', '--plot', 'plot bar graph') { $opt_plot = true }
 
-  opts.on('-a', '--all', 'compare all') do
-    $opt_all = true
-  end
+  opts.on('-a', '--all', 'compare all') { $opt_all = true }
 
   opts.on('-s', '--save-changes', 'save all performance and bisectable changes to a file') do
     $opt_save_changes = true
@@ -107,9 +102,7 @@ opt_parser = OptionParser.new do |opts|
     $options['distance'] = 5
   end
 
-  opts.on('-t', '--group-by-test', 'test-grouped output format') do
-    $group_by_test = true
-  end
+  opts.on('-t', '--group-by-test', 'test-grouped output format') { $group_by_test = true }
 
   opts.on('-i', '--index', 'performance/power index') do
     $opt_index  = true
@@ -120,41 +113,23 @@ opt_parser = OptionParser.new do |opts|
     $all_index = $perf_index.merge($power_index).merge($latency_index).merge($size_index)
   end
 
-  opts.on('--ignore-incomplete-run', 'ignore incomplete runs') do
-    $options['ignore-incomplete-run'] = true
-  end
+  opts.on('--ignore-incomplete-run', 'ignore incomplete runs') { $options['ignore-incomplete-run'] = true }
 
-  opts.on('--regression-only', 'show regressions only') do
-    $options['regression-only'] = true
-  end
+  opts.on('--regression-only', 'show regressions only') { $options['regression-only'] = true }
 
-  opts.on('--all-critical', 'show all critical changes') do
-    $options['all-critical'] = true
-  end
+  opts.on('--all-critical', 'show all critical changes') { $options['all-critical'] = true }
 
-  opts.on('-D N', '--distance N', 'threshold of changes') do |n|
-    $options['distance'] = n.to_i
-  end
+  opts.on('-D N', '--distance N', 'threshold of changes') { |n| $options['distance'] = n.to_i }
 
-  opts.on('-P', '--perf', 'show performance changes only') do
-    $options['perf'] = true
-  end
+  opts.on('-P', '--perf', 'show performance changes only') { $options['perf'] = true }
 
-  opts.on('-r N', '--resize N', 'resize first matrix') do |n|
-    $options['resize'] = n.to_i
-  end
+  opts.on('-r N', '--resize N', 'resize first matrix') { |n| $options['resize'] = n.to_i }
 
-  opts.on('-v N', '--variance N', 'show variance changes larger than N times') do |n|
-    $options['variance'] = n.to_i
-  end
+  opts.on('-v N', '--variance N', 'show variance changes larger than N times') { |n| $options['variance'] = n.to_i }
 
-  opts.on('-w', '--whole', 'show whole changes no matter the number of result root') do |_n|
-    $options['whole'] = true
-  end
+  opts.on('-w', '--whole', 'show whole changes no matter the number of result root') { |_n| $options['whole'] = true }
 
-  opts.on('--no-hide-noises', 'do not hide noisy results') do
-    $opt_no_hide_noises = true
-  end
+  opts.on('--no-hide-noises', 'do not hide noisy results') { $opt_no_hide_noises = true }
 
   opts.on_tail('-h', '--help', 'Show this message') do
     puts opts

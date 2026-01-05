@@ -5,10 +5,10 @@ LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.realpath($PROGRAM_NAME), 2)
 require 'optparse'
 require 'ostruct'
 require "#{LKP_SRC}/lib/lkp_git"
-require "#{LKP_SRC}/lib/yaml"
-require "#{LKP_SRC}/lib/stats"
-require "#{LKP_SRC}/lib/result"
 require "#{LKP_SRC}/lib/log"
+require "#{LKP_SRC}/lib/result"
+require "#{LKP_SRC}/lib/stats"
+require "#{LKP_SRC}/lib/yaml"
 
 $opt_group = '_rt'
 $opt_kernel = ''
@@ -23,13 +23,9 @@ opt_parser = OptionParser.new do |opts|
   opts.separator ''
   opts.separator 'options:'
 
-  opts.on('-g GROUP', '--group-by GROUP', 'group by GROUP') do |group|
-    $opt_group = group.gsub '/', " + '/' + "
-  end
+  opts.on('-g GROUP', '--group-by GROUP', 'group by GROUP') { |group| $opt_group = group.gsub '/', " + '/' + " }
 
-  opts.on('-k KERNEL', '--kernel KERNEL', 'kernel branch/commit') do |kernel|
-    $opt_kernel = kernel
-  end
+  opts.on('-k KERNEL', '--kernel KERNEL', 'kernel branch/commit') { |kernel| $opt_kernel = kernel }
 
   opts.on('-p PATTERN', '--pattern PATTERN', 'grep RESULT_ROOT with PATTERN') do |pattern|
     $opt_pattern << " #{pattern}"
@@ -46,17 +42,11 @@ opt_parser = OptionParser.new do |opts|
     end
   end
 
-  opts.on('-f FIELD', '--field FIELD', 'stats field name') do |field|
-    $opt_field = field
-  end
+  opts.on('-f FIELD', '--field FIELD', 'stats field name') { |field| $opt_field = field }
 
-  opts.on('-r', '--raw-samples', 'show raw samples') do
-    $opt_raw = true
-  end
+  opts.on('-r', '--raw-samples', 'show raw samples') { $opt_raw = true }
 
-  opts.on('-q queue', '--queue queue', 'queue') do |queue|
-    $opt_pattern = " -q #{queue}" + $opt_pattern
-  end
+  opts.on('-q queue', '--queue queue', 'queue') { |queue| $opt_pattern = " -q #{queue}" + $opt_pattern }
 
   opts.on('-s', '--sort', 'sort by average value') { options[:sort] = true }
 

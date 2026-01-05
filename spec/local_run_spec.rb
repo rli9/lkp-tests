@@ -1,10 +1,10 @@
 #!/usr/bin/env ruby
-require 'spec_helper'
 require 'fileutils'
+require 'spec_helper'
 require 'tmpdir'
 require "#{LKP_SRC}/lib/bash"
-require "#{LKP_SRC}/lib/yaml"
 require "#{LKP_SRC}/lib/lkp_tmpdir"
+require "#{LKP_SRC}/lib/yaml"
 
 describe 'local run' do
   before(:all) do

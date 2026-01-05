@@ -1,15 +1,14 @@
 #!/usr/bin/env ruby
 
-require 'optparse'
-require 'fileutils'
-require 'tmpdir'
-
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.realpath($PROGRAM_NAME), 2)
 
-require "#{LKP_SRC}/lib/job"
-require "#{LKP_SRC}/lib/result_root"
+require 'fileutils'
+require 'optparse'
+require 'tmpdir'
 require "#{LKP_SRC}/lib/common"
+require "#{LKP_SRC}/lib/job"
 require "#{LKP_SRC}/lib/log"
+require "#{LKP_SRC}/lib/result_root"
 
 opt_parser = OptionParser.new do |opts|
   opts.banner = 'Usage: merge-remote-result [-r REMOTE] RESULT_ROOT'
@@ -17,13 +16,9 @@ opt_parser = OptionParser.new do |opts|
   opts.separator ''
   opts.separator 'options:'
 
-  opts.on('-r [REMOTE]', '--remote [REMOTE]', 'remote host name') do |remote|
-    $opt_remote = remote
-  end
+  opts.on('-r [REMOTE]', '--remote [REMOTE]', 'remote host name') { |remote| $opt_remote = remote }
 
-  opts.on('-f', '--force', 'force to overwrite') do
-    $opt_force = true
-  end
+  opts.on('-f', '--force', 'force to overwrite') { $opt_force = true }
 
   opts.on_tail('-h', '--help', 'Show this message') do
     puts opts

@@ -1,7 +1,7 @@
-require 'spec_helper'
-require 'tmpdir'
 require 'fileutils'
 require 'shellwords'
+require 'spec_helper'
+require 'tmpdir'
 require "#{LKP_SRC}/lib/bash"
 
 describe 'log_cmd' do

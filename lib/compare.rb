@@ -1122,59 +1122,58 @@ module Compare
     }
     msearch_axes = []
     job_dirs = []
-    parser = OptionParser.new do |p|
-      p.banner = 'Usage: ncompare [options] <commit>...
+    opt_parser = OptionParser.new do |opts|
+      opts.banner = 'Usage: ncompare [options] <commit>...
        ncompare [options] -s <axes> [-s <axes>] [-o <axes>]'
-      p.separator ''
-      p.separator 'options:'
+      opts.separator ''
+      opts.separator 'options:'
 
-      p.on('-c <compare_axis_keys>',
-           '--compare-axis-keys <compare_axis_keys>',
-           'Compare Axis keys') do |compare_axis_keys|
+      opts.on('-c <compare_axis_keys>',
+              '--compare-axis-keys <compare_axis_keys>',
+              'Compare Axis keys') do |compare_axis_keys|
         options[:compare_axis_keys] = compare_axis_keys.split(',')
       end
 
-      p.on('-s <search-axes>', '--search <search-axes>',
-           'Search Axes') do |search_axes|
+      opts.on('-s <search-axes>', '--search <search-axes>',
+              'Search Axes') do |search_axes|
         msearch_axes << DataStore::Layout.axes_from_string(search_axes)
       end
 
-      p.on('-o <search-axes>', '--override-search <search-axes>',
-           'Search Axes') do |search_axes|
+      opts.on('-o <search-axes>', '--override-search <search-axes>',
+              'Search Axes') do |search_axes|
         search_axes = DataStore::Layout.axes_from_string(search_axes)
         options[:compare_different_rts] = true if search_axes.many?
         prev_axes = msearch_axes[-1] || {}
         msearch_axes << prev_axes.merge(search_axes)
       end
 
-      p.on('-j <job dir>', '--job-dir <job dir>',
-           'Job Directory') do |jd|
+      opts.on('-j <job dir>', '--job-dir <job dir>', 'Job Directory') do |jd|
         job_dirs << jd
       end
 
-      p.on('-m', '--more', 'more stats as compare result') do
+      opts.on('-m', '--more', 'more stats as compare result') do
         options[:more_stats] = true
       end
 
-      p.on('-p <value>', '--perf-profile-threshold=<value>', 'perf-profile compare threshold') do |val|
+      opts.on('-p <value>', '--perf-profile-threshold=<value>', 'perf-profile compare threshold') do |val|
         options[:perf_profile_threshold] = val.to_f
       end
 
-      p.on('-a', '--all', 'compare all stats') do
+      opts.on('-a', '--all', 'compare all stats') do
         options[:use_all_stat_keys] = true
       end
 
-      p.on('-k', '--kpi', 'compare kpi stats only') do
+      opts.on('-k', '--kpi', 'compare kpi stats only') do
         options[:filter_kpi_stat_keys] = true
       end
 
-      p.on_tail('-h', '--help', 'Show this message') do
-        puts p
+      opts.on_tail('-h', '--help', 'Show this message') do
+        puts opts
         return nil
       end
     end
     argv = ['-h'] if argv.empty?
-    argv = parser.parse(argv)
+    argv = opt_parser.parse(argv)
 
     if job_dirs.empty?
       if msearch_axes.empty?

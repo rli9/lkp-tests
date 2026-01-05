@@ -2,13 +2,13 @@
 
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.realpath($PROGRAM_NAME), 2)
 
-require 'yaml'
 require 'optparse'
+require 'yaml'
+require "#{LKP_SRC}/lib/constant"
+require "#{LKP_SRC}/lib/plot"
 require "#{LKP_SRC}/lib/statistics"
 require "#{LKP_SRC}/lib/stats"
 require "#{LKP_SRC}/lib/yaml"
-require "#{LKP_SRC}/lib/plot"
-require "#{LKP_SRC}/lib/constant"
 
 $options = {}
 
@@ -24,25 +24,15 @@ opt_parser = OptionParser.new do |opts|
   opts.separator ''
   opts.separator 'options:'
 
-  opts.on('-d N', '--distance N', 'threshold of changes') do |n|
-    $options['distance'] = n.to_i
-  end
+  opts.on('-d N', '--distance N', 'threshold of changes') { |n| $options['distance'] = n.to_i }
 
-  opts.on('-p', '--perf', 'show performance changes only') do
-    $options['perf'] = true
-  end
+  opts.on('-p', '--perf', 'show performance changes only') { $options['perf'] = true }
 
-  opts.on('-c', '--concise', 'skip non-important changes') do
-    $options['concise'] = true
-  end
+  opts.on('-c', '--concise', 'skip non-important changes') { $options['concise'] = true }
 
-  opts.on('-r N', '--resize N', 'resize first matrix') do |n|
-    $options['resize'] = n.to_i
-  end
+  opts.on('-r N', '--resize N', 'resize first matrix') { |n| $options['resize'] = n.to_i }
 
-  opts.on('-v N', '--variance N', 'show variance changes larger than N times') do |n|
-    $options['variance'] = n.to_i
-  end
+  opts.on('-v N', '--variance N', 'show variance changes larger than N times') { |n| $options['variance'] = n.to_i }
 
   opts.on('-o DIR', '--output DIR', 'output dir') do |dir|
     Dir.mkdir dir unless File.directory? dir

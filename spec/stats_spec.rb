@@ -1,6 +1,6 @@
 require 'spec_helper'
-require "#{LKP_SRC}/lib/stats"
 require "#{LKP_SRC}/lib/programs"
+require "#{LKP_SRC}/lib/stats"
 
 describe 'stats' do
   describe 'scripts' do

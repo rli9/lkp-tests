@@ -1,5 +1,5 @@
-require 'spec_helper'
 require 'fileutils'
+require 'spec_helper'
 require 'tmpdir'
 require "#{LKP_SRC}/lib/job"
 

@@ -4,10 +4,10 @@ LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.realpath($PROGRAM_NAME), 2)
 
 require 'gnuplot'
 require 'optparse'
+require "#{LKP_SRC}/lib/plot"
 require "#{LKP_SRC}/lib/statistics"
 require "#{LKP_SRC}/lib/stats"
 require "#{LKP_SRC}/lib/yaml"
-require "#{LKP_SRC}/lib/plot"
 
 opt_parser = OptionParser.new do |opts|
   opts.banner = 'Usage: mplot matrix.json [stat_fields...] [OPTION...]'

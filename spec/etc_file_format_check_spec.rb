@@ -1,6 +1,6 @@
 require 'spec_helper'
-require "#{LKP_SRC}/lib/yaml"
 require "#{LKP_SRC}/lib/bash"
+require "#{LKP_SRC}/lib/yaml"
 
 describe 'check the format correctness of etc files' do
   def yaml_file?(file)

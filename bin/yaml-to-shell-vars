@@ -2,10 +2,10 @@
 
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.realpath($PROGRAM_NAME), 2)
 
-require 'yaml'
-require 'shellwords'
 require 'optparse'
 require 'ostruct'
+require 'shellwords'
+require 'yaml'
 
 $opt_name_prefix = ''
 
@@ -15,17 +15,11 @@ opt_parser = OptionParser.new do |opts|
   opts.separator ''
   opts.separator 'options:'
 
-  opts.on('--expand', 'Enable "$shell_variable" expansion') do
-    $opt_expand_shell_variable = true
-  end
+  opts.on('--expand', 'Enable "$shell_variable" expansion') { $opt_expand_shell_variable = true }
 
-  opts.on('--array ARRAY', 'Store values to associative array') do |array_name|
-    $opt_assoc_array = array_name
-  end
+  opts.on('--array ARRAY', 'Store values to associative array') { |array_name| $opt_assoc_array = array_name }
 
-  opts.on('--prefix PREFIX', 'Add prefix to variable names') do |prefix|
-    $opt_name_prefix = prefix
-  end
+  opts.on('--prefix PREFIX', 'Add prefix to variable names') { |prefix| $opt_name_prefix = prefix }
 
   opts.on_tail('-h', '--help', 'Show this message') do
     puts opts

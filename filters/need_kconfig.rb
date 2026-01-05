@@ -2,8 +2,8 @@
 
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 
-require 'yaml'
 require 'ostruct'
+require 'yaml'
 require "#{LKP_SRC}/lib/kernel_tag"
 require "#{LKP_SRC}/lib/log"
 

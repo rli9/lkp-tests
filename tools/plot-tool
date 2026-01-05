@@ -4,11 +4,11 @@ LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.realpath($PROGRAM_NAME), 2)
 
 require 'gnuplot'
 require 'optparse'
+require "#{LKP_SRC}/lib/constant"
+require "#{LKP_SRC}/lib/plot"
 require "#{LKP_SRC}/lib/statistics"
 require "#{LKP_SRC}/lib/stats"
 require "#{LKP_SRC}/lib/yaml"
-require "#{LKP_SRC}/lib/plot"
-require "#{LKP_SRC}/lib/constant"
 
 $opt_output_path = 'output.png'
 $x_stat_key = nil
@@ -31,45 +31,25 @@ opt_parser = OptionParser.new do |opts|
   opts.separator ''
   opts.separator 'options:'
 
-  opts.on('-o FILE', '--output FILE', 'output file name') do |fn|
-    $opt_output_path = fn
-  end
+  opts.on('-o FILE', '--output FILE', 'output file name') { |fn| $opt_output_path = fn }
 
-  opts.on('-x KEY', '--x-stat-key KEY', 'x axis stat key name') do |key|
-    $x_stat_key = key
-  end
+  opts.on('-x KEY', '--x-stat-key KEY', 'x axis stat key name') { |key| $x_stat_key = key }
 
-  opts.on('-r', '--relative-x', 'x axis relative to the first element') do
-    $x_relative = true
-  end
+  opts.on('-r', '--relative-x', 'x axis relative to the first element') { $x_relative = true }
 
-  opts.on('--xtics', 'draw x tics') do
-    $xtics = true
-  end
+  opts.on('--xtics', 'draw x tics') { $xtics = true }
 
-  opts.on('--y-min YMIN', 'The y range minimum') do |ymin|
-    $y_min = ymin
-  end
+  opts.on('--y-min YMIN', 'The y range minimum') { |ymin| $y_min = ymin }
 
-  opts.on('--relative-y', 'y axis relative to the first element') do
-    $y_relative = true
-  end
+  opts.on('--relative-y', 'y axis relative to the first element') { $y_relative = true }
 
-  opts.on('--x-range RANGE', 'The x range') do |range|
-    $x_range = range.split(',').map(&:to_f)
-  end
+  opts.on('--x-range RANGE', 'The x range') { |range| $x_range = range.split(',').map(&:to_f) }
 
-  opts.on('-d', '--diff', 'draw diff figure') do
-    $opt_diff = true
-  end
+  opts.on('-d', '--diff', 'draw diff figure') { $opt_diff = true }
 
-  opts.on('--diff-distance DISTANCE', 'The diff distance') do |distance|
-    $opt_diff_distance = distance.to_i
-  end
+  opts.on('--diff-distance DISTANCE', 'The diff distance') { |distance| $opt_diff_distance = distance.to_i }
 
-  opts.on('--split-stat', 'split stat to real stat and title') do
-    $opt_split_stat = true
-  end
+  opts.on('--split-stat', 'split stat to real stat and title') { $opt_split_stat = true }
 
   opts.on_tail('-h', '--help', 'show help message') do
     puts opts

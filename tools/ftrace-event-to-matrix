@@ -2,12 +2,11 @@
 
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.realpath($PROGRAM_NAME), 2)
 
+require 'optparse'
+require 'set'
 require "#{LKP_SRC}/lib/ftrace"
 require "#{LKP_SRC}/lib/statistics"
 require "#{LKP_SRC}/lib/yaml"
-
-require 'set'
-require 'optparse'
 
 $options = {
   in_file: $stdin,
@@ -22,13 +21,9 @@ $option_parser = OptionParser.new do |opts|
   opts.banner = "Usage:
      ftrace-event-to-matrix -i <input-file> -o <output-file> [-k <key-fields>]"
 
-  opts.on('-i IN_FILE', '--input IN_FILE', 'input file name') do |in_file|
-    $options[:in_file] = File.new in_file
-  end
+  opts.on('-i IN_FILE', '--input IN_FILE', 'input file name') { |in_file| $options[:in_file] = File.new in_file }
 
-  opts.on('-o OUT_FILE', '--output OUT_FILE', 'output file name') do |out_file|
-    $options[:out_file_name] = out_file
-  end
+  opts.on('-o OUT_FILE', '--output OUT_FILE', 'output file name') { |out_file| $options[:out_file_name] = out_file }
 
   opts.on('-k KEYS', '--keys KEYS', 'key fields') do |keys|
     $options[:keys] = keys.split(',').map(&:intern)

@@ -1,8 +1,8 @@
-require 'spec_helper'
 require 'fileutils'
+require 'spec_helper'
 require 'tmpdir'
-require "#{LKP_SRC}/lib/kernel_tag"
 require "#{LKP_SRC}/lib/job"
+require "#{LKP_SRC}/lib/kernel_tag"
 
 describe 'filters/need_kconfig.rb' do
   before do

@@ -1,25 +1,24 @@
 #!/usr/bin/env ruby
 
-require 'optparse'
-require 'ostruct'
-require 'fileutils'
-require 'shellwords'
-
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.realpath($PROGRAM_NAME), 2)
 LKP_USER = ENV['USER'] || `whoami`.chomp
 
 TMP = "/tmp/lkp-#{LKP_USER}".freeze
 ENV['TMP'] = TMP
 
+require 'fileutils'
+require 'optparse'
+require 'ostruct'
+require 'shellwords'
+require "#{LKP_SRC}/lib/common"
+require "#{LKP_SRC}/lib/job"
+require "#{LKP_SRC}/lib/log"
+require "#{LKP_SRC}/lib/matrix"
+require "#{LKP_SRC}/lib/result_root"
 require "#{LKP_SRC}/lib/run_env"
 set_local_run
-require "#{LKP_SRC}/lib/yaml"
 require "#{LKP_SRC}/lib/stats"
-require "#{LKP_SRC}/lib/matrix"
-require "#{LKP_SRC}/lib/job"
-require "#{LKP_SRC}/lib/result_root"
-require "#{LKP_SRC}/lib/common"
-require "#{LKP_SRC}/lib/log"
+require "#{LKP_SRC}/lib/yaml"
 
 ENV['PATH'] = ENV.fetch('PATH', nil) + ":#{LKP_SRC}/bin"
 ENV['BENCHMARK_ROOT'] = '/lkp/benchmarks'
@@ -32,9 +31,7 @@ opt_parser = OptionParser.new do |opts|
   opts.separator ''
   opts.separator 'options:'
 
-  opts.on('-n', '--not-unite', 'Do not unite the result') do
-    $not_unite = true
-  end
+  opts.on('-n', '--not-unite', 'Do not unite the result') { $not_unite = true }
 
   opts.on_tail('-h', '--help', 'Show this message') do
     puts opts

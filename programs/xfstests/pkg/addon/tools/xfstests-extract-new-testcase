@@ -7,25 +7,25 @@ require 'optparse'
 
 options = Hash.new { |h, k| h[k] = [] }
 
-opts = OptionParser.new do |opt|
-  opt.banner = "Usage: ./#{File.basename $PROGRAM_NAME} [options]  -n GROUP_NUMBER -p ext4_result_path -p xfs_result_path -p btrfs_result_path"
-  opt.on('-n GROUP_NUMBER', '--group-number GROUP_NUMBER', 'number of generic group') do |group_number|
+opt_parser = OptionParser.new do |opts|
+  opts.banner = "Usage: ./#{File.basename $PROGRAM_NAME} [options]  -n GROUP_NUMBER -p ext4_result_path -p xfs_result_path -p btrfs_result_path"
+  opts.on('-n GROUP_NUMBER', '--group-number GROUP_NUMBER', 'number of generic group') do |group_number|
     options['number'] = group_number.to_i
   end
-  opt.on('-p RESULT_PATH', '--result-path RESULT_PATH', 'result path of generic-fs-all') do |path|
+  opts.on('-p RESULT_PATH', '--result-path RESULT_PATH', 'result path of generic-fs-all') do |path|
     options['paths'] << path
   end
-  opt.on('-h', '--help', 'Prints this help') do
-    puts opt
+  opts.on('-h', '--help', 'Prints this help') do
+    puts opts
     exit
   end
 end
 
-opts.parse!(ARGV)
+opt_parser.parse!(ARGV)
 
 if !ARGV.empty? || options['paths'].size != 3
   log_error 'Wrong usage'
-  puts opts
+  puts opt_parser
   exit 1
 end
 
