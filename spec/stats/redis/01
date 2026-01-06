@@ -1,0 +1,22 @@
+PING_INLINE: 1000.00 requests per second
+====== SET ======
+  throughput summary: 50000.00 requests per second
+requests completed in 2.00 seconds
+50.00% <= 1 milliseconds
+90.00% <= 2 milliseconds
+99.00% <= 3 milliseconds
+====== SET ======
+  throughput summary: 52000.00 requests per second
+requests completed in 1.90 seconds
+50.00% <= 1 milliseconds
+95.00% <= 2 milliseconds
+====== GET ======
+  throughput summary: 60000.00 requests per second
+requests completed in 1.50 seconds
+50.00% <= 1 milliseconds
+99.90% <= 2 milliseconds
+====== GET ======
+  throughput summary: 62000.00 requests per second
+requests completed in 1.40 seconds
+50.00% <= 0 milliseconds
+99.00% <= 1 milliseconds
