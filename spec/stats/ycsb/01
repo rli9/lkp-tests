@@ -1,0 +1,6 @@
+[OVERALL], RunTime(ms), 1000
+[OVERALL], Throughput(ops/sec), 100.5
+[READ], Operations, 500
+[READ], AverageLatency(us), 100.2
+[INSERT], Operations, 500
+[INSERT], AverageLatency(us), 200.5

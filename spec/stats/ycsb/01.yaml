@@ -1,0 +1,12 @@
+total_runtime: 1000.0
+total_throughput_ops/s: 100.5
+total_read_operations: 500.0
+total_read_averagelatency: 100.2
+total_insert_operations: 500.0
+total_insert_averagelatency: 200.5
+avg_runtime: 1000.0
+avg_throughput_ops/s: 100.5
+avg_read_operations: 500.0
+avg_read_averagelatency: 100.2
+avg_insert_operations: 500.0
+avg_insert_averagelatency: 200.5
