@@ -233,6 +233,30 @@ end
 def analyze_error_id(line)
   line = preprocess_line(line)
 
+  match = handle_known_patterns(line)
+  if match
+    line = match[0]
+    bug_to_bisect = match[1]
+  else
+    bug_to_bisect = oops_to_bisect_pattern line
+  end
+
+  error_id = generate_error_id(line)
+
+  [error_id, bug_to_bisect]
+end
+
+def handle_known_patterns(line)
+  res = handle_simple_patterns(line)
+  return res if res
+
+  res = handle_composite_patterns(line)
+  return res if res
+
+  handle_complex_patterns(line)
+end
+
+def handle_simple_patterns(line)
   case line
   when /(INFO: rcu[_a-z]* self-detected stall on CPU)/,
        /(INFO: rcu[_a-z]* detected stalls on CPUs\/tasks:)/,
@@ -261,21 +285,33 @@ def analyze_error_id(line)
        /(BUG: KASAN: [a-z\-_ ]+ in [a-z_]+)\+/,
        # [   50.574901] BUG: KFENCE: out-of-bounds read in test_out_of_bounds_read+0x182/0x328
        /(BUG: KFENCE: [a-z\-_ ]+ in [a-z_]+)\+/,
-       /(cpu clock throttled)/
+       /(cpu clock throttled)/,
+       /(Kernel panic - not syncing: No working init found.)  Try passing init= option to kernel. /,
+       /(Kernel panic - not syncing: No init found.)  Try passing init= option to kernel. /
     line = $1
     bug_to_bisect = $1
+
+    [line, bug_to_bisect]
+  end
+end
+
+def handle_composite_patterns(line)
+  case line
   when /(BUG: ).* (still has locks held)/,
        /(INFO: task ).* (blocked for more than \d+ seconds)/
     line = $1 + $2
     bug_to_bisect = $2
+
+    [line, bug_to_bisect]
+  end
+end
+
+def handle_complex_patterns(line)
+  case line
   when /WARNING:.* at .* ([a-zA-Z.0-9_]+\+0x)/
     bug_to_bisect = "WARNING:.* at .* #{$1.sub(/\.(isra|constprop|part)\.[0-9]+\+0x/, '')}"
     line =~ /(at .*)/
     line = "WARNING: #{$1}"
-  when /(Kernel panic - not syncing: No working init found.)  Try passing init= option to kernel. /,
-       /(Kernel panic - not syncing: No init found.)  Try passing init= option to kernel. /
-    line = $1
-    bug_to_bisect = line
   when /(UBSAN: .+)/,
        /(BUG: using smp_processor_id\(\) in preemptible)/,
        /^[0-9a-z]+>\] (.+)/
@@ -331,12 +367,10 @@ def analyze_error_id(line)
     line = 'segfault at ip sp error'
     bug_to_bisect = oops_to_bisect_pattern line
   else
-    bug_to_bisect = oops_to_bisect_pattern line
+    return
   end
 
-  error_id = generate_error_id(line)
-
-  [error_id, bug_to_bisect]
+  [line, bug_to_bisect]
 end
 
 def preprocess_line(line)
