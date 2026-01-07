@@ -156,6 +156,25 @@ class MMatrixPlotter < MatrixPlotterBase
     false
   end
 
+  def calculate_x_slice(matrix, values_all)
+    if @x_stat_key
+      xs_all = matrix[@x_stat_key]
+      # search the range start and end by value of the x_stat_key
+      x_start = @x_range[0] && xs_all.find_index { |x| x >= @x_range[0] }
+      x_end = @x_range[1] && xs_all.find_index { |x| x >= @x_range[1] }
+      x_start ||= 0
+      x_end ||= xs_all.length
+      x_len = x_end - x_start
+    else
+      x_start = @x_range[0] || 0
+      x_start = x_start.to_i
+      x_len = (@x_range[1] || values_all.length) - x_start
+      x_len = x_len.to_i
+    end
+
+    [x_start, x_len, xs_all]
+  end
+
   def plot_multi_lines
     return unless check_lines
 
@@ -170,28 +189,12 @@ class MMatrixPlotter < MatrixPlotterBase
           values_all = matrix[y_stat_key]
           next unless values_all
 
-          if @x_stat_key
-            xs_all = matrix[@x_stat_key]
-            # search the range start and end by value of the x_stat_key
-            x_start = @x_range[0] && xs_all.find_index { |x| x >= @x_range[0] }
-            x_end = @x_range[1] && xs_all.find_index { |x| x >= @x_range[1] }
-            x_start ||= 0
-            x_end ||= xs_all.length
-            x_len = x_end - x_start
-          else
-            x_start = @x_range[0] || 0
-            x_start = x_start.to_i
-            x_len = (@x_range[1] || values_all.length) - x_start
-            x_len = x_len.to_i
-          end
+          x_start, x_len, xs_all = calculate_x_slice(matrix, values_all)
 
           values = values_all[x_start, x_len]
           next unless check_line(values)
 
-          max = values.max
-          min = values.min
-          y_min = y_min ? [min, y_min].min : min
-          y_max = y_max ? [max, y_max].max : max
+          y_min, y_max = calculate_min_max(values, y_min, y_max)
 
           if @x_stat_key
             xs = xs_all[x_start, x_len]
@@ -225,6 +228,34 @@ class MMatrixPlotter < MatrixPlotterBase
     end
   end
 
+  def calculate_min_max(values, y_min, y_max)
+    max = values.max
+    min = values.min
+    y_min = y_min ? [min, y_min].min : min
+    y_max = y_max ? [max, y_max].max : max
+
+    [y_min, y_max]
+  end
+
+  def error_bars_data(x_stat, y_stat, z_stat)
+    ref_line_stat = Array.new(x_stat.size, 100)
+
+    [
+      Gnuplot::DataSet.new([x_stat, y_stat, z_stat]) do |ds|
+        ds.with = 'errorb'
+        ds.notitle
+      end,
+      Gnuplot::DataSet.new([x_stat, y_stat]) do |ds|
+        ds.with = 'linespoints'
+        ds.notitle
+      end,
+      Gnuplot::DataSet.new([x_stat, ref_line_stat]) do |ds|
+        ds.with = "lines lt '-'"
+        ds.notitle
+      end
+    ]
+  end
+
   def plot_error_bars
     return unless check_lines
 
@@ -256,10 +287,7 @@ class MMatrixPlotter < MatrixPlotterBase
             y_stat_max = values
           end
 
-          max = values.max
-          min = values.min
-          y_min = y_min ? [min, y_min].min : min
-          y_max = y_max ? [max, y_max].max : max
+          y_min, y_max = calculate_min_max(values, y_min, y_max)
         end
 
         y_stat = (1..y_stat_max.size).map { |i| (y_stat_max[i - 1] + y_stat_min[i - 1]) / 2 }
@@ -278,21 +306,8 @@ class MMatrixPlotter < MatrixPlotterBase
         x_stat = (1..x_stat.size).to_a
         p.xrange "[0.9:#{x_stat.size + 0.1}]"
 
-        ref_line_stat = Array.new(x_stat.size, 100)
-        p.data = [
-          Gnuplot::DataSet.new([x_stat, y_stat, z_stat]) do |ds|
-            ds.with = 'errorb'
-            ds.notitle
-          end,
-          Gnuplot::DataSet.new([x_stat, y_stat]) do |ds|
-            ds.with = 'linespoints'
-            ds.notitle
-          end,
-          Gnuplot::DataSet.new([x_stat, ref_line_stat]) do |ds|
-            ds.with = "lines lt '-'"
-            ds.notitle
-          end
-        ]
+        p.data = error_bars_data(x_stat, y_stat, z_stat)
+
         y_max = ((y_max / y_base * 100) + 5).round
         y_min = ((y_min / y_base * 100) - 5).round
         p.yrange "[#{y_min}:#{y_max}]"
