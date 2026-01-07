@@ -55,7 +55,7 @@ def expand_possible_commit(s)
   git.gcommit(s).sha
 end
 
-opt_parser = OptionParser.new do |opts|
+opt_parser = OptionParser.new do |opts| # rubocop:disable Metrics/BlockLength
   opts.banner = 'Usage: compare [options] RESULT_ROOT...'
 
   opts.separator ''
@@ -324,6 +324,45 @@ def get_valid_average(matrix, key)
   avg
 end
 
+def process_index_stats(k, v, matrix_file1, matrix_file2)
+  matrix1 = load_json matrix_file1
+  expand_matrix(matrix1, 'stat' => $opt_field)
+  matrix2 = load_json matrix_file2
+  expand_matrix(matrix2, 'stat' => $opt_field)
+  $all_index.each do |stat, weight|
+    next if stat.index('iostat\.') && k !~ /\/(dd-write)\//
+
+    avg1 = get_valid_average matrix1, stat
+    next unless avg1
+
+    avg2 = get_valid_average matrix2, stat
+    next unless avg2
+
+    $changed_stats[stat][k] = v
+    type = if $size_index[stat]
+             'size'
+           elsif $perf_index[stat]
+             'perf'
+           elsif $power_index[stat]
+             'power'
+           else
+             'latency'
+           end
+    $nr_gm[type] ||= 0
+    $base_gm[type] ||= 0
+    $head_gm[type] ||= 0
+    if weight.positive?
+      $nr_gm[type] += weight
+      $base_gm[type] += weight * Math.log(avg1)
+      $head_gm[type] += weight * Math.log(avg2)
+    else
+      $nr_gm[type] -= weight
+      $base_gm[type] -= weight * Math.log(avg2)
+      $head_gm[type] -= weight * Math.log(avg1)
+    end
+  end
+end
+
 def setup_changed_stats
   $_result_root_tuple.each do |k, v|
     matrix_file1 = "#{v[0]}/matrix.json"
@@ -332,44 +371,10 @@ def setup_changed_stats
     next unless File.exist? matrix_file2
 
     if $opt_index
-      matrix1 = load_json matrix_file1
-      expand_matrix(matrix1, 'stat' => $opt_field)
-      matrix2 = load_json matrix_file2
-      expand_matrix(matrix2, 'stat' => $opt_field)
-      $all_index.each do |stat, weight|
-        next if stat.index('iostat\.') && k !~ /\/(dd-write)\//
-
-        avg1 = get_valid_average matrix1, stat
-        next unless avg1
-
-        avg2 = get_valid_average matrix2, stat
-        next unless avg2
-
-        $changed_stats[stat][k] = v
-        type = if $size_index[stat]
-                 'size'
-               elsif $perf_index[stat]
-                 'perf'
-               elsif $power_index[stat]
-                 'power'
-               else
-                 'latency'
-               end
-        $nr_gm[type] ||= 0
-        $base_gm[type] ||= 0
-        $head_gm[type] ||= 0
-        if weight.positive?
-          $nr_gm[type] += weight
-          $base_gm[type] += weight * Math.log(avg1)
-          $head_gm[type] += weight * Math.log(avg2)
-        else
-          $nr_gm[type] -= weight
-          $base_gm[type] -= weight * Math.log(avg2)
-          $head_gm[type] -= weight * Math.log(avg1)
-        end
-      end
+      process_index_stats(k, v, matrix_file1, matrix_file2)
       next
     end
+
     changed_stats = get_changed_stats matrix_file2, matrix_file1, $options
     next unless changed_stats && !changed_stats.empty?
 
@@ -408,7 +413,7 @@ def show_one_stat(stat)
   end
 end
 
-def setup_dims
+def setup_longest_dims
   if $opt_dimension =~ /^(.*_)?commit$/
     git = Git.open(project: $project, working_dir: GIT_WORK_TREE) if Dir.exist?(GIT_WORK_TREE)
     unless git
@@ -434,6 +439,10 @@ def setup_dims
     $opt_dims.unshift PERF_INDEX_KCONFIG if ARGV.size == 1 && $opt_index
     $longest_dims = $opt_dims.sort { |a, b| b.length <=> a.length }
   end
+end
+
+def setup_dims
+  setup_longest_dims
 
   if $opt_save_changes
     if $opt_dimension !~ /^(.*_)?commit$/
@@ -519,22 +528,26 @@ def show_one_diff(stat, dim, v0, v, v0_stddev, v_stddev, is_float: false, is_exp
            format "%#{ABS_WIDTH}d", v
          end
 
-  if v_stddev
-    if is_fail
-      buf += format ":%-#{ERR_WIDTH - 2}d", v_stddev
-    else
-      v_stddev = 100 * v_stddev / v if v != 0
-      buf += if v_stddev > 3
-               format " ±%#{ERR_WIDTH - 3}d%%", v_stddev
-             else
-               ' ' * ERR_WIDTH
-             end
-    end
-  else
-    buf += ' ' * ERR_WIDTH
-  end
+  buf += format_stddev(v, v_stddev, is_fail)
 
   printf '%s  ', buf
+end
+
+def format_stddev(v, v_stddev, is_fail)
+  if v_stddev
+    if is_fail
+      format ":%-#{ERR_WIDTH - 2}d", v_stddev
+    else
+      v_stddev = 100 * v_stddev / v if v != 0
+      if v_stddev > 3
+        format " ±%#{ERR_WIDTH - 3}d%%", v_stddev
+      else
+        ' ' * ERR_WIDTH
+      end
+    end
+  else
+    ' ' * ERR_WIDTH
+  end
 end
 
 def show_test_group(key)
@@ -590,10 +603,7 @@ def show_header(is_fail)
   $header_shown[is_fail] = true
 end
 
-def show_delta(stat, key_g)
-  is_fail = function_stat?(stat)
-  is_latency = latency_stat?(stat)
-
+def filter_cases(is_fail, is_latency)
   dims = []
   $cases.each_value { |v| dims += v.keys }
   if dims.uniq.size == 1
@@ -618,29 +628,9 @@ def show_delta(stat, key_g)
     end
     noisy
   end
-  return if $cases.empty?
+end
 
-  $cases = $cases.sort.to_h
-
-  unless $group_by_test
-    $dims.each do |dim, name|
-      width = (dim == $first_dim ? ABS_WIDTH + ERR_WIDTH : REL_WIDTH + ABS_WIDTH + ERR_WIDTH)
-      printf "%#{width}s  ", name[0..(width - 1)]
-    end
-
-    if $header_shown[is_fail]
-      puts
-    else
-      puts 'testcase/testparams/testbox'
-    end
-
-    $dims.each_key do |dim|
-      width = (dim == $first_dim ? ABS_WIDTH + ERR_WIDTH : REL_WIDTH + ABS_WIDTH + ERR_WIDTH)
-      printf "#{'-' * width}  "
-    end
-
-  end
-
+def calculate_number_formats
   is_float = false
   is_exp   = false
   $cases.each_value do |value|
@@ -655,9 +645,9 @@ def show_delta(stat, key_g)
       end
     end
   end
+end
 
-  puts if $header_shown[is_fail] && !$group_by_test
-
+def show_delta_rows(key_g, stat, is_fail, is_float, is_exp)
   $cases.each do |_rt, value|
     result_path = ResultPath.new
     result_path.parse_result_root(_rt)
@@ -695,6 +685,40 @@ def show_delta(stat, key_g)
       puts test
     end
   end
+end
+
+def show_delta(stat, key_g)
+  is_fail = function_stat?(stat)
+  is_latency = latency_stat?(stat)
+
+  filter_cases(is_fail, is_latency)
+  return if $cases.empty?
+
+  $cases = $cases.sort.to_h
+
+  unless $group_by_test
+    $dims.each do |dim, name|
+      width = (dim == $first_dim ? ABS_WIDTH + ERR_WIDTH : REL_WIDTH + ABS_WIDTH + ERR_WIDTH)
+      printf "%#{width}s  ", name[0..(width - 1)]
+    end
+
+    if $header_shown[is_fail]
+      puts
+    else
+      puts 'testcase/testparams/testbox'
+    end
+
+    $dims.each_key do |dim|
+      width = (dim == $first_dim ? ABS_WIDTH + ERR_WIDTH : REL_WIDTH + ABS_WIDTH + ERR_WIDTH)
+      printf "#{'-' * width}  "
+    end
+  end
+
+  is_float, is_exp = calculate_number_formats
+
+  puts if $header_shown[is_fail] && !$group_by_test
+
+  show_delta_rows(key_g, stat, is_fail, is_float, is_exp)
 
   unless is_fail
     $sum.each_key do |k|
