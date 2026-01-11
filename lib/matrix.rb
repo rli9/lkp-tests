@@ -18,7 +18,7 @@ LKP_SRC_ETC ||= LKP::Path.src('etc')
 def event_counter?(name)
   $event_counter_prefixes ||= File.read("#{LKP_SRC_ETC}/event-counter-prefixes").split
   $event_counter_prefixes.each do |prefix|
-    return true if name.index(prefix) == 0
+    return true if name.index(prefix)&.zero?
   end
   $event_counter_patterns ||= LKP::EventCounterPatterns.instance.regexp
 
@@ -28,7 +28,7 @@ end
 def independent_counter?(name)
   $independent_counter_prefixes ||= File.read("#{LKP_SRC_ETC}/independent-counter-prefixes").split
   $independent_counter_prefixes.each do |prefix|
-    return true if name.index(prefix) == 0
+    return true if name.index(prefix)&.zero?
   end
   false
 end
@@ -59,7 +59,7 @@ end
 
 def add_performance_per_watt(stats, matrix)
   watt = stats['pmeter.Average_Active_Power']
-  return unless watt && watt > 0
+  return unless watt&.positive?
 
   kpi_stats = load_yaml("#{LKP_SRC_ETC}/index-perf-all.yaml")
   return unless kpi_stats
@@ -74,14 +74,14 @@ def add_performance_per_watt(stats, matrix)
     value = stats[stat]
     next unless value
 
-    if weight < 0
+    if weight.negative?
       value = 1 / value
       weight = -weight
     end
     performance += value * weight
   end
 
-  return unless performance > 0
+  return unless performance.positive?
 
   stats['pmeter.performance_per_watt'] = performance / watt
   matrix['pmeter.performance_per_watt'] = [performance / watt]

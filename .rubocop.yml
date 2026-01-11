@@ -172,12 +172,6 @@ Style/GlobalVars:
 Style/MissingRespondToMissing:
   Enabled: false
 
-Style/NumericPredicate:
-  Exclude:
-    - 'lib/job2sh.rb'
-    - 'lib/matrix.rb'
-    - 'lib/stats.rb'
-
 Style/OpenStructUse:
   Enabled: false
 
