@@ -34,3 +34,5 @@
 
 # [v6.6-rc1] e88ca24319e4 ("kbuild: consolidate warning flags in scripts/Makefile.extrawarn")
 # -Wenum-conversion
+
+-falign-functions=64
