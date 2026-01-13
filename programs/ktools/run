@@ -1,0 +1,25 @@
+#!/bin/bash
+# - test
+
+. $LKP_SRC/lib/tests/kernel-selftests.sh
+
+shopt -s nullglob
+
+prepare_kselftests_dir
+
+if [[ $test == */* ]]; then
+	dir=$(dirname "$test")
+else
+	dir=$test
+fi
+
+cd "$linux_selftests_dir/tools/testing/$dir" || die "fail to cd tools/testing/$dir"
+
+make || {
+	echo "make failed"
+	exit
+}
+
+echo
+echo "run test $(basename $test)"
+./$(basename $test)

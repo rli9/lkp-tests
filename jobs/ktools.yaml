@@ -1,0 +1,9 @@
+suite: ktools
+testcase: ktools
+category: functional
+
+ktools:
+  test:
+    - vma
+    - radix-tree/maple
+    - radix-tree/xarray

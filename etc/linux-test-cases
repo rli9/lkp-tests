@@ -18,6 +18,7 @@ kernel-builtin
 kernel-selftests
 kernel-selftests-bpf
 kernel-selftests-rust
+ktools
 kvm-kernel-boot-test
 kvm-unit-tests
 kvm-unit-tests-qemu

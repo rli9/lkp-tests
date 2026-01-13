@@ -1,0 +1,52 @@
+#!/usr/bin/env ruby
+
+LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.realpath($PROGRAM_NAME), 3)
+
+require "#{LKP_SRC}/lib/string"
+require "#{LKP_SRC}/lib/tests/stats"
+
+class KtoolsParser
+  def initialize
+    @stats = LKP::Stats.new
+    @test_case = nil
+  end
+
+  def parse(line)
+    line = line.resolve_invalid_bytes
+
+    case line
+    when /(\d+) tests run, (\d+) passed, (\d+) failed/
+      if $3.to_i.positive?
+        @stats.add @test_case, 'fail'
+      elsif $2.to_i == $1.to_i
+        @stats.add @test_case, 'pass'
+      else
+        log_warn "invalid test result line: #{line}"
+        @stats.add @test_case, 'unknown'
+      end
+    when /(\d+) of (\d+) tests passed/
+      # maple_tree: 560844970 of 560844970 tests passed
+      # XArray: 159585930 of 159585930 tests passed
+      if $1.to_i == $2.to_i
+        @stats.add @test_case, 'pass'
+      else
+        @stats.add @test_case, 'fail'
+      end
+    when /^make failed/
+      @stats.add 'make', 'fail'
+    when /^run test (.+)/
+      @test_case = $1
+      @stats.add 'make', 'pass'
+    end
+  end
+
+  def print_summary
+    @stats.dump
+  end
+end
+
+parser = KtoolsParser.new
+$stdin.each_line do |line|
+  parser.parse(line)
+end
+parser.print_summary
