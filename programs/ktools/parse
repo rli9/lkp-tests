@@ -32,11 +32,12 @@ class KtoolsParser
       else
         @stats.add @test_case, 'fail'
       end
-    when /^make failed/
-      @stats.add 'make', 'fail'
-    when /^run test (.+)/
+    when /^make (.+) passed/
+      @stats.add "#{$1}.make", 'pass'
+    when /^make (.+) failed/
+      @stats.add "#{$1}.make", 'fail'
+    when /^run (.+) test/
       @test_case = $1
-      @stats.add 'make', 'pass'
     end
   end
 

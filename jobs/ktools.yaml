@@ -4,6 +4,10 @@ category: functional
 
 ktools:
   test:
-    - vma
+    - radix-tree/idr-test
+    - radix-tree/multiorder
     - radix-tree/maple
     - radix-tree/xarray
+    - rbtree
+    - scatterlist/main
+    - vma

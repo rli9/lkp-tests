@@ -3,23 +3,48 @@
 
 . $LKP_SRC/lib/tests/kernel-selftests.sh
 
+run_test()
+{
+	local test_name=$1
+
+	echo "run $test_name test"
+	./"$test_name"
+}
+
+do_make()
+{
+	local test_name=$1
+
+	if make; then
+		echo "make $test_name passed"
+	else
+		echo "make $test_name failed"
+		exit
+	fi
+}
+
 shopt -s nullglob
 
 prepare_kselftests_dir
 
-if [[ $test == */* ]]; then
+if [[ "$test" == */* ]]; then
 	dir=$(dirname "$test")
 else
-	dir=$test
+	dir="$test"
 fi
 
 cd "$linux_selftests_dir/tools/testing/$dir" || die "fail to cd tools/testing/$dir"
 
-make || {
-	echo "make failed"
-	exit
-}
-
 echo
-echo "run test $(basename $test)"
-./$(basename $test)
+
+if [[ "$test" == "rbtree" ]]; then
+	do_make rbtree
+
+	run_test rbtree_test
+	run_test interval_tree_test
+else
+	test_name="$(basename "$test")"
+
+	do_make "$test_name"
+	run_test "$test_name"
+fi
