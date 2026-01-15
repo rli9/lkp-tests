@@ -10,6 +10,7 @@ branch_allowlist: devel-5.10|devel-6.6|intel-5.10-.*|intel-6.6-.*
 branch_denylist: .*
 report_picked_commit: .*
 private_report_branch: .*
+ignore_extra_warning_branch: .*
 belongs_to: downstream
 category: downstream
 mail_to:
