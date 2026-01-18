@@ -150,26 +150,20 @@ module LKP
     def boot_test_results
       return {} unless test_contents
 
-      test_results = test_contents.select { |test_stat, _values| test_stat =~ /^(dmesg\.boot_failures|last_state\.is_incomplete_run)/ }
+      allowed_stats = %w[
+        dmesg.BUG
+        dmesg.WARNING
+        dmesg.Oops
+        last_state.OOM
+        last_state.soft_timeout
+      ]
+
+      test_results = test_contents.select { |test_stat, _values| test_stat =~ /^(#{allowed_stats.map { |s| Regexp.escape(s) }.join('|')})/ }
                                   .to_h do |test_stat, values|
                                     result = self.class.test_result_definition.type(test_stat)
                                     values = Array(values)
 
-                                    test = case test_stat
-                                           when /dmesg/
-                                             # it's possible the test result is impacted by early error/warning
-                                             # or such error/warning makes further test uninterested, one example
-                                             # is below
-                                             #   "dmesg.boot_failures": 1,
-                                             #   "dmesg.WARNING:at_mm/slab_common.c:#kmem_cache_create_usercopy": 1,
-                                             #   "kernel-selftests.x86.single_step_syscall_32.pass": 1,
-                                             #   "kernel-selftests.x86.syscall_nt_32.fail": 1,
-                                             'dmesg.oops'
-                                           when /last_state/
-                                             'last_state'
-                                           end
-
-                                    [test_stat, BootTestResult.new(test, result => values.sum)]
+                                    [test_stat, BootTestResult.new(test_stat, result => values.sum)]
       end
 
       if %w[boot fuzz].include?(rectified_category)
