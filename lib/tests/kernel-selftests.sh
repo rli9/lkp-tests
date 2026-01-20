@@ -345,11 +345,21 @@ fixup_lkdtm()
 	sed -i '/USERCOPY_STACK_FRAME_FROM/d' lkdtm/tests.txt
 }
 
-cleanup_for_firmware()
+clean_firmware()
 {
 	[[ -f 50-firmware.rules ]] && {
 		log_cmd mv 50-firmware.rules /lib/udev/rules.d/50-firmware.rules
 	}
+
+	return 0
+}
+
+clean_mm()
+{
+	local install_dir="$CACHE_DIR/kselftests"
+	[[ -d $install_dir ]] && rm -rf $install_dir
+
+	return 0
 }
 
 fixup_memfd()
@@ -490,14 +500,9 @@ fixup_cpufreq()
 
 fixup_mm()
 {
-	# memory management selftests used to be named as vm selftests
-	# and renamed to mm selftests in v6.3-rc1 by below commit:
-	#   baa489fabd01 selftests/vm: rename selftests/vm to selftests/mm
-	# the test script is still "run_vmtests.sh" after rename to mm selftests.
-
 	local run_vmtests="run_vmtests.sh"
-	[[ -f mm/run_vmtests ]] && run_vmtests="run_vmtests"
-	# we need to adjust two value in vm/run_vmtests accroding to the nr_cpu
+
+	# we need to adjust two value in $run_vmtests accroding to the nr_cpu
 	# 1) needmem=262144, in Byte
 	# 2) ./userfaultfd hugetlb *128* 32, we call it memory here, in MB
 	# For 1) it indicates the memory size we need to reserve for 2), it should be 2 * memory
@@ -705,7 +710,18 @@ make_run_tests()
 		log_cmd make -j${nr_cpu} TARGETS=$group install 2>&1 || return
 	fi
 
-	log_cmd make -j${nr_cpu} TARGETS=$group run_tests 2>&1
+	if [[ "$group" == "mm" ]]; then
+		# tests like guard_regions.file.hole_punch need create file on a physical disk (ext4/xfs/btrfs)
+		# instead of a rootfs (RAM-based) filesystem (which is due to lkp tbox is boot from initramfs).
+		# Here CACHE_DIR is usually a physical disk based filesystem if /opt/rootfs exists.
+		local install_dir="$CACHE_DIR/kselftests"
+		log_cmd make install -j${nr_cpu} TARGETS=$group INSTALL_PATH=$install_dir 2>&1 || return
+
+		cd $install_dir || return
+		./run_kselftest.sh
+	else
+		log_cmd make -j${nr_cpu} TARGETS=$group run_tests 2>&1
+	fi
 }
 
 run_tests()
@@ -776,15 +792,17 @@ run_tests()
 			make_run_tests
 		fi
 
-		cleanup_test_group $group
+		clean_test_group $group
 	done
 }
 
-cleanup_test_group()
+clean_test_group()
 {
 	local group=$1
 
 	if [[ "$group" = "firmware" ]]; then
-		cleanup_for_firmware
+		clean_firmware
+	elif [[ "$group" = "mm" ]]; then
+		clean_mm
 	fi
 }
