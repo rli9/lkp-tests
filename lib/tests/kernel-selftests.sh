@@ -6,6 +6,11 @@
 . $LKP_SRC/lib/tests/update-llvm.sh
 . $LKP_SRC/lib/reproduce-log.sh
 
+kselftests_make()
+{
+	log_cmd make -j${nr_cpu} "$@" 2>&1
+}
+
 build_selftests()
 {
 	cd tools/testing/selftests	|| return
@@ -227,7 +232,7 @@ fixup_net()
 
 	# udpgro tests need enable bpf firstly
 	# Missing xdp_dummy helper. Build bpf selftest first
-	log_cmd make -j${nr_cpu} -C bpf 2>&1
+	kselftests_make -C bpf
 
 	skip_standalone_net_tests
 
@@ -244,12 +249,12 @@ fixup_net()
 	[[ $test = "fib_nexthops.sh" ]] && echo "timeout=3600" >> $group/settings
 
 	[[ -d ../../net/ynl ]] && {
-		log_cmd make -j${nr_cpu} -C ../../net/ynl 2>&1 || return
+		kselftests_make -C ../../net/ynl || return
 	}
 
 	export CCINCLUDE="-I../bpf/tools/include"
-	log_cmd make -j${nr_cpu} -C net 2>&1 || return
-	log_cmd make install TARGETS=net INSTALL_PATH=/usr/bin/ 2>&1
+	kselftests_make -C net || return
+	kselftests_make install TARGETS=net INSTALL_PATH=/usr/bin/
 }
 
 fixup_efivarfs()
@@ -317,7 +322,7 @@ fixup_gpio()
 {
 	# gcc -O2 -g -std=gnu99 -Wall -I../../../../usr/include/    gpio-mockup-chardev.c ../../../gpio/gpio-utils.o ../../../../usr/include/linux/gpio.h  -lmount -I/usr/include/libmount -o gpio-mockup-chardev
 	# gcc: error: ../../../gpio/gpio-utils.o: No such file or directory
-	log_cmd make -j${nr_cpu} -C ../../../tools/gpio 2>&1 || return
+	kselftests_make -C ../../../tools/gpio || return
 
 	export CFLAGS="-I../../../../usr/include"
 }
@@ -372,8 +377,8 @@ fixup_memfd()
 
 build_bpftool()
 {
-	log_cmd make -j${nr_cpu} -C ../../../tools/bpf/bpftool 2>&1 || return 2
-	log_cmd make install -C ../../../tools/bpf/bpftool 2>&1 || return 2
+	kselftests_make -C ../../../tools/bpf/bpftool || return 2
+	kselftests_make install -C ../../../tools/bpf/bpftool || return 2
 
 	# tools/testing/selftests/bpf/tools/sbin/bpftool
 	export PATH=$linux_selftests_dir/tools/testing/selftests/bpf/tools/sbin:$PATH
@@ -707,7 +712,7 @@ make_run_tests()
 {
 	if [[ "$group" == "net" || "$group" == "drivers/net" || "$group" == "drivers/net/hw" ]]; then
 		# install is needed to trigger the build of INSTALL_DEP_TARGETS
-		log_cmd make -j${nr_cpu} TARGETS=$group install 2>&1 || return
+		kselftests_make TARGETS=$group install || return
 	fi
 
 	if [[ "$group" == "mm" ]]; then
@@ -715,12 +720,12 @@ make_run_tests()
 		# instead of a rootfs (RAM-based) filesystem (which is due to lkp tbox is boot from initramfs).
 		# Here CACHE_DIR is usually a physical disk based filesystem if /opt/rootfs exists.
 		local install_dir="$CACHE_DIR/kselftests"
-		log_cmd make install -j${nr_cpu} TARGETS=$group INSTALL_PATH=$install_dir 2>&1 || return
+		kselftests_make install TARGETS=$group INSTALL_PATH=$install_dir || return
 
 		cd $install_dir || return
 		./run_kselftest.sh
 	else
-		log_cmd make -j${nr_cpu} TARGETS=$group run_tests 2>&1
+		kselftests_make TARGETS=$group run_tests
 	fi
 }
 
@@ -743,17 +748,17 @@ run_tests()
 
 		# vmalloc performance and stress, can not use 'make run_tests' to run
 		if [[ $test =~ ^vmalloc\-(performance|stress)$ ]]; then
-			log_cmd make -j${nr_cpu} TARGETS=$group 2>&1 || continue
+			kselftests_make TARGETS=$group || continue
 
 			log_cmd mm/test_vmalloc.sh ${test##vmalloc-} 2>&1
 			log_cmd dmesg | grep -E '(Summary|All test took)' 2>&1
 		elif [[ $group = resctrl ]]; then
-			log_cmd make -j${nr_cpu} TARGETS=$group 2>&1 || continue
+			kselftests_make TARGETS=$group || continue
 
 			log_cmd resctrl/resctrl_tests 2>&1
 		elif [[ $group = sched_ext ]]; then
-			log_cmd make -j${nr_cpu} -C $group 2>&1 || continue
-			log_cmd make run_tests -j${nr_cpu} -C $group 2>&1
+			kselftests_make -C $group || continue
+			kselftests_make run_tests -C $group
 		elif [[ $group = bpf ]]; then
 			# Order correspond to 'make run_tests' order
 			# TEST_GEN_PROGS = test_verifier test_tag test_maps test_lru_map test_lpm_map test_progs \
