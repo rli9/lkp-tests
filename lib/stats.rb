@@ -598,7 +598,7 @@ def __get_changed_stats(a, b, is_incomplete_run, options)
 
     if !is_force_stat && !(options['perf-profile'] && k =~ /^perf-profile\./)
       next unless ratio > 1.01 # time.elapsed_time only has 0.01s precision
-      next unless ratio > 1.1 || perf_metric?(k)
+      next unless ratio > 1.05 || perf_metric?(k)
       next unless reasonable_perf_change?(k, delta, max)
     end
 
