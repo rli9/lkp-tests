@@ -2,8 +2,8 @@
 
 LKP_SRC = ENV['LKP_SRC'] || File.expand_path('..', __dir__)
 
-require "#{LKP_SRC}/lib/programs"
 require 'yaml'
+require "#{LKP_SRC}/lib/programs"
 
 command = ARGV.shift
 subcommand = ARGV.shift
