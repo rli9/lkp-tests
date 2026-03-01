@@ -8,8 +8,8 @@ describe 'lkp-split-job' do
   before(:all) do
     @tmp_src_dir = LKP::TmpDir.new('split-job-spec-src-')
 
-    Bash.run("rsync -aix #{LKP_SRC}/ #{@tmp_src_dir}")
-    Bash.run("rsync -aix #{LKP_SRC}/spec/split-job/tests #{LKP_SRC}/spec/split-job/include #{@tmp_src_dir}/")
+    Bash.run("rsync -aix --exclude .git #{LKP_SRC}/ #{@tmp_src_dir}")
+    Bash.run("rsync -aix --exclude .git #{LKP_SRC}/spec/split-job/programs/ #{@tmp_src_dir}/programs/")
 
     Dir.chdir(@tmp_src_dir.to_s) do
       Bash.run("bash -c \"export LKP_SRC=#{@tmp_src_dir}; . #{@tmp_src_dir}/lib/host.sh; create_host_config\"")
@@ -32,7 +32,7 @@ describe 'lkp-split-job' do
     Bash.run("LKP_SRC=#{@tmp_src_dir} LKP_CORE_SRC=#{@tmp_src_dir} #{@tmp_src_dir}/bin/lkp split-job -t lkp-tbox -o #{@tmp_dir} spec/split-job/#{id}.yaml")
 
     Dir[@tmp_dir.path("#{id}-*.yaml")].each do |actual_yaml|
-      Bash.run("sed -i 's/:#! /#!/g' #{actual_yaml}")
+      Bash.run("sed -i 's|:#! programs/split-job/|#!/|g' #{actual_yaml}")
 
       actual = YAML.load_file(actual_yaml)
       expected = YAML.load_file("#{LKP_SRC}/spec/split-job/#{File.basename(actual_yaml)}")
