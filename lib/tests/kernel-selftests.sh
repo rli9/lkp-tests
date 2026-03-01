@@ -519,7 +519,7 @@ fixup_connector()
 	# proc_filter is designed to run infinitely until interrupted, and wait for events.
 	# Inject alarm so that it interrupts after 15 seconds instead of 1800s.
 	[[ -f $group/proc_filter.c ]] && {
-		sed -i '/signal(SIGINT, sigint);/a \t\tsignal(SIGALRM, sigint);\n\t\talarm(15);' $group/proc_filter.c
+		sed -i '/signal(SIGINT, sigint);/a \\t\tsignal(SIGALRM, sigint);\n\t\talarm(15);' $group/proc_filter.c
 	}
 }
 
