@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - runtime
 # - concurrency
 
@@ -7,12 +7,12 @@
 
 set_apache_name
 
-[ -n "$direct_server_ips" ] && server=$direct_server_ips
-[ -z "$server" ] && server=127.0.0.1
+[[ -n "$direct_server_ips" ]] && server=$direct_server_ips
+[[ -z "$server" ]] && server=127.0.0.1
 server=${server%% *}
 
-[ -n "$runtime" ] || runtime=300
-[ -n "$concurrency" ] || concurrency=1000
+[[ -n "$runtime" ]] || runtime=300
+[[ -n "$concurrency" ]] || concurrency=1000
 
 # avoid apr_socket_recv: Connection reset by peer (104)
 log_cmd sysctl -w net.ipv4.tcp_syncookies=0

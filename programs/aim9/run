@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - testtime
 # - test
 
@@ -8,15 +8,15 @@
 ## Suite IX is the "AIM Independent Resource Benchmark:"
 ## the famous synthetic benchmark.
 
-[ -n "$test"		] || exit
-[ -n "$testtime"	] || exit
+[[ -n "$test" ]] || exit
+[[ -n "$testtime" ]] || exit
 
 testtime=${testtime%s}
 
 aim9_setup()
 {
 	# setup workfile
-	if [ -f "s9workfile.$test" ]; then
+	if [[ -f "s9workfile.$test" ]]; then
 		cp s9workfile.$test s9workfile
 	else
 		cat > s9workfile <<EOF

@@ -1,11 +1,11 @@
-#!/bin/sh
+#!/bin/bash
 # - runtime
 # - nr_threads
 # - bs
 
 ## Copy a file, converting and formatting according to the operands.
 
-[ -n "$mount_points" ] || { echo "empty mount_points, disk failed?" >&2; exit; }
+[[ -n "$mount_points" ]] || { echo "empty mount_points, disk failed?" >&2; exit; }
 
 . $LKP_SRC/lib/reproduce-log.sh
 
@@ -15,7 +15,7 @@ get_time_ms()
 }
 
 : "${runtime:=600}"
-[ -n "$bs" ] && opt_bs="bs=$bs"
+[[ -n "$bs" ]] && opt_bs="bs=$bs"
 
 t=$(get_time_ms)
 
@@ -29,7 +29,7 @@ do
 		files="$files $file "
 		rm -f $file
 		log_eval "timeout -s KILL $runtime  dd $opt_bs if=/dev/zero of=$file status=noxfer &"
-		[ -n "$BASH_VERSION" ] && disown
+		[[ -n "$BASH_VERSION" ]] && disown
 		pid="${pid} $!"
 	done
 done

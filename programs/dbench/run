@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - nr_threads
 
 ## DBENCH is a tool to generate I/O workloads to either a filesystem
@@ -16,7 +16,7 @@
 run_dbench()
 {
 	load_file=loadfiles/client.load
-	[ -f "$load_file" ] || die "can not find $load_file"
+	[[ -f "$load_file" ]] || die "can not find $load_file"
 
 	log_cmd dbench $nr_threads -c $load_file
 }
@@ -37,7 +37,7 @@ run_cifsdbench()
 	sleep 2
 
 	load_file=loadfiles/smb_2.load
-	[ -f "$load_file" ] || die "can not find $load_file"
+	[[ -f "$load_file" ]] || die "can not find $load_file"
 
 	log_cmd dbench -B smb --smb-share="$cifs_server_paths" --smb-user=root%pass --loadfile=$loadfiles -t 60 --skip-cleanup $nr_threads
 }
@@ -49,7 +49,7 @@ run_nfsdbench()
 	log_cmd umount $nfs_mount_points
 
 	load_file=loadfiles/nfs_2.load
-	[ -f "$load_file" ] || die "can not find $load_file"
+	[[ -f "$load_file" ]] || die "can not find $load_file"
 
 	log_cmd dbench -B nfs --server=127.0.0.1 --export=/export"$nfs_export_paths" --protocol=tcp --loadfile=$load_file -t 60 $nr_threads
 }

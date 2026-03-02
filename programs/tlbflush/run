@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - nr_threads
 # - entries
 # - iterations
@@ -17,7 +17,7 @@ TLBFLUSH_ITERATIONS=$iterations
 
 rand()
 {
-	if [ -n "$RANDOM" ]; then	# bash, mksh, zsh
+	if [[ -n "$RANDOM" ]]; then	# bash, mksh, zsh
 		echo $(( RANDOM % $1 ))
 	else
 		awk "BEGIN { srand(); printf(\"%d\n\",rand()*$1) }"
@@ -38,7 +38,7 @@ for ITERATION in $(seq 1 $TLBFLUSH_ITERATIONS); do
 	THIS_MAX_ENTRIES=$((THIS_MIN_ENTRIES+RANGE))
 
 	NR_ENTRIES=$(( THIS_MIN_ENTRIES + $(rand $RANGE) ))
-	if [ $NR_ENTRIES -gt $THIS_MAX_ENTRIES ]; then
+	if [[ $NR_ENTRIES -gt $THIS_MAX_ENTRIES ]]; then
 		NR_ENTRIES=$THIS_MAX_ENTRIES
 	fi
 

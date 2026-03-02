@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ## fio  is  a  tool that will spawn a number of threads or processes
 ## doing a particular type of I/O action as specified by the user.
@@ -11,7 +11,7 @@
 
 task=$(cat /$TMP_RESULT_ROOT/fio.task)
 
-[ -n "$task" ] || die "fio task file isn't setup properly!"
+[[ -n "$task" ]] || die "fio task file isn't setup properly!"
 
 log_echo "\
 echo '$task' | fio --output-format=json -"

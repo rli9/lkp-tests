@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - nr_threads
 # - duration
 # - iterations
@@ -18,8 +18,8 @@ cd_benchmark
 
 duration=${duration%%s}
 
-[ -n "$mmap" ] && opt_mmap=" -m "
-[ -n "$linear" ] && opt_linear=" -z "
+[[ -n "$mmap" ]] && opt_mmap=" -m "
+[[ -n "$linear" ]] && opt_linear=" -z "
 
 
 for i in $(seq 1 $iterations)

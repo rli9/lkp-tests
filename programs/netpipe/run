@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - test
 
 ## NetPIPE is a protocol independent performance tool that encapsulates
@@ -11,8 +11,8 @@
 
 cd_benchmark
 
-[ -n "$direct_server_ips" ] && server=$direct_server_ips
-[ -z "$server" ] && server=127.0.0.1
+[[ -n "$direct_server_ips" ]] && server=$direct_server_ips
+[[ -z "$server" ]] && server=127.0.0.1
 server=${server%% *}
 
 fixup_mpi()

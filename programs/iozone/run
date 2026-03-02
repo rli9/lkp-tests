@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ## IOzone is a filesystem benchmark tool. The benchmark generates
 ## and measures a variety of file operations.

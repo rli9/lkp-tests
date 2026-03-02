@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - runtime
 # - nr_threads
 # - ip
@@ -21,19 +21,19 @@ setup_wait
 
 prepare_exec_path
 
-[ "${test#*SCTP}" != "$test" ] && log_cmd modprobe sctp 2>/dev/null
+[[ "${test#*SCTP}" != "$test" ]] && log_cmd modprobe sctp 2>/dev/null
 sleep 1
 
-[ -n "$send_size" ] && send_size="-m $send_size"
-[ -n "$socket_buffer_size" ] && socket_buffer_size="-s $socket_buffer_size -S $socket_buffer_size"
+[[ -n "$send_size" ]] && send_size="-m $send_size"
+[[ -n "$socket_buffer_size" ]] && socket_buffer_size="-s $socket_buffer_size -S $socket_buffer_size"
 
-if [ -n "$send_size" ] || [ -n "$socket_buffer_size" ]; then
+if [[ -n "$send_size" ]] || [[ -n "$socket_buffer_size" ]]; then
 	test_options="-- $send_size $socket_buffer_size"
 fi
 
-[ -n "$direct_server_ips" ] && server=$direct_server_ips
-[ -z "$server" ] && {
-	if [ "$ip" = 'ipv6' ]; then
+[[ -n "$direct_server_ips" ]] && server=$direct_server_ips
+[[ -z "$server" ]] && {
+	if [[ "$ip" = 'ipv6' ]]; then
 		server=::1
 	else
 		server=127.0.0.1
@@ -42,12 +42,12 @@ fi
 server=${server%% *}
 
 opt_ip=
-[ "$ip" = 'ipv4' ] && opt_ip='-4'
-[ "$ip" = 'ipv6' ] && opt_ip='-6'
+[[ "$ip" = 'ipv4' ]] && opt_ip='-4'
+[[ "$ip" = 'ipv6' ]] && opt_ip='-6'
 
 run_netperf()
 {
-	[ -n "$delay" ] && $WAIT_POST_TEST_CMD --timeout "$delay"
+	[[ -n "$delay" ]] && $WAIT_POST_TEST_CMD --timeout "$delay"
 
 	for i in $(seq $nr_threads)
 	do
@@ -65,7 +65,7 @@ run_for_iterations()
 	done
 }
 
-if [ -n "$iterations" ]; then
+if [[ -n "$iterations" ]]; then
 	run_for_iterations
 else
 	run_netperf

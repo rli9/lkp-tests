@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ## The packetdrill scripting tool enables quick, precise tests for
 ## entire TCP/UDP/IPv4/IPv6 network stacks, from the system call
@@ -21,7 +21,7 @@ while read -r f; do
 	opts=$(grep -q -- --tolerance_usecs $f >/dev/null 2>&1 || echo "--tolerance_usecs=40000")
 	log_cmd ./packetdrill $opts $f 2>&1
 	return_value=$?
-	if [ $return_value -eq 0 ]; then
+	if [[ $return_value -eq 0 ]]; then
 		echo "$f pass"
 	else
 		echo "$f failed"

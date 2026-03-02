@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - runtime
 # - pattern
 # - mapsize
@@ -26,31 +26,31 @@
 set_opt()
 {
 	opt=
-	if [ -n "$total_setsize" ] && [ -z "$setsize" ]; then
+	if [[ -n "$total_setsize" ]] && [[ -z "$setsize" ]]; then
 		nr_inst=${nr_instances:-1}
 		setsize=$((total_setsize / nr_inst / nr_processes))
 	fi
-	if [ -n "$setsize" ]; then
+	if [[ -n "$setsize" ]]; then
 		opt="${opt} -s$((setsize/1024/1024))"
-		[ -z "$mapsize" ] && mapsize="$setsize"
+		[[ -z "$mapsize" ]] && mapsize="$setsize"
 	fi
-	[ -n "$mapsize" ] && {
+	[[ -n "$mapsize" ]] && {
 		mapsize=$((mapsize/1024/1024))
-		[ "$mapsize" -eq 0 ] && mapsize=256
+		[[ "$mapsize" -eq 0 ]] && mapsize=256
 		opt="${opt} -m${mapsize}"
 	}
-	[ -n "$pattern" ] && opt="${opt} -p${pattern}"
-	[ -n "$shape" ] && opt="${opt} -e${shape}"
-	[ -n "$nr_threads" ] && opt="${opt} -j${nr_threads}"
-	[ -n "$timestamp" ] && opt="${opt} -t${timestamp}"
+	[[ -n "$pattern" ]] && opt="${opt} -p${pattern}"
+	[[ -n "$shape" ]] && opt="${opt} -e${shape}"
+	[[ -n "$nr_threads" ]] && opt="${opt} -j${nr_threads}"
+	[[ -n "$timestamp" ]] && opt="${opt} -t${timestamp}"
 	parse_bool -q "$cold" && opt="${opt} -c"
-	[ -n "$access" ] && opt="${opt} -a${access}"
-	[ -n "$delay" ] && opt="${opt} -d${delay}"
+	[[ -n "$access" ]] && opt="${opt} -a${access}"
+	[[ -n "$delay" ]] && opt="${opt} -d${delay}"
 	parse_bool -q "$initialize" && opt="${opt} -i"
-	[ -n "$offset" ] && opt="${opt} -o${offset}"
+	[[ -n "$offset" ]] && opt="${opt} -o${offset}"
 	parse_bool -q "$quiet" && opt="${opt} -q"
-	[ -n "$ratio" ] && opt="${opt} -r${ratio}"
-	[ -n "$threshold" ] && opt="${opt} -h${threshold}"
+	[[ -n "$ratio" ]] && opt="${opt} -r${ratio}"
+	[[ -n "$threshold" ]] && opt="${opt} -h${threshold}"
 }
 
 set_opt

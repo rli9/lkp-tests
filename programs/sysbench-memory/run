@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - runtime
 # - nr_processes
 # - nr_threads
@@ -38,8 +38,8 @@ args="\
  --memory-access-mode=$mem_access_mode \
 "
 
-[ -n "$rand_type" ] && args="$args --rand-type=$rand_type"
-[ -n "$rand_pareto_h" ] && args="$args --rand-pareto-h=$rand_pareto_h"
+[[ -n "$rand_type" ]] && args="$args --rand-type=$rand_type"
+[[ -n "$rand_pareto_h" ]] && args="$args --rand-pareto-h=$rand_pareto_h"
 
 sb_tmp_dir="$TMP/sysbench-memory"
 rm -rf "$sb_tmp_dir"

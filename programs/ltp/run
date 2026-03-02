@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - test
 
 ## The LTP testsuite contains a collection of tools for
@@ -24,9 +24,9 @@ is_excluded $test
 log_cmd export LTP_RUNTIME_MUL=2
 log_cmd export LTPROOT="$(get_benchmark_path)" # used by kirk
 
-if [ -f "$BENCHMARK_ROOT/ltp/runtest/$test" ]; then
+if [[ -f "$BENCHMARK_ROOT/ltp/runtest/$test" ]]; then
     log_cmd kirk -f $test $big_dev_opt $tmpdir_opt
-elif [ -f "$BENCHMARK_ROOT/ltp/runtest/temp_single_test" ]; then
+elif [[ -f "$BENCHMARK_ROOT/ltp/runtest/temp_single_test" ]]; then
     log_cmd kirk -f temp_single_test $big_dev_opt $tmpdir_opt
 else
     die "ltp test cmdfile is not found"
@@ -35,7 +35,7 @@ fi
 cleanup_ltp $test
 
 kirk_latest="/tmp/kirk.$(whoami)/latest"
-if [ -d "$kirk_latest" ]; then
+if [[ -d "$kirk_latest" ]]; then
     upload_files -t results "$kirk_latest"/* 2>&1
 else
     echo "$kirk_latest is not found"

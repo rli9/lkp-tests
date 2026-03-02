@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - runtime
 # - protocol
 ## iperf is a tool for active measurements of the maximum achievable
@@ -6,11 +6,11 @@
 ## related to timing, protocols, and buffers. For each test
 ## it reports the bandwidth, loss, and other parameters.
 
-[ -n "$runtime" ] || runtime=300
-[ "$protocol" = udp ] && opt_udp=-u
+[[ -n "$runtime" ]] || runtime=300
+[[ "$protocol" = udp ]] && opt_udp=-u
 
-[ -n "$direct_server_ips" ] && server=$direct_server_ips
-[ -z "$server" ] && server=127.0.0.1
+[[ -n "$direct_server_ips" ]] && server=$direct_server_ips
+[[ -z "$server" ]] && server=127.0.0.1
 server=${server%% *}
 
 client_cmd="iperf3 -t $runtime -J -c $server $opt_udp"

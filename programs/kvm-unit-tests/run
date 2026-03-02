@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ## Tests for x86 architecture are run as kernel images for qemu
 ## that supports multiboot format. Tests uses an infrastructure
@@ -21,7 +21,7 @@ cd_benchmark
 if qemu-system-x86_64 --help >/dev/null 2>&1; then
 	export QEMU="$(which qemu-system-x86_64)"
 else
-	if [ -f "/usr/libexec/qemu-kvm" ]; then
+	if [[ -f "/usr/libexec/qemu-kvm" ]]; then
 		export QEMU="/usr/libexec/qemu-kvm"
 	else
 		die "Can not find QEMU Emulator"
@@ -38,6 +38,6 @@ exit_code=$?
 
 upload_test_results
 
-[ $exit_code -ne 0 ] && dump_qemu
+[[ $exit_code -ne 0 ]] && dump_qemu
 
 exit $exit_code

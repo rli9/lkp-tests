@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - runtime
 
 ## Measuring latency in the Linux network stack between kernel and user space.
@@ -9,7 +9,7 @@
 
 cd_benchmark
 
-[ -n "$runtime" ] || runtime=300
+[[ -n "$runtime" ]] || runtime=300
 
 ./ku-latency -e localhost &
 LATENCY_PID=$!

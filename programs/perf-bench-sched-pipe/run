@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - loops
 # - mode
 
@@ -9,6 +9,6 @@
 . $LKP_SRC/lib/reproduce-log.sh
 
 loops="${loops%%ops}"
-[ "$mode" = 'threads' ] && opt_threads='-T'
+[[ "$mode" = 'threads' ]] && opt_threads='-T'
 
 log_cmd perf bench sched pipe -l $loops $opt_threads

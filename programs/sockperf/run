@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - runtime
 # - msg_size
 
@@ -10,12 +10,12 @@
 
 cd_benchmark
 
-[ -n "$runtime" ] || runtime=600
+[[ -n "$runtime" ]] || runtime=600
 time=$((runtime / 6))
 msg_size=${msg_size%%[bB]}
 
-[ -n "$direct_server_ips" ] && server=$direct_server_ips
-[ -z "$server" ] && server=127.0.0.1
+[[ -n "$direct_server_ips" ]] && server=$direct_server_ips
+[[ -z "$server" ]] && server=127.0.0.1
 server=${server%% *}
 
 for subcmd in under-load ping-pong throughput

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - runtime
 # - test
 # - torture_type
@@ -17,7 +17,7 @@ cpuhotplug)
         ;;
 esac
 
-[ -n "$torture_type" ] && {
+[[ -n "$torture_type" ]] && {
 	args="${args} torture_type=$torture_type"
 
 	case "$torture_type" in

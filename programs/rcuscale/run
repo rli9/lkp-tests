@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - runtime
 # - scale_type
 
@@ -9,7 +9,7 @@
 . $LKP_SRC/lib/reproduce-log.sh
 
 args=""
-[ -n "$scale_type" ] && args="$args scale_type=$scale_type"
+[[ -n "$scale_type" ]] && args="$args scale_type=$scale_type"
 
 log_cmd depmod
 log=$(log_cmd modprobe rcuscale $args 2>&1) || {

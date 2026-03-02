@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - runtime
 # - nr_threads
 # - iterations
@@ -11,16 +11,16 @@
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/run.sh
 
-[ -n "$direct_server_ips" ] && server=$direct_server_ips
-[ -z "$server" ] && server=127.0.0.1
-[ -n "$runtime" ] || runtime=600
-[ -n "$iterations" ] || iterations=1
+[[ -n "$direct_server_ips" ]] && server=$direct_server_ips
+[[ -z "$server" ]] && server=127.0.0.1
+[[ -n "$runtime" ]] || runtime=600
+[[ -n "$iterations" ]] || iterations=1
 
 prepare_exec_path tbench
 
 cd_benchmark
 
-[ -f share/client.txt ] || die "can not find load file"
+[[ -f share/client.txt ]] || die "can not find load file"
 
 server=${server%% *}
 for i in $(seq $iterations)

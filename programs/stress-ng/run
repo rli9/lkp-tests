@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - testtime
 # - class
 # - nr_threads
@@ -12,10 +12,10 @@ mount_dev()
 {
 	local mnt=/mnt/stress-ng
 
-	[ $nr_partitions -ge 1 ] || die "nr_partitions is less than 1"
+	[[ $nr_partitions -ge 1 ]] || die "nr_partitions is less than 1"
 	partition=${partitions%% *}
 
-	[ "$test" = "verity" ] && {
+	[[ "$test" = "verity" ]] && {
 		log_cmd umount $partition
 		log_cmd mkfs.$fs -q -F -O verity $partition || die "fail to mkfs.$fs -q -F -O verity $partition"
 	}
@@ -32,7 +32,7 @@ mount_dev()
 ## some options are universal, put them in universal_setting
 set_common_opts()
 {
-	[ -n "$testtime" ] || testtime=1
+	[[ -n "$testtime" ]] || testtime=1
 
 	common_opts="--timeout $testtime --times --verify --metrics --no-rand-seed"
 }
@@ -45,7 +45,7 @@ setup_class()
 	exclude_opt="--exclude spawn,exec"
 
 	# Fix stress-ng: error: [36360] process [36390] (stress-ng-swap) aborted early, out of system resources
-	[ "$(nproc)" -gt 16 ] && exclude_opt="${exclude_opt},swap"
+	[[ "$(nproc)" -gt 16 ]] && exclude_opt="${exclude_opt},swap"
 
 	case "$class" in
 	"memory")
@@ -70,7 +70,7 @@ setup_class()
 
 setup_test()
 {
-	[ -n "$fs" ] && {
+	[[ -n "$fs" ]] && {
 		mount_dev || return
 	}
 
@@ -99,7 +99,7 @@ setup_test()
 setup_sysctl()
 {
 	# stress-ng: info: note: /proc/sys/kernel/sched_autogroup_enabled is 1 and this can impact scheduling throughput for processes not attached to a tty. Setting this to 0 may improve performance metrics
-	[ -w /proc/sys/kernel/sched_autogroup_enabled ] && \
+	[[ -w /proc/sys/kernel/sched_autogroup_enabled ]] && \
 		log_cmd sysctl -w kernel.sched_autogroup_enabled=0
 }
 
@@ -108,10 +108,10 @@ run_test()
 	setup_sysctl
 	set_common_opts
 
-	if [ -n "$test" ]; then
+	if [[ -n "$test" ]]; then
 		setup_test || die "setup test failed"
 
-		if [ "$test" = "exec" ] || [ "$test" = "spawn" ] || [ "$test" = "bad-ioctl" ]; then
+		if [[ "$test" = "exec" ]] || [[ "$test" = "spawn" ]] || [[ "$test" = "bad-ioctl" ]]; then
 			# these stressors need to be running without root privilege
 			log_cmd mkdir /home/lkp
 			log_cmd chown -R lkp:lkp /home/lkp

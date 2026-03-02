@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - runtime
 # - nr_threads
 # - fds
@@ -16,15 +16,15 @@
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/run.sh
 
-[ "$ipc" = 'pipe' ] && ipc_option='--pipe'
+[[ "$ipc" = 'pipe' ]] && ipc_option='--pipe'
 
-[ -n "$runtime" ] || runtime=600
+[[ -n "$runtime" ]] || runtime=600
 
 # Default datasize for hackbench is 100
-[ -n "$datasize" ] || datasize=100
+[[ -n "$datasize" ]] || datasize=100
 
 # Default fds for hackbench is 20 in each group
-[ -n "$fds" ] || fds=20
+[[ -n "$fds" ]] || fds=20
 
 set_env()
 {
@@ -34,7 +34,7 @@ set_env()
 	ulimit -n $((tasks + 2048))
 
 	def_pid_max=32768
-	[ "$tasks" -gt $((def_pid_max / 2)) ] && {
+	[[ "$tasks" -gt $((def_pid_max / 2)) ]] && {
 		sysctl -w kernel.pid_max=$((tasks * 2))
 		sysctl -w kernel.threads-max=$((tasks * 2))
 		sysctl -w vm.max_map_count=$((tasks * 100))
@@ -59,7 +59,7 @@ run_for_time()
 	do
 		run_hackbench
 		now=$(date +%s)
-		[ $((now - start_time)) -gt "$runtime" ] && break
+		[[ $((now - start_time)) -gt "$runtime" ]] && break
 	done
 }
 
@@ -74,9 +74,9 @@ run_for_iterations()
 prepare_exec_path
 
 set_env
-[ -n "$loops" ] || set_loops
+[[ -n "$loops" ]] || set_loops
 
-if [ -n "$iterations" ]; then
+if [[ -n "$iterations" ]]; then
 	run_for_iterations
 else
 	run_for_time

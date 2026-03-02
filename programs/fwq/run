@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - nr_task
 # - samples
 # - iterations
@@ -13,13 +13,13 @@
 
 cd_benchmark
 
-[ "$nr_task" -gt 1  ] && opt_task="-t $nr_task"
+[[ "$nr_task" -gt 1 ]] && opt_task="-t $nr_task"
 
-[ -n "$samples" ] || samples=10000
+[[ -n "$samples" ]] || samples=10000
 
 samples=${samples%%ss}
 
-[ -n "$iterations" ] || iterations=20
+[[ -n "$iterations" ]] || iterations=20
 
 opt_iterations="-w $iterations"
 

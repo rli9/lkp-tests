@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/run.sh
@@ -7,7 +7,7 @@ setup_rxe_netdev()
 {
 	# pick up the first 'up' network interface
 	NET_IF=$(ip link | grep -v -e "LOOPBACK" | grep -e "state UP" | head -n1 | cut -d: -f2 | cut -d' ' -f2)
-	[ "$NET_IF" ] || die "no avaliable network interface"
+	[[ "$NET_IF" ]] || die "no avaliable network interface"
 	RXE_NAME="rxe_$NET_IF"
 	rdma link add $RXE_NAME type rxe netdev $NET_IF || die "failed to setup rxe interface"
 }

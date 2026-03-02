@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - runtime
 # - preload
 # - ppreload_percent
@@ -40,22 +40,22 @@ memtier_dir="$TMP/memtier-$instance_id"
 rm -rf "$memtier_dir"
 mkdir -p "$memtier_dir"
 
-[ -n "$key_max" ] || die "$(basename $0) key_max must be specified!\n"
+[[ -n "$key_max" ]] || die "$(basename $0) key_max must be specified!\n"
 
 proc_key_max=$((key_max/nr_processes/nr_instances))
 
 opt1="--key-minimum=$key_min --threads=$nr_threads"
 
-[ -n "$data_size" ] && opt1="$opt1 -d $data_size"
-[ -n "$n_client" ] && opt1="$opt1 -c $n_client"
-[ -n "$n_pipeline" ] && opt1="$opt1 --pipeline=$n_pipeline"
-[ -n "$n_protocol" ] && opt1="$opt1 --protocol=$n_protocol"
+[[ -n "$data_size" ]] && opt1="$opt1 -d $data_size"
+[[ -n "$n_client" ]] && opt1="$opt1 -c $n_client"
+[[ -n "$n_pipeline" ]] && opt1="$opt1 --pipeline=$n_pipeline"
+[[ -n "$n_protocol" ]] && opt1="$opt1 --protocol=$n_protocol"
 
 opt="$opt1 --key-maximum=$proc_key_max"
 
-if [ -n "$requests" ] || [ -n "$requests_multiple" ]; then
+if [[ -n "$requests" ]] || [[ -n "$requests_multiple" ]]; then
 	: "${requests_multiple:=1}"
-	[ -z "$requests" ] && requests=$((key_max * requests_multiple))
+	[[ -z "$requests" ]] && requests=$((key_max * requests_multiple))
 	proc_requests=$((requests/nr_processes/nr_instances))
 	opt_requests="-n $proc_requests"
 else
@@ -64,9 +64,9 @@ fi
 
 parse_numa_node_binding "$cpu_node_bind" "$mem_node_bind"
 
-if [ -n "$preload" ]; then
+if [[ -n "$preload" ]]; then
 	begin=$(date +%s.%N)
-	if [ -n "$ppreload_percent" ]; then
+	if [[ -n "$ppreload_percent" ]]; then
 		ppreload_key_max=$((key_max * ppreload_percent / 100))
 		ppreload_proc_key_max=$((ppreload_key_max / nr_processes / nr_instances))
 		ppreload_requests=$((ppreload_key_max * 2))

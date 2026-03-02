@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - nr_threads
 # - period
 # - rwmode
@@ -13,11 +13,11 @@
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/debug.sh
 
-[ -n "$period"	] || period=600
-[ -n "$rwmode"	] || rwmode=rndrw
-[ -n "$iomode"	] || iomode=sync
-[ -n "$size"	] || size=$((128<<30))
-[ -n "$filenum"	] || filenum=128
+[[ -n "$period" ]] || period=600
+[[ -n "$rwmode" ]] || rwmode=rndrw
+[[ -n "$iomode" ]] || iomode=sync
+[[ -n "$size" ]] || size=$((128<<30))
+[[ -n "$filenum" ]] || filenum=128
 
 filenum=${filenum%f}
 
@@ -40,7 +40,7 @@ prepare_fallocate()
 {
 	# in seqwr mode, fileio will remove all exist files, hence
 	# it's worthless to create them here.
-	[ "$rwmode" = "seqwr" ] && return
+	[[ "$rwmode" = "seqwr" ]] && return
 
 	local filesize="$((size / filenum))"
 	for i in $(seq 0 $((filenum-1)))
@@ -58,7 +58,7 @@ run()
 
 log_eval cd "$mount_points" || die "no $mount_points"
 
-if [ "${rwmode#*wr}" != "$rwmode" ]; then
+if [[ "${rwmode#*wr}" != "$rwmode" ]]; then
 	prepare_fallocate
 else
 	prepare

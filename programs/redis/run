@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - test
 # - data_size
 # - n_client
@@ -26,22 +26,22 @@ export PATH="$BENCHMARK_ROOT/redis/bin:$PATH"
 : "${nr_processes:=1}"
 : "${requests_multiple:=1}"
 
-[ -n "$key_len" ] || {
+[[ -n "$key_len" ]] || {
 	printf "%s key_len must be specified!\n\n" "$(basename "$0")"
 	exit 1
 }
 
-[ -z "$requests" ] && requests=$((key_len * requests_multiple))
+[[ -z "$requests" ]] && requests=$((key_len * requests_multiple))
 
 proc_key_len=$((key_len/nr_processes))
 proc_requests=$((requests/nr_processes))
 
 opt="-r $proc_key_len -n $proc_requests"
 
-[ -n "$test" ] && opt="$opt -t $test"
-[ -n "$data_size" ] && opt="$opt -d $data_size"
-[ -n "$n_client" ] && opt="$opt -c $n_client"
-[ -n "$n_pipeline" ] && opt="$opt -P $n_pipeline"
+[[ -n "$test" ]] && opt="$opt -t $test"
+[[ -n "$data_size" ]] && opt="$opt -d $data_size"
+[[ -n "$n_client" ]] && opt="$opt -c $n_client"
+[[ -n "$n_pipeline" ]] && opt="$opt -P $n_pipeline"
 
 redis_dir="$TMP"/redis/
 rm -rf "$redis_dir"

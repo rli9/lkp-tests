@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - test
 # - nr_task
 # - nr_job
@@ -18,8 +18,8 @@
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/run.sh
 
-[ -n "$test" ] || die "test is empty"
-[ -n "$runtime" ] || [ -n "$iterations" ] || die "runtime or iterations must be specified"
+[[ -n "$test" ]] || die "test is empty"
+[[ -n "$runtime" ]] || [[ -n "$iterations" ]] || die "runtime or iterations must be specified"
 
 nr_job=${nr_job:-100}
 
@@ -37,7 +37,7 @@ run_for_time()
 	do
 		run_reaim
 		now=$(date +%s)
-		[ $((now - start_time)) -gt "$runtime" ] && break
+		[[ $((now - start_time)) -gt "$runtime" ]] && break
 	done
 }
 
@@ -48,11 +48,11 @@ run_for_iterations()
 
 cd_benchmark
 
-if [ -z "$nr_task" ]; then
+if [[ -z "$nr_task" ]]; then
 	REAIM_STARTUSERS=1
 	REAIM_ENDUSERS=$((nr_cpu*4))
 	REAIM_INCREMENT=$((nr_cpu/4))
-	[ "$REAIM_INCREMENT" = 0 ] && REAIM_INCREMENT=1
+	[[ "$REAIM_INCREMENT" = 0 ]] && REAIM_INCREMENT=1
 else
 	REAIM_STARTUSERS=$nr_task
 	REAIM_ENDUSERS=$nr_task
@@ -63,7 +63,7 @@ REAIM_FILESIZE=10k
 REAIM_POOLSIZE=1m
 
 # setup workfile
-if [ -f "data/workfile.$test" ]; then
+if [[ -f "data/workfile.$test" ]]; then
 	log_cmd cp data/workfile.$test .
 else
 	# create workfile onlive
@@ -71,7 +71,7 @@ else
 fi
 
 # setup config file
-if [ -n "$mount_points" ]; then
+if [[ -n "$mount_points" ]]; then
 	REAIM_TESTDIR="${mount_points%% *}"
 else
 	log_cmd mkdir -p /fs/shm
@@ -84,7 +84,7 @@ log_eval "echo FILESIZE $REAIM_FILESIZE > reaim.config"
 log_eval "echo POOLSIZE $REAIM_POOLSIZE >> reaim.config"
 log_eval "echo DISKDIR $REAIM_TESTDIR  >> reaim.config"
 
-if [ -n "$runtime" ]; then
+if [[ -n "$runtime" ]]; then
 	echo "runtime mode"
 	run_for_time
 else

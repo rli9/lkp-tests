@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - runtime
 
 : "${mgp_pattern:=$testcase}"
@@ -19,7 +19,7 @@ while true; do
 	mgp_to="$tmp"
 
 	now=$(date +%s)
-	[ $((now - start_time)) -gt "$runtime" ] && break
+	[[ $((now - start_time)) -gt "$runtime" ]] && break
 done
 
 echo -n "end: "

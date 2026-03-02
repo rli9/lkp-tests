@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - runtime
 
 ## qperf measures bandwidth and latency between two nodes.
@@ -24,11 +24,11 @@ sctp_lat
 # rds_bw
 # rds_lat
 
-[ -n "$runtime" ] || runtime=600
+[[ -n "$runtime" ]] || runtime=600
 time=$((runtime / nr_tests))
 
-[ -n "$direct_server_ips" ] && server=$direct_server_ips
-[ -z "$server" ] && server=127.0.0.1
+[[ -n "$direct_server_ips" ]] && server=$direct_server_ips
+[[ -z "$server" ]] && server=127.0.0.1
 server=${server%% *}
 
 log_cmd qperf $server --unify_units --time $time $tests quit

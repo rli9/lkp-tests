@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - nr_threads
 # - scale_type
 # - loops
@@ -12,21 +12,21 @@
 . $LKP_SRC/lib/reproduce-log.sh
 
 args=""
-[ -n "$scale_type" ] && args="$args scale_type=$scale_type"
-[ -n "$nr_threads" ] && args="$args nreaders=$nr_threads"
-[ -n "$loops" ] && args="$args loops=$loops"
-[ -n "$readdelay" ] && args="$args readdelay=$readdelay"
-[ -n "$nruns" ] && args="$args nruns=$nruns"
+[[ -n "$scale_type" ]] && args="$args scale_type=$scale_type"
+[[ -n "$nr_threads" ]] && args="$args nreaders=$nr_threads"
+[[ -n "$loops" ]] && args="$args loops=$loops"
+[[ -n "$readdelay" ]] && args="$args readdelay=$readdelay"
+[[ -n "$nruns" ]] && args="$args nruns=$nruns"
 
 # since we will pass nr_thread to the test, so the test duration
 # depends on the cpu number. It's known that:
 # 144 cpus cost 329 seconds
 # 384 cpus cost 950 seconds
 duration=300
-if [ $nr_threads ]; then
+if [[ $nr_threads ]]; then
 	cpu_duration=$((nr_threads * 3))
-	[ $cpu_duration -gt 300 ] && duration=$cpu_duration
-	[ $cpu_duration -gt 1800 ] && duration=1800
+	[[ $cpu_duration -gt 300 ]] && duration=$cpu_duration
+	[[ $cpu_duration -gt 1800 ]] && duration=1800
 fi
 
 wait_for_refscale_completion()

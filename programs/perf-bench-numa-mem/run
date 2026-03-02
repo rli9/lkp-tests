@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - nr_processes
 # - nr_threads
 # - mem_proc
@@ -16,8 +16,8 @@
 
 set_perf_path "/lkp/benchmarks/perf/perf"
 
-[ "$thp" = "true" ] && thp_num=1 || thp_num=-1
-[ -n "$nr_processes" ] || nr_processes=$nr_cpu
+[[ "$thp" = "true" ]] && thp_num=1 || thp_num=-1
+[[ -n "$nr_processes" ]] || nr_processes=$nr_cpu
 
 mb_proc=$(to_mb $mem_proc)
 

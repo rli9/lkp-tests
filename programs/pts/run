@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - debug
 # - test
 # - need_x
@@ -13,7 +13,7 @@
 ## platform available that provides an extensible framework for which new tests
 ## can be easily added.
 
-if [ "$need_x" = true ]; then
+if [[ "$need_x" = true ]]; then
 	mkdir -p		/tmp/.X11-unix
 	chmod 1777		/tmp/.X11-unix
 	chown root:root		/tmp/.X11-unix

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - nr_threads
 # - test_memory_size
 # - mode
@@ -64,7 +64,7 @@ run_lmbench3_all()
 		echo
 		echo
 		echo
-		[ $nr_threads -eq 1 ] &&
+		[[ $nr_threads -eq 1 ]] &&
 		{
 			echo
 			echo
@@ -87,7 +87,7 @@ run_lmbench3_hardware()
 		echo
 		echo
 		echo
-		[ $nr_threads -eq 1 ] &&
+		[[ $nr_threads -eq 1 ]] &&
 		{
 			echo
 			echo
@@ -109,7 +109,7 @@ run_lmbench3_os()
 		echo
 		echo
 		echo
-		[ $nr_threads -eq 1 ] && echo
+		[[ $nr_threads -eq 1 ]] && echo
 		echo no
 	) | make results "
 }
@@ -139,7 +139,7 @@ run_lmbench3_development()
 	local LMBENCH_PATH="$(find bin/ -maxdepth 2 -name lmbench)"
 
 	# shellcheck disable=SC2016
-	sed -i '/lat_pagefault -P $SYNC_MAX $FILE/i [ -f $FILE ] || dd if=/dev/zero of=$FILE count=1 bs=1G' $LMBENCH_PATH
+	sed -i '/lat_pagefault -P $SYNC_MAX $FILE/i [[ -f $FILE ]] || dd if=/dev/zero of=$FILE count=1 bs=1G' $LMBENCH_PATH
 	log_eval "
 	(
 		echo $nr_threads
@@ -169,7 +169,7 @@ run_lmbench3_development()
 		echo
 		echo
 		echo
-		[ $nr_threads -eq 1 ] && echo
+		[[ $nr_threads -eq 1 ]] && echo
 		echo no
 	) | make results "
 
@@ -201,14 +201,14 @@ plot "${LMBENCH_RESULT}" using 1:2 with linespoints ls 1 smooth unique title "${
 EOF
 }
 
-if [ "${standalone}" != "1" ]; then
+if [[ "${standalone}" != "1" ]]; then
 	test_memory_size=$((test_memory_size/1024/1024))
 
 	# The bigger test memory range, the more accurate the results, but larger sizes
 	# take somewhat longer to run the benchmark.
 	# If test memory size greater than 10GB, bcopy test may take more than 30mins.
 	# So limit the the maximum test memory size to 10GB.
-	[ "$test_memory_size" -gt 10240 ] && test_memory_size=10240
+	[[ "$test_memory_size" -gt 10240 ]] && test_memory_size=10240
 
 fi
 
@@ -219,9 +219,9 @@ make 2>&1 || die "failed to build lmbench3"
 
 ln -sf /usr/bin/gnuplot-qt /usr/bin/gnuplot
 
-if [ "${standalone}" != "1" ]; then
+if [[ "${standalone}" != "1" ]]; then
 	os=$(echo -e "$(/lkp/benchmarks/lmbench3/scripts/gnu-os)" | sed 's/unknown-//')
-	[ -n "$os" ] && rm -rf $BENCHMARK_ROOT/lmbench3/results/$os/
+	[[ -n "$os" ]] && rm -rf $BENCHMARK_ROOT/lmbench3/results/$os/
 
 	case "$mode" in
 		'all') run_lmbench3_all ;;

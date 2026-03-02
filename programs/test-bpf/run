@@ -1,14 +1,14 @@
-#!/bin/sh
+#!/bin/bash
 # - test
 
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/reproduce-log.sh
 
-if [ "$test" = "jit" ]; then
+if [[ "$test" = "jit" ]]; then
 	log_cmd sysctl net.core.bpf_jit_enable=1 || die "setup bpf_jit failed"
 
 	log_cmd modprobe test_bpf
-elif [ "$test" = "non-jit" ]; then
+elif [[ "$test" = "non-jit" ]]; then
 	log_cmd modprobe test_bpf
 else
 	die "Parameter \"test\" is wrong"

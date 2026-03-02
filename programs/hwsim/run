@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - test
 
 ## Automated hostapd/wpa_supplicant testing with mac80211_hwsim.
@@ -12,7 +12,7 @@ cd_benchmark $suite/tests/hwsim
 
 test_file=$BENCHMARK_ROOT/hwsim/hwsim-$test
 
-if [ -f "$test_file" ]; then
+if [[ -f "$test_file" ]]; then
 	group="$test"
 elif grep -q "$test" $BENCHMARK_ROOT/hwsim/hwsim-*; then
 	group=$(basename "$(grep -l "$test" "$BENCHMARK_ROOT"/hwsim/hwsim-*)" | sed "s/^hwsim-//")
@@ -24,19 +24,19 @@ fi
 echo "group: $group, test: $test"
 
 nm_conf="/etc/NetworkManager/NetworkManager.conf"
-[ -f "$nm_conf" ] && log_eval "cat >> $nm_conf <<EOF
+[[ -f "$nm_conf" ]] && log_eval "cat >> $nm_conf <<EOF
 [keyfile]
 unmanaged-devices=mac:02:00:00:00:00:00;mac:02:00:00:00:01:00;mac:02:00:00:00:02:00;mac:02:00:00:00:03:00;mac:02:00:00:00:04:00
 EOF"
 
-[ $USER ] || log_eval export USER=root
+[[ $USER ]] || log_eval export USER=root
 
 is_excluded()
 {
 	local testcase=$1
 	local exclude_file=$BENCHMARK_ROOT/hwsim/hwsim-exclude
 
-	[ -f "$exclude_file" ] && grep -q -w $testcase "$exclude_file" && return 0
+	[[ -f "$exclude_file" ]] && grep -q -w $testcase "$exclude_file" && return 0
 
 	return 1
 }

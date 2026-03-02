@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - iterations
 
 . $LKP_SRC/lib/unit.sh
@@ -21,7 +21,7 @@ set_memtotal_bytes()
 	local available_memory_gb="$(free -g | sed -n "2, 1p" | awk '{print $7}')"
 	local memory_bytes="$(to_byte "${available_memory_gb}G")"
 	# limit the memory to speed up the test
-	if [ $memory_bytes -gt $default_memory_bytes ]; then
+	if [[ $memory_bytes -gt $default_memory_bytes ]]; then
 		memory_bytes=$default_memory_bytes
 	fi
 	log_eval export MEMTOTAL_BYTES=$memory_bytes
@@ -34,7 +34,7 @@ log_eval export LOGDIR_RESULTS=$RESULT_ROOT/log_result
 
 log_cmd mkdir -p $LOGDIR_RESULTS
 
-[ -z "$mount_points" ] && exit
+[[ -z "$mount_points" ]] && exit
 log_eval export TESTDISK_DIR="${mount_points%% *}"
 
 log_cmd ./run.sh
@@ -45,7 +45,7 @@ log_cmd ./run.sh
 ret=0
 grep 'No space left on device' $LOGDIR_RESULTS/*.log && ret=1
 
-if [ $ret -ne 0 ]; then
+if [[ $ret -ne 0 ]]; then
 	echo "stutter: fail"
 else
 	echo "stutter: pass"

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - test
 # - load
 # - nr_task
@@ -13,12 +13,12 @@
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/run.sh
 
-[ -n "$test" ] || exit
+[[ -n "$test" ]] || exit
 
 # Either 'load' or 'nr_task' should be set
-[ -z "$load" ] && [ -z "$nr_task" ] && exit
+[[ -z "$load" ]] && [[ -z "$nr_task" ]] && exit
 
-[ -n "$nr_task" ] && load=$nr_task
+[[ -n "$nr_task" ]] && load=$nr_task
 
 aim7_setup()
 {
@@ -26,7 +26,7 @@ aim7_setup()
 	log_eval 'echo "500 32000 128 512" > /proc/sys/kernel/sem'
 
 	# setup workfile
-	if [ -f "workfiles/workfile.$test" ]; then
+	if [[ -f "workfiles/workfile.$test" ]]; then
 		log_cmd cp workfiles/workfile.$test workfile
 	else
 		# create workfile onlive
@@ -38,7 +38,7 @@ EOF"
 	fi
 
 	# setup config file
-	if [ -n "$mount_points" ]; then
+	if [[ -n "$mount_points" ]]; then
 		log_eval "echo \"$mount_points\" > config"
 	else
 		log_cmd mkdir -p /fs/shm

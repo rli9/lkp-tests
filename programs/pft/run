@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - runtime
 # - nr_task
 # - iterations
@@ -20,15 +20,15 @@
 
 cd_benchmark
 
-if [ -z "$test_memory_size" ]; then
+if [[ -z "$test_memory_size" ]]; then
 	memory=$(to_byte "$memory")
 	pft_mapping_size=$((memory / 5))
 else
 	pft_mapping_size=$test_memory_size
 fi
 
-if [ -z "$nr_task" ]; then
-	[ -n "$iterations" ] || {
+if [[ -z "$nr_task" ]]; then
+	[[ -n "$iterations" ]] || {
 		echo "Error: Please specify iterations if nr_task is not specified." >&2
 		exit 1
 	}
@@ -44,7 +44,7 @@ if [ -z "$nr_task" ]; then
 			log_test ./pft -m "$pft_mapping_size" -n "$clients" -F
 		done
 	done
-elif [ -n "$runtime" ]; then
+elif [[ -n "$runtime" ]]; then
 	iteration=1
 	start_time=$(date +%s)
 	echo "Clients: $nr_task"
@@ -52,10 +52,10 @@ elif [ -n "$runtime" ]; then
 		echo "Iteration: $iteration"
 		log_test ./pft -m "$pft_mapping_size" -n "$nr_task" -F
 		now=$(date +%s)
-		[ $((now - start_time)) -gt "$runtime" ] && break
+		[[ $((now - start_time)) -gt "$runtime" ]] && break
 		iteration=$((iteration + 1))
 	done
-elif [ -n "$iterations" ]; then
+elif [[ -n "$iterations" ]]; then
 	echo "Clients: $nr_task"
 	for iteration in $(seq 1 "$iterations")
 	do

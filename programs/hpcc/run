@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - nr_processes
 
 ## The mpirun command controls several aspects of program
@@ -10,7 +10,7 @@
 cd /tmp || exit
 log_cmd cp -a /usr/share/doc/hpcc/examples/_hpccinf.txt hpccinf.txt
 
-[ -n "$nr_processes" ] || nr_processes=$nr_cpu
+[[ -n "$nr_processes" ]] || nr_processes=$nr_cpu
 
 log_cmd orterun --allow-run-as-root -np $nr_processes hpcc
 

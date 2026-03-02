@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - runtime
 # - segments
 # - nr_threads
@@ -9,9 +9,9 @@
 ## Create a bunch of shared memory segments, then a bunch of
 ## threads that continually clone and exit.
 
-[ -n "$segments"	] || segments=1024
-[ -n "$nr_threads"	] || nr_threads=16
-[ -n "$runtime"		] || runtime=600
+[[ -n "$segments" ]] || segments=1024
+[[ -n "$nr_threads" ]] || nr_threads=16
+[[ -n "$runtime" ]] || runtime=600
 
 segments=${segments%s}
 
@@ -21,4 +21,4 @@ log_cmd timeout $runtime ./bust_shm_exit $segments $nr_threads
 
 exit_code=$?
 
-[ $exit_code -eq 124 ] && echo "bust_shm_exit test done" && exit 0
+[[ $exit_code -eq 124 ]] && echo "bust_shm_exit test done" && exit 0

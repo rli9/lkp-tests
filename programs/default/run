@@ -1,9 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 
 . $LKP_SRC/lib/debug.sh
 
 prog=$(basename "$(dirname "$0")")
 
-[ -f $TMP_RESULT_ROOT/run.$prog ] || die "can not find $TMP_RESULT_ROOT/run.$prog"
+[[ -f $TMP_RESULT_ROOT/run.$prog ]] || die "can not find $TMP_RESULT_ROOT/run.$prog"
 
 sh "$TMP_RESULT_ROOT/run.$prog"

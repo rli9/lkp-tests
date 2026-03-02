@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - nr_1Mfiles
 # - nr_1Gfiles
 
@@ -23,11 +23,11 @@
 
 . $LKP_SRC/lib/reproduce-log.sh
 
-[ $nr_partitions -ge 1 ] || exit
+[[ $nr_partitions -ge 1 ]] || exit
 partition=${partitions%% *}
 
-[ -n "$nr_1Mfiles" ] || nr_1Mfiles=21000
-[ -n "$nr_1Gfiles" ] || nr_1Gfiles=103
+[[ -n "$nr_1Mfiles" ]] || nr_1Mfiles=21000
+[[ -n "$nr_1Gfiles" ]] || nr_1Gfiles=103
 
 mnt=/mnt
 log_cmd mkdir -p $mnt

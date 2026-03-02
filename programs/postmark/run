@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - number
 # - trans
 # - subdirs
@@ -13,7 +13,7 @@
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/env.sh
 
-[ -z "$mount_points" ] && die "no $mount_points"
+[[ -z "$mount_points" ]] && die "no $mount_points"
 
 has_cmd postmark || die "postmark: command not found"
 

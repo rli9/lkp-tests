@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 . $LKP_SRC/lib/common.sh
 . $LKP_SRC/lib/reproduce-log.sh
@@ -7,7 +7,7 @@
 prepare_exec_path
 
 task=$(cat /$TMP_RESULT_ROOT/filebench.task)
-[ -n "$task" ] || {
+[[ -n "$task" ]] || {
 	echo "filebench task file isn't setup properly!" >&2
 	exit 1
 }

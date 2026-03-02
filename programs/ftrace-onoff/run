@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # - runtime
 
 ## Ftrace is an internal tracer designed to help out developers and
@@ -16,8 +16,8 @@ cd /sys/kernel/debug/tracing || die "no /sys/kernel/debug/tracing"
 
 do_test()
 {
-	while read -r tracer || [ -n "$tracer" ]; do
-		[ -n "$tracer" ] || continue
+	while read -r tracer || [[ -n "$tracer" ]]; do
+		[[ -n "$tracer" ]] || continue
 		log_eval "echo $tracer > current_tracer"
 		log_eval "echo 1 > tracing_on"
 		log_eval "echo 0 > tracing_on"
