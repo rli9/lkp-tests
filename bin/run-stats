@@ -121,7 +121,7 @@ check_empty_json()
 	# take fio-basic-1hdd-write.yaml job as example:
 	# - testcase will be fio-basic
 	# - run_case will be fio
-	local run_case=$(awk '/\$LKP_SRC\/(bin\/run-test|tests\/wrapper)/ {print $NF}' $RESULT_ROOT/job.sh)
+	local run_case=$(awk '/\$LKP_SRC\/bin\/run-test/ {print $NF}' $RESULT_ROOT/job.sh)
 
 	[[ "$run_case" = "$stats_group" ]] || return 0
 

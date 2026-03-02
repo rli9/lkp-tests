@@ -16,7 +16,7 @@ def test_prefixes
   stats = LKP::Programs.all_stats
   tests = LKP::Programs.all_tests_and_daemons
   tests = stats & tests
-  tests.delete 'wrapper'
+
   tests.push 'kmsg'
   tests.push 'dmesg'
   tests.push 'stderr'

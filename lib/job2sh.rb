@@ -129,7 +129,7 @@ class Job2sh < Job
       wrapper = File.join(lkp_src, 'bin', 'run-stats')
     else
       program_dir = File.dirname(program_path)
-      wrapper = "#{program_dir}/wrapper"
+      wrapper = File.join(lkp_src, 'bin', 'run-test')
     end
 
     cmd = if File.executable?(wrapper)

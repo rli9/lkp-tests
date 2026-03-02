@@ -32,7 +32,7 @@ build-monitor: subsystem
 	install -d $(MONITOR_BUILD_DIR)/etc
 	install etc/monitors_need_gzip -m 0644 $(MONITOR_BUILD_DIR)/etc
 	install -d $(MONITOR_BUILD_DIR)/tests
-	install tests/wrapper $(MONITOR_BUILD_DIR)/tests
+	install bin/run-test $(MONITOR_BUILD_DIR)/bin
 	install tests/mytest $(MONITOR_BUILD_DIR)/tests
 	install -d $(MONITOR_BUILD_DIR)/monitors
 	cp -r monitors $(MONITOR_BUILD_DIR)
