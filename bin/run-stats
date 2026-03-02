@@ -187,7 +187,6 @@ program=$1
 
 program_path=$program_dir/$program
 [ -x $program_path ] || program_path=$LKP_SRC/programs/$program/parse
-[ -x $program_path ] || program_path=$LKP_SRC/stats/$program
 
 stats_group=${2:-$1}
 log=$RESULT_ROOT/$stats_group

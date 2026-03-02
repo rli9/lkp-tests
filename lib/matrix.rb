@@ -103,8 +103,7 @@ def create_stats_matrix(result_root)
   stats = {}
   matrix = {}
 
-  programs = create_programs_hash('stats/**/*')
-  programs = programs.merge create_programs_hash('programs/*/parse')
+  programs = create_programs_hash('programs/*/parse')
 
   monitor_files = Dir["#{result_root}/*.{json,json.gz}"]
   job = Job.open("#{result_root}/job.yaml")

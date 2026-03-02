@@ -423,7 +423,7 @@ class Job
         p
       when :workload_and_monitors
         # This is all scripts that run in testbox.
-        # The other stats/* and filters/* run in server.
+        # The other programs/*/parse and filters/* run in server.
         available_programs %i(workload_elements monitors)
       when :workload_elements
         # the options of these programs could impact test result

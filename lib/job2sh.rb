@@ -99,7 +99,7 @@ class Job2sh < Job
     program_env, args = get_program_env(program, env)
     program_path = @programs[program] || @monitors[program] || program
 
-    args = [] if program_path.index('/stats/') || program_path =~ /programs\/.+\/parse$/
+    args = [] if program_path =~ /programs\/.+\/parse$/
 
     case program_path
     when /programs\/.+\/run$/

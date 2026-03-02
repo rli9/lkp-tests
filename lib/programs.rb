@@ -28,7 +28,7 @@ module LKP
       end
 
       def all_stats
-        collect_programs('stats/**/*', '*/parse')
+        collect_programs(nil, '*/parse')
       end
 
       alias all_parser_names all_stats
@@ -70,7 +70,7 @@ module LKP
       end
 
       def find_parser(program)
-        find_executable(program, 'stats', 'parse')
+        find_executable(program, nil, 'parse')
       end
 
       def find_setup(program)

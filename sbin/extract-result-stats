@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 #
-# This is a simplified version of extract-stats + stats/wrapper.
+# This is a simplified version of extract-stats + bin/run-stats.
 # It could potentially be expanded to replace extract-stats.
 
 LKP_SRC = ENV['LKP_SRC'] || File.dirname(File.realpath($PROGRAM_NAME), 2)
