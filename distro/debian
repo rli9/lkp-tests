@@ -213,22 +213,6 @@ distro_install_depends()
 	do_apt_install || do_apt_install
 }
 
-pack_benchmark()
-{
-	distro_install_depends lkp-dev
-
-	# Process each benchmark
-	for BM_NAME in $benchmark
-	do
-		distro_install_depends $BM_NAME-dev || continue
-		echo $LKP_SRC/sbin/pack -d $DISTRO -f -c -s $PKG_MNT/$pack_to $BM_NAME
-		(
-			setup_proxy
-			$LKP_SRC/sbin/pack -d $DISTRO -f -c -s $PKG_MNT/$pack_to $BM_NAME
-		)
-	done
-}
-
 fixup_distro_mirror()
 {
 	# fix the problem:

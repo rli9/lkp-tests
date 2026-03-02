@@ -113,39 +113,6 @@ def install_packages(script, distro)
   exit 1
 end
 
-def install_benchmarks(script, distro)
-  return unless File.file? "#{LKP_SRC}/pack/#{script}"
-
-  if File.basename(File.realpath("#{LKP_SRC}/pack/#{script}")) == 'perf'
-    begin
-      Bash.run('perf -v')
-      return
-    rescue Bash::BashCallError
-      # continue to install
-    end
-  end
-
-  pkg_name = "#{script.tr('_', '-')}-LKP"
-  distroinfo = LKP::DistroInfo.instance
-  arch = distroinfo.systemarch
-  puts "Making #{script} benchmark for #{distro}"
-
-  if system "#{LKP_SRC}/sbin/pack -d #{distro} -c #{script}"
-    puts "Installing #{pkg_name}..."
-
-    case distro
-    when 'debian', 'ubuntu'
-      system "dpkg -i /tmp/#{pkg_name}.deb"
-    when 'fedora', 'amazon_linux'
-      system "rpm -ivh --replacepkgs /tmp/#{pkg_name}/RPMS/#{pkg_name}.#{arch}.rpm"
-    else
-      puts "Just make /lkp/benchmarks/#{script}-#{arch}.cgz"
-    end
-  else
-    puts "Making #{pkg_name} failed"
-  end
-end
-
 distroinfo = LKP::DistroInfo.instance
 distro = distroinfo.systemnamel
 
@@ -162,5 +129,4 @@ install_packages('makepkg', distro)
 
 scripts.each do |script|
   install_packages(script, distro)
-  install_benchmarks(script, distro)
 end

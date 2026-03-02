@@ -232,50 +232,6 @@ install_packages() {
 	}
 }
 
-build_install_benchmarks() {
-	local script=$1
-	local distro=$2
-	local force_install=$3
-
-	[ -x "$LKP_SRC/pack/$script" ] || return 0
-
-	echo "Making $script benchmark for $distro"
-	[ -n "$DRY_RUN" ] && return
-
-	[ "$script" = 'perf' ] && perf -v 2>/dev/null && {
-		echo "perf tool exists, skip building"
-		return 0
-	}
-
-	local pkg_name
-	pkg_name=$(printf '%s-LKP\n' "$script" | sed 's/_/-/g')
-
-	if $LKP_SRC/sbin/pack -d $distro -c $force_install $script; then
-		echo "Installing $pkg_name"
-
-		case $distro in
-		debian|ubuntu)
-			local deb_pkg=/tmp/$pkg_name.deb
-			[ -f $deb_pkg ] || return 0
-			dpkg -i $deb_pkg 2>/tmp/dpkg_error || {
-				grep -v "dpkg: warning: files list file for package '.*' missing;" /tmp/dpkg_error
-				return 1
-			}
-			;;
-		fedora|amazon_linux)
-			BUILD_DIR=$(get_build_dir $script)
-			local rpm_pkg=$BUILD_DIR/$pkg_name/RPMS/$pkg_name.$arch.rpm
-			[ -f $rpm_pkg ] || return
-			rpm -ivh --replacepkgs $rpm_pkg ;;
-		*)
-			echo "Just make /lkp/benchmarks/$script-$arch.cgz" ;;
-		esac
-	else
-		echo "Making $pkg_name failed"
-		return 1
-	fi
-}
-
 install_ruby()
 {
 	if [ "$(gem --version)" != "3.2.3" ]; then
@@ -417,13 +373,8 @@ do
 
 	for script in $scripts
 	do
-		[ -L "$LKP_SRC/pack/$script" ] && {
-			real_script=$(readlink "$LKP_SRC/pack/$script")
-			script=$(basename "$real_script")
-		}
-
 		pkg_dir=$(get_pkg_dir $script)
-		[ -z "$makepkg_once" ] && [ -n "$pkg_dir" ] && ! [ -x "$LKP_SRC/pack/$script" ] && {
+		[ -z "$makepkg_once" ] && [ -n "$pkg_dir" ] && {
 			install_packages "makepkg" $distro
 			makepkg_once=1
 		}
@@ -435,8 +386,5 @@ do
 		if [ -n "$FORCE_MODE" ] || ! verify_install "$benchmark_package"; then
 			makepkg_install_benchmark "$script" $distro || exit 1
 		fi
-
-		[ -n "$FORCE_MODE" ] && install_opt="-f"
-		build_install_benchmarks "$script" $distro $install_opt || exit 1
 	done
 done
