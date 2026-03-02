@@ -34,6 +34,12 @@ describe Job do
       expect(programs['mysetup3']).to include('programs/mysetup3/setup')
     end
 
+    it 'returns monitors programs' do
+      programs = job.available_programs(:monitors)
+      expect(programs).to include('myplainmonitor')
+      expect(programs['myplainmonitor']).to include('programs/myplainmonitor/plain-monitor')
+    end
+
     it 'returns daemon programs' do
       programs = job.available_programs(:daemon)
       # After implementation, this should include mydaemon2

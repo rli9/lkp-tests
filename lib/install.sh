@@ -288,8 +288,7 @@ parse_yaml()
 	local w='[a-zA-Z0-9_-]*'
 	local tmp_filter="$(mktemp /tmp/lkp-install-XXXXXXXXX)"
 
-	ls -LR $LKP_SRC/monitors > $tmp_filter
-	ls $LKP_SRC/programs >> $tmp_filter
+	ls $LKP_SRC/programs > $tmp_filter
 
 	scripts=$(cat $1 | sed -ne "s|^\($s\):|\1|" \
 	         -e "s|^\($s\)\($w\)$s:${s}[\"']\(.*\)[\"']$s\$|\2|p" \

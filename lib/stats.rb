@@ -849,7 +849,7 @@ def kpi_stat?(stat, _axes, _values = nil)
 end
 
 def sort_bisect_stats(stats)
-  monitor_stats = Dir["#{LKP_SRC}/monitors/*"].map { |m| File.basename m }
+  monitor_stats = LKP::Programs.all_monitors
   stats.sort_by do |stat|
     stat_name = stat[Compare::STAT_KEY]
     score = monitor_stats.include?(stat_name.split('.').first) ? -100 : 0

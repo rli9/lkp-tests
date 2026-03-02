@@ -118,6 +118,9 @@ class Job2sh < Job
     when /\/no-stdout-monitor$/
       program_dir = File.join(File.dirname(program_path), 'monitors')
       wrapper = File.join(lkp_src, 'bin', 'run-no-stdout-monitor')
+    when /\/plain-monitor$/
+      program_dir = File.join(File.dirname(program_path), 'monitors')
+      wrapper = File.join(lkp_src, 'bin', 'run-plain-monitor')
     when /\/one-shot-monitor$/
       program_dir = File.join(File.dirname(program_path), 'monitors')
       wrapper = File.join(lkp_src, 'bin', 'run-one-shot-monitor')

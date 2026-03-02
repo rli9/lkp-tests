@@ -18,5 +18,5 @@ if [ -n "$one_liner_cmd" ]; then
 elif [ -f "$TMP_RESULT_ROOT/latency.bt" ]; then
 	bpftrace $TMP_RESULT_ROOT/latency.bt
 else
-	bpftrace $LKP_SRC/monitors/bpftrace.bt
+	bpftrace $LKP_SRC/programs/bpftrace.bt/monitor
 fi

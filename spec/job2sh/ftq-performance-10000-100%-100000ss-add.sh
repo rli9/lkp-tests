@@ -105,7 +105,7 @@ run_job()
 	run_setup $LKP_SRC/bin/run-setup sanity-check
 
 	run_monitor $LKP_SRC/bin/run-monitor oom-killer
-	run_monitor $LKP_SRC/bin/run-monitor watchdog
+	run_monitor $LKP_SRC/bin/run-plain-monitor watchdog
 
 	run_test test='add' freq=10000 $LKP_SRC/bin/run-test ftq
 }

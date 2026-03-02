@@ -139,7 +139,7 @@ run_job()
 	run_monitor $LKP_SRC/bin/run-no-stdout-monitor perf-c2c
 	run_monitor debug_mode=0 $LKP_SRC/bin/run-no-stdout-monitor perf-profile
 	run_monitor $LKP_SRC/bin/run-monitor oom-killer
-	run_monitor $LKP_SRC/bin/run-monitor watchdog
+	run_monitor $LKP_SRC/bin/run-plain-monitor watchdog
 
 	if role server
 	then

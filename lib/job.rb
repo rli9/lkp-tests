@@ -443,6 +443,7 @@ class Job
         if type == :monitors
           programs = programs.merge create_programs_hash('programs/*/no-stdout-monitor', lkp_src)
           programs = programs.merge create_programs_hash('programs/*/one-shot-monitor', lkp_src)
+          programs = programs.merge create_programs_hash('programs/*/plain-monitor', lkp_src)
         end
         programs
       end

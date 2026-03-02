@@ -29,6 +29,7 @@ run_job()
 	run_monitor $LKP_SRC/bin/run-monitor mymonitor
 	run_monitor $LKP_SRC/bin/run-no-stdout-monitor mymonitor2
 	run_monitor $LKP_SRC/bin/run-one-shot-monitor mymonitor3
+	run_monitor $LKP_SRC/bin/run-plain-monitor myplainmonitor
 
 	run_test mode='thread' test='writeseek3' $LKP_SRC/bin/run-test myprog
 
@@ -46,6 +47,7 @@ extract_stats()
 	$LKP_SRC/bin/run-stats mymonitor
 	$LKP_SRC/bin/run-stats mymonitor2
 	$LKP_SRC/bin/run-stats mymonitor3
+	$LKP_SRC/bin/run-stats myplainmonitor
 
 	$LKP_SRC/bin/run-stats time myprog.time
 }

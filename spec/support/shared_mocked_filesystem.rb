@@ -15,6 +15,7 @@ shared_context 'mocked filesystem' do
       'bin/run-monitor',
       'bin/run-no-stdout-monitor',
       'bin/run-one-shot-monitor',
+      'bin/run-plain-monitor',
       'programs/mysetup/setup',
       'programs/mysetup2/setup',
       'programs/mysetup2/parse',
@@ -28,6 +29,8 @@ shared_context 'mocked filesystem' do
       'programs/mymonitor2/no-stdout-monitor',
       'programs/mymonitor2/parse',
       'programs/mymonitor3/one-shot-monitor',
+      'programs/myplainmonitor/plain-monitor',
+      'programs/myplainmonitor/parse',
       'programs/mymonitor3/parse'
     ].each do |f|
       path = "#{tmp_lkp_src}/#{f}"
