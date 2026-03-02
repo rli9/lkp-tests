@@ -1,0 +1,9 @@
+#!/bin/bash
+# - perf_policy
+
+perf_policy=$1
+if [ "$perf_policy" = "perfbias" ]; then
+	/lkp/benchmarks/x86_energy_perf_policy -v performance
+else
+	/lkp/benchmarks/x86_energy_perf_policy -v normal
+fi

@@ -1,0 +1,115 @@
+#!/bin/bash
+# - nodes
+# - node_size
+# - state_op
+
+# Memory hotplug state operations can be:
+# online_movable, online and offline.
+
+. $LKP_SRC/lib/unit.sh
+. $LKP_SRC/lib/common.sh
+. $LKP_SRC/lib/reproduce-log.sh
+
+log_err()
+{
+	echo "$@" >&2
+}
+
+[ -z "$nodes" ] && log_err "Unspecified nodes"
+[ -z "$node_size" ] && log_err "Unspecified node_size"
+[ -z "$state_op" ] && log_err "Unspecified memory state operation"
+
+byte2blocks()
+{
+	local bytes=$1
+	local blk_size_bytes_hex="$(cat /sys/devices/system/memory/block_size_bytes)"
+
+	echo $(( bytes / 0x$blk_size_bytes_hex ))
+}
+
+nr_node_blocks()
+{
+	local node=$1
+	ls -l /sys/devices/system/node/node"$node"/memory* | wc -l
+}
+
+nr_online_blocks()
+{
+	local node=$1
+	cat /sys/devices/system/node/node$node/memory*/state | grep -c -xF online
+}
+
+node_online_bytes()
+{
+	local node=$1
+
+	# Example 1st line is
+	# Node 0 MemTotal:       32438440 kB
+	awk '{print $4 * 1024; exit}' /sys/devices/system/node/node$node/meminfo
+}
+
+hotplug_node_blocks()
+{
+	local node=$1
+	local nr_blks=$2
+	local cnt=0
+
+	for m in /sys/devices/system/node/node"$node"/memory*; do
+		if [ $cnt -ge "$nr_blks" ]; then
+			return 0
+		fi
+
+		# offline an already offlined node will lead to write error
+		if [ "$state_op" = offline ]; then
+			[ "$(cat "$m/removable")" = 0 ] && continue
+			[ "$(cat "$m/state")" = offline ] && continue
+		fi
+
+		log_write_file "$m"/state -n $state_op && cnt=$((cnt + 1))
+	done
+
+	return 1
+}
+
+resize_node()
+{
+	local node=$1
+	local target_bytes="$(to_byte "$node_size")"
+	local online_bytes="$(node_online_bytes "$node")"
+
+	if [ "$state_op" = offline ]; then
+		local bytes=$((online_bytes - target_bytes))
+	else
+		local bytes=$((target_bytes - online_bytes))
+	fi
+
+	local nr_blks="$(byte2blocks "$bytes")"
+	hotplug_node_blocks "$node" "$nr_blks"
+}
+
+traverse_nodes()
+{
+	local remain_nodes=
+	local node
+
+	for node
+	do
+		resize_node $node ||
+		remain_nodes="$remain_nodes $node"
+	done
+
+	echo "$remain_nodes"
+}
+
+remain_nodes="$nodes"
+# Retry for 5 times.
+# shellcheck disable=SC2034
+for i in {1..5}; do
+	remain_nodes=$(traverse_nodes $remain_nodes)
+	[ -z "$remain_nodes" ] && exit 0
+
+	[ "$state_op" = 'offline' ] &&
+	echo 3 > /proc/sys/vm/drop_caches
+done
+
+log_err "Hot plug memory failed"

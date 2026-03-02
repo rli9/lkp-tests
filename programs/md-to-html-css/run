@@ -1,0 +1,38 @@
+#!/bin/bash
+# - input_dir
+# - output_dir
+
+## Convert the markup files of $input_dir to html format with CSS.
+## Output result to $output_dir
+
+. $LKP_SRC/lib/env.sh
+. $LKP_SRC/lib/debug.sh
+
+install_pkg()
+{
+	has_cmd generate-md && return
+
+	has_cmd node || {
+		apt remove nodejs npm
+		curl -sL https://deb.nodesource.com/setup_10.x | bash -
+		apt-get install -y nodejs
+	}
+
+	has_cmd npm || die "npm is not installed"
+
+	npm install -g markdown-styles
+}
+
+generate_html_css()
+{
+	# use generate-md to transform markdown to html files with css
+	layout=github
+	# shellcheck disable=SC2154
+	[ -d $output_dir ] || mkdir -p $output_dir
+
+	# shellcheck disable=SC2154
+	generate-md --input $input_dir --output $output_dir --layout $layout
+}
+
+install_pkg
+generate_html_css

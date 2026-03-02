@@ -1,0 +1,13 @@
+#!/bin/bash
+# - runtime
+
+## delay for a specified amount of time before reboot
+# shellcheck disable=SC2154
+echo "sleep $runtime seconds"
+sleep ${1:-$runtime}
+
+echo "rebooting"
+reboot || {
+	echo "reboot failed..."
+	exit 1
+}

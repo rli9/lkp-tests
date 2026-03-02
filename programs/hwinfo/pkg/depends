@@ -1,0 +1,5 @@
+cpuid
+hwinfo
+inxi
+numactl
+pciutils

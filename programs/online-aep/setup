@@ -1,0 +1,88 @@
+#!/bin/bash
+# - node_size
+
+
+#
+# node_size is the size for each AEP node that users
+# want to enable.
+#
+
+. "$LKP_SRC/lib/unit.sh"
+. "$LKP_SRC/lib/common.sh"
+. "$LKP_SRC"/lib/reproduce-log.sh
+. "$LKP_SRC"/lib/nvdimm.sh
+. $LKP_SRC/lib/debug.sh
+
+rmmod_retries=10
+wait_initialization_timeout=30
+
+remove_dax_pmem_compat()
+{
+	for i in $(seq $rmmod_retries)
+	do
+		log_cmd modprobe -r dax_pmem_compat && return
+		sleep 10
+	done
+	return 1
+}
+
+wait_initialization()
+{
+	for i in $(seq $wait_initialization_timeout)
+	do
+		[ -f /sys/bus/dax/drivers/device_dax/unbind ] && return
+		sleep 1
+	done
+	return 1
+}
+
+if [ -n "$node_size" ]; then
+
+	size=$(to_byte "$node_size")
+
+	block_hex_sz=$(cat /sys/devices/system/memory/block_size_bytes)
+	aep_banks=$((size / 0x$block_hex_sz))
+fi
+
+# shellcheck disable=SC2034
+mode=dax
+configure_nvdimm
+
+remove_dax_pmem_compat || die "remove dax_pmem_compat fail"
+
+log_cmd modprobe dax_pmem
+log_cmd modprobe device_dax
+log_cmd modprobe kmem
+
+wait_initialization || die "DAX initialization timeout"
+
+for n in 0 1; do
+	[ -e /dev/dax"$n".0 ] || continue
+	log_write_file /sys/bus/dax/drivers/device_dax/unbind -n dax"$n".0
+	log_write_file /sys/bus/dax/drivers/kmem/new_id -n dax"$n".0
+done
+
+for n in 2 3; do
+	i=0
+
+	[ -d /sys/devices/system/node/node"$n" ] || continue
+
+	for m in /sys/devices/system/node/node"$n"/memory*; do
+		if [ -n "$node_size" ] && [ $i -ge "$aep_banks" ]; then
+			break;
+		fi
+		: $((i=i+1))
+		log_write_file "$m"/state -n online_movable
+	done
+done
+
+if [ -f /sys/devices/system/node/node0/migration_path ]; then
+
+	if [ -d /sys/devices/system/node/node2 ]; then
+		log_write_file /sys/devices/system/node/node0/migration_path -n 2
+	fi
+
+	if [ -d /sys/devices/system/node/node3 ]; then
+		log_write_file /sys/devices/system/node/node1/migration_path -n 3
+	fi
+fi

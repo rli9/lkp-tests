@@ -1,0 +1,29 @@
+#!/bin/bash
+# - autonuma_rate_limit_mbps
+# - autonuma_hot_threshold_ms
+# - numa_demotion_enabled
+# - autonuma_scan_delay_ms
+# - autonuma_scan_size_mb
+# - autonuma_scan_period_min_ms
+# - autonuma_scan_period_max_ms
+
+. "$LKP_SRC"/lib/reproduce-log.sh
+
+: "${autonuma_rate_limit_mbps:=30}"
+: "${autonuma_hot_threshold_ms:=1000}"
+
+log_write_file /proc/sys/kernel/numa_balancing_rate_limit_mbps -n "$autonuma_rate_limit_mbps"
+
+log_write_file /proc/sys/kernel/numa_balancing_hot_threshold_ms -n "$autonuma_hot_threshold_ms"
+
+[ -n "$numa_demotion_enabled" ] && log_write_file /sys/kernel/mm/numa/demotion_enabled -n "$numa_demotion_enabled"
+
+[ -n "$autonuma_scan_delay_ms" ] && log_write_file /sys/kernel/debug/sched/numa_balancing/scan_delay_ms -n "$autonuma_scan_delay_ms"
+
+[ -n "$autonuma_scan_size_mb" ] && log_write_file /sys/kernel/debug/sched/numa_balancing/scan_size_mb -n "$autonuma_scan_size_mb"
+
+[ -n "$autonuma_scan_period_min_ms" ] && log_write_file /sys/kernel/debug/sched/numa_balancing/scan_period_min_ms -n "$autonuma_scan_period_min_ms"
+
+[ -n "$autonuma_scan_period_max_ms" ] && log_write_file /sys/kernel/debug/sched/numa_balancing/scan_period_max_ms -n "$autonuma_scan_period_max_ms"
+
+exit 0

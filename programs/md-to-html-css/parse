@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# copy $RESULT_ROOT/lkp-doc to /home/lkp/public
+dest_dir="/home/lkp/public_html/lkp-doc/"
+
+[ -d $dest_dir ] || mkdir -p $dest_dir
+
+cp -au $RESULT_ROOT/lkp-doc/* $dest_dir

@@ -1,0 +1,21 @@
+#!/bin/bash
+# - interval
+
+. $LKP_SRC/lib/wait.sh
+setup_wait
+
+wait_post_test
+
+echo on > /sys/devices/system/cpu/cmt/control
+
+i=0
+
+while [ -d /sys/devices/system/cpu/cpu$i ]
+do
+	d_cpu=/sys/devices/system/cpu/cpu$i
+	cpu=$(( cpu + 1 ))
+
+	[ -f $d_cpu/online ] || continue
+	echo 1 > $d_cpu/online
+	sleep 1
+done

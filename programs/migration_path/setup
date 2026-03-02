@@ -1,0 +1,24 @@
+#!/bin/bash
+# - enable_promotion
+# - enable_demotion
+
+. $LKP_SRC/lib/reproduce-log.sh
+
+# FIXME:
+# - works only on 2-socket machine
+# - works only on kernel with extra promotion/demotion patches applied
+
+: "${enable_promotion:="true"}"
+: "${enable_demotion:="true"}"
+
+if [ -f /sys/devices/system/node/node0/migration_path ]; then
+	if [ "$enable_promotion" = "true" ]; then
+		log_write_file /sys/devices/system/node/node0/migration_path -n 2
+		log_write_file /sys/devices/system/node/node1/migration_path -n 3
+	fi
+
+	if [ "$enable_demotion" != "true" ]; then
+		log_write_file /sys/devices/system/node/node0/migration_path -n -1
+		log_write_file /sys/devices/system/node/node1/migration_path -n -1
+	fi
+fi

@@ -1,0 +1,30 @@
+#!/bin/bash
+
+## Use generate-md command to transform markdown to html files.
+
+. $LKP_SRC/lib/env.sh
+
+install_pkg()
+{
+	has_cmd generate-md && return
+
+	has_cmd npm ||
+	sudo apt-get -y install npm
+	has_cmd node ||
+	sudo ln -s /usr/bin/nodejs /usr/local/bin/node
+	sudo npm install -g markdown-styles
+}
+
+create_html()
+{
+	layout=thomasf-solarizedcsslight
+	layout=github
+
+	out_dir=/var/www/lkp-doc
+	[ -d $out_dir ] || sudo mkdir -p $out_dir
+
+	generate-md --input $LKP_SRC/doc --output $out_dir --layout $layout
+}
+
+install_pkg
+create_html

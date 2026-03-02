@@ -1,0 +1,33 @@
+#!/bin/bash
+
+wait_disk()
+{
+	local dev=$1
+
+	[ -n "$dev" ] || return
+	[ "${dev#LABEL=}" != "$dev" ] && dev="/dev/disk/by-label/${dev#LABEL=}"
+	[ "${dev#UUID=}"  != "$dev" ] && dev="/dev/disk/by-uuid/${dev#UUID=}"
+
+	local i
+	for i in 0 1 2 3
+	do
+		echo "wait for disk to show up: $dev"
+		sleep ${i}m
+
+		[ -b "$dev" ] && return
+	done
+}
+wait_disk $swap_partitions
+
+[ -n "$swap_partitions" ] || {
+	[ -L "/dev/disk/by-label/SWAP" ] && swap_partitions='LABEL=SWAP'
+}
+
+[ -n "$swap_partitions" ] && {
+	[ "${swap_partitions#*/dev/vd[a-z]}" != "$swap_partitions" ] &&
+	mkswap -L SWAP $swap_partitions
+
+	swapon $swap_partitions
+}
+
+exit 0

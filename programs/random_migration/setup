@@ -1,0 +1,40 @@
+#!/bin/bash
+# - random_promote_mb
+# - random_promote_period_ms
+# - random_promote_threshold_max_ms
+# - random_promote_nr_check
+# - random_demote_mb
+# - random_demote_period_ms
+# - random_demote_threshold_max_ms
+
+. "$LKP_SRC/lib/common.sh"
+. "$LKP_SRC"/lib/reproduce-log.sh
+
+: "${random_promote_mb:=60}"
+: "${random_promote_period_ms:=1000}"
+: "${random_promote_threshold_max_ms:=2000}"
+: "${random_promote_nr_check:=1}"
+: "${random_demote_mb:=60}"
+: "${random_demote_period_ms:=1000}"
+: "${random_demote_threshold_max_ms:=2000}"
+
+for n in 0 1; do
+	# shellcheck disable=SC2043
+	for m in /sys/devices/system/node/node"$n"/; do
+		log_write_file "$m"/random_demote_threshold_max_ms -n "$random_demote_threshold_max_ms"
+		log_write_file "$m"/random_demote_period_ms -n "$random_demote_period_ms"
+		log_write_file "$m"/random_demote_mb -n "$random_demote_mb"
+	done
+done
+
+for n in 2 3; do
+	# shellcheck disable=SC2043
+	for m in /sys/devices/system/node/node"$n"/; do
+		log_write_file "$m"/random_promote_nr_check -n "$random_promote_nr_check"
+		log_write_file "$m"/random_promote_threshold_max_ms -n "$random_promote_threshold_max_ms"
+		log_write_file "$m"/random_promote_period_ms -n "$random_promote_period_ms"
+		log_write_file "$m"/random_promote_mb -n "$random_promote_mb"
+	done
+done
+
+exit 0

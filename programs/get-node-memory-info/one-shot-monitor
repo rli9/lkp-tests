@@ -1,0 +1,83 @@
+#!/bin/bash
+
+path=/sys/devices/system
+
+get_mem_blk_size()
+{
+	size=$(cat $path/memory/block_size_bytes)
+	printf "%d\n" 0x$size
+}
+
+get_node_id()
+{
+	for file in "$path"/node/*
+	do
+		[ -e "$file" ] || continue
+
+		file=${file##*/}
+		[ "${file#*node}" != "$file" ] && echo $file
+	done
+}
+
+get_mem_blk_index()
+{
+	for file in "$path"/memory/*
+	do
+		[ -e "$file" ] || continue
+
+		file=${file##*/}
+		if [ -d "$path/memory/$file" ]; then
+			[ -n "$(find $path/memory/$file -name "$1")" ] && echo ${file#*memory}
+		fi
+	done
+}
+
+get_mem_range()
+{
+	sum=$(get_mem_blk_index $1 | wc -l)
+	nums=$(get_mem_blk_index $1 |sort -n)
+	i=-1
+	count=0
+	for num in $nums
+	do
+		if [ $i = -1 ]; then
+			printf "%s" "["$((num * blk_size))$size_unit
+			printf "-"
+			i=$num
+		else
+			if [ $((i+1)) != $num ]; then
+				echo $((i * blk_size + blk_size))$size_unit")"
+				printf "%s" "["$((num * blk_size))$size_unit
+				printf "-"
+				i=$num
+			else
+				i=$((i+1))
+			fi
+		fi
+		count=$((count+1))
+		if [ $count = $sum ]; then
+			echo $((num * blk_size + blk_size))$size_unit")"
+		fi
+	done
+}
+
+blk_size_bytes=$(get_mem_blk_size)
+blk_size=$((blk_size_bytes >> 30))
+if [ $blk_size -ne 0 ]; then
+	size_unit="G"
+else
+	blk_size=$((blk_size_bytes >> 20))
+	if [ $blk_size -ne 0 ]; then
+		size_unit="M"
+	fi
+fi
+echo memory block size: $blk_size$size_unit
+
+nodes=$(get_node_id)
+
+for node in $nodes
+do
+	echo $node
+	get_mem_range $node
+	echo "================="
+done
