@@ -253,7 +253,7 @@ split_tests()
 # Some special tests need to be separated and tested separately
 split_standalone_tests()
 {
-	# These special tests are written in the relevant files under LKP-SRC/pack/xfstests-addon/tests
+	# These special tests are written in the relevant files under addon/tests
 	for file in *-standalone
 	do
 		fields=(`echo $file | tr '-' ' '`)
