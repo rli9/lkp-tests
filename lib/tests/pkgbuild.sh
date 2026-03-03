@@ -432,3 +432,56 @@ build_util_linux()
 	./configure
 	make
 }
+
+get_kernel_version()
+{
+	# format: X.Y.Z-...
+	local version=$(uname -r)
+	# format: X.Y.Z
+	local a=${version%%-*}
+	# format: X.Y
+	local b=${a%.*}
+	echo "v$b"
+}
+
+build_kernel_selftests_tools()
+{
+	cd_src_pkg_dir linux
+
+	[[ "$LKP_LOCAL_RUN" == "1" ]] && {
+		if [[ -d .git ]]; then
+			local installed_version="$(get_kernel_version)"
+			git tag | grep -x "${installed_version}" || die "can not bring the download kernel version into correspondence with the installed kernel"
+
+			echo "switch to version $installed_version ..."
+			git checkout -b "test-${installed_version}" "$installed_version"
+		else
+			echo "please make sure the version of current kernel is $installed_version"
+		fi
+	}
+
+	make allyesconfig
+	make prepare
+	# build cpupower
+	cd tools/power/cpupower
+	make
+}
+
+install_kernel_selftests()
+{
+	cd_src_pkg_dir linux
+
+	local header_dir="/tmp/linux-headers"
+
+	mkdir -p "${header_dir}"
+	make headers_install INSTALL_HDR_PATH="${header_dir}"
+
+	pack_contents "${header_dir}/include" "${benchmark_path}/usr"
+	pack_contents "${header_dir}/include/asm" "${benchmark_path}/tools/include/uapi"
+
+	local dir
+	for dir in arch/x86 scripts kernel/bpf samples Makefile tools include lib
+	do
+		pack_contents $dir $(dirname ${benchmark_path}/$dir)
+	done
+}
