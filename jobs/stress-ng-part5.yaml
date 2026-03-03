@@ -55,5 +55,39 @@ stress-ng:
     - x86syscall
     # - yield # less meaningful test per PeterZ and Chenyu
     - zero
-    - zlib
     - zombie
+
+---
+stress-ng:
+  test:
+    - zlib
+  method:
+    - random
+    - 00ff
+    - ascii01
+    - asciidigits
+    - bcd
+    - binary
+    - brown
+    - double
+    - fixed
+    - gcr
+    - gray
+    - inc16
+    - latin
+    - lehmer
+    - logmap
+    - lfsr32
+    - lrand48
+    - morse
+    - nybble
+    - objcode
+    - parity
+    - pink
+    - rarely1
+    - rarely0
+    - rdrand
+    - ror32
+    - text
+    - utf8
+    - zero

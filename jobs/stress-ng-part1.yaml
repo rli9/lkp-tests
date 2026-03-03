@@ -15,15 +15,12 @@ stress-ng:
     - alarm
     - atomic
     - bad-altstack
-    - bad-ioctl
     - besselmath
     - bigheap
     - bitonicsort
     - bitops
     - branch
     - brk
-    - bsearch
-    - bubblesort
     - cache
     - cacheline
     - cap
@@ -38,7 +35,6 @@ stress-ng:
     - cpu-sched
     - crypt
     - ctrig
-    - cyclic
     - daemon
     # - dccp
     - dekker
@@ -69,7 +65,6 @@ stress-ng:
     - fork
     - fp
     - fp-error
-    - fractal
     - full
     - funccall
     - funcret
@@ -106,3 +101,50 @@ stress-ng:
 
 oom-killer:
   ignored: 1
+
+---
+stress-ng:
+  test:
+    - bubblesort
+  method:
+    - bubblesort-fast
+    - bubblesort-naive
+
+---
+stress-ng:
+  test:
+    - cyclic
+  method:
+    - clock_ns
+    - itimer
+    - poll
+    - posix_ns
+    - pselect
+    - usleep
+
+---
+stress-ng:
+  test:
+    - bsearch
+  method:
+    - bsearch-libc
+    - bsearch-nonlibc
+    - ternary
+
+---
+stress-ng:
+  test:
+    - fractal
+  method:
+    - mandelbrot
+    - julia
+
+---
+stress-ng:
+  test:
+    - bad-ioctl
+  method:
+    - inc
+    - random
+    - random-inc
+    - stride

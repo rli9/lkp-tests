@@ -18,12 +18,20 @@ stress-ng:
     - rawsock
     - rawudp
     - sctp
-    - sock
     - sockabuse
     - sockdiag
     - sockfd
-    - sockmany
-    - sockpair
     - tun
     - udp
     - udp-flood
+
+---
+stress-ng:
+  test:
+    - sock
+    - sockmany
+    - sockpair
+  type:
+    - stream
+    - dgram
+    - seqpacket

@@ -48,22 +48,17 @@ stress-ng:
     - skiplist
     - sleep
     - smi
-    - sock
     - sockabuse
     - sockdiag
     - sockfd
-    - sockmany
-    - sockpair
     - softlockup
     - sparsematrix
     - spawn
-    - spinmem
     - splice
     - stackmmap
     - statmount
     - str
     - stream
-    - switch
     - syncload
     - sysbadaddr
     - syscall
@@ -78,3 +73,34 @@ stress-ng:
 # stress-ng:
 #   test:
 #     - stack
+
+---
+stress-ng:
+  test:
+    - switch
+  method:
+    - mq
+    - pipe
+    - sem-sysv
+
+---
+stress-ng:
+  test:
+    - spinmem
+  method:
+    - 8bit
+    - 16bit
+    - 32bit
+    - 64bit
+    - 128bit
+
+---
+stress-ng:
+  test:
+    - sock
+    - sockmany
+    - sockpair
+  type:
+    - stream
+    - dgram
+    - seqpacket

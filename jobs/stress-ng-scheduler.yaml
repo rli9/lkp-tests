@@ -11,7 +11,6 @@ testtime:
 stress-ng:
   test:
     - affinity
-    - cyclic
     - daemon
     - dnotify
     - eventfd
@@ -35,7 +34,6 @@ stress-ng:
     - nice
     - poll
     - prio-inv
-    - pthread
     - race-sched
     # - resched # less meaningful test per PeterZ and Chenyu
     - schedmix
@@ -46,7 +44,6 @@ stress-ng:
     - sleep
     - softlockup
     - spawn
-    - switch
     - tee
     - vforkmany
     - wait
@@ -76,3 +73,36 @@ stress-ng:
 
 oom-killer:
   ignored: 1
+
+---
+stress-ng:
+  test:
+    - cyclic
+  method:
+    - clock_ns
+    - itimer
+    - poll
+    - posix_ns
+    - pselect
+    - usleep
+
+---
+stress-ng:
+  test:
+    - switch
+  method:
+    - mq
+    - sem-sysv
+
+---
+stress-ng:
+  test:
+    - pipe
+    - pthread
+  sched:
+    - idle
+    - fifo
+    - rr
+    - other
+    - batch
+    - deadline

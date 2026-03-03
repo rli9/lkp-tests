@@ -32,7 +32,6 @@ stress-ng:
     - dnotify
     - dup
     - eventfd
-    - fallocate
     - fcntl
     - fiemap
     - file-ioctl
@@ -43,7 +42,6 @@ stress-ng:
     - fstat
     - getdent
     - handle
-    - hdd
     - inode-flags
     - inotify
     - io
@@ -62,7 +60,6 @@ stress-ng:
     - rename
     - swap
     - sync-file
-    - touch
     - utime
     # - verity
     - xattr
@@ -83,3 +80,32 @@ nr_threads: 10%
 stress-ng:
   test:
     - fanotify
+
+---
+stress-ng:
+  test:
+    - touch
+  method:
+    - random
+    - open
+    - creat
+
+---
+stress-ng:
+  test:
+    - hdd
+  hdd_opts:
+    - direct
+    - dsync
+    - sync
+
+---
+stress-ng:
+  test:
+    - fallocate
+  mode:
+    - keep-size
+    - keep-size,punch-hole
+    - keep-size,zero-range
+    - keep-size,collapse-range
+    - keep-size,insert-range

@@ -19,7 +19,6 @@ stress-ng:
     - "null"
     # - null
     - numa
-    - opcode
     - pagemove
     - pageswap
     - pci
@@ -29,26 +28,20 @@ stress-ng:
     - physpage
     - pidfd
     - ping-sock
-    - pipe
     - pipeherd
     - pkey
     # - plugin # run user provided stressor functions loaded from a shared library
     - poll
     - powmath
     - prctl
-    - prefetch
-    - prime
     - prio-inv
     - priv-instr
     - pseek
-    - pthread
     - ptr-chase
     - ptrace
     - pty
-    - qsort
     - quota
     - race-sched
-    - radixsort
     - ramfs
     - randlist
     - rawpkt
@@ -76,3 +69,64 @@ nr_threads: 50%
 stress-ng:
   test:
     - oom-pipe
+
+---
+stress-ng:
+  test:
+    - qsort
+  method:
+    - qsort-libc
+    - qsort-bm
+
+---
+stress-ng:
+  test:
+    - prefetch
+  method:
+    - builtin
+    - builtinl0
+    - builtinl3
+    - prefetcht0
+    - prefetcht1
+    - prefetcht2
+    - prefetchnta
+
+---
+stress-ng:
+  test:
+    - prime
+  method:
+    - factorial
+    - inc
+    - pwr2
+    - pwr10
+
+---
+stress-ng:
+  test:
+    - radixsort
+  method:
+    - radixsort-nonlibc
+
+---
+stress-ng:
+  test:
+    - opcode
+  method:
+    - random
+    - text
+    - inc
+    - mixed
+
+---
+stress-ng:
+  test:
+    - pipe
+    - pthread
+  sched:
+    - idle
+    - fifo
+    - rr
+    - other
+    - batch
+    - deadline

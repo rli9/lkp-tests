@@ -3,6 +3,12 @@
 # - class
 # - nr_threads
 # - test
+# - method
+# - mode
+# - type
+# - sched
+# - advise
+# - hdd_opts
 
 . $LKP_SRC/lib/env.sh
 . $LKP_SRC/lib/debug.sh
@@ -79,14 +85,34 @@ setup_test()
 		common_opts="${common_opts} --temp-path /mnt/stress-ng"
 		;;
 	"ping-sock")
+		# Default: 1 0. Allow unprivileged ping sockets for threads to avoid EACCES
 		log_cmd sysctl -w net.ipv4.ping_group_range="0 $nr_threads"
 		;;
-	"bigheap"|"brk"|"loadavg"|"memthrash"|"mmaphuge"|"mmapcow"|"mmapmany"|"sockpair")
+	"mq")
+		# Default: queues_max=256, msg_max=10. Prevent POSIX message queue resource exhaustion
+		log_cmd sysctl -w fs.mqueue.queues_max=2048
+		log_cmd sysctl -w fs.mqueue.msg_max=2048
+		;;
+	"aio"|"aiol")
+		# Default: 65536. Prevent io_setup failure with large numbers of async IO requests
+		log_cmd sysctl -w fs.aio-max-nr=1048576
+		[[ "$test" = "aiol" ]] && log_cmd sleep 2
+		;;
+	"inotify"|"dnotify")
+		# Default: instances=128, watches=8192. Allow mass filesystem event watching
+		log_cmd sysctl -w fs.inotify.max_user_instances=8192
+		log_cmd sysctl -w fs.inotify.max_user_watches=524288
+		;;
+	"epoll"|"sock"|"sockmany"|"udp"|"udp-flood")
+		# Default: 128 or 4096. Increase socket listen backlog queue size to prevent dropped connections
+		log_cmd sysctl -w net.core.somaxconn=4096
+		;;
+	"sockpair")
+		log_cmd sysctl -w net.core.somaxconn=4096
 		common_opts="${common_opts} --oom-avoid"
 		;;
-	"aiol")
-		# 081aa00e16a9 ("tests/stress-ng: sleep 2s before run_test to fix stress-ng-aiol open fail")
-		log_cmd sleep 2
+	"bigheap"|"brk"|"loadavg"|"memthrash"|"mmaphuge"|"mmapcow"|"mmapmany")
+		common_opts="${common_opts} --oom-avoid"
 		;;
 	"bad-ioctl"|"sysinval"|"cpu-online"|"mlockmany"|"oom-pipe"|"bind-mount"|"watchdog"|"smi")
 		common_opts="${common_opts} --pathological"
@@ -110,6 +136,29 @@ run_test()
 
 	if [[ -n "$test" ]]; then
 		setup_test || die "setup test failed"
+
+		if [[ -n "$method" ]]; then
+			common_opts="${common_opts} --${test}-method $method"
+		elif stress-ng --help 2>&1 | grep -E -q "^ +--${test}-method .*(\[.*all|all,)"; then
+			# Dynamically check if this test supports an "all" method explicitly and appending it
+			# This maximizes algorithmic coverage (e.g., testing all tree implementations, not just the default)
+			common_opts="${common_opts} --${test}-method all"
+		fi
+
+		# Mapping x86 CI server regression parameters (mode, type, sched, advise)
+		[[ -n "$mode" ]] && common_opts="${common_opts} --${test}-mode $mode"
+		[[ -n "$type" ]] && common_opts="${common_opts} --${test}-type $type"
+		[[ -n "$advise" ]] && common_opts="${common_opts} --madvise-advise $advise"
+		[[ -n "$hdd_opts" ]] && common_opts="${common_opts} --hdd-opts $hdd_opts"
+
+		if [[ -n "$sched" ]]; then
+			if stress-ng --help 2>&1 | grep -q -E "\-\-${test}-sched"; then
+				common_opts="${common_opts} --${test}-sched $sched"
+			else
+				# Fallback generic scheduling stress parameter
+				common_opts="${common_opts} --workload-sched $sched"
+			fi
+		fi
 
 		if [[ "$test" = "exec" ]] || [[ "$test" = "spawn" ]] || [[ "$test" = "bad-ioctl" ]]; then
 			# these stressors need to be running without root privilege

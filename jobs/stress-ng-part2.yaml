@@ -34,7 +34,6 @@ stress-ng:
     - kill
     - klog
     - kvm
-    - l1cache
     # - landlock # require CONFIG_SECURITY_LANDLOCK
     - led
     - list
@@ -44,9 +43,7 @@ stress-ng:
     - logmath
     - longjmp
     - loop
-    - lsearch
     - lsm
-    - madvise
     - malloc
     - matrix
     - matrix-3d
@@ -106,3 +103,49 @@ stress-ng:
 
 oom-killer:
   ignored: 1
+
+---
+stress-ng:
+  test:
+    - l1cache
+  method:
+    - forward
+    - random
+    - reverse
+
+---
+stress-ng:
+  test:
+    - lsearch
+  method:
+    - lsearch-libc
+    - lsearch-nonlibc
+    - lsearch-sentinel
+
+---
+stress-ng:
+  test:
+    - madvise
+  advise:
+    - normal
+    - random
+    - sequential
+    - willneed
+    - dontneed
+    - free
+    - remove
+    - dontfork
+    - dofork
+    - hwpoison
+    - mergeable
+    - unmergeable
+    - soft-offline
+    - hugepage
+    - nohugepage
+    - dontdump
+    - dodump
+    - wipeonfork
+    - keeponfork
+    - cold
+    - pageout
+    - collapse
