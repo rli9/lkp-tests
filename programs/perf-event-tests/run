@@ -6,6 +6,7 @@
 
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/tests/perf_event_tests.sh
+. $LKP_SRC/lib/common.sh
 . $LKP_SRC/lib/debug.sh
 . $LKP_SRC/lib/run.sh
 

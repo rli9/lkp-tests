@@ -3,15 +3,16 @@
 . $LKP_SRC/lib/install.sh
 . $LKP_SRC/lib/reproduce-log.sh
 . $LKP_SRC/lib/env.sh
+. $LKP_SRC/lib/common.sh
 
 fixup_kdir()
 {
 	# link /lib/modulers/`uname -r`/build to linux_headers_dir
-	local linux_headers_dir=$(ls -d /usr/src/linux-headers*-bpf)
+	local linux_headers_dir=$(get_linux_headers_dir "linux-headers*-bpf")
 	[ -z "$linux_headers_dir" ] && return
 
 	kdir="/lib/modules/$(uname -r)/build"
-	ln -svf "$linux_headers_dir" "$kdir"
+	[ "$linux_headers_dir" != "$kdir" ] && ln -snvf "$linux_headers_dir" "$kdir"
 }
 
 build_module()

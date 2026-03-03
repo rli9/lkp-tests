@@ -110,3 +110,21 @@ is_dir_empty()
 	[[ -d $1 ]] || return 0
 	! find "$1" -mindepth 1 -maxdepth 1 -print -quit | grep -q .
 }
+
+get_linux_headers_dir()
+{
+	local pattern="${1:-linux-headers*}"
+
+	local linux_headers_dir="${LINUX_HEADERS_DIR:-}"
+
+	if [[ -z "$linux_headers_dir" ]]; then
+		linux_headers_dir=$(ls -d /usr/src/${pattern} 2>/dev/null | head -1)
+
+		if [[ -z "$linux_headers_dir" ]]; then
+			local kbuild_dir="/lib/modules/$(uname -r)/build"
+			[[ -d "$kbuild_dir" ]] && linux_headers_dir="$kbuild_dir"
+		fi
+	fi
+
+	echo "$linux_headers_dir"
+}
