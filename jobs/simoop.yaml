@@ -1,0 +1,15 @@
+suite: simoop
+testcase: simoop
+category: benchmark
+
+disk: 1HDD
+fs:
+  - ext4
+  - xfs
+
+simoop:
+  threads: 100%
+  runtime: 30
+  warmuptime: 5
+  numfiles: 1000
+  filesize: 16M

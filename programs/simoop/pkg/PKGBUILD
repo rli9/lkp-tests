@@ -1,0 +1,11 @@
+pkgname=simoop
+pkgver=git
+pkgrel=1
+pkgdesc="simoop benchmark"
+arch=('i386' 'x86_64' 'riscv64' 'aarch64')
+url="https://git.kernel.org/pub/scm/linux/kernel/git/mason/simoop.git/"
+license=('GPL')
+source=("$pkgname"::"https://git.kernel.org/pub/scm/linux/kernel/git/mason/simoop.git")
+md5sums=('SKIP')
+
+. $LKP_SRC/lib/tests/pkgbuild.sh

@@ -1,0 +1,39 @@
+short_description: >
+  simoop is a fast, simple filesystem benchmark tool.
+
+description: |
+  simoop is a fast, simple filesystem benchmark tool designed by Chris Mason
+  to measure filesystem performance and latencies under configurable workloads.
+
+homepage: https://git.kernel.org/pub/scm/linux/kernel/git/mason/simoop.git/
+
+parameters:
+  threads: worker threads (def: 16)
+  memory: memory to allocate during think time in each worker (def: 0)
+  mmapsize: amount to mmap to time allocator (def: 0)
+  runtime: How long to run before exiting (seconds, def: 30)
+  warmuptime: How long to warmup before resetting the stats (seconds, def: 60)
+  interval: Sleep time in seconds between latency reports (sec, def: 120)
+  sleeptime: Sleep time in usecs between worker loops (usec, def: 0)
+  cputime: How long to think during each worker loop (seconds, def: 0)
+  cputhreads: How many threads do the cpu time loop (0)
+  numfiles: Number of files per directory tree (65536)
+  filesize: Size of each file (64M)
+  readsize: amount to read from each file (2M)
+  writesize: amount to write to tmp files (2M)
+  duthreads: how many threads to scanning the working dirs (0)
+
+results:
+  simoop.work_rate_avg_per_sec: average work rate per second
+  simoop.read_latency_usec.p50: p50 read latency in microseconds
+  simoop.read_latency_usec.p95: p95 read latency in microseconds
+  simoop.read_latency_usec.p99: p99 read latency in microseconds
+  simoop.read_latency_usec.max: max read latency in microseconds
+  simoop.write_latency_usec.p50: p50 write latency in microseconds
+  simoop.write_latency_usec.p95: p95 write latency in microseconds
+  simoop.write_latency_usec.p99: p99 write latency in microseconds
+  simoop.write_latency_usec.max: max write latency in microseconds
+  simoop.allocation_latency_usec.p50: p50 allocation latency in microseconds
+  simoop.allocation_latency_usec.p95: p95 allocation latency in microseconds
+  simoop.allocation_latency_usec.p99: p99 allocation latency in microseconds
+  simoop.allocation_latency_usec.max: max allocation latency in microseconds

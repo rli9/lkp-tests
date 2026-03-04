@@ -1,0 +1,73 @@
+#!/bin/bash
+# - appendmode
+# - threads
+# - memory
+# - mmapsize
+# - runtime
+# - warmuptime
+# - interval
+# - ignorecrcs
+# - verify_writes
+# - verify_startup
+# - sleeptime
+# - cputime
+# - cputhreads
+# - numfiles
+# - filesize
+# - readsize
+# - writesize
+# - duthreads
+# - funksync
+# - oddsizes
+# - odirect
+# - zallocate
+# - nocleanup
+# - erase
+# - fillonly
+# - writethrough
+# - unalignedstress
+
+# shellcheck disable=SC1091
+. "$LKP_SRC/lib/env.sh"
+. "$LKP_SRC/lib/reproduce-log.sh"
+. "$LKP_SRC/lib/run.sh"
+
+cd_benchmark
+
+args=()
+
+[[ -n "$appendmode" ]] && args+=( -a )
+[[ -n "$threads" ]] && args+=( -t "$threads" )
+[[ -n "$memory" ]] && args+=( -m "$memory" )
+[[ -n "$mmapsize" ]] && args+=( -M "$mmapsize" )
+[[ -n "$runtime" ]] && args+=( -r "$runtime" )
+[[ -n "$warmuptime" ]] && args+=( -w "$warmuptime" )
+[[ -n "$interval" ]] && args+=( -i "$interval" )
+[[ -n "$ignorecrcs" ]] && args+=( -I )
+[[ -n "$verify_writes" ]] && args+=( -v )
+[[ -n "$verify_startup" ]] && args+=( -V )
+[[ -n "$sleeptime" ]] && args+=( -s "$sleeptime" )
+[[ -n "$cputime" ]] && args+=( -c "$cputime" )
+[[ -n "$cputhreads" ]] && args+=( -C "$cputhreads" )
+[[ -n "$numfiles" ]] && args+=( -n "$numfiles" )
+[[ -n "$filesize" ]] && args+=( -f "$filesize" )
+[[ -n "$readsize" ]] && args+=( -R "$readsize" )
+[[ -n "$writesize" ]] && args+=( -W "$writesize" )
+[[ -n "$duthreads" ]] && args+=( -D "$duthreads" )
+[[ -n "$funksync" ]] && args+=( -F )
+[[ -n "$oddsizes" ]] && args+=( -o )
+[[ -n "$odirect" ]] && args+=( -O )
+[[ -n "$zallocate" ]] && args+=( -z )
+[[ -n "$nocleanup" ]] && args+=( -N )
+[[ -n "$erase" ]] && args+=( -e )
+[[ -n "$fillonly" ]] && args+=( -E )
+[[ -n "$writethrough" ]] && args+=( -U )
+[[ -n "$unalignedstress" ]] && args+=( -u )
+
+# shellcheck disable=SC2206
+test_dir=(${mount_points:-/tmp/simoop})
+for d in "${test_dir[@]}"; do
+	mkdir -p "$d"
+done
+
+log_cmd ./simoop "${args[@]}" "${test_dir[@]}"

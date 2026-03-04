@@ -1,0 +1,32 @@
+#!/usr/bin/env ruby
+
+in_final_stats = false
+stats = {}
+
+while (line = $stdin.gets)
+  if line =~ /^Final stats:/
+    in_final_stats = true
+    next
+  end
+
+  next unless in_final_stats
+
+  case line
+  when /^(Read|Write|Allocation) latency usec: \(p50: (\d+)\) \(p95: (\d+)\) \(p99: (\d+)\) \(max: (\d+)\)/
+    key_prefix = $1.downcase
+    stats["#{key_prefix}_latency_usec.p50"] = $2
+    stats["#{key_prefix}_latency_usec.p95"] = $3
+    stats["#{key_prefix}_latency_usec.p99"] = $4
+    stats["#{key_prefix}_latency_usec.max"] = $5
+  when /^work rate = [0-9.]+\/sec \(avg ([0-9.]+)\/sec\)/
+    stats['work_rate_avg_per_sec'] = $1
+  when /^allocstall rate = [0-9.]+\/sec \(avg: ([0-9.]+)\)/
+    stats['allocstall_rate_avg_per_sec'] = $1
+  when /^nr_vmscan_write rate = [0-9.]+\/sec \(avg: ([0-9.]+)\)/
+    stats['nr_vmscan_write_rate_avg_per_sec'] = $1
+  end
+end
+
+stats.each do |k, v|
+  puts "#{k}: #{v}"
+end
