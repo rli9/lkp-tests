@@ -29,7 +29,7 @@ describe 'lkp-split-job' do
   end
 
   def verify_split_job_output(id)
-    Bash.run("LKP_SRC=#{@tmp_src_dir} LKP_CORE_SRC=#{@tmp_src_dir} #{@tmp_src_dir}/bin/lkp split-job -t lkp-tbox -o #{@tmp_dir} spec/split-job/#{id}.yaml")
+    Bash.run("LKP_SRC=#{@tmp_src_dir} #{@tmp_src_dir}/bin/lkp split-job -t lkp-tbox -o #{@tmp_dir} spec/split-job/#{id}.yaml")
 
     Dir[@tmp_dir.path("#{id}-*.yaml")].each do |actual_yaml|
       Bash.run("sed -i 's|:#! programs/split-job/|#!/|g' #{actual_yaml}")
@@ -43,7 +43,7 @@ describe 'lkp-split-job' do
 
   it 'split with --compatible option' do
     Dir.chdir(@tmp_src_dir.to_s) do
-      Bash.run("LKP_SRC=#{@tmp_src_dir} LKP_CORE_SRC=#{@tmp_src_dir} #{@tmp_src_dir}/bin/lkp split-job --compatible -o #{@tmp_dir} spec/split-job/compatible.yaml")
+      Bash.run("LKP_SRC=#{@tmp_src_dir} #{@tmp_src_dir}/bin/lkp split-job --compatible -o #{@tmp_dir} spec/split-job/compatible.yaml")
       new_yaml = 'compatible-test_1.yaml'
       # delete machine specific settings
       %w[testbox tbox_group local_run memory nr_cpu ssd_partitions hdd_partitions].each { |s| Bash.run("sed -i '/#{s}:/d' #{@tmp_dir.path(new_yaml)}") }
