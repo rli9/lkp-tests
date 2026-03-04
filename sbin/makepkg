@@ -1652,7 +1652,10 @@ rewrite_gitmirror_sources() {
 		local prefix=""
 		[[ "$url" == *"::"* ]] && prefix="${url%%::*}::"
 
-		source[i]="${prefix}git://${LKP_GITMIRROR}/${repo}"
+		local mirror_url="git://${LKP_GITMIRROR}/${repo}"
+		if git ls-remote "$mirror_url" HEAD >/dev/null 2>&1; then
+			source[i]="${prefix}${mirror_url}"
+		fi
 	done
 }
 
