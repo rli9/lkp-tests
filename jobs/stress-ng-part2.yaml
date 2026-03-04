@@ -34,7 +34,6 @@ stress-ng:
     - kill
     - klog
     - kvm
-    # - landlock # require CONFIG_SECURITY_LANDLOCK
     - led
     - list
     - llc-affinity
@@ -66,7 +65,6 @@ stress-ng:
     - mmapfork
     - mmaprandom
     - mmaptorture
-    # - module # require open RUNTIME_TESTING_MENU and TEST_LKM
     - monte-carlo
     - mpfr
     - mprotect

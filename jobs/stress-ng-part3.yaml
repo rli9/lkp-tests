@@ -30,7 +30,6 @@ stress-ng:
     - ping-sock
     - pipeherd
     - pkey
-    # - plugin # run user provided stressor functions loaded from a shared library
     - poll
     - powmath
     - prctl
@@ -53,7 +52,6 @@ stress-ng:
     - regex
     - regs
     - remap
-    # - resched # less meaningful test per PeterZ and Chenyu
     - resources
     - revio
     - ring-pipe

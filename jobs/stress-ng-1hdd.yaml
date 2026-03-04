@@ -20,7 +20,6 @@ stress-ng:
     - acl
     - aiol
     - bind-mount
-    # - binderfs
     - chdir
     - chmod
     - chown
@@ -61,7 +60,6 @@ stress-ng:
     - swap
     - sync-file
     - utime
-    # - verity
     - xattr
 
 ---

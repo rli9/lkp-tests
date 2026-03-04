@@ -35,7 +35,6 @@ stress-ng:
     - poll
     - prio-inv
     - race-sched
-    # - resched # less meaningful test per PeterZ and Chenyu
     - schedmix
     - schedpolicy
     - sem

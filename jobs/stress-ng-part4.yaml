@@ -66,14 +66,6 @@ stress-ng:
     - sysinfo
     - sysinval
 
-# ---
-# need_memoey: 238G
-# nr_threads: 5%
-
-# stress-ng:
-#   test:
-#     - stack
-
 ---
 stress-ng:
   test:
