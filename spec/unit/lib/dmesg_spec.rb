@@ -56,7 +56,7 @@ describe 'Dmesg' do
   end
 
   describe 'get_crash_calltraces' do
-    files = Dir.glob "#{LKP_SRC}/spec/dmesg/calltrace/dmesg-*"
+    files = Dir.glob "#{LKP_SRC}/spec/fixtures/dmesg/calltrace/dmesg-*"
     files.each do |file|
       it "extracts call trace chunks from #{File.basename file}" do
         actual = get_crash_calltraces file

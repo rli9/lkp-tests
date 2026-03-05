@@ -186,10 +186,10 @@ describe 'job.rb global methods' do
 end
 
 describe 'Job integration' do
-  let(:cases_dir) { "#{LKP_SRC}/spec/job" }
+  let(:cases_dir) { "#{LKP_SRC}/spec/fixtures/job" }
 
   # Dynamically generate tests for each .yaml file in spec/job
-  Dir.glob("#{LKP_SRC}/spec/job/*.yaml").each do |absolute_input_file|
+  Dir.glob("#{LKP_SRC}/spec/fixtures/job/*.yaml").each do |absolute_input_file|
     next if absolute_input_file.end_with?('.output.yaml')
     # Skip items specifically intended for mock environment tests
     next if absolute_input_file.include?('.mock.yaml')
@@ -230,9 +230,9 @@ describe 'Job integration with mocked filesystem' do
 
   before do
     # Copy artifacts to the mocked repo so Job finds them
-    FileUtils.mkdir_p("#{tmp_lkp_src}/spec/job")
-    FileUtils.cp("#{LKP_SRC}/spec/job/1.mock.yaml", "#{tmp_lkp_src}/spec/job/1.mock.yaml")
-    FileUtils.cp("#{LKP_SRC}/spec/job/1.mock.output.yaml", "#{tmp_lkp_src}/spec/job/1.mock.output.yaml")
+    FileUtils.mkdir_p("#{tmp_lkp_src}/spec/fixtures/job")
+    FileUtils.cp("#{LKP_SRC}/spec/fixtures/job/1.mock.yaml", "#{tmp_lkp_src}/spec/fixtures/job/1.mock.yaml")
+    FileUtils.cp("#{LKP_SRC}/spec/fixtures/job/1.mock.output.yaml", "#{tmp_lkp_src}/spec/fixtures/job/1.mock.output.yaml")
   end
 
   it 'loads 1.mock.yaml and produces 1.mock.output.yaml with setup discovery' do
@@ -249,8 +249,8 @@ describe 'Job integration with mocked filesystem' do
     # Stub for wrapper calls (expected during init)
     allow(Bash).to receive(:run).with(/program-options.*wrapper/).and_return('')
 
-    job_file = "#{tmp_lkp_src}/spec/job/1.mock.yaml"
-    output_file = "#{tmp_lkp_src}/spec/job/1.mock.output.yaml"
+    job_file = "#{tmp_lkp_src}/spec/fixtures/job/1.mock.yaml"
+    output_file = "#{tmp_lkp_src}/spec/fixtures/job/1.mock.output.yaml"
     tmp_output = "#{job_file}.tmp"
 
     expect(File.exist?("#{tmp_lkp_src}/include/category/mock-category")).to be true

@@ -59,7 +59,7 @@ contents: &borrow-1d
                         - <<: jobs/borrow-1d.yaml
                         - *borrow-1d
 :merge relative path:
-                        - <<: ../jobs/borrow-1d.yaml
+                        - <<: ../../../jobs/borrow-1d.yaml
                         - *borrow-1d
 :merge absolute path:
                         - <<: #{LKP_SRC}/jobs/borrow-1d.yaml

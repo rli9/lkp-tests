@@ -9,7 +9,7 @@ describe 'lkp-split-job' do
     @tmp_src_dir = LKP::TmpDir.new('split-job-spec-src-')
 
     Bash.run("rsync -aix --exclude .git #{LKP_SRC}/ #{@tmp_src_dir}")
-    Bash.run("rsync -aix --exclude .git #{LKP_SRC}/spec/split-job/programs/ #{@tmp_src_dir}/programs/")
+    Bash.run("rsync -aix --exclude .git #{LKP_SRC}/spec/fixtures/split-job/programs/ #{@tmp_src_dir}/programs/")
 
     Dir.chdir(@tmp_src_dir.to_s) do
       Bash.run("bash -c \"export LKP_SRC=#{@tmp_src_dir}; . #{@tmp_src_dir}/lib/host.sh; create_host_config\"")
@@ -29,13 +29,13 @@ describe 'lkp-split-job' do
   end
 
   def verify_split_job_output(id)
-    Bash.run("LKP_SRC=#{@tmp_src_dir} #{@tmp_src_dir}/bin/lkp split-job -t lkp-tbox -o #{@tmp_dir} spec/split-job/#{id}.yaml")
+    Bash.run("LKP_SRC=#{@tmp_src_dir} #{@tmp_src_dir}/bin/lkp split-job -t lkp-tbox -o #{@tmp_dir} spec/fixtures/split-job/#{id}.yaml")
 
     Dir[@tmp_dir.path("#{id}-*.yaml")].each do |actual_yaml|
       Bash.run("sed -i 's|:#! programs/split-job/|#!/|g' #{actual_yaml}")
 
       actual = YAML.load_file(actual_yaml)
-      expected = YAML.load_file("#{LKP_SRC}/spec/split-job/#{File.basename(actual_yaml)}")
+      expected = YAML.load_file("#{LKP_SRC}/spec/fixtures/split-job/#{File.basename(actual_yaml)}")
 
       expect(actual).to eq expected
     end
@@ -43,12 +43,12 @@ describe 'lkp-split-job' do
 
   it 'split with --compatible option' do
     Dir.chdir(@tmp_src_dir.to_s) do
-      Bash.run("LKP_SRC=#{@tmp_src_dir} #{@tmp_src_dir}/bin/lkp split-job --compatible -o #{@tmp_dir} spec/split-job/compatible.yaml")
+      Bash.run("LKP_SRC=#{@tmp_src_dir} #{@tmp_src_dir}/bin/lkp split-job --compatible -o #{@tmp_dir} spec/fixtures/split-job/compatible.yaml")
       new_yaml = 'compatible-test_1.yaml'
       # delete machine specific settings
       %w[testbox tbox_group local_run memory nr_cpu ssd_partitions hdd_partitions].each { |s| Bash.run("sed -i '/#{s}:/d' #{@tmp_dir.path(new_yaml)}") }
       actual = YAML.load_file(@tmp_dir.path(new_yaml))
-      expected = YAML.load_file("#{LKP_SRC}/spec/split-job/#{new_yaml}")
+      expected = YAML.load_file("#{LKP_SRC}/spec/fixtures/split-job/#{new_yaml}")
 
       expect(actual).to eq expected
     end

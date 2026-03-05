@@ -1,11 +1,11 @@
 require 'spec_helper'
 require "#{LKP_SRC}/lib/bash"
 require "#{LKP_SRC}/lib/programs"
-require_relative '../lib/stats'
+require "#{LKP_SRC}/lib/stats"
 
 describe 'stats' do
   describe 'scripts' do
-    yaml_files = Dir.glob ["#{LKP_SRC}/spec/stats/*/*.yaml"]
+    yaml_files = Dir.glob ["#{LKP_SRC}/spec/fixtures/stats/*/*.yaml"]
     yaml_files.each do |yaml_file|
       file = yaml_file.chomp '.yaml'
       it "invariance: #{file}" do

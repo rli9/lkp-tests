@@ -6,7 +6,7 @@ require "#{LKP_SRC}/lib/yaml"
 
 describe 'Matrix' do
   describe 'create_stats_matrix' do
-    result_root = "#{LKP_SRC}/spec/stats_part/result_root"
+    result_root = "#{LKP_SRC}/spec/fixtures/stats_part/result_root"
     sub_dirs = Dir.glob("#{result_root}/*")
     sub_dirs.each do |dir|
       next if dir =~ /.json/

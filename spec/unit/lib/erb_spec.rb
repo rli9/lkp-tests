@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'yaml'
 require "#{LKP_SRC}/lib/erb"
 
-erb_yaml = File.expand_path('erb_spec.yaml', __dir__)
+erb_yaml = "#{LKP_SRC}/spec/fixtures/erb_spec.yaml"
 expects = YAML.load expand_erb(File.read(erb_yaml))
 
 describe 'ERB template in YAML' do
