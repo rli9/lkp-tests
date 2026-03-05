@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe 'require order' do
-  files = Dir.glob("#{LKP_SRC}/**/*.rb").reject { |f| f.include?('/vendor/') } +
-          Dir.glob("#{LKP_SRC}/{bin,sbin,daemon,tools,programs,stats,filters,monitors,lkp-exec}/*").select { |f| File.file?(f) && File.read(f, 100) =~ /ruby/ }
+  files = Dir.glob("#{LKP_SRC}/**/*.rb").reject { |f| f.include?('/vendor/') || f.include?('/web/backend/spec/') } +
+          Dir.glob("#{LKP_SRC}/{bin,sbin,tools,programs,filters,lkp-exec}/*").select { |f| File.file?(f) && File.read(f, 100) =~ /ruby/ }
 
   files.each do |file_path|
     describe file_path do
