@@ -1,7 +1,7 @@
 #!/bin/bash
 # - appendmode
 # - threads
-# - memory
+# - alloc_memory
 # - mmapsize
 # - runtime
 # - warmuptime
@@ -38,7 +38,7 @@ args=()
 
 [[ -n "$appendmode" ]] && args+=( -a )
 [[ -n "$threads" ]] && args+=( -t "$threads" )
-[[ -n "$memory" ]] && args+=( -m "$memory" )
+[[ -n "$alloc_memory" ]] && args+=( -m "$alloc_memory" )
 [[ -n "$mmapsize" ]] && args+=( -M "$mmapsize" )
 [[ -n "$runtime" ]] && args+=( -r "$runtime" )
 [[ -n "$warmuptime" ]] && args+=( -w "$warmuptime" )

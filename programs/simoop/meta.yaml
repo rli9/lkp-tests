@@ -9,7 +9,7 @@ homepage: https://git.kernel.org/pub/scm/linux/kernel/git/mason/simoop.git/
 
 parameters:
   threads: worker threads (def: 16)
-  memory: memory to allocate during think time in each worker (def: 0)
+  alloc_memory: memory to allocate during think time in each worker (def: 0)
   mmapsize: amount to mmap to time allocator (def: 0)
   runtime: How long to run before exiting (seconds, def: 30)
   warmuptime: How long to warmup before resetting the stats (seconds, def: 60)
