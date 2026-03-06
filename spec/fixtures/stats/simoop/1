@@ -1,0 +1,19 @@
+2026-03-06 13:18:10 cd /lkp/benchmarks/simoop
+2026-03-06 13:18:10 ./simoop -t 100% -r 30 -w 5 -n 1000 -f 16M /fs/sda1
+___
+Run time: 30 seconds
+Read latency usec: (p50: 2969600) (p95: 3608576) (p99: 3846144) (max: 5485097)
+Write latency usec: (p50: 4520) (p95: 6952) (p99: 271872) (max: 479354)
+Allocation latency usec: (p50: 0) (p95: 0) (p99: 0) (max: 0)
+work rate = 35.50/sec (avg 35.50/sec) (p50: 35.48) (p95: 35.48) (p99: 35.48)
+allocstall rate = 0.00/sec (avg: 0.00) (p50: 0.00) (p95: 0.00) (p99: 0.00)
+nr_vmscan_write rate = 0.00/sec (avg: 0.00) (p50: 0.00) (p95: 0.00) (p99: 0.00)
+Warmup complete (5 seconds)
+___
+Run time: 2 seconds
+Read latency usec: (p50: 2969600) (p95: 3608576) (p99: 3837952) (max: 5485097)
+Write latency usec: (p50: 4504) (p95: 6488) (p99: 271872) (max: 479354)
+Allocation latency usec: (p50: 0) (p95: 0) (p99: 0) (max: 0)
+work rate = 41.01/sec (avg 41.01/sec) (p50: 41.04) (p95: 41.04) (p99: 41.04)
+allocstall rate = 0.00/sec (avg: 0.00) (p50: 0.00) (p95: 0.00) (p99: 0.00)
+nr_vmscan_write rate = 0.00/sec (avg: 0.00) (p50: 0.00) (p95: 0.00) (p99: 0.00)

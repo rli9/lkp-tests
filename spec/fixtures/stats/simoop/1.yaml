@@ -1,0 +1,15 @@
+read_latency_usec.p50: 2969600
+read_latency_usec.p95: 3608576
+read_latency_usec.p99: 3837952
+read_latency_usec.max: 5485097
+write_latency_usec.p50: 4504
+write_latency_usec.p95: 6488
+write_latency_usec.p99: 271872
+write_latency_usec.max: 479354
+allocation_latency_usec.p50: 0
+allocation_latency_usec.p95: 0
+allocation_latency_usec.p99: 0
+allocation_latency_usec.max: 0
+work_rate_avg_per_sec: 41.01
+allocstall_rate_avg_per_sec: 0.00
+nr_vmscan_write_rate_avg_per_sec: 0.00

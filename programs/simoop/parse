@@ -1,16 +1,8 @@
 #!/usr/bin/env ruby
 
-in_final_stats = false
 stats = {}
 
 while (line = $stdin.gets)
-  if line =~ /^Final stats:/
-    in_final_stats = true
-    next
-  end
-
-  next unless in_final_stats
-
   case line
   when /^(Read|Write|Allocation) latency usec: \(p50: (\d+)\) \(p95: (\d+)\) \(p99: (\d+)\) \(max: (\d+)\)/
     key_prefix = $1.downcase
