@@ -429,8 +429,6 @@ class Job
         # the options of these programs could impact test result
         available_programs %i(setup tests daemon)
       else
-        programs = create_programs_hash("#{type}/**/*", lkp_src)
-
         script_name = {
           tests: 'run',
           stats: 'parse',
@@ -439,7 +437,12 @@ class Job
           monitors: 'monitor'
         }[type]
 
-        programs = programs.merge create_programs_hash("programs/*/#{script_name}", lkp_src) if script_name
+        programs = if script_name
+                     create_programs_hash("programs/*/#{script_name}", lkp_src)
+                   else
+                     create_programs_hash("#{type}/**/*", lkp_src)
+                   end
+
         if type == :monitors
           programs = programs.merge create_programs_hash('programs/*/no-stdout-monitor', lkp_src)
           programs = programs.merge create_programs_hash('programs/*/one-shot-monitor', lkp_src)
