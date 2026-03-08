@@ -61,12 +61,11 @@ fs:
   - xfs
   - btrfs
   - f2fs
-  - udf
   # - bcachefs
 
 xfstests:
   test:
-    - generic-test-reflink # [not run] Reflink not supported by test filesystem type: ext2/ext4
+    - generic-test-reflink # [not run] Reflink not supported by test filesystem type: ext2/ext4/udf
 
 ---
 fs:
