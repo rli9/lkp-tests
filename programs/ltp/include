@@ -49,6 +49,8 @@ need_kconfig:
 - KVM_INTEL
 % elsif ___.test == "smoketest"
 - MACSEC
+% elsif ___.test =~ /^syscalls/
+- IP_NF_IPTABLES: m
 % end
 
 % if ___.test != "kvm"
