@@ -7,13 +7,25 @@ show_help()
 {
 	cat <<EOF
 Usage: lkp <command> [options]
-$(cat $LKP_SRC/doc/command-index/*)
+$(cat $LKP_SRC/doc/command-index/* 2>/dev/null)
 
-More commands can be found in ${LKP_SRC}/{bin,sbin,tools}/
+More commands can be found in ${LKP_SRC}/{bin,sbin,tools,lkp-exec}/
 EOF
+	echo ""
+	echo "LKP-EXEC COMMANDS:"
+	for cmd in "$LKP_SRC/lkp-exec/"*; do
+		[ -x "$cmd" ] && [ -f "$cmd" ] || continue
+		cmd_name="${cmd##*/}"
+		usage=$(grep -E -m 1 -i "Usage:.*|opts\.banner.*" "$cmd" | sed -E -e 's/^[[:space:]]*//' -e 's/^(echo|opts\.banner[[:space:]]*=)?//' -e 's/^[[:space:]]*["'\'']//' -e 's/["'\''][[:space:]]*(1>&2)?.*$//' -e 's/^[[:space:]]*//' )
+		if [ -n "$usage" ] && [ "$usage" != "Usage:" ]; then
+			printf "\t%-20s %s\n" "$cmd_name" "$usage"
+		else
+			printf "\t%-20s\n" "$cmd_name"
+		fi
+	done
 }
 
-if [ $# = 0 ] || [ "$*" = 'help' ]; then
+if [ $# = 0 ] || [ "$1" = 'help' ] || [ "$1" = '--help' ] || [ "$1" = '-h' ]; then
 	show_help
 	exit
 fi
