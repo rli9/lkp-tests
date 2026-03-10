@@ -40,3 +40,4 @@ need_kconfig:
 - UNICODE: m
 - IO_URING: y
 - EXPERT: y
+- HIBERNATION: n
