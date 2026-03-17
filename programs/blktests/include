@@ -55,3 +55,4 @@ need_kconfig:
 - RDMA_SIW: m, x86_64
 - BTRFS_FS: m
 - BTRFS_FS_POSIX_ACL: y
+- BLK_DEV_INTEGRITY: y
