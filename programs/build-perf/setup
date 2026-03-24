@@ -1,0 +1,19 @@
+#!/bin/bash
+# - ARCH
+
+. "$LKP_SRC/lib/reproduce-log.sh"
+
+build_perf()
+{
+	local perf_dir
+	perf_dir=$(ls -d /usr/src/linux-perf-*/tools/perf 2>/dev/null | head -n 1)
+	[[ -n "$perf_dir" ]] || return 0
+
+	# shellcheck disable=SC2154
+	log_cmd make -j"${nr_cpu}" ARCH= -C "$perf_dir" 2>&1 || return
+
+	[[ -f /usr/bin/perf ]] && rm -f /usr/bin/perf
+	ln -s "$perf_dir"/perf /usr/bin/perf
+}
+
+build_perf

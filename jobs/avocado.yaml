@@ -2,6 +2,8 @@ suite: avocado
 testcase: avocado
 category: functional
 
+build-perf:
+
 avocado:
   group:
     - lkvs.boot_check.tdvm
