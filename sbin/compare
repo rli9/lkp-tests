@@ -197,7 +197,7 @@ def setup_project
 end
 
 def get_json_field(file, key, is_rt)
-  matrix = load_json file, true
+  matrix = load_json file, cache: true
 
   if is_rt
     # convert stats.json data structure to that of matrix.json
