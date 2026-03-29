@@ -513,14 +513,14 @@ def show_one_diff(stat, dim, v0, v, v0_stddev, v_stddev, is_float: false, is_exp
            else
              format "%#{ABS_WIDTH}.4g", v
            end
-         elsif is_float
-           format "%#{ABS_WIDTH}.2f", v
          elsif is_fail
            if v.zero?
              format "%#{ABS_WIDTH + 1}s", ' '
            else
              format "%#{ABS_WIDTH + 1}d", v
            end
+         elsif is_float
+           format "%#{ABS_WIDTH}.2f", v
          else
            format "%#{ABS_WIDTH}d", v
          end
