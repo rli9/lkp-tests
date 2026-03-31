@@ -186,6 +186,23 @@ fixup_dma()
 	echo $name > /sys/bus/pci/drivers/dma_map_benchmark/bind
 }
 
+fixup_cgroup()
+{
+	skip_standalone_cgroup_tests
+}
+
+skip_standalone_cgroup_tests()
+{
+	[[ -n "$test" ]] && return # test will be run standalone
+
+	# skip specific cases from cgroup group
+	local skip_from_cgroup="test_cpuset_v1_hp.sh"
+	for i in $(echo "$skip_from_cgroup")
+	do
+		sed -i "s/$i//" cgroup/Makefile 2>/dev/null || true
+	done
+}
+
 skip_standalone_net_tests()
 {
 	[ "$test" ] && return # test will be run standalone
@@ -680,6 +697,9 @@ check_test_group_kconfig()
 prepare_tests()
 {
 	prepare_test_env || die "prepare test env failed"
+
+	# Workaround for Debian: ensure awk points to gawk if available, as some tests require awk -e
+	has_cmd gawk && ln -sf $(command -v gawk) /usr/bin/awk
 
 	cd $linux_selftests_dir/tools/testing/selftests || die
 

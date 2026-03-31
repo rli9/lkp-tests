@@ -15,6 +15,7 @@ ethtool
 file
 flex
 fuse
+gawk
 gcc-multilib
 iperf3
 iproute

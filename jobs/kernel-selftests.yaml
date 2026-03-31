@@ -173,3 +173,12 @@ kernel-selftests:
     - kvm
 
 kernel_cmdline: kvm-intel.unrestricted_guest=0
+
+---
+kernel-selftests:
+  group:
+    - cgroup
+  test:
+    - test_cpuset_v1_hp.sh
+
+kernel_cmdline: systemd.unified_cgroup_hierarchy=0
