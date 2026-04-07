@@ -158,6 +158,7 @@ need_kconfig:
 % elsif ___.group == "safesetid"
 - SECURITY: y
 - SECURITYFS: y
+- SECURITY_SAFESETID: y
 % elsif ___.group == "gpio"
 - GPIOLIB: y
 - GPIO_CDEV: y
