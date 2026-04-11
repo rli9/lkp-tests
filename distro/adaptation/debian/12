@@ -14,6 +14,7 @@ libarchive: libarchive13
 libasan: libasan6
 libevent-openssl: libevent-openssl-2.1-7
 libevent: libevent-2.1-7
+libext2fs2t64: libext2fs2
 libgcc-dev: libgcc-11-dev
 libglut3: libglut3.12
 libgsl: libgsl27
@@ -47,6 +48,7 @@ libx32asan5: libx32asan6
 libx32gcc-dev: libx32gcc-11-dev
 libx32gcc1: libx32gcc-s1
 mcelog: rasdaemon
+netperf:
 openjdk: openjdk-17-jdk
 perl-modules-5: perl-modules-5.36
 python-setuptools: python3-setuptools
