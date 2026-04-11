@@ -4,7 +4,7 @@ require "#{LKP_SRC}/lib/bash"
 describe 'nvml' do
   describe 'check_param' do
     before(:all) do
-      @benchmark_root = File.join(LKP_SRC, 'spec', 'benchmark_root')
+      @benchmark_root = File.join(LKP_SRC, 'spec', 'fixtures', 'benchmark_root')
     end
 
     it 'get correct testcases from group parameter' do

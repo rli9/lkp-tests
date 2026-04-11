@@ -1,10 +1,11 @@
 require 'spec_helper'
 require "#{LKP_SRC}/lib/bash"
+require "#{LKP_SRC}/lib/programs"
 
 describe 'xfstests' do
   describe 'is_test_in_group' do
     before(:all) do
-      @benchmark_root = File.join(LKP_SRC, 'spec', 'benchmark_root')
+      @benchmark_root = File.join(LKP_SRC, 'spec', 'fixtures', 'benchmark_root')
     end
 
     def is_test_in_group(test, groups)

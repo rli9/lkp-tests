@@ -1,6 +1,6 @@
 ---
 
-#! spec/job/1.yaml
+#! spec/fixtures/job/1.yaml
 suite: boot
 testcase: boot
 category: functional
@@ -15,4 +15,4 @@ kernel-size:
 kmsg:
 timeout: 10m
 sleep: 1
-job_origin: spec/job/1.yaml
+job_origin: spec/fixtures/job/1.yaml

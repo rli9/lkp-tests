@@ -1,11 +1,11 @@
 ---
 
-#! spec/split-job/3.yaml
+#! spec/fixtures/split-job/3.yaml
 suite: split-job
 testcase: split-job
 fs: ext4
 split-job:
-job_origin: spec/split-job/3.yaml
+job_origin: spec/fixtures/split-job/3.yaml
 testbox: lkp-tbox
 arch: x86_64
 tbox_group: lkp-tbox

@@ -5,9 +5,9 @@ flex
 libaudit-dev
 libbabeltrace-dev
 libbfd-dev
+libc6-dev
 libcap-dev
 libcapstone-dev
-libc6-dev
 libclang-dev
 libdebuginfod-dev
 libdw-dev
