@@ -170,7 +170,7 @@ module DirObject
 
   def open(sub, ...)
     sub = ensure_array(sub)
-    File.open(path(*sub), ...) # rubocop:disable Style/FileOpen
+    File.open(path(*sub), ...)
   end
 
   def glob(pattern, flags = nil, &)
