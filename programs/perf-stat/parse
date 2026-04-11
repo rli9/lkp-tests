@@ -184,10 +184,10 @@ def parse
       stime, *fields = line.split
     end
 
-    if fields[2].include? "/"
+    if fields[2].include? '/'
       # 282075081,,cpu_atom/cpu-cycles/,4046709442,100.00,,
       # 282075081,,cpu-cycles,4046709442,100.00,,
-      fields[2] = fields[2][/.*\/(.*)\//,1]
+      fields[2] = fields[2][/.*\/(.*)\//, 1]
     end
 
     return false if fields.none? { |field| events.include?(field) }
