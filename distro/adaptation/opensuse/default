@@ -1,26 +1,31 @@
+acl-dev: libacl-devel
 acpica-tools: acpica
 acpidump: acpica
 arping: iputils
 asciidoctor: ruby2.5-rubygem-asciidoctor
 autopoint: gettext-runtime
 autotools-dev: automake
-binutils-dev: binutils-devel
+binutils-dev: binutils
 bsdextrautils: bsd-games
 bsdmainutils:
+bsdutils: util-linux
 btrfs-progs: btrfsprogs
 btrfs-tools: btrfsprogs
 build-essential:
 comerr-dev: libcom_err-devel
 conntrack: conntrack-tools
 cython3: python3-Cython
+dbus: dbus-1
 dc: bc
 default-jdk: java-1_8_0-openjdk-devel
 dh-strip-nondeterminism: strip-nondeterminism
 dnsutils: bind-utils
+dropwatch:
 e2fslibs-dev: e2fsprogs-devel
 elfutils-devel: elfutils
 exfat-fuse: fuse-exfat
 exfat-utils: exfatprogs
+fdisk: util-linux
 freeglut3-dev: freeglut-devel
 freeglut: libglut3
 fsverity: fsverity-utils
@@ -30,6 +35,7 @@ genisoimage:
 gettext-base: gettext-runtime
 gettext: gettext-runtime
 glib2:
+glmark2-x11:
 gnupg: gpg2
 groff-base: groff
 gtk3:
@@ -44,6 +50,7 @@ iproute: iproute2
 iputils-clockdiff: iputils
 iputils-ping: iputils
 iputils-tracepath: iputils
+isc-dhcp-client: dhcp-client
 isc-dhcp-server: dhcp-server
 klibc-utils: klib
 lib32gcc-dev: gcc-32bit
@@ -62,6 +69,7 @@ libattr1-dev: libattr-devel
 libattr: libattr1
 libaudit-dev: audit-devel
 libbabeltrace-dev: babeltrace-devel
+libbfd-dev: binutils-devel
 libblkid-dev: libblkid-devel
 libbpf-dev: libbpf-devel
 libbrlapi-dev:
@@ -96,6 +104,7 @@ libcurl4-openssl-dev: libcurl-devel
 libcurl: libcurl4
 libdaxctl-dev:
 libdbus-1-dev: dbus-1-devel
+libdebuginfod-dev: elfutils
 libdrm-amdgpu1: libdrm_amdgpu1
 libdrm-dev: libdrm-devel
 libdrm-intel1: libdrm_intel1
@@ -111,14 +120,19 @@ libevdev: libevdev2
 libevent-dev: libevent-devel
 libevent-openssl: libevent-2_1-8
 libevent: libevent-2_1-7
+libext2fs-dev: e2fsprogs-devel
+libext2fs2t64: libext2fs2
 libfabric-dev: libfabric-devel
 libfdt-dev: libfdt-devel
 libffi-dev: libffi-devel
 libfile-stripnondeterminism-perl:
 libfuse-dev: fuse-devel
+libfuse3-dev: fuse3-devel
+libfuse3-devel: fuse3-devel
 libfuse3: libfuse3-3
 libgbm-dev: libgbm-devel
 libgcrypt-dev: libgcrypt-devel
+libgdbm-compat-dev: gdbm-devel
 libgdbm-compat4: libgdbm4
 libgdbm-dev: gdbm-devel
 libgdbm6: libgdbm4
@@ -147,6 +161,7 @@ libibverbs-dev: rdma-core-devel
 libicu-dev: libicu-devel
 libicu: libicu60_2
 libiniparser-dev: libiniparser-devel
+libiniparser: libiniparser-devel
 libipc-run-perl: perl-IPC-Run
 libipsec-mb-dev: intel-ipsec-mb-devel
 libipsec-mb: libIPSec_MB1
@@ -167,10 +182,12 @@ liblz4-dev: liblz4-devel
 liblzma-dev: xz-devel
 liblzo2-dev: lzo-devel
 libmariadb-dev: libmariadb-devel
+libmbedtls-dev: mbedtls-devel
 libmnl-dev: libmnl-devel
 libmount-dev: libmount-devel
 libmpfr-dev: mpfr-devel
 libncurses-dev: ncurses-devel
+libncurses: ncurses
 libndctl-dev: libndctl-devel
 libnfs-dev: libnfs-devel
 libnfs:
@@ -188,6 +205,8 @@ liboop-dev: liboop-devel
 libopencryptoki0: openCryptoki
 libopenmpi-dev: openmpi2-devel
 libopenmpi3: openmpi2
+libpam0g-dev: pam-devel
+libpam0g: pam
 libpcap-dev: libpcap-devel
 libpcap: libpcap1
 libpci-dev: pciutils-devel
@@ -224,6 +243,7 @@ libsdl2-2.0-0: libSDL2-2_0-0
 libsdl2-dev:
 libseccomp-dev: libseccomp-devel
 libselinux1-dev: libselinux-devel
+libsepol-dev: libsepol-devel
 libslang2-dev: slang-devel
 libslirp-dev: libslirp-devel
 libsmbclient-dev: samba-devel
@@ -240,6 +260,7 @@ libssh-4: libssh4
 libssh-dev: libssh-devel
 libssl-dev: libopenssl-devel
 libssl: libopenssl10
+libsystemd-dev: systemd-devel
 libteam-utils: libteam-tools
 libtimedate-perl: perl-TimeDate
 libtirpc-dev: libtirpc-devel
@@ -293,9 +314,10 @@ linux-libc-dev:i386: glibc-devel-32bit
 linux-perf: perf
 llvm-dev: llvm-devel
 locales: glibc-locale
-man-db: man
+man-db:
 mariadb-server: mariadb
 mesa-utils: Mesa-demo-x
+mount: util-linux
 mpi-default-bin: openmpi
 mysql-server:
 nbd-client: nbd
@@ -323,6 +345,7 @@ perl-modules-5: perl
 php-cli:
 php-xml: php7
 po-debconf: gettext-runtime
+postmark:
 python3-crypto: python3-pycrypto
 python3-dbus: python3-dbus-python
 python3-dev: python3-devel
@@ -355,14 +378,17 @@ sendip:
 snmp: net-snmp
 squashfs-tools: squashfs
 stress: stress-ng
+systemd-dev:
 systemtap-sdt-dev: systemtap-sdt-devel
 telnetd-ssl:
 tshark: wireshark
+uidmap: shadow
 update-inetd:
 uuid-dev: uuid-devel
 uuid-runtime: util-linux
 uuid:
 vde2-devel:
+vim-common: vim
 winpdb:
 wireguard: wireguard-tools
 wireshark-cli: wireshark

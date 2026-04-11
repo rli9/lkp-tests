@@ -1,3 +1,4 @@
+acl-dev: libacl-devel
 apache2: httpd
 apt-file:
 arping: iputils
@@ -25,6 +26,7 @@ dpkg-dev:
 e2fslibs-dev: e2fsprogs-devel
 exfat-fuse:
 f2fs-tools:
+fdisk: util-linux
 fonts-dejavu-core: dejavu-lgc-sans-fonts dejavu-lgc-sans-mono-fonts dejavu-lgc-serif-fonts dejavu-sans-fonts dejavu-sans-mono-fonts dejavu-serif-fonts
 fsmark:
 fsverity: fsverity-utils
@@ -35,6 +37,7 @@ gcc-toolset: gcc-toolset-14
 gdbserver: gdb-gdbserver
 gettext-base: gettext
 gfortran: gcc-gfortran
+glmark2-x11:
 heirloom-mailx: mailx
 hpcc:
 hwloc: hwloc hwloc-gui
@@ -133,6 +136,8 @@ libelf1: elfutils-libelf
 libevent-dev: libevent-devel
 libevent-openssl:
 libexpat1-dev: expat-devel
+libext2fs-dev: e2fsprogs-devel
+libext2fs2t64: e2fsprogs-libs
 libfabric-dev: libfabric-devel
 libfdt-dev: libfdt-devel
 libfdt1: libfdt
@@ -147,6 +152,7 @@ libfile-stripnondeterminism-perl:
 libfontconfig1: fontconfig
 libfreetype6: freetype
 libfuse-dev: fuse-devel
+libfuse3-dev: fuse3-devel
 libfuse3: fuse3-libs
 libgbm-dev: mesa-libgbm-devel
 libgbm1: mesa-libgbm
@@ -154,6 +160,7 @@ libgcc-dev: libgcc
 libgcrypt-dev: libgcrypt-devel
 libgcrypt20: libgcrypt
 libgd3: gd
+libgdbm-compat-dev: gdbm-devel
 libgdbm-compat4:
 libgdbm-dev: gdbm-devel
 libgdbm6:
@@ -201,6 +208,7 @@ libice6: libICE
 libicu-dev: libicu-devel
 libidn2-0: libidn2
 libiniparser-dev:
+libiniparser: iniparser
 libipc-run-perl: perl-IPC-Run
 libipsec-mb-dev: intel-ipsec-mb-devel
 libipsec-mb: intel-ipsec-mb
@@ -236,6 +244,7 @@ libmagic-mgc: file
 libmagic1:
 libmariadb-dev: mysql-devel
 libmariadb3: mariadb-connector-c
+libmbedtls-dev: mbedtls-devel
 libmnl-dev: libmnl-devel
 libmount-dev: libmount-devel
 libmpc3: libmpc
@@ -270,6 +279,8 @@ libopencryptoki0: opencryptoki-libs
 libopenmpi-dev: openmpi-devel
 libopenmpi3: openmpi
 libp11-kit0:
+libpam0g-dev: pam-devel
+libpam0g: pam
 libpango-1.0-0: pango
 libpangocairo-1.0-0: pango
 libpangoft2-1.0-0: pango
@@ -324,6 +335,7 @@ libseccomp-dev: libseccomp-devel
 libseccomp2:
 libselinux1-dev: libselinux-devel
 libselinux1: libselinux
+libsepol-dev: libsepol-devel
 libsigsegv2:
 libslang2-dev: slang-devel
 libslirp-dev: libslirp-devel
@@ -427,6 +439,7 @@ llvm: llvm7.0
 locales: glibc-common
 manpages-dev: man-pages
 mesa-utils: mesa-demos
+mount: util-linux
 mpi-default-bin: mpich
 multipath-tools: device-mapper-multipath
 mysql-server: mariadb
@@ -465,6 +478,7 @@ python-minimal: python2
 python-numpy: numpy
 python-openssl: pyOpenSSL
 python-pkg-resources: python-setuptools
+python3-drgn:
 qemu-system: qemu-kvm
 qemu-utils: qemu-img
 qemu: qemu-kvm
@@ -486,12 +500,14 @@ sg3-utils: sg3_utils
 sgml-base: sgml-common
 sgml-data: sgml-common
 snmp: net-snmp
+systemd-dev: systemd-devel
 systemtap-sdt-dev: systemtap-sdt-devel
 telnetd-ssl:
 texinfo: texinfo-tex
 thin-provisioning-tools:
 trinity:
 tshark: wireshark
+uidmap: shadow-utils
 update-inetd: xinetd
 uuid-dev: libuuid-devel
 uuid-runtime: util-linux
