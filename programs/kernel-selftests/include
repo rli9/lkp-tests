@@ -34,6 +34,8 @@ need_kconfig:
 - DEBUG_SPINLOCK: y
 - LOCKDEP: y
 - PROVE_LOCKING: y
+% elsif ___.group == "locking"
+- WW_MUTEX_SELFTEST: m
 % elsif ___.group == "kvm"
 - KVM
 - KVM_INTEL
