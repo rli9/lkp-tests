@@ -50,6 +50,7 @@ need_kconfig:
 - CHECKPOINT_RESTORE: y
 - EXPERT: y
 - PROC_FS: y
+- PROC_MEM_ALWAYS_FORCE: y
 
 - PTE_MARKER_UFFD_WP: y
 - SYSVIPC: y
