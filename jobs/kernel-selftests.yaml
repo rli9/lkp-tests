@@ -27,7 +27,6 @@ kernel-selftests:
     - damon
     - devices
     - dmabuf-heaps
-    - drivers
     - dt
     # - efivarfs # require uefi boot machine
     - exec

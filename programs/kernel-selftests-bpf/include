@@ -308,6 +308,32 @@ need_kconfig:
 - XFRM_INTERFACE
 - XFRM_SUB_POLICY: y
 - ZEROPLUS_FF: y
+% elsif ___.group == "drivers"
+# drivers/net
+- DEBUG_INFO_BTF: y, x86_64
+- IPV6
+- NETDEVSIM
+- CONFIGFS_FS
+- NETCONSOLE
+- NETCONSOLE_DYNAMIC: y
+- NETCONSOLE_EXTENDED_LOG: y
+
+# drivers/dma-buf
+- UDMABUF: y
+
+# drivers/platform/x86/intel/ifs
+- INTEL_IFS
+
+# drivers/net/team
+- NET_TEAM_MODE_LOADBALANCE
+- NET_TEAM
+- IPV6_MULTIPLE_TABLES: y
+- NET_L3_MASTER_DEV: y
+- NET_VRF
+- VETH
+
+# drivers/net/virtio_net
+- VIRTIO_DEBUG: y
 % elsif ___.group == "net"
 - AMT: m
 - BAREUDP: m
