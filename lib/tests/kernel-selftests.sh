@@ -576,6 +576,17 @@ fixup_mm()
 	fi
 }
 
+fixup_landlock()
+{
+	[[ "$category" = "functional" ]] || return 0
+	[[ -n "$test" ]] && return 0
+
+	# landlock/fs_bench is a benchmark-sized workload and should run from the perf shard.
+	# The installed landlock runner executes the TEST_PROGS list from landlock/Makefile,
+	# so remove fs_bench before make install generates run_kselftest.sh.
+	sed -i 's/fs_bench//g' landlock/Makefile
+}
+
 fixup_intel_pstate()
 {
 	echo 'timeout=900' >> $group/settings

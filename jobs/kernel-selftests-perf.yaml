@@ -28,3 +28,12 @@ kernel-selftests:
 kernel-selftests:
   group:
     - dma
+
+---
+kernel-selftests:
+  group:
+    - landlock
+  test:
+    - fs_bench
+
+kernel_cmdline: lsm=landlock
