@@ -53,7 +53,7 @@ index 41637bea160e..1b80c378dc1b 100755
          "cat"    => 'misc',
          "prog" => "${BINDIR}/looper",
 -        "options" => "60 $cCompiler cctest.c",
-+        "options" => "60 $cCompiler -Wno-error=implicit-int -Wno-error=implicit-function-declaration cctest.c",
++        "options" => "60 $cCompiler -Wno-error=implicit-int -Wno-error=implicit-function-declaration --no-warnings cctest.c",
      },
      "arithoh" => {
          "logmsg" => "Arithoh",
