@@ -21,6 +21,7 @@ need_kconfig:
 - CRYPTO_DH: y
 - CRYPTO_DH_RFC7919_GROUPS: y
 - CRYPTO_KPP: y
+- FAIL_IO_TIMEOUT: y
 % elsif ___.test =~ /srp/
 - INFINIBAND: y
 - INFINIBAND_IPOIB: m
