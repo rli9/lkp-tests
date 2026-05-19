@@ -8,5 +8,8 @@ libreadline-dev
 libsqlite3-dev
 liburing-dev
 linux-libc-dev
+meson
+ninja-build
+pkg-config
 python-dev
 uuid-runtime

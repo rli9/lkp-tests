@@ -4,8 +4,8 @@ pkgrel=1
 arch=('i386' 'x86_64' 'aarch64')
 url="https://github.com/osandov/blktests"
 license=('GPL')
-source=("https://github.com/osandov/blktests.git" "https://github.com/karelzak/util-linux.git")
-md5sums=('SKIP' 'SKIP')
+source=("https://github.com/osandov/blktests.git" "https://github.com/karelzak/util-linux.git" "https://github.com/linux-nvme/nvme-cli.git")
+md5sums=('SKIP' 'SKIP' 'SKIP')
 
 . $LKP_SRC/lib/install.sh
 . $LKP_SRC/lib/tests/pkgbuild.sh
@@ -16,20 +16,35 @@ build_blktests()
 	make -C src miniublk
 }
 
+build_nvme_cli()
+{
+	make -C "$srcdir/nvme-cli"
+}
+
 build()
 {
 	build_util_linux
 	build_blktests
+	build_nvme_cli
 }
 
 package()
 {
 	pack_src_pkg_contents
 	pack_contents "$srcdir/util-linux" "$benchmark_path"
+	pack_nvme_cli
 
 	generate_new_tests
 
 	split_tests
+}
+
+pack_nvme_cli()
+{
+	local bindir="$benchmark_path/bin"
+
+	mkdir -p "$bindir"
+	cp -a "$srcdir/nvme-cli/.build/nvme" "$bindir/"
 }
 
 generate_new_tests()

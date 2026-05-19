@@ -18,6 +18,15 @@ cd_benchmark
 # https://github.com/osandov/blktests/pull/64
 sed -i 's/set -u//' common/multipath-over-rdma
 
+setup_nvme_cli()
+{
+	local bindir="$BENCHMARK_ROOT/bin"
+
+	[[ -x "$bindir/nvme" ]] || return
+
+	export PATH="$bindir:$PATH"
+}
+
 set_env()
 {
 	local partition
@@ -107,6 +116,7 @@ run_test()
 }
 
 read_env_vars
+setup_nvme_cli
 set_env
 run_test
 
