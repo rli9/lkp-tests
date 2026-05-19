@@ -11,6 +11,8 @@ need_kconfig:
 
 % if ___.test == "x86"
 - INTEL_RAPL: m
+% elsif ___.test == "ifs"
+- INTEL_IFS: m
 % elsif ___.test == "ufs" || ___.test == "tpmi"
 - INTEL_TPMI: m
 - INTEL_VSEC: m
