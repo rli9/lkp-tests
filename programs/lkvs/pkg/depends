@@ -34,6 +34,7 @@ libtraceevent1
 libtracefs-dev
 libunwind-dev
 libzstd-dev
+linux-cpupower
 linux-perf
 llvm-dev
 m4
