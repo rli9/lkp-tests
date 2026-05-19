@@ -565,7 +565,7 @@ fixup_mm()
 		sed -i "s#needmem=262144#needmem=$memory#" mm/$run_vmtests
 	}
 
-	# vmalloc stress prepare
+	# vmalloc performance and stress, can not use 'make run_tests' to run
 	if [[ $test = "vmalloc-stress" ]]; then
 		# iterations or nr_threads if not set, use default value
 		[[ -z $iterations ]] && iterations=20
@@ -585,6 +585,17 @@ fixup_landlock()
 	# The installed landlock runner executes the TEST_PROGS list from landlock/Makefile,
 	# so remove fs_bench before make install generates run_kselftest.sh.
 	sed -i 's/fs_bench//g' landlock/Makefile
+}
+
+fixup_filesystems()
+{
+	[[ "$category" = "functional" ]] || return 0
+	[[ -n "$test" ]] && return 0
+	[[ -f filesystems/Makefile ]] || return 0
+
+	# file_stressor.slab_typesafe_by_rcu is a long-running stress workload that exceeds the
+	# functional shard's 300s runner timeout. Exclude it from the functional filesystems group.
+	sed -i 's/file_stressor//g' filesystems/Makefile
 }
 
 fixup_intel_pstate()

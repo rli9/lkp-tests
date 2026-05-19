@@ -37,3 +37,10 @@ kernel-selftests:
     - fs_bench
 
 kernel_cmdline: lsm=landlock
+
+---
+kernel-selftests:
+  group:
+    - filesystems
+  test:
+    - file_stressor
