@@ -97,6 +97,8 @@ setup_test()
 		# Default: 65536. Prevent io_setup failure with large numbers of async IO requests
 		log_cmd sysctl -w fs.aio-max-nr=1048576
 		[[ "$test" = "aiol" ]] && log_cmd sleep 2
+
+		return 0
 		;;
 	"inotify"|"dnotify")
 		# Default: instances=128, watches=8192. Allow mass filesystem event watching
