@@ -303,4 +303,15 @@ need_kconfig:
       expect { job.expand_params }.to raise_error Job::SyntaxError
     end
   end
+
+  context 'when kernel version is <= HEAD' do
+    it 'does not filter the job even if KCONFIG is missing because check is skipped' do
+      generate_kconfigs_yaml('MISSING_KCONFIG: <= HEAD')
+      job = generate_job <<-EOS
+need_kconfig:
+- MISSING_KCONFIG: m
+      EOS
+      expect { job.expand_params }.not_to raise_error
+    end
+  end
 end

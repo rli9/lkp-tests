@@ -74,7 +74,7 @@ def split_constraints(constraints)
                   constraints.to_s.split(',').map(&:strip)
                 end
 
-  kernel_versions, constraints = constraints.partition { |constraint| constraint =~ /v\d+\.\d+/ }
+  kernel_versions, constraints = constraints.partition { |constraint| constraint =~ /v\d+\.\d+|HEAD/ }
   archs, constraints = constraints.partition { |constraint| constraint =~ /^(i386|x86_64)$/ }
 
   types, constraints = constraints.partition { |constraint| constraint =~ /^(y|m|n|\d+|0[xX][A-Fa-f0-9]+|utf8)$/ }

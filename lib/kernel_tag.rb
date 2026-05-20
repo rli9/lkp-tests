@@ -46,7 +46,7 @@ def kernel_match_version?(kernel_version, expected_kernel_versions)
   kernel_version = KernelTag.new(kernel_version)
 
   expected_kernel_versions.all? do |expected_kernel_version|
-    match = expected_kernel_version.match(/(?<operator>==|!=|<=|>|>=)?\s*(?<kernel_tag>v[0-9]\.\d+(?:\.\d+)?(?:-rc\d+)?)/)
+    match = expected_kernel_version.match(/(?<operator>==|!=|<=|>|>=)?\s*(?<kernel_tag>v[0-9]\.\d+(?:\.\d+)?(?:-rc\d+)?|HEAD)/)
     raise Job::SyntaxError, "Wrong syntax of kconfig setting: #{expected_kernel_versions}" if match.nil? || match[:kernel_tag].nil?
 
     operator = match[:operator] || '>='
@@ -64,6 +64,8 @@ def kernel_match_version?(kernel_version, expected_kernel_versions)
     #
     # To workaround this, change operator to < to mismatch the kernel
     operator = '<' if operator == '<='
+
+    return false if match[:kernel_tag] == 'HEAD'
 
     kernel_version.method(operator).call(KernelTag.new(match[:kernel_tag]))
   end
