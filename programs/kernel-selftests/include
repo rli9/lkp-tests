@@ -64,6 +64,9 @@ need_kconfig:
 - DYNAMIC_DEBUG: y
 - LIVEPATCH: y
 - TEST_LIVEPATCH: m
+% elsif ___.group == "dynamic_debug"
+- DYNAMIC_DEBUG: y
+- TEST_DYNAMIC_DEBUG: m
 % elsif ___.group == "firmware"
 - FW_LOADER: y
 - FW_LOADER_USER_HELPER: y
