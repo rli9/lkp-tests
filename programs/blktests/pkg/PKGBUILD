@@ -18,7 +18,7 @@ build_blktests()
 
 build_nvme_cli()
 {
-	make -C "$srcdir/nvme-cli"
+	pkgname="nvme-cli" meson_src_pkg --libdir=lib --sbindir=bin
 }
 
 build()
@@ -41,10 +41,7 @@ package()
 
 pack_nvme_cli()
 {
-	local bindir="$benchmark_path/bin"
-
-	mkdir -p "$bindir"
-	cp -a "$srcdir/nvme-cli/.build/nvme" "$bindir/"
+	DESTDIR="$pkgdir" pkgname="nvme-cli" meson_install_src_pkg
 }
 
 generate_new_tests()

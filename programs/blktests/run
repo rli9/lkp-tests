@@ -20,11 +20,14 @@ sed -i 's/set -u//' common/multipath-over-rdma
 
 setup_nvme_cli()
 {
-	local bindir="$BENCHMARK_ROOT/bin"
+	local base_dir="$(get_benchmark_path)"
+	local bindir="$base_dir/bin"
+	local libdir="$base_dir/lib"
 
 	[[ -x "$bindir/nvme" ]] || return
 
 	export PATH="$bindir:$PATH"
+	export LD_LIBRARY_PATH="$libdir:$LD_LIBRARY_PATH"
 }
 
 set_env()
