@@ -38,6 +38,7 @@ lsof
 multipath-tools
 nbd-client
 nbd-server
+nvme-cli
 parted
 pciutils
 python
