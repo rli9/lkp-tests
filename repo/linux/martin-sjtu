@@ -1,0 +1,8 @@
+url: https://gitee.com/martin_sjtu/linux.git
+owner: Feng Tang <feng.tang@linux.alibaba.com>
+branch_allowlist: for-next
+branch_denylist: .*
+notify_build_success_branch: .*
+private_report_branch: .*
+mail_to:
+- Feng Tang <feng.tang@linux.alibaba.com>
