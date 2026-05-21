@@ -12,7 +12,9 @@ while (line = $stdin.gets)
 
   # ftrace_regression01: pass | tainted  (1.585s)
   # landlock04: skip | tainted  (2m 40s)
-  next unless line =~ /^(.+): (pass|fail|broken|warn|conf|skip) \| .+ \(.+s\)/
+  # cacheflush01: skip  (0.003s)
+  # cachestat01: pass  (1.210s)
+  next unless line =~ /^(.+?):\s+(pass|fail|broken|warn|conf|skip)(?: \| .+)?\s+\(.+s\)/
 
   stats.add $1, $2, overwrite: true
 end

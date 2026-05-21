@@ -1,3 +1,5 @@
 ftrace_regression01.pass: 1
 ftrace_regression02.pass: 1
 ftrace-stress-test.pass: 1
+cacheflush01.skip: 1
+cachestat01.pass: 1

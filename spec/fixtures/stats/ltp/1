@@ -13,6 +13,8 @@ Starting suite: tracing
 [1;37mftrace_regression01: [0m[1;32mpass[0m | [1;33mtainted[0m  (1.585s)
 [1;37mftrace_regression02: [0m[1;32mpass[0m | [1;33mtainted[0m  (0.722s)
 [1;37mftrace-stress-test: [0m[1;32mpass[0m | [1;33mtainted[0m  (1m 39s)
+cacheflush01: skip  (0.003s)
+cachestat01: pass  (1.210s)
 
 Execution time: 2m 8s
 
