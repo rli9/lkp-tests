@@ -52,7 +52,6 @@ stress-ng:
     - regex
     - regs
     - remap
-    - resources
     - revio
     - ring-pipe
     - rlimit
@@ -128,3 +127,7 @@ stress-ng:
     - other
     - batch
     - deadline
+---
+need_memory: 224G
+stress-ng:
+  test: resources
