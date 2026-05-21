@@ -13,8 +13,11 @@ gcc-multilib
 gettext
 git
 hwloc
+lib32gcc-dev
 libbabeltrace-dev
 libbfd-dev
+libc6-dev-i386
+libc6-i386
 libcap-dev
 libcapstone-dev
 libdebuginfod-dev
