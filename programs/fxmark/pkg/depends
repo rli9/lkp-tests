@@ -1,5 +1,6 @@
 btrfs-tools
 dbench
+e2fsprogs
 f2fs-tools
 jfsutils
 nilfs-tools
