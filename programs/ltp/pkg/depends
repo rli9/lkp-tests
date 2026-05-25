@@ -35,6 +35,7 @@ iputils-ping
 iputils-tracepath
 isc-dhcp-client
 isc-dhcp-server
+jq
 libaio
 libcap
 libntfs

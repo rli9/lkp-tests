@@ -35,7 +35,18 @@ fi
 cleanup_ltp $test
 
 kirk_latest="/tmp/kirk.$(whoami)/latest"
+kirk_results_json="$kirk_latest/results.json"
+
 if [[ -d "$kirk_latest" ]]; then
+    if [[ -f "$kirk_results_json" ]]; then
+        echo "LTP test details"
+        echo "----------------"
+
+        if ! jq -r '.results[]? as $r | ($r.test.log? // "" | split("\n") | map(select(test("TFAIL|TBROK|TWARN|TCONF"))) | unique) as $details | select((($r.status // "") != "pass") or (($details | length) > 0)) | if ($details | length) > 0 then $details[] | "\($r.test_fqn): \(.)" else "\($r.test_fqn): \($r.status)" end' "$kirk_results_json"; then
+            echo "Failed to parse $kirk_results_json by jq" 1>&2
+        fi
+    fi
+
     upload_files -t results "$kirk_latest"/* 2>&1
 else
     echo "$kirk_latest is not found"

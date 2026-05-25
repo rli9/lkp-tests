@@ -10,6 +10,8 @@ stats = LKP::Stats.new
 while (line = $stdin.gets)
   line = line.resolve_invalid_bytes.uncolorize
 
+  break if line.strip == "LTP test details"
+
   # ftrace_regression01: pass | tainted  (1.585s)
   # landlock04: skip | tainted  (2m 40s)
   # cacheflush01: skip  (0.003s)
