@@ -336,4 +336,8 @@ need_kconfig:
 - TEST_FPU: m
 % elsif ___.group == "lkdtm"
 - LKDTM: y
+% elsif ___.group == "ir"
+- RC_CORE: m
+- RC_DEVICES: y
+- RC_LOOPBACK: m
 % end
