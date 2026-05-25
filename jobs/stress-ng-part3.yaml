@@ -62,6 +62,7 @@ stress-ng:
 
 ---
 nr_threads: 50%
+need_memory: 216G
 
 stress-ng:
   test:
