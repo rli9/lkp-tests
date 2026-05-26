@@ -8,3 +8,6 @@ syscalls-02:ftruncate04
 # remove stale power aware scheduling
 power_management_tests:runpwtests01
 power_management_tests:runpwtests02
+# DCCP has been retired in kernel options
+net.features:dccp01
+net.features:dccp01_ipv6
