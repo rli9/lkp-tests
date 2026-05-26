@@ -304,9 +304,9 @@ need_kconfig:
     end
   end
 
-  context 'when kernel version is <= HEAD' do
+  context 'when kernel version is DEPRECATED' do
     it 'does not filter the job even if KCONFIG is missing because check is skipped' do
-      generate_kconfigs_yaml('MISSING_KCONFIG: <= HEAD')
+      generate_kconfigs_yaml('MISSING_KCONFIG: DEPRECATED')
       job = generate_job <<-EOS
 need_kconfig:
 - MISSING_KCONFIG: m
