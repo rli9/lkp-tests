@@ -3,6 +3,7 @@ apache2
 apache2-utils
 arping
 at
+auditd
 automake
 bind
 binutils
