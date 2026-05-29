@@ -3,6 +3,7 @@ testcase: ltp
 category: functional
 
 need_memory: 4G
+thp_enabled: always
 
 ltp:
   test:
