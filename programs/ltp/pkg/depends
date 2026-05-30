@@ -75,6 +75,7 @@ udisks2
 unzip
 update-inetd
 util-linux
+util-linux-extra
 uuid-runtime
 vsftpd
 wireguard
