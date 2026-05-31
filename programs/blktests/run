@@ -30,6 +30,31 @@ setup_nvme_cli()
 	export LD_LIBRARY_PATH="$libdir:$LD_LIBRARY_PATH"
 }
 
+enable_nvme_auth()
+{
+	# fix nvme-fabrics does not support dhchap_ctrl_secret issue
+	local modules=(
+		nvme-fabrics
+		nvme-keyring
+		nvme-auth
+	)
+
+	case "$nvme_trtype" in
+	rdma)
+		modules+=(nvme-rdma)
+		[[ "$use_siw" == "true" ]] && modules+=(siw)
+		;;
+	tcp)
+		modules+=(nvme-tcp)
+		;;
+	esac
+
+	local module
+	for module in "${modules[@]}"; do
+		log_cmd modprobe "$module" 2>&1 || true
+	done
+}
+
 set_env()
 {
 	local partition
@@ -69,9 +94,9 @@ set_env()
 	if [[ -n "$partition" ]]; then
 		echo "TEST_DEVS=$partition" > config
 		if [[ "${test%%-*}" == "nvme" ]]; then
+			enable_nvme_auth
+
 			log_cmd mkdir -p /mnt/$test && log_cmd mount $partition /mnt/$test
-			# fix nvme-fabrics does not support dhchap_ctrl_secret issue
-			modprobe nvme-auth 2>/dev/null || true
 		else
 			umount "${partition}"* 2>/dev/null || true
 		fi
