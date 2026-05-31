@@ -16,6 +16,8 @@ need_kconfig:
 - DUMMY: m
 - VETH: m
 - TUN: m
+- NET_SCH_TEQL: m
+- NET_SCHED: y
 % elsif ___.test == "net.features"
 - NET_FOU
 - IPV6_FOU
