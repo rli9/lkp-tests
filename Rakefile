@@ -82,6 +82,22 @@ task :syntax do
   puts 'syntax OK'
 end
 
+desc 'Run shfmt'
+task :shfmt do
+  executables = ENV['file'] || `find -type f -executable ! -path "./.git*"  ! -path "./vendor*" ! -size +100k | xargs -P$(nproc) grep -s -l -e '^#!/.*bash$' -e '^#!/bin/sh$'`.split("\n").join(' ')
+
+  sh "shfmt -d -ln bash -i 0 -fn #{executables}", verbose: false do |ok, res|
+    if ok
+      puts 'shfmt OK'.green
+    else
+      exit res.exitstatus
+    end
+  end
+end
+
+desc 'Run shellcode (shellcheck and shfmt)'
+task :shellcode => [:shellcheck, :shfmt]
+
 desc 'Run shellcheck'
 task :shellcheck do
   executables = ENV['file'] || `find -type f -executable ! -path "./.git*"  ! -path "./vendor*" ! -size +100k | xargs -P$(nproc) grep -s -l -e '^#!/.*bash$' -e '^#!/bin/sh$'`.split("\n").join(' ')
@@ -112,7 +128,7 @@ task :yamllint do
 end
 
 desc 'Run code check'
-task code: %i[syntax shellcheck rubocop spec]
+task code: %i[syntax shellcode rubocop spec]
 
 namespace :docker do
   desc 'Build docker image'
