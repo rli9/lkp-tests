@@ -161,7 +161,7 @@ fixup_test()
 		[ $USER ] || USER=root
 		rm -rf /var/lib/opencryptoki/tpm/$USER
 		cd tpm-emulater
-		find . -maxdepth 1 -type d -name "TPM_Emulator*" -exec rm -rf {} \;
+		find . -depth -maxdepth 1 -type d -name "TPM_Emulator*" -exec rm -rf {} \;
 		unzip $(ls TPM_Emulator*.zip | head -1)
 		rsync -av $(ls -l . | awk '/^d/ {print $NF}' | head -1)"/" /
 		cd ..
