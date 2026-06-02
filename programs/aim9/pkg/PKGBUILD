@@ -17,7 +17,7 @@ build()
 
 
 gcc
--O -std=gnu89
+-O
 
 
 END
