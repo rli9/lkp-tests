@@ -3,29 +3,21 @@ initrds+:
 - linux_selftests
 
 need_kconfig:
-% if ___.test == "net_stress.ipsec_dccp"
-- IPV6_VTI: m
-% elsif ___.test == "uevent"
-- INPUT_UINPUT: y
-- INPUT_MISC: y
-% elsif ___.test == "kernel_misc"
-- LOCK_TORTURE_TEST: m
-- RCU_TORTURE_TEST: m
-- ZRAM: m
-% elsif ___.test == "net.tcp_cmds"
-- DUMMY: m
-- VETH: m
-- TUN: m
-- NET_SCH_TEQL: m
-- NET_SCHED: y
-% elsif ___.test == "net.features"
-- NET_FOU
-- IPV6_FOU
+% if ___.test == "can"
+- CAN: m
+- CAN_DEV: y
+- CAN_RAW: m
+- CAN_VCAN: m
 
-- GENEVE
-- INET: y
-- NETDEVICES: y
-- NET_CORE: y
+% elsif ___.test == "containers"
+- NET_NS: y
+- PID_NS: y
+- TIME_NS: y
+- TUN: y
+- USER_NS: y
+
+% elsif ___.test == "controllers"
+- MEMCG: y
 
 % elsif ___.test == "crypto"
 - CRYPTO_AES
@@ -37,47 +29,162 @@ need_kconfig:
 - CRYPTO_SM4_GENERIC
 - CRYPTO_VMAC
 
-% elsif ___.test == "tracing"
-- PERF_EVENTS: y
-% elsif ___.test == "ima"
-- IMA: y
-- IMA_WRITE_POLICY: y
-- IMA_READ_POLICY: y
-% elsif ___.test == "watchqueue"
-- WATCH_QUEUE: y
+% elsif ___.test == "cve-00"
+- KSM: y
+- NET_NS: y
+- SERIO_SERPORT
+- USER_NS: y
+
+% elsif ___.test == "cve-01"
+- IP_NF_TARGET_REJECT
+- NETFILTER_XT_MATCH_STATE
+- NET_NS: y
+- NF_TABLES
+- USER_NS: y
+
+% elsif ___.test == "cve-02"
+- AF_UNIX_OOB: y
+- CAN_BCM
+- CAN_VCAN
+- NET_NS: y
+- USER_NS: y
+- VSOCKETS_LOOPBACK
+
+% elsif ___.test == "cve-04"
+- CRYPTO_GCM
+- INET_ESP
+- INET_ESPINTCP
+- NET_NS: y
+- UBSAN_SIGNED_OVERFLOW
+- USER_NS: y
+- VETH
+- XFRM
+
+% elsif ___.test == "cve-05"
+- NET_NS: y
+- TLS
+- USER_NS: y
 
 % elsif ___.test == "cve-06"
 - BPF_SYSCALL: y
 - BPF_UNPRIV_DEFAULT_OFF: n
+- CRYPTO_GCM
+- DUMMY
+- INET
+- INET6_ESP
+- INET6_ESPINTCP
+- INET_ESP
+- NET_CLS_TCINDEX
+- NET_NS: y
+- NET_SCH_HTB
+- USER_NS: y
+- VETH
+- XFRM
 
 % elsif ___.test == "cve-07"
-- CRYPTO_SM3
 - CRYPTO_LIB_SM3 # f4065b2f63cf ("crypto: lib/sm3 - Move sm3 library into lib/crypto")
+- CRYPTO_SM3
 - CRYPTO_SM3_GENERIC
+- NET_NS: y
+- SND
 - SND_SEQUENCER
 - SOUND
-- SND
+- USER_NS: y
+
+% elsif ___.test =~ /^fs(-\w+)?$/
+- BLK_DEV_LOOP
+- ISO9660_FS: y
+- MINIX_FS: m
+
+% elsif ___.test == "ima"
+- IMA: y
+- IMA_READ_POLICY: y
+- IMA_WRITE_POLICY: y
+
+% elsif ___.test == "kernel_misc"
+- HAVE_ARCH_MMAP_RND_BITS: y
+- LOCK_TORTURE_TEST: m
+- RCU_TORTURE_TEST: m
+- X86_INTEL_UMIP: y
+- X86_UMIP: y
+- ZRAM: m
 
 % elsif ___.test == "kvm"
 - KVM
 - KVM_INTEL
+
+% elsif ___.test =~ /^mm(-\w+)?$/
+- MEMCG: y
+- SWAP: y
+
+% elsif ___.test == "net.features"
+- GENEVE
+- INET: y
+- IPV6_FOU
+- NETDEVICES: y
+- NET_CORE: y
+- NET_FOU
+- NET_NS: y
+- USER_NS: y
+
+% elsif ___.test == "net.tcp_cmds"
+- DUMMY: m
+- NET_SCHED: y
+- NET_SCH_TEQL: m
+- TUN: m
+- VETH: m
+
+% elsif ___.test == "net_stress.ipsec_dccp"
+- IPV6_VTI: m
+
+% elsif ___.test == "sched"
+- CFS_BANDWIDTH: y
+- SYSCTL: y
+
 % elsif ___.test == "smoketest"
 - MACSEC
-% elsif ___.test =~ /^syscalls/
-- IP_NF_IPTABLES: m
-% end
 
-% if ___.test != "kvm"
-- BLK_DEV_LOOP
-- CAN: m
-- CAN_DEV: y
-- CAN_RAW: m
-- CAN_VCAN: m
-- MINIX_FS: m
-# d1b069f5febc ("EXPERT Kconfig menu: fix broken EXPERT menu"), EXPERT is required for CHECKPOINT_RESTORE, merged by v4.15-rc1
-# 5cb366bb3a74 ("init/Kconfig: remove EXPERT from CHECKPOINT_RESTORE"), merged by v4.19-rc1
-- EXPERT: y
+% elsif ___.test =~ /^syscalls(?!-ipc)/
+- AIO: y
+- BLK_DEV_INTEGRITY: y
+- BSD_PROCESS_ACCT: y
 - CHECKPOINT_RESTORE: y
-% end
+- DNOTIFY: y
+- EVENTFD: y
+- EXPERT: y
+- FS_VERITY: y
+- HAVE_ARCH_USERFAULTFD_WP: y
+- HWPOISON_INJECT: y
+- INET: y
+- IP_NF_IPTABLES: m
+- IP_NF_TARGET_REJECT: y
+- MANDATORY_FILE_LOCKING: y
+- MEMORY_FAILURE: y
+- NETFILTER_XT_MATCH_STATE: y
+- NET_NS: y
+- PID_NS: y
+- SWAP: y
+- TIME_NS: y
+- TLS: y
+- TRACING: y
+- UBSAN_SIGNED_OVERFLOW: y
+- USERFAULTFD: y
+- USER_DECRYPTED_DATA: y
+- USER_NS: y
+- XFS_QUOTA: y
 
-- MEMCG: y
+% elsif ___.test =~ /^syscalls-ipc(-\w+)?$/
+- CHECKPOINT_RESTORE: y
+- EXPERT: y
+
+% elsif ___.test == "tracing"
+- PERF_EVENTS: y
+
+% elsif ___.test == "uevent"
+- BLK_DEV_LOOP
+- INPUT_MISC: y
+- INPUT_UINPUT: y
+
+% elsif ___.test == "watchqueue"
+- WATCH_QUEUE: y
+% end
