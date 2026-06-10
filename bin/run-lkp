@@ -17,12 +17,25 @@ export job=$job_file
 export BENCHMARK_ROOT=/lkp/benchmarks
 export CGROUP_MNT=/cgroup
 
+fail_job()
+{
+	[ -n "$1" ] && set_job_state "$1"
+	job_done
+	exit 1
+}
+
 job_init
 export LKP_USER=$user
 
 echo $$ > $TMP/run-lkp.pid	# for use by monitors/watchdog
 
-setup_result_root || { job_done; exit 1; }
+setup_result_root || fail_job
+
+kernel_release=$(uname -r)
+[ ! -d "/lib/modules/$kernel_release" ] && {
+	echo "kernel modules directory missing: /lib/modules/$kernel_release"
+	fail_job 'miss_kernel_modules'
+}
 
 # the NMI warning messages are often in a mess
 [ -f '/sys/kernel/debug/x86/nmi_longest_ns' ] && echo 100000000 > /sys/kernel/debug/x86/nmi_longest_ns
@@ -33,8 +46,7 @@ set_job_state 'running'
 echo "target ucode: $ucode"
 if [ -n "$ucode" ] && ! is_same_as_current_ucode_version "$ucode"; then
 	echo "microcode is not matched, skip testing..."
-	set_job_state 'microcode_is_not_matched'
-	exit 1
+	fail_job 'microcode_is_not_matched'
 fi
 
 if [ ${job%.yaml} != $job ]; then
@@ -62,7 +74,7 @@ EOF" &
 	run_job_exit_code=${exit_code:-0}
 else
 	echo "job shell script does not exist: $job_script"
-	exit 1
+	fail_job 'miss_job_script'
 fi
 
 clean_job_resource
