@@ -19,4 +19,4 @@ group :development, :test do
   gem 'simplecov-rcov'
 end
 
-gem 'activesupport', '<= 6.0.6'
+gem 'activesupport', '~> 7.2.0'
