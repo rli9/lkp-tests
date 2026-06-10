@@ -6,8 +6,8 @@ runtime: 300s
 
 disk: 1HDD
 fs:
-  - ext4
   - btrfs
+  - ext4
   - xfs
 
 nr_task:
@@ -20,11 +20,11 @@ fio-setup-basic:
   rw: write
   bs: 4k
   ioengine:
-    # - exec # Doesn't transfer any data, merely run 3rd party tools
     # - dev-dax # through the PMDK libpmem library, like libpmem
     - dircreate
     - dirdelete
     - dirstat
+    # - exec # Doesn't transfer any data, merely run 3rd party tools
     - falloc
     - filecreate
     - filedelete
@@ -36,12 +36,12 @@ fio-setup-basic:
     # - net # requires two servers
     # - netsplice # requires two servers
     # - "null" # test purpose
+    - posixaio
+    - pvsync
+    - pvsync2
     # - sg
     - splice
     - sync
-    - pvsync
-    - pvsync2
-    - posixaio
     - vsync
 
 fio:
@@ -78,9 +78,9 @@ fio-setup-basic:
     - 4k
     - 4M
   ioengine:
-    - sync
     - io_uring
     # - io_uring_cmd
+    - sync
 
 ---
 fs: ext4
@@ -89,18 +89,18 @@ fio-setup-basic:
   rw: write
   bs: 4k
   ioengine:
-    - libaio
     - io_uring
     # - io_uring_cmd
+    - libaio
 
 ---
 fio-setup-basic:
   rw: write
   bs: 4k
   ioengine:
-    - sync
     - io_uring
     # - io_uring_cmd
+    - sync
   direct: direct
 
 ---
@@ -110,9 +110,9 @@ fio-setup-basic:
   rw: write
   bs: 4k
   ioengine:
-    - sync
     - io_uring
     # - io_uring_cmd
+    - sync
 
 ---
 fio-setup-basic:

@@ -31,11 +31,11 @@ fio-setup-basic:
     - 4k
     - 2M
   ioengine:
-    - sync
-    - libaio
-    - mmap
     - io_uring
     # - io_uring_cmd
+    - libaio
+    - mmap
+    - sync
   test_size: 200G
 
 fio:
@@ -53,10 +53,10 @@ fio-setup-basic:
     - 4k
     - 2M
   ioengine:
-    - sync
-    - mmap
     - io_uring
     # - io_uring_cmd
+    - mmap
+    - sync
   test_size: 200G
 
 ---
@@ -72,9 +72,9 @@ fio-setup-basic:
     - 4k
     - 2M
   ioengine:
-    - sync
-    - libaio
-    - mmap
     - io_uring
     # - io_uring_cmd
+    - libaio
+    - mmap
+    - sync
   test_size: 100G

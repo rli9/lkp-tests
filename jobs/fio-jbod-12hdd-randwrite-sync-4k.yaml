@@ -11,8 +11,8 @@ fio:
   rw:
     - randwrite
   ioengine:
-    - sync
     - io_uring
+    - sync
   bs: 4k
   group_file_number: 8
   sub_group_number: 8

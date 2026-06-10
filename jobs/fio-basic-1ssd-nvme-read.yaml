@@ -8,9 +8,9 @@ nr_task: 8t
 
 disk: 1SSD
 fs:
+  - btrfs
   - ext4
   - xfs
-  - btrfs
 
 fio-setup-basic:
   rw:
@@ -20,10 +20,10 @@ fio-setup-basic:
     - 4k
     - 2M
   ioengine:
-    - sync
-    - libaio
     - io_uring
     # - io_uring_cmd
+    - libaio
+    - sync
   test_size: 256g
 
 fio:

@@ -6,8 +6,8 @@ runtime: 300s
 
 disk: 1SSD
 fs:
-  - ext4
   - btrfs
+  - ext4
   - xfs
 
 nr_task:
@@ -20,19 +20,19 @@ fio-setup-basic:
   rw: write
   bs: 4k
   ioengine:
-    - sync
-    - io_uring
-    - splice
     - falloc
+    - filecreate
+    - filedelete
+    - filestat
     - ftruncate
-    - vsync
+    - io_uring
+    - page_fault
+    - posixaio
     - pvsync
     - pvsync2
-    - posixaio
-    - page_fault
-    - filecreate
-    - filestat
-    - filedelete
+    - splice
+    - sync
+    - vsync
 
 fio:
 
@@ -44,18 +44,18 @@ fio-setup-basic:
     - 4k
     - 4M
   ioengine:
-    - sync
-    - io_uring
-    - splice
     - falloc
+    - filecreate
+    - filedelete
+    - filestat
     - ftruncate
-    - vsync
+    - io_uring
+    - posixaio
     - pvsync
     - pvsync2
-    - posixaio
-    - filecreate
-    - filestat
-    - filedelete
+    - splice
+    - sync
+    - vsync
 
 ---
 runtime: 20m
@@ -67,8 +67,8 @@ fio-setup-basic:
     - 4k
     - 4M
   ioengine:
-    - sync
     - io_uring
+    - sync
 
 ---
 fs: ext4
@@ -77,16 +77,16 @@ fio-setup-basic:
   rw: write
   bs: 4k
   ioengine:
-    - libaio
     - io_uring
+    - libaio
 
 ---
 fio-setup-basic:
   rw: write
   bs: 4k
   ioengine:
-    - sync
     - io_uring
+    - sync
   direct: direct
 ---
 fs2: nfsv4
@@ -95,8 +95,8 @@ fio-setup-basic:
   rw: write
   bs: 4k
   ioengine:
-    - sync
     - io_uring
+    - sync
 
 ---
 fio-setup-basic:

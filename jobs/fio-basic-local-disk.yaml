@@ -26,8 +26,8 @@ fio-setup-basic:
     - 4k
     - 1M
   ioengine:
-    - libaio
     - io_uring
+    - libaio
   iodepth:
     - 1
     - 32

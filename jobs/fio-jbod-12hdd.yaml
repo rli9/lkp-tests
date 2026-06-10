@@ -12,9 +12,9 @@ fio:
     - randwrite
     - randrw
   ioengine:
-    - sync
-    - mmap
     - io_uring
+    - mmap
+    - sync
   bs:
     - 4k
     - 64k

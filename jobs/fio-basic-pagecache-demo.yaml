@@ -42,8 +42,8 @@ fio-setup-basic:
     - randread
     - randwrite
   ioengine:
-    - psync
     - io_uring
+    - psync
   test_size: 64G
   nr_files: 1
   filesize: 16G
