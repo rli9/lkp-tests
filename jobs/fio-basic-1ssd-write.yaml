@@ -29,6 +29,7 @@ fio-setup-basic:
     - pvsync
     - pvsync2
     - posixaio
+    - page_fault
     - filecreate
     - filestat
     - filedelete
