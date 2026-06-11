@@ -18,7 +18,7 @@ fio-setup-basic:
     - io_uring
     # - io_uring_cmd
     - sync
-  test_size: 256g
+  test_size: 176G
 
 fio:
 
@@ -32,7 +32,7 @@ fio-setup-basic:
     - io_uring
     # - io_uring_cmd
     - sync
-  test_size: 256g
+  test_size: 176G
 
 ---
 fs: xfs
@@ -46,7 +46,7 @@ fio-setup-basic:
     - io_uring
     # - io_uring_cmd
     - sync
-  test_size: 256g
+  test_size: 176G
 
 ---
 fs: btrfs
@@ -60,7 +60,7 @@ fio-setup-basic:
     - io_uring
     # - io_uring_cmd
     - sync
-  test_size: 256g
+  test_size: 176G
 
 ---
 fs: ext4
@@ -74,7 +74,7 @@ fio-setup-basic:
     - io_uring
     # - io_uring_cmd
     - sync
-  test_size: 256g
+  test_size: 176G
 
 ---
 fs: ext4
@@ -88,7 +88,7 @@ fio-setup-basic:
     - io_uring
     # - io_uring_cmd
     - libaio
-  test_size: 256g
+  test_size: 176G
 
 ---
 fs: ext4
@@ -103,4 +103,4 @@ fio-setup-basic:
     - io_uring
     # - io_uring_cmd
     - sync
-  test_size: 256g
+  test_size: 176G
