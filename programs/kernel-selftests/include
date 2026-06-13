@@ -42,6 +42,7 @@ need_kconfig:
 
 % elsif ___.group == "mm"
 - DEBUG_KMEMLEAK: y
+- SAMPLES: y
 - SAMPLE_KMEMLEAK
 - DEVICE_PRIVATE: y
 - GUP_BENCHMARK: y
