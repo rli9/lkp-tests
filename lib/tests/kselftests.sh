@@ -30,7 +30,7 @@ build_selftests()
 
 prepare_kselftests_dir()
 {
-	# lkp qemu needs linux-selftests_dir and linux_headers_dir to reproduce kernel-selftests.
+	# lkp qemu needs linux-selftests_dir and linux_headers_dir to reproduce kselftests.
 	# when reproduce bug reported by kernel test robot, the downloaded linux-selftests file is stored at /usr/src/linux-selftests
 	linux_selftests_dir=(/usr/src/linux-selftests-*)
 	linux_selftests_dir=$(realpath $linux_selftests_dir)
@@ -56,14 +56,14 @@ prepare_kselftests_dir()
 		cp -af $linux_headers_bpf_dir/* $linux_selftests_dir/
 
 		get_kconfig $linux_selftests_dir/.config
-	elif [ -d "/tmp/build-kernel-selftests/linux" ]; then
+	elif [ -d "/tmp/build-kselftests/linux" ]; then
 		# commit bb5ef9c change build directory to /tmp/build-$BM_NAME/xxx
-		linux_selftests_dir="/tmp/build-kernel-selftests/linux"
+		linux_selftests_dir="/tmp/build-kselftests/linux"
 
 		cd $linux_selftests_dir || return
 		build_selftests
 	else
-		linux_selftests_dir="/lkp/benchmarks/kernel-selftests"
+		linux_selftests_dir="/lkp/benchmarks/kselftests"
 	fi
 }
 
@@ -702,7 +702,7 @@ check_test_group_kconfig()
 {
 	local group=$1
 
-	local kernel_config="/lkp/kernel-selftests-kernel-config"
+	local kernel_config="/lkp/kselftests-kernel-config"
 	get_kconfig "$kernel_config" || return
 
 	local group_config

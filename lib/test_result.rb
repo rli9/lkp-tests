@@ -132,11 +132,11 @@ module LKP
         #
         # "xfstests.generic.413.pass": 1,
         #
-        # kernel-selftests.android.run.sh.fail: {
+        # kselftests.android.run.sh.fail: {
         #   0,
         #   1
         # }
-        # "kernel-selftests.kvm.make.fail": [
+        # "kselftests.kvm.make.fail": [
         #   1
         # ]
         values = Array(values)

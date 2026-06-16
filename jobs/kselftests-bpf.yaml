@@ -1,5 +1,5 @@
-suite: kernel-selftests-bpf
-testcase: kernel-selftests-bpf
+suite: kselftests-bpf
+testcase: kselftests-bpf
 category: functional
 
 # NOET: need_memory might be different for different rootfs
@@ -9,7 +9,7 @@ need_memory: 12G
 
 need_cpu: 2
 
-kernel-selftests-bpf:
+kselftests-bpf:
   group:
     - bpf
     - drivers

@@ -15,9 +15,9 @@ hwsim
 idle-inject
 irda-kernel
 kernel-builtin
-kernel-selftests
-kernel-selftests-bpf
-kernel-selftests-rust
+kselftests
+kselftests-bpf
+kselftests-rust
 ktools
 kvm-kernel-boot-test
 kvm-unit-tests

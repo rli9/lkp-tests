@@ -100,7 +100,7 @@ fixup_perf()
 	ln -sf /$real_perf usr/bin/perf
 }
 
-fixup_kernel-selftests()
+fixup_kselftests()
 {
 	# 'apt install traceroute' will create .db binary in PATH
 	# manually create softlink to them

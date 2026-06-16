@@ -1,8 +1,8 @@
-suite: kernel-selftests-bpf
-testcase: kernel-selftests-bpf
+suite: kselftests-bpf
+testcase: kselftests-bpf
 category: functional
 
-kernel-selftests-bpf:
+kselftests-bpf:
   group:
     - net
     - net/af_unix
@@ -19,7 +19,7 @@ kernel-selftests-bpf:
     - net/tcp_ao
 
 ---
-kernel-selftests-bpf:
+kselftests-bpf:
   group:
     - net/netfilter
   test:
@@ -57,7 +57,7 @@ kernel-selftests-bpf:
     - xt_string.sh
 
 ---
-kernel-selftests-bpf:
+kselftests-bpf:
   group:
     - net
   test:
@@ -78,7 +78,7 @@ kernel-selftests-bpf:
     - use_cases
 
 ---
-kernel-selftests-bpf:
+kselftests-bpf:
   group:
     - net
   test:

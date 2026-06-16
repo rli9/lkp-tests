@@ -1,0 +1,9 @@
+suite: kselftests-rust
+testcase: kselftests-rust
+category: functional
+
+need_cpu: 2
+
+kselftests-rust:
+  group:
+    - rust

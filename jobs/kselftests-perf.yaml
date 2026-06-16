@@ -1,8 +1,8 @@
-suite: kernel-selftests
-testcase: kernel-selftests
+suite: kselftests
+testcase: kselftests
 category: benchmark
 
-kernel-selftests:
+kselftests:
   group:
     - mm
   test:
@@ -18,19 +18,19 @@ iterations:
   - 1
   - 3
 
-kernel-selftests:
+kselftests:
   group:
     - mm
   test:
     - vmalloc-stress
 
 ---
-kernel-selftests:
+kselftests:
   group:
     - dma
 
 ---
-kernel-selftests:
+kselftests:
   group:
     - landlock
   test:
@@ -39,7 +39,7 @@ kernel-selftests:
 kernel_cmdline: lsm=landlock
 
 ---
-kernel-selftests:
+kselftests:
   group:
     - filesystems
   test:

@@ -1,5 +1,5 @@
-suite: kernel-selftests
-testcase: kernel-selftests
+suite: kselftests
+testcase: kselftests
 category: functional
 
 need_cpu: 2
@@ -9,7 +9,7 @@ need_cpu: 2
 # on debian rootfs
 need_memory: 2G
 
-kernel-selftests:
+kselftests:
   group:
     - acct
     - alsa
@@ -120,21 +120,21 @@ kernel-selftests:
 sysctl:
   sc_nr_hugepages: 2
 
-kernel-selftests:
+kselftests:
   group:
     - mm
 # memfd_secret default is disable, should add kernel cmdline to enable
 # kernel_cmdline: secretmem.enable=1
 
 ---
-kernel-selftests:
+kselftests:
   group:
     - resctrl
 
 kernel_cmdline: "rdt=cmt,mbmtotal,mbmlocal,l3cat,l3cdp,l2cat,l2cdp,mba,smba,bmec"
 
 ---
-kernel-selftests:
+kselftests:
   group:
     - pstore
 
@@ -151,14 +151,14 @@ oom-killer:
 # systemd automatically creates such mount points. mount_cgroup dosen't work.
 # not all controllers (like memory) become available even after unmounting all v1 cgroup filesystems.
 # To avoid this behavior, boot with the systemd.unified_cgroup_hierarchy=1.
-kernel-selftests:
+kselftests:
   group:
     - cgroup
 
 kernel_cmdline: systemd.unified_cgroup_hierarchy=1
 
 ---
-kernel-selftests:
+kselftests:
   group:
     - landlock
 
@@ -167,14 +167,14 @@ kernel_cmdline: lsm=landlock
 ---
 need_memory: 12G # lkp-icl-2sp5
 
-kernel-selftests:
+kselftests:
   group:
     - kvm
 
 kernel_cmdline: kvm-intel.unrestricted_guest=0
 
 ---
-kernel-selftests:
+kselftests:
   group:
     - cgroup
   test:

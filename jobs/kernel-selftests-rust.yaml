@@ -1,9 +1,0 @@
-suite: kernel-selftests-rust
-testcase: kernel-selftests-rust
-category: functional
-
-need_cpu: 2
-
-kernel-selftests-rust:
-  group:
-    - rust

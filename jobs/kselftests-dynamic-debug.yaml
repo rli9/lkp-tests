@@ -1,0 +1,7 @@
+suite: kselftests
+testcase: kselftests
+category: functional
+
+kselftests:
+  group:
+    - dynamic_debug

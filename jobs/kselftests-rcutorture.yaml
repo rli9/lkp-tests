@@ -1,9 +1,9 @@
-suite: kernel-selftests
-testcase: kernel-selftests
+suite: kselftests
+testcase: kselftests
 category: functional
 
 need_memory: 3G
-kernel-selftests:
+kselftests:
   group:
     - rcutorture
 

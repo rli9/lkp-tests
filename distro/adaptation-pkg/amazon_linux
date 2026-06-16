@@ -34,7 +34,7 @@ iozone::
 iperf::
 kbuild::
 kernbench::
-kernel-selftests::
+kselftests::
 ku-latency::
 kvm-kernel-boot-test::
 kvm-unit-tests-qemu::

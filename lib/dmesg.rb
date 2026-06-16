@@ -533,7 +533,7 @@ end
 # when lkdtm is complete run, ignore dmesg
 def ignore_lkdtm_dmesg?(result_root)
   last_state = "#{result_root}/last_state"
-  return false unless last_state =~ /\/kernel-selftests\/lkdtm/
+  return false unless last_state =~ /\/kselftests\/lkdtm/
   return true unless File.exist?(last_state)
 
   File.foreach(last_state).grep(/^is_incomplete_run: 1/).empty?

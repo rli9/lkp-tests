@@ -9,16 +9,16 @@
 ## code paths in the kernel.
 ## See: https://www.kernel.org/doc/Documentation/kselftest.txt
 
-. $LKP_SRC/lib/tests/kernel-selftests.sh
+. $LKP_SRC/lib/tests/kselftests.sh
 
 shopt -s nullglob
 
 prepare_tests
 run_tests $selftest_mfs
 
-[ "$(file -i $TMP_RESULT_ROOT/kernel-selftests | awk '{print $2}')" = "application/octet-stream;" ] && {
-	mv $TMP_RESULT_ROOT/kernel-selftests $TMP_RESULT_ROOT/kernel-selftests.orig
-	cat $TMP_RESULT_ROOT/kernel-selftests.orig | tr -d '\0' > $TMP_RESULT_ROOT/kernel-selftests
+[ "$(file -i $TMP_RESULT_ROOT/kselftests | awk '{print $2}')" = "application/octet-stream;" ] && {
+	mv $TMP_RESULT_ROOT/kselftests $TMP_RESULT_ROOT/kselftests.orig
+	cat $TMP_RESULT_ROOT/kselftests.orig | tr -d '\0' > $TMP_RESULT_ROOT/kselftests
 }
 
 exit 0

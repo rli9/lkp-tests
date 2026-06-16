@@ -1,4 +1,4 @@
-pkgname=kernel-selftests
+pkgname=kselftests
 pkgver=git
 pkgrel=1
 arch=('i686' 'x86_64' 'aarch64')

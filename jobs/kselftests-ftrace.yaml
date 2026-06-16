@@ -1,0 +1,7 @@
+suite: kselftests-bpf
+testcase: kselftests-bpf
+category: functional
+
+kselftests-bpf:
+  group:
+    - ftrace

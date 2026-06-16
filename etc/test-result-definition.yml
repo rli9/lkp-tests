@@ -6,7 +6,7 @@ pass:
 
 fail:
   '*': fail error timeout job_oom job_soft_timeout killed_by
-  kernel-selftests: xfailed xfail
+  kselftests: xfailed xfail
   dmesg: .+
   kmsg: .+
   last_state: .+
@@ -20,7 +20,7 @@ skip:
   '*': skip block not_installed job_skip
   dpdk-dts: skiped
   nvml: test_skip
-  kernel-selftests: test_skip unresolved unsupported
+  kselftests: test_skip unresolved unsupported
   perf-event-tests: perf_event_tests old_behavior use_caution unexplained new_behavior known_kernel_bug
   avocado: cancel
   xfstests: expunged

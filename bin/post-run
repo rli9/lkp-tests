@@ -233,7 +233,7 @@ upload_qemu_results()
 	upload_files -t guest_result "$guest_rt"
 
 	# backup host log to host_rt
-	# result_service: 9p/virtfs_mount, RESULT_MNT: //result, RESULT_ROOT: //result/kvm:kernel-selftests/x86/lkp-skl-d01/debian-12-x86_64-20240206.cgz/x86_64-rhel-8.3-kselftests/gcc-13/0c3836482481200ead7b416ca80c68a29cfdaabd/1, TMP_RESULT_ROOT: /tmp/lkp/result
+	# result_service: 9p/virtfs_mount, RESULT_MNT: //result, RESULT_ROOT: //result/kvm:kselftests/x86/lkp-skl-d01/debian-12-x86_64-20240206.cgz/x86_64-rhel-8.3-kselftests/gcc-13/0c3836482481200ead7b416ca80c68a29cfdaabd/1, TMP_RESULT_ROOT: /tmp/lkp/result
 	mkdir -p /tmp/host_rt
 	cp -arf $TMP_RESULT_ROOT/* /tmp/host_rt
 	[ "$RESULT_ROOT" = "$TMP_RESULT_ROOT" ] || cp -arf $RESULT_ROOT/* /tmp/host_rt

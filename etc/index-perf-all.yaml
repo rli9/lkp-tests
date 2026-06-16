@@ -34,9 +34,9 @@ iozone\.average_KBps: 1
 iperf\..+\.bps: 1
 kbuild\..+_per_iteration: -1
 kernbench\.elapsed_time: -1
-kernel-selftests\..+\.packets_per_sec: 1
-kernel-selftests\..+\.usec_per_loop: -1
-kernel-selftests\.mqueue\.nsec_per_msg: -1
+kselftests\..+\.packets_per_sec: 1
+kselftests\..+\.usec_per_loop: -1
+kselftests\.mqueue\.nsec_per_msg: -1
 linkbench\.requests\/s: 1
 linpack\.GFlops: 1
 lmbench3\..+\.MB\/sec: 1
