@@ -57,10 +57,12 @@ mpstat_json = File.read(mpstat)
 begin
   mpstat_hash = JSON.parse(mpstat_json)
 rescue JSON::ParserError
-  # The mpstat file may meet 2 kinds of uncomplete format:
-  # If mpstat file end with string "},", need to delete "," , then complete json format.
-  # If mpstat file end with "}", need to complete the missing string
-  # "\n\t\t\t\]\n\t\t\}\n\t\]\n\}\}\n".
+  # The mpstat file may meet 3 kinds of incomplete format:
+  # 1. If mpstat file end with string "},", need to delete ",", then complete json format.
+  # 2. If mpstat file end with "}", need to complete the missing string
+  #    "\n\t\t\t]\n\t\t}\n\t]\n}}\n".
+  # 3. If mpstat file is truncated mid-string (e.g. killed during write), find the
+  #    last complete statistics entry (\n\t\t\t\t}) and close the JSON structure.
   begin
     mpstat_update = ENV['RESULT_ROOT'] ? File.join(ENV['RESULT_ROOT'], 'mpstat_update') : "/tmp/mpstat_update-#{ENV.fetch('USER', nil)}"
 
@@ -83,8 +85,20 @@ rescue JSON::ParserError
     FileUtils.rm_f mpstat_update unless ENV['RESULT_ROOT']
     mpstat_hash = JSON.parse(mpstat_json)
   rescue JSON::ParserError => e
-    log_error "Fail to parse #{mpstat}: #{e}"
-    exit
+    # Handle mid-string truncation: find last complete statistics entry and close.
+    pos = mpstat_json.rindex("\n\t\t\t\t}")
+    unless pos
+      log_error "Fail to parse #{mpstat}: #{e}"
+      exit
+    end
+
+    begin
+      repaired = "#{mpstat_json[0, pos + 6]}\n\t\t\t]\n\t\t}\n\t]\n}}\n"
+      mpstat_hash = JSON.parse(repaired)
+    rescue JSON::ParserError
+      log_error "Fail to parse #{mpstat}: #{e}"
+      exit
+    end
   rescue StandardError => e
     log_error "Fail to handle #{mpstat}: #{e}"
     exit
@@ -171,7 +185,7 @@ mpstat_hash['sysstat']['hosts'][0]['statistics'].each do |item|
     elsif k == 'timestamp'
       # Append UTC to timestamp to fix the timezone as no timezone is provided by
       # mpstat, otherwise the parsed result is related to the timezone of local system.
-      time = [data, v, 'UTC'].join(' ').to_time.to_i
+      time = Time.parse([data, v, 'UTC'].join(' ')).to_i
       results['time'] = time
     end
   end

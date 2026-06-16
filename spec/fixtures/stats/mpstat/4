@@ -1,0 +1,26 @@
+{"sysstat": {
+	"hosts": [
+		{
+			"nodename": "test-host",
+			"sysname": "Linux",
+			"release": "6.1.0",
+			"machine": "x86_64",
+			"number-of-cpus": 4,
+			"date": "2026-06-16",
+			"statistics": [
+				{
+					"timestamp": "09:11:18",
+					"cpu-load": [
+						{"cpu": "all", "usr": 10.00, "nice": 0.00, "sys": 5.00, "iowait": 1.00, "irq": 0.25, "soft": 0.25, "steal": 0.00, "guest": 0.00, "gnice": 0.00, "idle": 83.50}
+					]
+				},
+				{
+					"timestamp": "09:11:19",
+					"cpu-load": [
+						{"cpu": "all", "usr": 20.00, "nice": 0.00, "sys": 10.00, "iowait": 0.00, "irq": 0.50, "soft": 0.50, "steal": 0.00, "guest": 0.00, "gnice": 0.00, "idle": 69.00}
+					]
+				}
+			]
+		}
+	]
+}}
