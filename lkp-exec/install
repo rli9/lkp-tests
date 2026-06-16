@@ -14,11 +14,12 @@ fi
 
 script_name=$(basename $0)
 
-[ -n "$HOSTNAME" ] || HOSTNAME=$(hostname)		#?chomp
+[ -n "$HOSTNAME" ] || HOSTNAME=$(hostname) #?chomp
 [ -n "$LKP_SRC" ] || export LKP_SRC=$(dirname "$(dirname "$(readlink -e -v "$0")")")
 TMP="$LKP_SRC/tmp"
 
-usage() {
+usage()
+{
 	echo "Usage: lkp $script_name [options] [<script>/<jobfile>]"
 	echo "options: "
 	echo "-f|--force: force to install testsuites"
@@ -33,36 +34,35 @@ usage() {
 hdd_index=1
 ssd_index=1
 
-while [ $# -gt 0 ]
-do
+while [ $# -gt 0 ]; do
 	case "$1" in
-		--help)
+	--help)
 		usage
 		exit
 		;;
-		--hdd)
+	--hdd)
 		hdd_partitions[$hdd_index]=$2
-		hdd_index=$((hdd_index+1))
+		hdd_index=$((hdd_index + 1))
 		shift
 		;;
-		--ssd)
+	--ssd)
 		ssd_partitions[$ssd_index]=$2
-		ssd_index=$((ssd_index+1))
+		ssd_index=$((ssd_index + 1))
 		shift
 		;;
-		--dry-run)
+	--dry-run)
 		DRY_RUN=0
 		;;
-		--china)
+	--china)
 		CHINA=0
 		;;
-		--force|-f)
+	--force | -f)
 		FORCE_MODE=true
 		;;
-		--skip-base)
+	--skip-base)
 		SKIP_BASE=true
 		;;
-		*)
+	*)
 		break
 		;;
 	esac
@@ -72,8 +72,7 @@ done
 validate_parameters()
 {
 	local ret=0
-	for filename in "$@"
-	do
+	for filename in "$@"; do
 		if [ -x "$filename" ]; then
 			continue
 		elif [ ${filename##*.} = "yaml" ]; then
@@ -95,7 +94,8 @@ validate_parameters()
 	return $ret
 }
 
-make_wakeup() {
+make_wakeup()
+{
 	echo "make -C $LKP_SRC/bin/event"
 	[ -n "$DRY_RUN" ] && return
 
@@ -106,7 +106,8 @@ make_wakeup() {
 
 # todo: make paths configurable and less intrusive to developer's system
 # currently it's hard coded in a number of places, should be changed together
-create_lkp_dirs() {
+create_lkp_dirs()
+{
 	[ -n "$DRY_RUN" ] && return
 
 	mkdir -p $TMP
@@ -114,15 +115,21 @@ create_lkp_dirs() {
 	mkdir -p '/lkp/benchmarks'
 }
 
-bundle_install_china() {
+bundle_install_china()
+{
 	local tmpdir=$(mktemp -d /tmp/lkp-install-china-XXXXXX)
 	trap 'rm -rf "$tmpdir"' EXIT
 	cp $LKP_SRC/Gemfile $tmpdir/Gemfile
 	cp $LKP_SRC/Gemfile.lock $tmpdir/Gemfile.lock
-	(cd $tmpdir || exit; bundle config --local mirror.https://rubygems.org https://gems.ruby-china.com; bundle install)
+	(
+		cd $tmpdir || exit
+		bundle config --local mirror.https://rubygems.org https://gems.ruby-china.com
+		bundle install
+	)
 }
 
-makepkg_install() {
+makepkg_install()
+{
 	local pkg=$1
 	local force_opt=
 
@@ -131,16 +138,17 @@ makepkg_install() {
 	local pkg_dir=$(get_pkg_dir $pkg)
 	if [ -n "$pkg_dir" ]; then
 		(
-			cd "$pkg_dir" && \
-			PACMAN="$LKP_SRC/sbin/pacman-LKP" CARCH=$arch BUILDDIR="$LKP_SRC/tmp-pkg" \
-			"$LKP_SRC/sbin/makepkg" --config "$(lkp_src)/etc/makepkg.conf" -s -i --skippgpcheck "$force_opt"
+			cd "$pkg_dir" &&
+				PACMAN="$LKP_SRC/sbin/pacman-LKP" CARCH=$arch BUILDDIR="$LKP_SRC/tmp-pkg" \
+					"$LKP_SRC/sbin/makepkg" --config "$(lkp_src)/etc/makepkg.conf" -s -i --skippgpcheck "$force_opt"
 		)
 	else
 		return 0
 	fi
 }
 
-verify_install() {
+verify_install()
+{
 	local pkg=$1
 	local pkg_lkp=$pkg-lkp
 
@@ -159,16 +167,20 @@ verify_install() {
 	}
 
 	case $DISTRO in
-		debian|ubuntu)
-			[[ ! $(dpkg -V "$pkg" 2>&1) ]] || [[ ! $(dpkg -V "${pkg_lkp}" 2>&1) ]];;
-		centos|fedora|amazon_linux)
-			[[ ! $(rpm -V "$pkg" 2>&1) ]] || [[ ! $(rpm -V "${pkg_lkp}" 2>&1) ]];;
-		*)
-			return 1;;
+	debian | ubuntu)
+		[[ ! $(dpkg -V "$pkg" 2>&1) ]] || [[ ! $(dpkg -V "${pkg_lkp}" 2>&1) ]]
+		;;
+	centos | fedora | amazon_linux)
+		[[ ! $(rpm -V "$pkg" 2>&1) ]] || [[ ! $(rpm -V "${pkg_lkp}" 2>&1) ]]
+		;;
+	*)
+		return 1
+		;;
 	esac
 }
 
-makepkg_install_packages() {
+makepkg_install_packages()
+{
 	local script=$1
 	local distro=$2
 
@@ -193,7 +205,8 @@ makepkg_install_packages() {
 	return 0
 }
 
-makepkg_install_benchmark() {
+makepkg_install_benchmark()
+{
 	local pkg=$1
 	local distro=$2
 
@@ -205,7 +218,8 @@ makepkg_install_benchmark() {
 	return 1
 }
 
-install_packages() {
+install_packages()
+{
 	local script=$1
 	local distro=$2
 
@@ -345,7 +359,7 @@ echo "version=$_system_version"
 
 # Enable source repositories for CentOS and Rocky Linux
 if [ "$distro" = "centos" ] || [ "$distro" = "rocky" ]; then
-    enable_source_repository
+	enable_source_repository
 fi
 
 DISTRO=$distro
@@ -362,8 +376,7 @@ validate_parameters "$@" || exit 1
 
 [ -n "$SKIP_BASE" ] || install_base_support
 
-for filename in "$@"
-do
+for filename in "$@"; do
 	scripts=
 	if [ -x "$filename" ]; then
 		scripts=$(basename $filename)
@@ -371,8 +384,7 @@ do
 		parse_yaml $filename
 	fi
 
-	for script in $scripts
-	do
+	for script in $scripts; do
 		pkg_dir=$(get_pkg_dir $script)
 		[ -z "$makepkg_once" ] && [ -n "$pkg_dir" ] && {
 			install_packages "makepkg" $distro

@@ -8,40 +8,40 @@ set -e
 
 while getopts "i:t:-:" opt; do
 	case $opt in
-		i)
-			opt_image="$OPTARG"
+	i)
+		opt_image="$OPTARG"
+		;;
+	t)
+		opt_container="$OPTARG"
+		;;
+	-)
+		case "${OPTARG}" in
+		container)
+			opt_container="${!OPTIND}"
+			OPTIND=$((OPTIND + 1))
 			;;
-		t)
-			opt_container="$OPTARG"
+		image)
+			opt_image="${!OPTIND}"
+			OPTIND=$((OPTIND + 1))
 			;;
-		-)
-			case "${OPTARG}" in
-				container)
-					opt_container="${!OPTIND}"
-					OPTIND=$((OPTIND + 1))
-					;;
-				image)
-					opt_image="${!OPTIND}"
-					OPTIND=$((OPTIND + 1))
-					;;
-				hostname)
-					opt_hostname="${!OPTIND}"
-					OPTIND=$((OPTIND + 1))
-					;;
-				proxy)
-					opt_proxy="${!OPTIND}"
-					OPTIND=$((OPTIND + 1))
-					;;
-				*)
-					echo "Unknown option --${OPTARG}"
-					exit 1
-					;;
-			esac
+		hostname)
+			opt_hostname="${!OPTIND}"
+			OPTIND=$((OPTIND + 1))
+			;;
+		proxy)
+			opt_proxy="${!OPTIND}"
+			OPTIND=$((OPTIND + 1))
 			;;
 		*)
-			echo "Unknown option -$opt"
+			echo "Unknown option --${OPTARG}"
 			exit 1
 			;;
+		esac
+		;;
+	*)
+		echo "Unknown option -$opt"
+		exit 1
+		;;
 	esac
 done
 

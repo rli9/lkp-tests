@@ -21,25 +21,25 @@ mount_overlayfs()
 	mkdir $overlay_mnt/workdir
 
 	mount -t overlay overlay $rootmnt -o rw,relatime,lowerdir=$rootmnt,upperdir=$overlay_mnt/upperdir,workdir=$overlay_mnt/workdir ||
-	umount $overlay_mnt
+		umount $overlay_mnt
 
 	return
 
-	cat >> /conf/param.conf <<EOF
+	cat >>/conf/param.conf <<EOF
 export rootmnt=$overlay_mnt
 EOF
-export rootmnt=$overlay_mnt
+	export rootmnt=$overlay_mnt
 }
 
 copy_dir()
 {
 	local dir=$1
 
-	mkdir -p		$rootmnt/$dir
-	date >			$rootmnt/$dir/debug-premount
-	mount -t tmpfs none	$rootmnt/$dir
-	date >			$rootmnt/$dir/debug-postmount
-	cp -a $dir/*		$rootmnt/$dir
+	mkdir -p $rootmnt/$dir
+	date >$rootmnt/$dir/debug-premount
+	mount -t tmpfs none $rootmnt/$dir
+	date >$rootmnt/$dir/debug-postmount
+	cp -a $dir/* $rootmnt/$dir
 }
 
 mount_overlayfs

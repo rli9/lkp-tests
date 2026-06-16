@@ -4,8 +4,7 @@
 # clear the initrds exported by last job
 unset_last_initrd_vars()
 {
-	for last_initrd in $(env | grep "initrd=" | awk -F'=' '{print $1}')
-	do
+	for last_initrd in $(env | grep "initrd=" | awk -F'=' '{print $1}'); do
 		unset $last_initrd
 	done
 }
@@ -14,23 +13,22 @@ read_kernel_cmdline_vars_from_append()
 {
 	unset_last_initrd_vars
 
-	for i in $1
-	do
+	for i in $1; do
 		# shellcheck disable=SC2163
 		{
-		[ "$i" != "${i#job=}" ]			&& export "$i"
-		[ "$i" != "${i#RESULT_ROOT=}" ]		&& export "$i"
-		[ "$i" != "${i#initrd=}" ]		&& export "$i"
-		[ "$i" != "${i#bm_initrd=}" ]		&& export "$i"
-		[ "$i" != "${i#job_initrd=}" ]		&& export "$i"
-		[ "$i" != "${i#lkp_initrd=}" ]		&& export "$i"
-		[ "$i" != "${i#modules_initrd=}" ]	&& export "$i"
-		[ "$i" != "${i#testing_nvdimm_modules_initrd=}" ]      && export "$i"
-		[ "$i" != "${i#tbox_initrd=}" ]		&& export "$i"
-		[ "$i" != "${i#linux_headers_initrd=}" ]	&& export "$i"
-		[ "$i" != "${i#linux_selftests_initrd=}" ]	&& export "$i"
-		[ "$i" != "${i#linux_perf_initrd=}" ]	&& export "$i"
-		[ "$i" != "${i#ucode_initrd=}" ]   && export "$i"
+			[ "$i" != "${i#job=}" ] && export "$i"
+			[ "$i" != "${i#RESULT_ROOT=}" ] && export "$i"
+			[ "$i" != "${i#initrd=}" ] && export "$i"
+			[ "$i" != "${i#bm_initrd=}" ] && export "$i"
+			[ "$i" != "${i#job_initrd=}" ] && export "$i"
+			[ "$i" != "${i#lkp_initrd=}" ] && export "$i"
+			[ "$i" != "${i#modules_initrd=}" ] && export "$i"
+			[ "$i" != "${i#testing_nvdimm_modules_initrd=}" ] && export "$i"
+			[ "$i" != "${i#tbox_initrd=}" ] && export "$i"
+			[ "$i" != "${i#linux_headers_initrd=}" ] && export "$i"
+			[ "$i" != "${i#linux_selftests_initrd=}" ] && export "$i"
+			[ "$i" != "${i#linux_perf_initrd=}" ] && export "$i"
+			[ "$i" != "${i#ucode_initrd=}" ] && export "$i"
 		}
 	done
 }
@@ -117,8 +115,7 @@ download_initrd()
 
 	use_local_modules_initrds
 
-	for _initrd in $(echo $initrd $tbox_initrd $job_initrd $lkp_initrd $bm_initrd $keep_initrds $modules_initrd $testing_nvdimm_modules_initrd $linux_headers_initrd $linux_selftests_initrd $linux_perf_initrd $ucode_initrd | tr , ' ')
-	do
+	for _initrd in $(echo $initrd $tbox_initrd $job_initrd $lkp_initrd $bm_initrd $keep_initrds $modules_initrd $testing_nvdimm_modules_initrd $linux_headers_initrd $linux_selftests_initrd $linux_perf_initrd $ucode_initrd | tr , ' '); do
 		local file
 		_download_initrd $_initrd || return
 
@@ -134,7 +131,7 @@ download_initrd()
 		concatenate_initrd="$CACHE_DIR/initrd-concatenated"
 		initrd_option="--initrd=$concatenate_initrd"
 
-		cat $initrds > $concatenate_initrd
+		cat $initrds >$concatenate_initrd
 	}
 
 	return 0
@@ -210,13 +207,13 @@ get_acpi_rsdp_from_dmesg()
 echo_info()
 {
 	echo "$@"
-	echo "$@" > /dev/ttyS0 &
+	echo "$@" >/dev/ttyS0 &
 }
 
 kexec_to_next_job()
 {
 	local kernel append acpi_rsdp download_errno
-	kernel=$(awk  '/^KERNEL / { print $2; exit }' $NEXT_JOB)
+	kernel=$(awk '/^KERNEL / { print $2; exit }' $NEXT_JOB)
 	append=$(grep -m1 '^APPEND ' $NEXT_JOB | sed 's/^APPEND //')
 	rm -f /tmp/initrd-* /tmp/modules.cgz
 
@@ -285,7 +282,7 @@ kexec_to_next_job()
 	echo --append="${append}"
 	sleep 1
 
-	dmesg --human --decode --color=always | gzip > /tmp/pre-dmesg.gz
+	dmesg --human --decode --color=always | gzip >/tmp/pre-dmesg.gz
 	if [ -d "/$LKP_SERVER/$RESULT_ROOT/" ]; then
 		mv /tmp/pre-dmesg.gz "/$LKP_SERVER/$RESULT_ROOT/pre-dmesg.gz"
 		chown lkp.lkp "/$LKP_SERVER/$RESULT_ROOT/pre-dmesg.gz" && sync
@@ -309,7 +306,7 @@ kexec_to_next_job()
 		# expecting the system to run "kexec -e" in some rc6.d/* script
 		echo_info "LKP: rebooting by exec"
 		kexec -e 2>/dev/null
-		sleep 100 || exit	# exit if reboot kills sleep as expected
+		sleep 100 || exit # exit if reboot kills sleep as expected
 	fi
 
 	# run "kexec -e" manually. This is not a clean reboot and may lose data,
@@ -326,6 +323,6 @@ kexec_to_next_job()
 	echo_info "LKP: rebooting after kexec"
 	reboot 2>/dev/null
 	sleep 244 || exit
-	echo s > /proc/sysrq-trigger
-	echo b > /proc/sysrq-trigger
+	echo s >/proc/sysrq-trigger
+	echo b >/proc/sysrq-trigger
 }

@@ -29,15 +29,14 @@ wait_timeout()
 
 setup_wait()
 {
-	echo $$ >> $TMP/.pid-wait-bg-procs
-	echo ${0##*/} >> $TMP/.name-wait-bg-procs
+	echo $$ >>$TMP/.pid-wait-bg-procs
+	echo ${0##*/} >>$TMP/.name-wait-bg-procs
 }
 
 explain_kill()
 {
 	local i
-	for i
-	do
+	for i; do
 		echo -n "kill $i "
 		cat /proc/$i/cmdline 2>/dev/null | tr '\0' ' '
 		echo
@@ -48,7 +47,7 @@ kill_one()
 {
 	explain_kill "$@"
 
-	kill    "$@" 2>/dev/null
+	kill "$@" 2>/dev/null
 	wait_post_test --timeout 3 && return
 	kill -9 "$@" 2>/dev/null
 }
@@ -92,9 +91,9 @@ kill_tests()
 check_oom()
 {
 	dmesg | grep -q -F \
-			-e 'Out of memory' \
-			-e 'invoked oom-killer: gfp_mask=0x' \
-			-e ': page allocation failure: order:' || return
+		-e 'Out of memory' \
+		-e 'invoked oom-killer: gfp_mask=0x' \
+		-e ': page allocation failure: order:' || return
 
 	touch $TMP/OOM
 }

@@ -21,7 +21,7 @@ export_top_env()
 
 run_job()
 {
-	echo $$ > $TMP/run-job.pid
+	echo $$ >$TMP/run-job.pid
 
 	. $LKP_SRC/lib/http.sh
 	. $LKP_SRC/lib/job.sh

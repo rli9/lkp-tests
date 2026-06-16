@@ -8,25 +8,25 @@ set -e
 
 while getopts "t:-:" opt; do
 	case $opt in
-		t)
-			opt_container="$OPTARG"
-			;;
-		-)
-			case "${OPTARG}" in
-				container)
-					opt_container="${!OPTIND}"
-					OPTIND=$((OPTIND + 1))
-					;;
-				*)
-					echo "Unknown option --${OPTARG}"
-					exit 1
-					;;
-			esac
+	t)
+		opt_container="$OPTARG"
+		;;
+	-)
+		case "${OPTARG}" in
+		container)
+			opt_container="${!OPTIND}"
+			OPTIND=$((OPTIND + 1))
 			;;
 		*)
-			echo "Unknown option -$opt"
+			echo "Unknown option --${OPTARG}"
 			exit 1
 			;;
+		esac
+		;;
+	*)
+		echo "Unknown option -$opt"
+		exit 1
+		;;
 	esac
 done
 

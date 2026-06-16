@@ -92,13 +92,12 @@ rw'
 	export job_initrd='/lkp/jobs/scheduled/lkp-icl-2sp8/sockperf-cs-localhost-performance-1472b-600s-debian-12-x86_64-20240206.cgz-ffd294d346d1-20250121-579497-1d7w3db-2.cgz'
 
 	[ -n "$LKP_SRC" ] ||
-	export LKP_SRC=/lkp/${user:-lkp}/src
+		export LKP_SRC=/lkp/${user:-lkp}/src
 }
-
 
 run_job()
 {
-	echo $$ > $TMP/run-job.pid
+	echo $$ >$TMP/run-job.pid
 
 	. $LKP_SRC/lib/http.sh
 	. $LKP_SRC/lib/job.sh
@@ -141,17 +140,14 @@ run_job()
 	run_monitor $LKP_SRC/bin/run-monitor oom-killer
 	run_monitor $LKP_SRC/bin/run-plain-monitor watchdog
 
-	if role server
-	then
+	if role server; then
 		start_daemon $LKP_SRC/bin/run-daemon sockperf-server
 	fi
 
-	if role client
-	then
+	if role client; then
 		run_test msg_size='1472b' $LKP_SRC/bin/run-test sockperf
 	fi
 }
-
 
 extract_stats()
 {
@@ -192,6 +188,5 @@ extract_stats()
 	$LKP_SRC/bin/run-stats stderr
 	$LKP_SRC/bin/run-stats time
 }
-
 
 "$@"

@@ -15,33 +15,33 @@
 mount_dev()
 {
 	[ -d /dev/pts ] &&
-	[ -c /dev/kmsg ] &&
-	[ -c /dev/null ] &&
-	[ -c /dev/ttyS0 ] &&
-	[ -c /dev/console ] && return
+		[ -c /dev/kmsg ] &&
+		[ -c /dev/null ] &&
+		[ -c /dev/ttyS0 ] &&
+		[ -c /dev/console ] && return
 
 	mkdir -p /dev &&
-	mount -t devtmpfs -o mode=0755 udev /dev &&
-	mkdir -p /dev/pts &&
-	mount -t devpts -o noexec,nosuid,gid=5,mode=0620 devpts /dev/pts && return
+		mount -t devtmpfs -o mode=0755 udev /dev &&
+		mkdir -p /dev/pts &&
+		mount -t devpts -o noexec,nosuid,gid=5,mode=0620 devpts /dev/pts && return
 
 	has_cmd mknod || return
 
 	echo "W: devtmpfs not available, falling back to tmpfs for /dev"
 	mount -t tmpfs -o mode=0755 udev /dev
 
-	[ -e /dev/console ]	|| mknod -m 600 /dev/console c 5 1
-	[ -e /dev/kmsg ]	|| mknod -m 644 /dev/kmsg c 1 11
-	[ -e /dev/null ]	|| mknod -m 666 /dev/null c 1 3
+	[ -e /dev/console ] || mknod -m 600 /dev/console c 5 1
+	[ -e /dev/kmsg ] || mknod -m 644 /dev/kmsg c 1 11
+	[ -e /dev/null ] || mknod -m 666 /dev/null c 1 3
 }
 
 mount_kernel_fs()
 {
 	[ -d /proc/1 ] ||
-	mount -t proc -o noexec,nosuid,nodev proc /proc
+		mount -t proc -o noexec,nosuid,nodev proc /proc
 
 	[ -d /sys/kernel ] ||
-	mount -t sysfs -o noexec,nosuid,nodev sysfs /sys
+		mount -t sysfs -o noexec,nosuid,nodev sysfs /sys
 
 	mount_dev
 }
@@ -72,13 +72,16 @@ warn_no_eth0()
 
 setup_network()
 {
-	network_ok && return || { echo "LKP: waiting for network..."; sleep 2; }
+	network_ok && return || {
+		echo "LKP: waiting for network..."
+		sleep 2
+	}
 	network_ok && return || sleep 5
 	network_ok && return || sleep 10
 	network_ok && return
 
 	is_virt &&
-	[ ! -e /usr/share/initramfs-tools/scripts/functions ] && {
+		[ ! -e /usr/share/initramfs-tools/scripts/functions ] && {
 		export NO_NETWORK=1
 		echo "export NO_NETWORK=1 due to no initramfs-tools"
 		return
@@ -90,7 +93,7 @@ setup_network()
 		warn_no_eth0
 
 		echo \
-		ls /sys/class/net
+			ls /sys/class/net
 		ls /sys/class/net
 
 		# VMs do many randconfig boot tests which can write the
@@ -121,7 +124,7 @@ setup_network()
 		# and be detected as a dmesg error. Add some prefix/sufix
 		# to slightly distinguish it from kernel DHCP failure message.
 		echo "!!! $err_msg !!!" >&2
-		echo "!!! $err_msg !!!" > /dev/ttyS0
+		echo "!!! $err_msg !!!" >/dev/ttyS0
 	}
 
 	if is_virt; then
@@ -153,8 +156,8 @@ add_lkp_user()
 		# adduser: warning: can't lock '/etc/passwd': Permission denied
 		adduser -D -u 1090 lkp 2>/dev/null
 	else
-		echo 'lkp:x:1090:1090::/home/lkp:/bin/sh' >> /etc/passwd
-		echo 'lkp:x:1090:' >> /etc/group
+		echo 'lkp:x:1090:1090::/home/lkp:/bin/sh' >>/etc/passwd
+		echo 'lkp:x:1090:' >>/etc/group
 	fi
 }
 
@@ -172,7 +175,7 @@ run_ntpdate()
 
 	[ "$hour" != "$(date +%H)" ] && [ -x '/etc/init.d/hwclock.sh' ] && {
 		# update hardware clock, to carry the adjusted time across reboots
-		/etc/init.d/hwclock.sh restart 2> /dev/null
+		/etc/init.d/hwclock.sh restart 2>/dev/null
 	}
 }
 
@@ -180,13 +183,13 @@ setup_hostname()
 {
 	export HOSTNAME=${testbox:-localhost}
 
-	echo $HOSTNAME > /tmp/hostname
+	echo $HOSTNAME >/tmp/hostname
 	ln -fs /tmp/hostname /etc/hostname
 
 	if has_cmd hostname; then
 		hostname $HOSTNAME
 	else
-		echo $HOSTNAME > /proc/sys/kernel/hostname
+		echo $HOSTNAME >/proc/sys/kernel/hostname
 	fi
 }
 
@@ -202,8 +205,8 @@ setup_hosts()
 	else
 		cp /etc/hosts $tmpfs_hosts
 	fi
-	echo "127.0.0.1 $HOSTNAME.sh.intel.com  $HOSTNAME" >> $tmpfs_hosts
-	echo "::1 $HOSTNAME.sh.intel.com  $HOSTNAME" >> $tmpfs_hosts
+	echo "127.0.0.1 $HOSTNAME.sh.intel.com  $HOSTNAME" >>$tmpfs_hosts
+	echo "::1 $HOSTNAME.sh.intel.com  $HOSTNAME" >>$tmpfs_hosts
 	ln -fs $tmpfs_hosts /etc/hosts
 }
 
@@ -220,15 +223,14 @@ echo_to_tty()
 {
 	echo "LKP: stdout: $$: $*"
 
-	for ttys in ttyS0 ttyS1 ttyS2 ttyS3
-	do
-		echo "LKP: $ttys: $$: $*" > /dev/$ttys 2>/dev/null
+	for ttys in ttyS0 ttyS1 ttyS2 ttyS3; do
+		echo "LKP: $ttys: $$: $*" >/dev/$ttys 2>/dev/null
 	done
 }
 
 announce_bootup()
 {
-	local version="$(cat /proc/sys/kernel/version 2>/dev/null| cut -f1 -d' ' | cut -c2-)"
+	local version="$(cat /proc/sys/kernel/version 2>/dev/null | cut -f1 -d' ' | cut -c2-)"
 	local release="$(cat /proc/sys/kernel/osrelease 2>/dev/null)"
 	local mac="$(show_mac_addr)"
 
@@ -243,10 +245,10 @@ redirect_stdout_stderr_directly()
 {
 	echo "redirect stdout and stderr directly"
 
-	tail -f /tmp/stdout > /dev/kmsg 2>/dev/null &
-	echo $! >> /tmp/pid-tail-global
-	tail -f /tmp/stderr > /dev/kmsg 2>/dev/null &
-	echo $! >> /tmp/pid-tail-global
+	tail -f /tmp/stdout >/dev/kmsg 2>/dev/null &
+	echo $! >>/tmp/pid-tail-global
+	tail -f /tmp/stderr >/dev/kmsg 2>/dev/null &
+	echo $! >>/tmp/pid-tail-global
 }
 
 redirect_stdout_stderr()
@@ -261,13 +263,13 @@ redirect_stdout_stderr()
 		return 1
 	}
 
-	exec  > /tmp/stdout
-	exec 2> /tmp/stderr
+	exec >/tmp/stdout
+	exec 2>/tmp/stderr
 
 	[ "$no_redirect_to_kmsg" = "1" ] && return
 
 	local sed_u=
-	sed -h 2>&1|grep -q -- -u && sed_u='-u'
+	sed -h 2>&1 | grep -q -- -u && sed_u='-u'
 
 	local stdbuf='stdbuf -o0 -e0'
 	has_cmd stdbuf || stdbuf=
@@ -278,10 +280,10 @@ redirect_stdout_stderr()
 	elif [ -n "$stdbuf$sed_u" ]; then
 		# limit 300 characters is to fix the following errro info:
 		# sed: couldn't write N items to stdout: Invalid argument
-		tail -f /tmp/stdout | $stdbuf sed $sed_u -r 's/^(.{0,900}).*$/<5>\1/' > /dev/kmsg &
-		echo $! >> /tmp/pid-tail-global
-		tail -f /tmp/stderr | $stdbuf sed $sed_u -r 's/^(.{0,900}).*$/<3>\1/' > /dev/kmsg &
-		echo $! >> /tmp/pid-tail-global
+		tail -f /tmp/stdout | $stdbuf sed $sed_u -r 's/^(.{0,900}).*$/<5>\1/' >/dev/kmsg &
+		echo $! >>/tmp/pid-tail-global
+		tail -f /tmp/stderr | $stdbuf sed $sed_u -r 's/^(.{0,900}).*$/<3>\1/' >/dev/kmsg &
+		echo $! >>/tmp/pid-tail-global
 	else
 		redirect_stdout_stderr_directly
 	fi
@@ -297,8 +299,7 @@ install_initrd()
 	mkdir $keep_initrd_dir
 
 	local initrd
-	for initrd in $(echo $keep_initrds | tr , ' ')
-	do
+	for initrd in $(echo $keep_initrds | tr , ' '); do
 		local file
 		_download_initrd $initrd || return
 
@@ -309,8 +310,7 @@ install_initrd()
 	mkdir -vp /lkp/benchmarks
 
 	local dir
-	for dir in "$keep_initrd_dir"/lkp/benchmarks/*/
-	do
+	for dir in "$keep_initrd_dir"/lkp/benchmarks/*/; do
 		[ -d "$dir" ] || continue
 
 		dir="${dir%/}"
@@ -350,22 +350,20 @@ install_deb()
 	# round two, install all debs one by one accroding to keep-deb which is in sequence
 	# sort keep-deb.${benchmark} by time, handle the oldest keep-deb.${benchmark} first
 	# shellcheck disable=SC2045
-	for keepfile in $(ls -rt /opt/deb/keep-deb*)
-	do
+	for keepfile in $(ls -rt /opt/deb/keep-deb*); do
 		echo "handle $keepfile..."
 		# due to gwak pkg including pre-dependency definition,
 		# gawk dependent libreadline7 install first.
 		# so we generated keep-deb file which contains installation sequence,
 		# and line by line installation.
-		while read -r filename
-		do
+		while read -r filename; do
 			echo "install debs round two: dpkg -i --force-confdef --force-depends /opt/deb/$filename"
 			dpkg -i --force-confdef --force-depends /opt/deb/$filename 2>/tmp/dpkg_error || {
 				grep -v "$filter_info" /tmp/dpkg_error
 				echo "error: dpkg -i /opt/deb/$filename failed." 1>&2
 				return 1
 			}
-		done < "$keepfile"
+		done <"$keepfile"
 	done
 }
 
@@ -399,20 +397,19 @@ fixup_packages()
 	install_rpms
 
 	has_cmd ldconfig &&
-	ldconfig
+		ldconfig
 
 	[ -x /usr/bin/gcc ] && [ ! -e /usr/bin/cc ] &&
-	ln -sf gcc /usr/bin/cc
+		ln -sf gcc /usr/bin/cc
 
 	# hpcc dependent library
 	[ -e /usr/lib/atlas-base/atlas/libblas.so.3 ] && [ ! -e /usr/lib/libblas.so.3 ] &&
-	ln -sf /usr/lib/atlas-base/atlas/libblas.so.3 /usr/lib/libblas.so.3
+		ln -sf /usr/lib/atlas-base/atlas/libblas.so.3 /usr/lib/libblas.so.3
 
 	local aclocal_bin
-	for aclocal_bin in /usr/bin/aclocal-*
-	do
+	for aclocal_bin in /usr/bin/aclocal-*; do
 		[ -x "$aclocal_bin" ] && [ ! -e /usr/bin/aclocal ] &&
-		ln -sf $aclocal_bin /usr/bin/aclocal
+			ln -sf $aclocal_bin /usr/bin/aclocal
 	done
 
 	# /lib64/ld-linux-x86-64.so.2 program interpreter
@@ -435,8 +432,7 @@ cleanup_pkg_cache()
 	[ -d "$cleanup_stamp" ] && return
 	mkdir "$cleanup_stamp" -p
 
-	for delday in $(seq 14 -1 0)
-	do
+	for delday in $(seq 14 -1 0); do
 		# df /dev/sda1
 		# Filesystem     1K-blocks      Used Available Use% Mounted on
 		# /dev/sda1      960380648 316688212 594837976  35% /opt/rootfs
@@ -451,8 +447,7 @@ cleanup_pkg_cache()
 wait_load_disk()
 {
 	# set the max time of wait is 150s
-	for i in $(seq 30)
-	do
+	for i in $(seq 30); do
 		# eg: /dev/disk/by-id/ata-WDC_WD1002FAEX-00Z3A0_WD-WCATRC577623-part2
 		ls $rootfs_partition >/dev/null 2>&1 && return
 		# eg: LABEL=LKP-ROOTFS
@@ -569,7 +564,10 @@ download_job()
 	local job_cgz=${job%.yaml}.cgz
 	# TODO: escape is necessary. We might also need download some extra cgz
 	http_get_file "$job_cgz" /tmp/next-job.cgz
-	(cd /; gzip -dc /tmp/next-job.cgz | cpio -id)
+	(
+		cd /
+		gzip -dc /tmp/next-job.cgz | cpio -id
+	)
 }
 
 __reboot_bad_next_job()
@@ -589,7 +587,7 @@ next_job()
 		local secs=300
 		while true; do
 			sleep $secs || exit # killed by reboot
-			secs=$(( secs + 300 ))
+			secs=$((secs + 300))
 			__next_job && break
 		done
 	}
@@ -604,8 +602,7 @@ rsync_rootfs()
 	[ -z "$LKP_SERVER" ] && return
 
 	local append="$(grep -m1 '^APPEND ' $NEXT_JOB | sed 's/^APPEND //')"
-	for i in $append
-	do
+	for i in $append; do
 		[ "$i" != "${i#remote_rootfs=}" ] && export "${i?}"
 		[ "$i" != "${i#root=}" ] && export "${i?}"
 	done

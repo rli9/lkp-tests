@@ -38,8 +38,7 @@ distro_install_depends()
 	local ocfs2_tools_name=$(echo "$packages" | grep 'ocfs2-tools')
 	[[ -n "$ocfs2_tools_name" ]] && install_ocfs2_tools "$ocfs2_tools_name"
 
-	for pkg in $packages
-	do
+	for pkg in $packages; do
 		install $pkg
 	done
 }
@@ -75,7 +74,7 @@ pack()
 	chown .lkp $pack_to/${BM_NAME}_$date.cgz $pack_to/${BM_NAME}.cgz || return
 	echo package installed to $pack_to/${BM_NAME}.cgz
 
-	ls $target_dir/*.rpm > $pack_to/.${BM_NAME}.packages
+	ls $target_dir/*.rpm >$pack_to/.${BM_NAME}.packages
 
 	rm -rf $target_dir
 }
@@ -89,8 +88,7 @@ pack_benchmark_deps()
 {
 	setup_proxy
 
-	for BM_NAME in $benchmark
-	do
+	for BM_NAME in $benchmark; do
 		cleanup_downloaded_rpms
 
 		check_shared_package $BM_NAME

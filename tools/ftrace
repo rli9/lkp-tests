@@ -33,7 +33,7 @@ ftrace_set()
 {
 	local target=$1
 	shift
-	stdbuf -oL echo "$@" > "$TRACING/$target"
+	stdbuf -oL echo "$@" >"$TRACING/$target"
 }
 
 undo_ftrace_set()
@@ -64,7 +64,7 @@ UNDO_FILE="${TMP:-/tmp}/ftrace.undo"
 
 save_undos()
 {
-	echo "$undos" > "$UNDO_FILE"
+	echo "$undos" >"$UNDO_FILE"
 }
 
 OPTIONS_DIR="$TRACING/options"
@@ -72,7 +72,10 @@ OPTIONS_DIR="$TRACING/options"
 list_options()
 {
 	if [ "$1" = "-v" ]; then
-		(cd "$OPTIONS_DIR" || exit; grep . ./*)
+		(
+			cd "$OPTIONS_DIR" || exit
+			grep . ./*
+		)
 	else
 		ls "$OPTIONS_DIR"
 	fi
@@ -149,17 +152,17 @@ set_function_target()
 {
 	local tracer=$1
 	case "$tracer" in
-		function)
-			function_target=set_ftrace_filter
-			notrace_target=set_ftrace_notrace
-			;;
-		function_graph)
-			function_target=set_graph_function
-			notrace_target=set_graph_notrace
-			;;
-		*)
-			die "Invalid tracer to set function: $1!"
-			;;
+	function)
+		function_target=set_ftrace_filter
+		notrace_target=set_ftrace_notrace
+		;;
+	function_graph)
+		function_target=set_graph_function
+		notrace_target=set_graph_notrace
+		;;
+	*)
+		die "Invalid tracer to set function: $1!"
+		;;
 	esac
 }
 
@@ -285,7 +288,7 @@ set_tracer()
 
 save_tracer()
 {
-	local tracer;
+	local tracer
 
 	tracer=$(ftrace_get current_tracer)
 	undo_ftrace_set current_tracer "$tracer"
@@ -348,50 +351,50 @@ parse_on_args()
 
 	while [ "$more" = y ]; do
 		case $1 in
-			-f | --function)
-				functions="$functions $2"
-				shift 2
-				;;
-			-n | --notrace)
-				notraces="$notraces $2"
-				shift 2
-				;;
-			-t | --tracer)
-				tracer="$2"
-				shift 2
-				;;
-			-g | --function_graph)
-				tracer=function_graph
-				shift
-				;;
-			-e | --events)
-				events="$events $2"
-				shift 2
-				;;
-			-k | --kprobe)
-				kprobes="$kprobes
+		-f | --function)
+			functions="$functions $2"
+			shift 2
+			;;
+		-n | --notrace)
+			notraces="$notraces $2"
+			shift 2
+			;;
+		-t | --tracer)
+			tracer="$2"
+			shift 2
+			;;
+		-g | --function_graph)
+			tracer=function_graph
+			shift
+			;;
+		-e | --events)
+			events="$events $2"
+			shift 2
+			;;
+		-k | --kprobe)
+			kprobes="$kprobes
 $2"
-				shift 2
-				;;
-			-o | --enable-option)
-				enable_options="$enable_options $2"
-				shift 2
-				;;
-			-O | --disable-option)
-				disable_options="$disable_options $2"
-				shift 2
-				;;
-			-s | --enable-stack-trace)
-				enable_options="$enable_options func_stack_trace"
-				shift
-				;;
-			-S | --disable-stack-trace)
-				disable_options="$disable_options func_stack_trace"
-				shift
-				;;
-			*)
-				more=n
-				;;
+			shift 2
+			;;
+		-o | --enable-option)
+			enable_options="$enable_options $2"
+			shift 2
+			;;
+		-O | --disable-option)
+			disable_options="$disable_options $2"
+			shift 2
+			;;
+		-s | --enable-stack-trace)
+			enable_options="$enable_options func_stack_trace"
+			shift
+			;;
+		-S | --disable-stack-trace)
+			disable_options="$disable_options func_stack_trace"
+			shift
+			;;
+		*)
+			more=n
+			;;
 		esac
 	done
 
@@ -424,13 +427,13 @@ parse_run_args()
 
 	while [ "$more" = y ]; do
 		case $1 in
-			-p | --output)
-				output="$2"
-				shift 2
-				;;
-			*)
-				more=n
-				;;
+		-p | --output)
+			output="$2"
+			shift 2
+			;;
+		*)
+			more=n
+			;;
 		esac
 	done
 
@@ -451,7 +454,7 @@ ftrace_run()
 	do_ftrace_on
 	"$@"
 	ftrace_off
-	ftrace_get trace > $output
+	ftrace_get trace >$output
 }
 
 ftrace_trace()
@@ -461,7 +464,10 @@ ftrace_trace()
 
 ftrace_cmd()
 {
-	(cd "$TRACING" || exit; "$@")
+	(
+		cd "$TRACING" || exit
+		"$@"
+	)
 }
 
 usage()
@@ -546,57 +552,57 @@ main()
 
 	cmd="$1"
 	case "$cmd" in
-		list-tracers | lt)
-			list_tracers
-			;;
-		list-options | lo)
-			shift
-			list_options "$@"
-			;;
-		available-functions | af)
-			list_available_functions
-			;;
-		grep-function | gf)
-			shift
-			search_function "$@"
-			;;
-		list-events | le)
-			list_events
-			;;
-		gind-event | ge)
-			shift
-			search_event "$@"
-			;;
-		on)
-			shift
-			ftrace_on "$@"
-			save_undos
-			cancel_undo
-			;;
-		off)
-			ftrace_off
-			;;
-		run)
-			shift
-			ftrace_run "$@"
-			;;
-		restore)
-			ftrace_restore
-			;;
-		trace)
-			ftrace_trace
-			;;
-		cmd)
-			shift
+	list-tracers | lt)
+		list_tracers
+		;;
+	list-options | lo)
+		shift
+		list_options "$@"
+		;;
+	available-functions | af)
+		list_available_functions
+		;;
+	grep-function | gf)
+		shift
+		search_function "$@"
+		;;
+	list-events | le)
+		list_events
+		;;
+	gind-event | ge)
+		shift
+		search_event "$@"
+		;;
+	on)
+		shift
+		ftrace_on "$@"
+		save_undos
+		cancel_undo
+		;;
+	off)
+		ftrace_off
+		;;
+	run)
+		shift
+		ftrace_run "$@"
+		;;
+	restore)
+		ftrace_restore
+		;;
+	trace)
+		ftrace_trace
+		;;
+	cmd)
+		shift
+		ftrace_cmd "$@"
+		;;
+	*)
+		if which $1 >/dev/null; then
 			ftrace_cmd "$@"
-			;;
-		*)
-			if which $1 > /dev/null; then
-				ftrace_cmd "$@"
-			else
-				usage
-			fi
-			;;
+		else
+			usage
+		fi
+		;;
 	esac
 }
 

@@ -53,8 +53,7 @@ upload_files_lftp()
 		lftp -c "$LFTP_TIMEOUT; open '$UPLOAD_HOST'; mkdir -p '$JOB_RESULT_ROOT'"
 	}
 
-	for file
-	do
+	for file; do
 		if [ -d "$file" ]; then
 			! is_dir_empty "$file" && lftp -c "$LFTP_TIMEOUT; open '$UPLOAD_HOST'; mirror -R '$file' '$JOB_RESULT_ROOT/'" || ret=$?
 		else
@@ -98,15 +97,13 @@ upload_files_curl()
 	[ -n "$target_directory" ] && {
 		local dir
 		# shellcheck disable=SC2046
-		for dir in $(echo $target_directory | tr '/' ' ')
-		do
+		for dir in $(echo $target_directory | tr '/' ' '); do
 			job_result_root=$job_result_root/$dir
-			curl -sSf -X MKCOL http://$LKP_SERVER$job_result_root  >/dev/null
+			curl -sSf -X MKCOL http://$LKP_SERVER$job_result_root >/dev/null
 		done
 	}
 
-	for file
-	do
+	for file; do
 		upload_one_curl "$file" "$job_result_root" >/dev/null || ret=$?
 	done
 
@@ -116,7 +113,6 @@ upload_files_curl()
 upload_files_copy()
 {
 	local RESULT_ROOT="$RESULT_ROOT/$target_directory"
-
 
 	mkdir -p $RESULT_ROOT
 
@@ -134,8 +130,7 @@ upload_files_copy()
 	local file
 	local ret=0
 
-	for file
-	do
+	for file; do
 		[ -s "$file" ] || continue
 		[ "$LKP_LOCAL_RUN" = "1" ] && chmod ug+w "$file"
 		$copy "$file" $RESULT_ROOT/ || {

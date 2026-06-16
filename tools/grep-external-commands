@@ -5,7 +5,10 @@ script_dirs="bin monitors setup tests"
 bash=$(compgen -b)
 busybox=$(busybox --list)
 coreutils=$(dpkg -L coreutils | grep bin/ | sed 's#.*/##g')
-bin_sbin=$(ls /bin; ls /sbin)
+bin_sbin=$(
+	ls /bin
+	ls /sbin
+)
 android5="
 ATFWD-daemon
 adb
@@ -195,7 +198,6 @@ commands=$(echo -e "$coreutils\n$bin_sbin" | grep -v -x -F -f <(echo "$bash"))
 commands=$(echo -e "$coreutils\n$bin_sbin" | grep -v -x -F -f <(echo "$busybox"))
 commands=$(echo -e "$coreutils\n$bin_sbin" | grep -v -x -F -f <(echo -e "$android5\n$bash"))
 
-for cmd in $commands
-do
+for cmd in $commands; do
 	grep --color -r -E "(^|if|\(|\`|cmd|command|exec|\||;|&|bin/)\s*\<$cmd\s" $script_dirs
 done

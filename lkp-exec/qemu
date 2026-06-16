@@ -48,24 +48,24 @@ create_lkp_home()
 	[[ -e $HOME/.lkp ]] && return
 
 	cat <<-EOF
-	The approx. disk space requirements are
+		The approx. disk space requirements are
 
-	10M             simple boot test in rootfs openwrt
-	50M		simple boot test in rootfs debian
-	1G              plan to run a number of different tests
-	100G or more    IO tests
+		10M             simple boot test in rootfs openwrt
+		50M  simple boot test in rootfs debian
+		1G              plan to run a number of different tests
+		100G or more    IO tests
 
-	Please enter a dir with enough disk space, or simply press Enter to accept the default.
-	You may still symlink $HOME/.lkp to a more suitable place in future.
+		Please enter a dir with enough disk space, or simply press Enter to accept the default.
+		You may still symlink $HOME/.lkp to a more suitable place in future.
 	EOF
 
 	local dir
 	read -r -p "$HOME/.lkp => " dir
 
 	[[ $dir ]] && {
-	dir=$(realpath $dir)
-	mkdir -p $dir || exit
-	ln -sT $dir $HOME/.lkp || exit
+		dir=$(realpath $dir)
+		mkdir -p $dir || exit
+		ln -sT $dir $HOME/.lkp || exit
 	}
 
 	mkdir -p $HOME/.lkp/cache
@@ -85,30 +85,30 @@ replace_script_partition_val()
 	[[ $nr_hdd_partitions ]] || nr_hdd_partitions=$nr_hdd_vdisk
 	[[ $nr_ssd_partitions ]] || nr_ssd_partitions=$nr_ssd_vdisk
 
-	VDISK_NUM=$((nr_hdd_partitions+nr_ssd_partitions+nr_swap_vdisk+nr_rootfs_vdisk))
+	VDISK_NUM=$((nr_hdd_partitions + nr_ssd_partitions + nr_swap_vdisk + nr_rootfs_vdisk))
 
 	[[ "$hdd_partitions$ssd_partitions$swap_partitions$rootfs_partition" == *"/dev/vda"* ]] && return
 
 	if ((VDISK_NUM)); then
 		local index=0
 		local vdisk_hdd_val="${disk_names[*]:$index:$nr_hdd_partitions}"
-		index=$((index+nr_hdd_partitions))
+		index=$((index + nr_hdd_partitions))
 		local vdisk_ssd_val="${disk_names[*]:$index:$nr_ssd_partitions}"
-		index=$((index+nr_ssd_partitions))
+		index=$((index + nr_ssd_partitions))
 		local vdisk_rootfs_val="${disk_names[*]:$index:$nr_rootfs_vdisk}"
-		index=$((index+nr_rootfs_vdisk))
+		index=$((index + nr_rootfs_vdisk))
 		local vdisk_swap_val="${disk_names[*]:$index:$nr_swap_vdisk}"
 
 		# First remove lines between two export, or it will be left
 		# export ssd_partitions='/dev/disk/by-id/nvme-INTEL_SSDPE2KX040T7_PHLF7414019F4P0IGN-part2
 		# /dev/disk/by-id/nvme-INTEL_SSDPE2KX040T7_PHLF7414019F4P0IGN-part3'
 		# export swap_partitions=
-		sed -i  -e '/export hdd_partitions/,/export/{//!d}' \
+		sed -i -e '/export hdd_partitions/,/export/{//!d}' \
 			-e '/export ssd_partitions/,/export/{//!d}' \
 			-e '/export swap_partitions/,/export/{//!d}' \
 			-e '/export rootfs_partitions/,/export/{//!d}' \
 			$job_script
-		sed -i	-e "s%export hdd_partitions=.*%export hdd_partitions='${vdisk_hdd_val}'%" \
+		sed -i -e "s%export hdd_partitions=.*%export hdd_partitions='${vdisk_hdd_val}'%" \
 			-e "s%export ssd_partitions=.*%export ssd_partitions='${vdisk_ssd_val}'%" \
 			-e "s%export swap_partitions=.*%export swap_partitions='${vdisk_swap_val}'%" \
 			-e "s%export rootfs_partition=.*%export rootfs_partition='${vdisk_rootfs_val}'%" \
@@ -129,8 +129,7 @@ create_job_initrd()
 		cd $CACHE_DIR || exit
 		{
 			local dir=
-			for d in $(echo $job_initrd_dir | tr '/' ' ')
-			do
+			for d in $(echo $job_initrd_dir | tr '/' ' '); do
 				dir="$dir""$d"/
 				echo $dir
 			done
@@ -148,7 +147,7 @@ get_qemu_kernel_initrd()
 	local final_initrd=$CACHE_DIR/final_initrd
 	[[ $opt_kernel_image ]] || download_kernel
 	lkp_initrd='' job_initrd='' download_initrd
-	cat "$concatenate_initrd" "$user_lkp_initrd" "$user_job_initrd" > "$final_initrd"
+	cat "$concatenate_initrd" "$user_lkp_initrd" "$user_job_initrd" >"$final_initrd"
 	initrd_option="-initrd $final_initrd"
 }
 
@@ -160,9 +159,9 @@ max_sane_qemu_memory()
 	export_meminfo
 
 	[[ $MemAvailable ]] ||
-	(( MemAvailable = MemFree + (Active_file/2) + Inactive_file ))
+		((MemAvailable = MemFree + (Active_file / 2) + Inactive_file))
 
-	(( mem_kb > MemAvailable / 2 )) && mem_kb=$((MemAvailable / 2))
+	((mem_kb > MemAvailable / 2)) && mem_kb=$((MemAvailable / 2))
 
 	echo $((mem_kb >> 10))M
 }
@@ -183,20 +182,19 @@ setup_vdisk_root()
 	fi
 }
 
-while getopts "o:p:s:k:m:e" opt
-do
+while getopts "o:p:s:k:m:e" opt; do
 	case $opt in
-		o ) opt_result_root="$OPTARG" ;;
-		s ) opt_ssh="$OPTARG" ;;
-		p ) opt_vdiskpath="$OPTARG" ;;
-		k ) opt_kernel_image="$OPTARG" ;;
-		m ) opt_modules="$OPTARG" ;;
-		e ) HTTP_PREFIX=https://download.01.org/0day-ci/lkp-qemu ;;
-		? ) usage ;;
+	o) opt_result_root="$OPTARG" ;;
+	s) opt_ssh="$OPTARG" ;;
+	p) opt_vdiskpath="$OPTARG" ;;
+	k) opt_kernel_image="$OPTARG" ;;
+	m) opt_modules="$OPTARG" ;;
+	e) HTTP_PREFIX=https://download.01.org/0day-ci/lkp-qemu ;;
+	?) usage ;;
 	esac
 done
 
-shift $((OPTIND-1))
+shift $((OPTIND - 1))
 
 unset DISPLAY
 
@@ -236,7 +234,7 @@ create_lkp_src_initrd()
 		local diff_id=$(cd $LKP_SRC && git diff | git patch-id | cut -f1 -d' ')
 		local src_sig=${head_commit:0:12}_${diff_id:0:12}
 	else
-		local src_sig=$(ls -lR $LKP_SRC|md5sum|cut -c1-12)
+		local src_sig=$(ls -lR $LKP_SRC | md5sum | cut -c1-12)
 	fi
 	user_lkp_initrd=$CACHE_DIR/lkp-$arch-$src_sig.cgz
 	[[ -f $user_lkp_initrd ]] || {
@@ -245,7 +243,7 @@ create_lkp_src_initrd()
 		# shellcheck disable=SC2164
 		pushd "$LKP_SRC/programs/lkp-src/pkg"
 		LKP_USER="$user" PACMAN=true BUILDDIR=/tmp/$USER CARCH=$arch PKGEXT=.cgz CGZDEST="$CACHE_DIR/lkp-$arch.cgz" \
-		$LKP_SRC/sbin/makepkg --config "$(lkp_src)/etc/makepkg.conf" -e
+			$LKP_SRC/sbin/makepkg --config "$(lkp_src)/etc/makepkg.conf" -e
 		[[ -f $CACHE_DIR/lkp-$arch.cgz ]] || {
 			echo "Failed to pack: $CACHE_DIR/lkp-$arch.cgz"
 			exit 1
@@ -274,8 +272,7 @@ fi
 if [ -z $opt_result_root ]; then
 	# create real result_root layout similar to the one in /result
 	_result_root=$HOME/.lkp/$(dirname $result_root)
-	for i in {0..1000}
-	do
+	for i in {0..1000}; do
 		vm_result_path=$_result_root/$i
 		[[ -d $vm_result_path ]] || break
 	done
@@ -320,7 +317,7 @@ run_kvm()
 		local need_mem_mb="$(to_mb $need_mem)"
 		local testsuite
 		testsuite="$(get_job_env $job_script 'suite')" || return
-		[[ "$need_mem_mb" -gt "${mem_mb: : -1}" ]] && echo "Warning: test suite $testsuite needs memory: ${need_mem_mb}Mb, actual memory: ${mem_mb: : -1}Mb"
+		[[ "$need_mem_mb" -gt "${mem_mb::-1}" ]] && echo "Warning: test suite $testsuite needs memory: ${need_mem_mb}Mb, actual memory: ${mem_mb::-1}Mb"
 	}
 	netdev_option="-device e1000,netdev=net0 "
 	netdev_option+="-netdev user,id=net0"

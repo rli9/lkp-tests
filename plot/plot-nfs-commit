@@ -4,12 +4,12 @@
 
 #     kworker/5:1-418   [005]   103.526752: nfs_commit_release: bdi 0:21: ino=2614859 offset=0 len=1
 
-
-plot() {
-send=$1
-release=$2
-suffix=$3
-gnuplot <<EOF
+plot()
+{
+	send=$1
+	release=$2
+	suffix=$3
+	gnuplot <<EOF
 set size 1
 set terminal pngcairo size ${width:-1280}, 800
 set output "nfs-commit$suffix.png"
@@ -27,18 +27,18 @@ trace_file=ftrace.gz
 
 zcat $trace_file | grep -qF "nfs_commit_unstable_pages" || exit 1
 
-zcat $trace_file | grep -F "nfs_commit_unstable_pages" |\
-	grep -vF 'bdi 0:15:' |\
-	grep -vF 'ret=0' |\
-	sed 's/.*\]//' |\
-	sed 's/bdi [^ ]\+//' |\
-	sed 's/[^0-9.-]\+/ /g' > trace-commit || exit
+zcat $trace_file | grep -F "nfs_commit_unstable_pages" |
+	grep -vF 'bdi 0:15:' |
+	grep -vF 'ret=0' |
+	sed 's/.*\]//' |
+	sed 's/bdi [^ ]\+//' |
+	sed 's/[^0-9.-]\+/ /g' >trace-commit || exit
 
-zcat $trace_file | grep -F "nfs_commit_release" |\
-	grep -vF 'bdi 0:15:' |\
-	sed 's/.*\]//' |\
-	sed 's/bdi.[^ ]\+//' |\
-	sed 's/[^0-9.-]\+/ /g' > trace-commit-release
+zcat $trace_file | grep -F "nfs_commit_release" |
+	grep -vF 'bdi 0:15:' |
+	sed 's/.*\]//' |
+	sed 's/bdi.[^ ]\+//' |
+	sed 's/[^0-9.-]\+/ /g' >trace-commit-release
 
 plot trace-commit trace-commit-release
 
@@ -52,15 +52,15 @@ plot trace-commit trace-commit-release
 # 	sed 's/.*\]//' |\
 # 	sed 's/bdi.[^ ]\+//' |\
 # 	sed 's/[^0-9.-]\+/ /g' > trace-commit-300
-# 
+#
 # grep -F "nfs_commit_release" $trace_file |\
 # 	sed 's/.*\]//' |\
 # 	sed 's/bdi.[^ ]\+//' |\
 # 	sed 's/[^0-9.-]\+/ /g' > trace-commit-release-300
-# 
+#
 # plot trace-commit trace-commit-release -300
 
 if [[ $lines -ge 300 ]]; then
-width=6400
-plot trace-commit trace-commit-release +
+	width=6400
+	plot trace-commit trace-commit-release +
 fi

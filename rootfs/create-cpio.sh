@@ -10,9 +10,9 @@ cd $distro || exit
 cpio_file=$distro-$(date +%Y%m%d).cgz
 
 find . -xdev |
-sed 's,^\./,,' |
-grep -v -f ../rootfs-strip-list |
-cpio -o -H newc | gzip -n -9 > ../$cpio_file || exit
+	sed 's,^\./,,' |
+	grep -v -f ../rootfs-strip-list |
+	cpio -o -H newc | gzip -n -9 >../$cpio_file || exit
 
 cd ..
 

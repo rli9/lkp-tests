@@ -38,5 +38,5 @@ check_mount()
 check_mount_nfs()
 {
 	check_mount "$@" -o v3 ||
-	check_mount "$@"
+		check_mount "$@"
 }

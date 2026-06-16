@@ -24,8 +24,7 @@ prepare_exec_path()
 	local benchmark_path="$(get_benchmark_path)"
 
 	local exec_path
-	for exec_path in $benchmark_path $benchmark_path/usr/local/bin $benchmark_path/bin
-	do
+	for exec_path in $benchmark_path $benchmark_path/usr/local/bin $benchmark_path/bin; do
 		[ -f "$exec_path/$exec_name" ] && {
 			export PATH=$exec_path:$PATH
 			echo "PATH=$PATH"
@@ -50,8 +49,7 @@ test_loop()
 	start_time=$(date +%s)
 	operations=0
 
-	while :
-	do
+	while :; do
 		do_test
 		operations=$((operations + 1))
 	done
@@ -65,4 +63,3 @@ runtime_loop()
 	kill -s HUP $pid
 	wait
 }
-

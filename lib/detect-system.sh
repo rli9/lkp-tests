@@ -23,19 +23,25 @@
 parse_executable_arch()
 {
 	case "$1" in
-		*[xX]86-64)
-			_system_arch=x86_64;;
-		*80[3456]86)
-			_system_arch=i386;;
-		*AArch64)
-			_system_arch=aarch64;;
-		*ARM)
-			_system_arch=arm;;
-		*RISC-V)
-			_system_arch=riscv;;
-		*)
-			_system_arch=unknown
-			return 1;;
+	*[xX]86-64)
+		_system_arch=x86_64
+		;;
+	*80[3456]86)
+		_system_arch=i386
+		;;
+	*AArch64)
+		_system_arch=aarch64
+		;;
+	*ARM)
+		_system_arch=arm
+		;;
+	*RISC-V)
+		_system_arch=riscv
+		;;
+	*)
+		_system_arch=unknown
+		return 1
+		;;
 	esac
 	return 0
 }
@@ -74,15 +80,14 @@ detect_arch_by_file()
 detect_executable_arch()
 {
 	local executable
-	for executable
-	do
+	for executable; do
 		[ -L $executable ] && continue
 		[ -x $executable ] || continue
 		detect_arch_by_readelf $executable && return
 		detect_arch_by_file $executable && return
 	done
 
-	[ "$_system_arch" != "unknown"  ]
+	[ "$_system_arch" != "unknown" ]
 }
 
 detect_system_arch()
@@ -91,15 +96,15 @@ detect_system_arch()
 
 	export _system_arch='unknown'
 
-	detect_executable_arch $rootfs/sbin/init		&& return
-	detect_executable_arch $rootfs/lib/systemd/systemd	&& return
-	detect_executable_arch $rootfs/bin/sh		&& return
-	detect_executable_arch $rootfs/bin/bash		&& return
-	detect_executable_arch $rootfs/bin/dash		&& return
-	detect_executable_arch $rootfs/sbin/*		&& return
-	detect_executable_arch $rootfs/bin/*		&& return
-	detect_executable_arch $rootfs/usr/sbin/*		&& return
-	detect_executable_arch $rootfs/usr/bin/*		&& return
+	detect_executable_arch $rootfs/sbin/init && return
+	detect_executable_arch $rootfs/lib/systemd/systemd && return
+	detect_executable_arch $rootfs/bin/sh && return
+	detect_executable_arch $rootfs/bin/bash && return
+	detect_executable_arch $rootfs/bin/dash && return
+	detect_executable_arch $rootfs/sbin/* && return
+	detect_executable_arch $rootfs/bin/* && return
+	detect_executable_arch $rootfs/usr/sbin/* && return
+	detect_executable_arch $rootfs/usr/bin/* && return
 }
 
 detect_libc_version()
@@ -108,8 +113,7 @@ detect_libc_version()
 	local libc_version
 
 	local file
-	for file in "$rootfs"/lib/libc-*.*.so "$rootfs"/lib/*-linux-gnu/libc-*.*.so
-	do
+	for file in "$rootfs"/lib/libc-*.*.so "$rootfs"/lib/*-linux-gnu/libc-*.*.so; do
 		[ -x "$file" ] || continue
 		libc_version=${file#*/libc-}
 		libc_version=${libc_version%.so}
@@ -131,7 +135,7 @@ detect_system()
 
 	if
 		[ -f ${rootfs}/etc/lsb-release ] &&
-			GREP_OPTIONS="" \command \grep "DISTRIB_ID=Ubuntu"    ${rootfs}/etc/lsb-release >/dev/null
+			GREP_OPTIONS="" \command \grep "DISTRIB_ID=Ubuntu" ${rootfs}/etc/lsb-release >/dev/null
 	then
 		_system_name="Ubuntu"
 		_system_version="$(awk -F'=' '$1=="DISTRIB_RELEASE"{print $2}' ${rootfs}/etc/lsb-release | head -n 1)"
@@ -150,18 +154,18 @@ detect_system()
 		[ -f ${rootfs}/etc/os-release ] &&
 			GREP_OPTIONS="" \command \grep 'ID="amzn"' ${rootfs}/etc/os-release >/dev/null
 	then
-		_system_version="$(awk -F'=' '$1=="VERSION_ID"{gsub(/"/,"");print $2}'  ${rootfs}/etc/os-release | head -n 1)"
+		_system_version="$(awk -F'=' '$1=="VERSION_ID"{gsub(/"/,"");print $2}' ${rootfs}/etc/os-release | head -n 1)"
 		_system_name="Amazon Linux"
-    elif
-        [ -f ${rootfs}/etc/os-release ] &&
-            GREP_OPTIONS="" \command \grep 'ID="rocky"' ${rootfs}/etc/os-release >/dev/null
-    then
-        _system_name="Rocky"
-        _system_version="$(awk -F'=' '$1=="VERSION_ID"{gsub(/"/,"");print $2}' ${rootfs}/etc/os-release | awk -F'.' '{print $1}' | head -n 1)"
+	elif
+		[ -f ${rootfs}/etc/os-release ] &&
+			GREP_OPTIONS="" \command \grep 'ID="rocky"' ${rootfs}/etc/os-release >/dev/null
+	then
+		_system_name="Rocky"
+		_system_version="$(awk -F'=' '$1=="VERSION_ID"{gsub(/"/,"");print $2}' ${rootfs}/etc/os-release | awk -F'.' '{print $1}' | head -n 1)"
 	elif
 		[ -f ${rootfs}/etc/os-release ] &&
 			(GREP_OPTIONS="" \command \grep 'ID="opensuse-leap"' ${rootfs}/etc/os-release >/dev/null ||
-			GREP_OPTIONS="" \command \grep 'ID="opensuse"' ${rootfs}/etc/os-release >/dev/null)
+				GREP_OPTIONS="" \command \grep 'ID="opensuse"' ${rootfs}/etc/os-release >/dev/null)
 	then
 		_system_name="OpenSuSE"
 		_system_version="$(awk -F'=' '$1=="VERSION_ID"{gsub(/"/,"");print $2}' ${rootfs}/etc/os-release | head -n 1)" #'
@@ -170,7 +174,7 @@ detect_system()
 	then
 		_system_name="SuSE"
 		_system_version="$(
-		\command \awk -F'=' '{gsub(/ /,"")} $1~/VERSION/ {version=$2} $1~/PATCHLEVEL/ {patch=$2} END {print version"."patch}' < ${rootfs}/etc/SuSE-release
+			\command \awk -F'=' '{gsub(/ /,"")} $1~/VERSION/ {version=$2} $1~/PATCHLEVEL/ {patch=$2} END {print version"."patch}' <${rootfs}/etc/SuSE-release
 		)"
 	elif
 		[ -f ${rootfs}/etc/debian_version ]
@@ -197,7 +201,7 @@ detect_system()
 		[ -f ${rootfs}/etc/os-release ] &&
 			GREP_OPTIONS="" \command \grep "ID=Exaleap-riscv-linux" ${rootfs}/etc/os-release >/dev/null
 	then
-		_system_version="$(awk -F'=' '$1=="VERSION_ID"{print $2}'  ${rootfs}/etc/os-release | head -n 1)"
+		_system_version="$(awk -F'=' '$1=="VERSION_ID"{print $2}' ${rootfs}/etc/os-release | head -n 1)"
 		_system_name="Exaleap-riscv-linux"
 	elif
 		[ -f ${rootfs}/etc/fedora-release ]
@@ -208,20 +212,20 @@ detect_system()
 		[ -f ${rootfs}/etc/redhat-release ] && [ ! -f ${rootfs}/etc/oracle-release ]
 	then
 		_system_name="$(
-		GREP_OPTIONS="" \command \grep -Eo 'CentOS|ClearOS|Mageia|PCLinuxOS|Scientific|ROSA Desktop|OpenMandriva' ${rootfs}/etc/redhat-release 2>/dev/null | \command \head -n 1 | \command \sed "s/ //"
+			GREP_OPTIONS="" \command \grep -Eo 'CentOS|ClearOS|Mageia|PCLinuxOS|Scientific|ROSA Desktop|OpenMandriva' ${rootfs}/etc/redhat-release 2>/dev/null | \command \head -n 1 | \command \sed "s/ //"
 		)"
 		_system_name="${_system_name:-RedHat}"
-		_system_version="$(GREP_OPTIONS="" \command \grep -Eo '[0-9\.]+' ${rootfs}/etc/redhat-release  | \command \awk -F. 'NR==1{print $1}' | head -n 1)"
+		_system_version="$(GREP_OPTIONS="" \command \grep -Eo '[0-9\.]+' ${rootfs}/etc/redhat-release | \command \awk -F. 'NR==1{print $1}' | head -n 1)"
 	elif
 		[ -f ${rootfs}/etc/centos-release ]
 	then
 		_system_name="CentOS"
-		_system_version="$(GREP_OPTIONS="" \command \grep -Eo '[0-9\.]+' ${rootfs}/etc/centos-release  | \command \awk -F. '{print $1}' | head -n 1)"
+		_system_version="$(GREP_OPTIONS="" \command \grep -Eo '[0-9\.]+' ${rootfs}/etc/centos-release | \command \awk -F. '{print $1}' | head -n 1)"
 	elif
 		[ -f ${rootfs}/etc/oracle-release ]
 	then
 		_system_name="Oracle"
-		_system_version="$(GREP_OPTIONS="" \command \grep -Eo '[0-9\.]+' ${rootfs}/etc/oracle-release  | \command \awk -F. '{print $1}' | head -n 1)"
+		_system_version="$(GREP_OPTIONS="" \command \grep -Eo '[0-9\.]+' ${rootfs}/etc/oracle-release | \command \awk -F. '{print $1}' | head -n 1)"
 	elif
 		[ -f ${rootfs}/etc/os-release ] &&
 			GREP_OPTIONS="" \command \grep "ID=\"eywa\"" ${rootfs}/etc/os-release >/dev/null
@@ -231,11 +235,11 @@ detect_system()
 	else
 		detect_libc_version $rootfs
 	fi
-	_system_name=$(printf '%s\n' "$_system_name" | sed 's/[ \/]/_/g')  #"${_system_name//[ \/]/_}"
+	_system_name=$(printf '%s\n' "$_system_name" | sed 's/[ \/]/_/g') #"${_system_name//[ \/]/_}"
 
 	# shellcheck disable=SC1012 # \t is just literal 't' here. For tab, use "$(printf '\t')" instead
 	_system_name_lowercase="$(echo ${_system_name} | \command \tr '[A-Z]' '[a-z]')"
-	_system_version=$(printf '%s\n' "$_system_version" | sed 's/[ \/]/_/g')  #${_system_version//[ \/]/_}"
+	_system_version=$(printf '%s\n' "$_system_version" | sed 's/[ \/]/_/g') #${_system_version//[ \/]/_}"
 }
 
 get_system_arch()

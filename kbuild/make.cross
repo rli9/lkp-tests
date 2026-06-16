@@ -87,7 +87,7 @@ download_extract()
 	cd $dir || return
 
 	echo lftpget -c $URL
-	     lftpget -c $URL || return
+	lftpget -c $URL || return
 	cd - || return
 
 	echo tar Jxf $dir/$file -C $COMPILER_INSTALL_PATH
@@ -109,7 +109,7 @@ show_url_hint()
 
 get_toolchain_list()
 {
-	timeout 3m lftp -c "open $URL/ && find -d 3" | sort -V > $list || {
+	timeout 3m lftp -c "open $URL/ && find -d 3" | sort -V >$list || {
 		echo "Cannot get list from $URL"
 		show_url_hint
 		return 1
@@ -252,7 +252,7 @@ setup_gcc_exec()
 	# load build-in depends libs
 	# shellcheck disable=SC2206
 	local deplibs_path=($COMPILER_INSTALL_PATH/${COMPILER}*/${crosstool}/libexec/gcc/${crosstool}/*)
-	local deplibs_dir=$(tr ' ' '\n' <<< "${deplibs_path[*]}" | sort -V | tail -n1)
+	local deplibs_dir=$(tr ' ' '\n' <<<"${deplibs_path[*]}" | sort -V | tail -n1)
 	[[ -d "$deplibs_dir" ]] && export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$deplibs_dir
 
 	install_dependence "$gcc_exec"

@@ -2,7 +2,7 @@
 
 dbg_log()
 {
-	echo "$(date +%H:%M:%S) $*" >> "$TMP_RESULT_ROOT/lkp.log"
+	echo "$(date +%H:%M:%S) $*" >>"$TMP_RESULT_ROOT/lkp.log"
 }
 
 die()
@@ -30,7 +30,6 @@ dump_call_stack()
 	local i
 	for i in $(seq 0 $stack_depth); do
 		[[ $i -eq $stack_depth ]] && break
-		echo "  ${BASH_SOURCE[i+1]}:${BASH_LINENO[i]}: ${FUNCNAME[i+1]}" >&2
+		echo "  ${BASH_SOURCE[i + 1]}:${BASH_LINENO[i]}: ${FUNCNAME[i + 1]}" >&2
 	done
 }
-

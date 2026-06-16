@@ -1,8 +1,9 @@
 #!/bin/bash
 
-plot() {
-suffix=$1
-gnuplot <<EOF
+plot()
+{
+	suffix=$1
+	gnuplot <<EOF
 set xlabel "time (s)"
 
 set size 1
@@ -44,6 +45,6 @@ plot
 
 lines=$(wc -l vmstat | cut -f1 -d' ')
 if [[ $lines -ge 300 ]]; then
-	tail -n 100 vmstat > vmstat-100
+	tail -n 100 vmstat >vmstat-100
 	plot -100
 fi

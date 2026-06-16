@@ -2,10 +2,10 @@
 
 apache_debian_style()
 {
- 	[ "${APACHE_DEBIAN_STYLE:-0}" -eq 1 ] && return 0
+	[ "${APACHE_DEBIAN_STYLE:-0}" -eq 1 ] && return 0
 	[ "${APACHE_DEBIAN_STYLE:-1}" -eq 0 ] && return 1
 
-	if which a2enmod > /dev/null 2>&1; then
+	if which a2enmod >/dev/null 2>&1; then
 		APACHE_DEBIAN_STYLE=1
 		return 0
 	else
@@ -48,8 +48,7 @@ enable_httpd_mod()
 {
 	set_apache_path
 
-	for mod in "$@"
-	do
+	for mod in "$@"; do
 		sed -i -r "s/#LoadModule\s+${mod}_module/LoadModule ${mod}_module/" "$APACHE_MODDIR"/*conf
 	done
 }
@@ -58,8 +57,7 @@ disable_httpd_mod()
 {
 	set_apache_path
 
-	for mod in "$@"
-	do
+	for mod in "$@"; do
 		sed -i -r "s/LoadModule\s+${mod}_module/#LoadModule ${mod}_module/" "$APACHE_MODDIR"/*conf
 	done
 }
@@ -116,4 +114,3 @@ systemctl_apache()
 		systemctl "$@" httpd
 	fi
 }
-

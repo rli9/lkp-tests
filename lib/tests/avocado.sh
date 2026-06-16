@@ -20,7 +20,7 @@ setup_conf()
 	log_cmd mkdir -p "$avocado_result_dir" || return
 
 	# After test finished, upload $base_dir which includes all testting info.
-	cat <<EOT >> $avocado_conf_file
+	cat <<EOT >>$avocado_conf_file
 logs_dir = $avocado_result_dir
 EOT
 
@@ -118,7 +118,7 @@ setup_env_for_centos()
 
 install_lkvs_tests()
 {
-	cat <<EOT > $avocado_data_dir/avocado-vt/virttest/test-providers.d/lkvs.ini
+	cat <<EOT >$avocado_data_dir/avocado-vt/virttest/test-providers.d/lkvs.ini
 [provider]
 uri: file:///lkp/benchmarks/lkvs
 
@@ -129,5 +129,5 @@ EOT
 	# to install the lkvs tests actually
 	log_cmd avocado vt-bootstrap --vt-no-downloads --vt-type qemu
 
-	avocado list | grep lkvs | sort > $avocado_result_dir/tests
+	avocado list | grep lkvs | sort >$avocado_result_dir/tests
 }

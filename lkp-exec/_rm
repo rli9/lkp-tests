@@ -8,33 +8,32 @@ shopt -s nullglob
 
 remove_from_mrtts()
 {
-    local dir=$1
-    is_mrt $dir && echo $dir | lkp delete_mrts
+	local dir=$1
+	is_mrt $dir && echo $dir | lkp delete_mrts
 }
 
 remove()
 {
 	local temp_file_unsort=$(mktemp /tmp/lkp-rm-unsort-XXXXXXXXX)
-	cleanup_path_record_from_patterns $patterns > $temp_file_unsort || exit
+	cleanup_path_record_from_patterns $patterns >$temp_file_unsort || exit
 
 	[[ -s "$temp_file_unsort" ]] ||
-	{
-		rm -f $temp_file_unsort
-		echo "Cannot find the match _result_root according to the patterns: $patterns" >&2
-		exit 1
-	}
+		{
+			rm -f $temp_file_unsort
+			echo "Cannot find the match _result_root according to the patterns: $patterns" >&2
+			exit 1
+		}
 
 	local temp_file_sort=$(mktemp /tmp/lkp-rm-sort-XXXXXXXXX)
-	awk -F'/' '{OFS="/"; NF=NF-2; print}' $temp_file_unsort | sort -u > $temp_file_sort
+	awk -F'/' '{OFS="/"; NF=NF-2; print}' $temp_file_unsort | sort -u >$temp_file_sort
 
 	local path
 	local stale_links
 
-	while read -r path
-	do
+	while read -r path; do
 		remove_from_mrtts $path
 		stale_links="$stale_links $(find "$(dirname "$path")" -xtype l)"
-	done < $temp_file_sort
+	done <$temp_file_sort
 
 	cat $temp_file_sort | xargs -P"$(nproc)" rm -rf
 
@@ -46,11 +45,11 @@ remove()
 usage()
 {
 	cat >&2 <<-EOF
-Usage:
-	lkp $script_name <patterns>
-Example:
-	lkp $script_name /xfstests/ /lkp-ws02/ /v4.3/
-EOF
+		Usage:
+			lkp $script_name <patterns>
+		Example:
+			lkp $script_name /xfstests/ /lkp-ws02/ /v4.3/
+	EOF
 	exit 1
 }
 
@@ -62,7 +61,7 @@ patterns="$*"
 temp_file=$(mktemp /tmp/lkp-rm-XXXXXXXXX)
 trap 'rm -f "$temp_file"' EXIT
 
-lkp _rt $patterns > $temp_file
+lkp _rt $patterns >$temp_file
 [[ -s "$temp_file" ]] || {
 	echo "Cannot find the match _result_root according to the patterns: $patterns" >&2
 	exit 1
@@ -71,9 +70,9 @@ lkp _rt $patterns > $temp_file
 _result_root_lines=$(cat $temp_file | wc -l)
 echo "The command will remove the following $_result_root_lines _result_root:"
 
-if (( _result_root_lines > 20 )); then
-	 cat $temp_file | head -20
-	 echo "..."
+if ((_result_root_lines > 20)); then
+	cat $temp_file | head -20
+	echo "..."
 else
 	cat $temp_file
 fi
@@ -86,4 +85,3 @@ if [[ $answer = "yes" ]]; then
 
 	echo "Done" >&2
 fi
-

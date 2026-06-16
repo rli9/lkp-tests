@@ -16,8 +16,7 @@ string_to_associative_array()
 	local key
 	local val
 	declare -A -g $2
-	for map in ${!1}
-	do
+	for map in ${!1}; do
 		key=${map%%=*}
 		val=${map#*=}
 		eval "$2[$key]=$val"
@@ -35,28 +34,27 @@ setup_qemu_drives()
 		;;
 	esac
 
-	(( VDISK_NUM )) || return 0
+	((VDISK_NUM)) || return 0
 
 	QEMU_IMG_SIZES=()
 
 	local i
 	local disk_names=(vd{a..z})
 	[[ $qemu_img ]] && string_to_associative_array qemu_img array_qemu_img
-	for ((i = 0; i < VDISK_NUM; i++))
-	do
+	for ((i = 0; i < VDISK_NUM; i++)); do
 		local disk=$VDISK_ROOT/disk-$vm_name-$i
 		local size=256G
 
 		[[ $qemu_img ]] && {
 			local qemu_img_option="${array_qemu_img[${disk_names[$i]}]}"
-			[[ $qemu_img_option =~ ^([0-9]+[MGT])$ ]]	&& size=$qemu_img_option
-			[[ $qemu_img_option =~ ^/dev/.*$ ]]		&& disk=$qemu_img_option
+			[[ $qemu_img_option =~ ^([0-9]+[MGT])$ ]] && size=$qemu_img_option
+			[[ $qemu_img_option =~ ^/dev/.*$ ]] && disk=$qemu_img_option
 		}
 
 		QEMU_IMG_SIZES+=("$size")
 
 		[[ -e $disk ]] ||
-		qemu-img create -f qcow2 $disk $size || {
+			qemu-img create -f qcow2 $disk $size || {
 			echo "init $disk failed"
 			return 1
 		}
@@ -93,7 +91,7 @@ setup_qemu_netdev()
 	qemu_netdev_option="-device e1000,netdev=net0 "
 	qemu_netdev_option+="-netdev user,id=net0"
 	[[ $opt_ssh ]] && {
-		lsof -Pi :$opt_ssh -sTCP:LISTEN > /dev/null && sleep 5
+		lsof -Pi :$opt_ssh -sTCP:LISTEN >/dev/null && sleep 5
 		qemu_netdev_option+=",hostfwd=tcp::$opt_ssh-:22"
 	}
 }

@@ -2,10 +2,11 @@
 
 #	dd-2617  [000]    17.535224: global_dirty_state: dirty=430 writeback=0 unstable=0 bg_thresh=69711 thresh=139423 gap=138993
 
-plot() {
-data=$1
-suffix=$2
-gnuplot <<EOF
+plot()
+{
+	data=$1
+	suffix=$2
+	gnuplot <<EOF
 set xlabel "time (s)"
 
 set size 1
@@ -35,34 +36,37 @@ EOF
 
 [[ -f trace || -f ftrace.gz ]] || exit
 
-trace_tab() {
-	grep -o "[0-9.]\+: $1: .*" |\
-	sed -e 's/bdi [^ ]\+//' \
-	    -e 's/[^0-9.-]\+/ /g'
+trace_tab()
+{
+	grep -o "[0-9.]\+: $1: .*" |
+		sed -e 's/bdi [^ ]\+//' \
+			-e 's/[^0-9.-]\+/ /g'
 }
 
 trace="trace-global_dirty_state"
 
-zcat ftrace.gz | trace_tab global_dirty_state | awk '!x[substr($1, 0, length($1)-6)]++' > $trace-flusher
+zcat ftrace.gz | trace_tab global_dirty_state | awk '!x[substr($1, 0, length($1)-6)]++' >$trace-flusher
 
 plot $trace-flusher
 
-while read -r dd || [ -n "$dd" ]
-do
+while read -r dd || [ -n "$dd" ]; do
 	[ -n "$dd" ] || continue
-	zcat ftrace.gz | grep -F $dd | grep -- "-$dd \+\[" |\
-		trace_tab global_dirty_state > $trace
+	zcat ftrace.gz | grep -F $dd | grep -- "-$dd \+\[" |
+		trace_tab global_dirty_state >$trace
 	test -s $trace && break
-done < pid
-test -s $trace || { rm $trace*; exit; }
+done <pid
+test -s $trace || {
+	rm $trace*
+	exit
+}
 
-lines=$(wc -l < $trace)
+lines=$(wc -l <$trace)
 
 if [[ $lines -gt 1000 ]]; then
 	# head -n 500 < $trace > $trace-rampup
 	# plot $trace-rampup -rampup
- 
-	tail -n 500 < $trace > $trace-500
+
+	tail -n 500 <$trace >$trace-500
 	plot $trace-500 -500
 fi
 

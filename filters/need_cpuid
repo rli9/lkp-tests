@@ -10,7 +10,7 @@ source "$(lkp_src etc/cpuid)"
 model_key=$(echo "$model" | sed -e 's/[[:blank:]]/_/g' -e 's/-/_/g')
 cpuid=${!model_key}
 
-if (( need_cpuid > cpuid )); then
+if ((need_cpuid > cpuid)); then
 	echo "rm $job_file due to cpuid is not match"
 	echo "need cpuid newer than: $need_cpuid, has cpu model: $model, cpuid: $cpuid"
 	exit 1

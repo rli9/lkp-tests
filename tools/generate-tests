@@ -9,10 +9,10 @@
 # - each finalized group should ideally have 10-30m total runtime
 
 [[ $1 ]] ||
-{
-	echo "Usage: $0 < ext4 | xfs | btrfs | generic | ... >"
-	exit
-}
+	{
+		echo "Usage: $0 < ext4 | xfs | btrfs | generic | ... >"
+		exit
+	}
 
 # shellcheck disable=SC2010
-ls $1/??? | grep -v -f <(cat $1-* 2>/dev/null) | cut -f2 -d/ > $1-all
+ls $1/??? | grep -v -f <(cat $1-* 2>/dev/null) | cut -f2 -d/ >$1-all

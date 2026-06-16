@@ -1,7 +1,7 @@
 #!/bin/bash
 
 [ -x /usr/share/initramfs-tools/init ] ||
-apt-get install initramfs-tools
+	apt-get install initramfs-tools
 
 out=/dev/null
 out=$PWD/initramfs-$(uname -r)

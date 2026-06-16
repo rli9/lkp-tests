@@ -1,9 +1,10 @@
 #!/bin/bash
 
-plot() {
-data=$1
-suffix=$2
-gnuplot <<EOF
+plot()
+{
+	data=$1
+	suffix=$2
+	gnuplot <<EOF
 set xlabel "time (s)"
 
 set size 1
@@ -73,35 +74,35 @@ EOF
 trace="trace-balance_dirty_pages"
 
 [ -s pid ] || {
-zcat ftrace.gz | grep -F balance_dirty_pages | awk '/(dd|tar|fio)-[0-9]+/{print $1; exit}'| sed 's/[^0-9]//g' > fio-pid
-zcat ftrace.gz | grep -F balance_dirty_pages | awk '/<...>-[0-9]+/{print $1; exit}'| sed 's/[^0-9]//g' > more-pid
+	zcat ftrace.gz | grep -F balance_dirty_pages | awk '/(dd|tar|fio)-[0-9]+/{print $1; exit}' | sed 's/[^0-9]//g' >fio-pid
+	zcat ftrace.gz | grep -F balance_dirty_pages | awk '/<...>-[0-9]+/{print $1; exit}' | sed 's/[^0-9]//g' >more-pid
 }
 
 # dd=$(cat pid | cut -f1 -d' ')
 # [[ -n "$dd" ]] || exit
-while read -r dd
-do
+while read -r dd; do
 	[ -n "$dd" ] || continue
-	zcat ftrace.gz |\
-		grep -- "-$dd \+\[" |\
+	zcat ftrace.gz |
+		grep -- "-$dd \+\[" |
 		grep -qc1 -F balance_dirty_pages && break
 done < <(cat pid fio-pid more-pid 2>/dev/null)
 test $? = 0 || exit
 test "$dd" || exit
 
-bdi=$(zcat ftrace.gz | grep -- "-$dd \+\[" | grep -om1 'balance_dirty_pages: bdi .*:'|cut -f3 -d' ')
-zcat ftrace.gz | grep -E -- "-$dd +\[.* (balance_dirty_pages|bdi_dirty_ratelimit|blkcg_dirty_ratelimit): bdi $bdi " > $trace-$dd
+bdi=$(zcat ftrace.gz | grep -- "-$dd \+\[" | grep -om1 'balance_dirty_pages: bdi .*:' | cut -f3 -d' ')
+zcat ftrace.gz | grep -E -- "-$dd +\[.* (balance_dirty_pages|bdi_dirty_ratelimit|blkcg_dirty_ratelimit): bdi $bdi " >$trace-$dd
 
-trace_tab() {
-	grep -o "[0-9.]\+: $1: .*" |\
-	sed -e 's/bdi [^ ]\+//' \
-	    -e 's/[^0-9.-]\+/ /g'
+trace_tab()
+{
+	grep -o "[0-9.]\+: $1: .*" |
+		sed -e 's/bdi [^ ]\+//' \
+			-e 's/[^0-9.-]\+/ /g'
 }
 
-trace_tab balance_dirty_pages < $trace-$dd > $trace
-zcat ftrace.gz | grep "bdi $bdi " | trace_tab bdi_dirty_ratelimit > $trace-bw
+trace_tab balance_dirty_pages <$trace-$dd >$trace
+zcat ftrace.gz | grep "bdi $bdi " | trace_tab bdi_dirty_ratelimit >$trace-bw
 if grep -q blkcg_dirty_ratelimit $trace-$dd; then
-	trace_tab blkcg_dirty_ratelimit < $trace-$dd > $trace-bw-blkcg
+	trace_tab blkcg_dirty_ratelimit <$trace-$dd >$trace-bw-blkcg
 	blkcg_bw=bw-blkcg
 else
 	blkcg_bw=bw
@@ -116,7 +117,7 @@ lines=$(wc -l $trace | cut -f1 -d' ')
 # if [[ $lines -gt 600 ]]; then
 # head -n 300 < $trace > $trace-rampup
 # plot $trace-rampup -rampup
-# 
+#
 # if [[ $lines -gt 3000 ]]; then
 # tail -n 3000 < $trace > $trace-3000
 # plot $trace-3000 -3000
@@ -124,21 +125,21 @@ lines=$(wc -l $trace | cut -f1 -d' ')
 
 if [[ $lines -gt 800 ]]; then
 
-tail -n 500 $trace-$dd | trace_tab balance_dirty_pages > $trace-500
-tail -n 500 $trace-$dd | trace_tab bdi_dirty_ratelimit > $trace-500-bw
-[ $blkcg_bw = bw-blkcg ] && {
-tail -n 500 $trace-$dd | trace_tab blkcg_dirty_ratelimit > $trace-500-bw-blkcg
-}
+	tail -n 500 $trace-$dd | trace_tab balance_dirty_pages >$trace-500
+	tail -n 500 $trace-$dd | trace_tab bdi_dirty_ratelimit >$trace-500-bw
+	[ $blkcg_bw = bw-blkcg ] && {
+		tail -n 500 $trace-$dd | trace_tab blkcg_dirty_ratelimit >$trace-500-bw-blkcg
+	}
 
-plot $trace-500 -500
+	plot $trace-500 -500
 fi
 
 if [[ $lines -ge 800 ]]; then
-old_width=$width
-width=8000
-plot $trace +
-rm balance_dirty_pages-bandwidth+.png
-width=$old_width
+	old_width=$width
+	width=8000
+	plot $trace +
+	rm balance_dirty_pages-bandwidth+.png
+	width=$old_width
 # rm balance_dirty_pages-bw+.png
 # [[ $NR_TASKS -lt 5 ]] && rm balance_dirty_pages-bw.png
 fi

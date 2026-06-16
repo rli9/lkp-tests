@@ -34,24 +34,23 @@ git_clone_update()
 				fi
 				shift
 			done
-			for retry in 1 2
-			do
+			for retry in 1 2; do
 				echo \
-				$git remote update origin
+					$git remote update origin
 				$git remote update origin 2>&1 ||
-				$git remote update origin 2>&1
+					$git remote update origin 2>&1
 
 				echo \
-				$git checkout -q origin/$branch
+					$git checkout -q origin/$branch
 				$git checkout -q origin/$branch 2>&1 && break
 			done
 		)
 	else
 		rm -fr "$dir" 2>/dev/null
 		echo \
-		$git clone -q "$@" $url $dir
+			$git clone -q "$@" $url $dir
 		$git clone -q "$@" $url $dir 2>&1 ||
-		$git clone -q "$@" $url $dir 2>&1 ||
-		$git clone -q "$@" $url $dir
+			$git clone -q "$@" $url $dir 2>&1 ||
+			$git clone -q "$@" $url $dir
 	fi
 }

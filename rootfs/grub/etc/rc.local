@@ -30,11 +30,10 @@ echo "In /etc/rc.local"
 
 cur_kernel=$(uname -r)
 
-if [ ! -f $LKP_DIR/LKP_DEFAULT_KERNEL ]
-then
+if [ ! -f $LKP_DIR/LKP_DEFAULT_KERNEL ]; then
 	LKP_DEFAULT_KERNEL=$cur_kernel
 	LKP_GRUB_DEFAULT="Advanced options for Ubuntu>Ubuntu, with Linux $LKP_DEFAULT_KERNEL"
-	echo $LKP_DEFAULT_KERNEL > $LKP_DIR/LKP_DEFAULT_KERNEL
+	echo $LKP_DEFAULT_KERNEL >$LKP_DIR/LKP_DEFAULT_KERNEL
 	# Make sure LKP_DEFAULT_KERNEL is loaded after Job finished
 	sed -i "/GRUB_DEFAULT=/s#.*#GRUB_DEFAULT=\"$LKP_GRUB_DEFAULT\"#" /etc/default/grub
 else
@@ -44,8 +43,7 @@ fi
 
 echo "current kernel: $cur_kernel, default kernel: $LKP_DEFAULT_KERNEL"
 
-if [ "$cur_kernel" != "$LKP_DEFAULT_KERNEL" ]
-then
+if [ "$cur_kernel" != "$LKP_DEFAULT_KERNEL" ]; then
 	echo "This is in LKP Job kernel, do nothing"
 	exit 0
 else
@@ -65,12 +63,12 @@ escape_cgi_param()
 	# uri=${uri//:/%3A}
 	# uri=${uri//;/%3D}
 	echo "$uri" |
-	sed -r	-e 's/%/%25/g' \
-		-e 's/\+/%2B/g' \
-		-e 's/&/%26/g' \
-		-e 's/#/%23/g' \
-		-e 's/\?/%3F/g' \
-		-e 's/ /%20/g'
+		sed -r -e 's/%/%25/g' \
+			-e 's/\+/%2B/g' \
+			-e 's/&/%26/g' \
+			-e 's/#/%23/g' \
+			-e 's/\?/%3F/g' \
+			-e 's/ /%20/g'
 }
 
 lkp_jobfile_append_var()
@@ -79,8 +77,7 @@ lkp_jobfile_append_var()
 
 	local query_str=job_file="$(escape_cgi_param "$job")"
 	echo "$WGET_CMD -O /dev/null $LKP_SERVER/~lkp/cgi-bin/lkp-jobfile-append-var?$query_str&$key_value"
-	if [ "$job" != "" ]
-	then
+	if [ "$job" != "" ]; then
 		$WGET_CMD -O /dev/null "$LKP_SERVER/~lkp/cgi-bin/lkp-jobfile-append-var?$query_str&$key_value"
 	fi
 }
@@ -97,10 +94,8 @@ lkp_jobfile_append_var()
 
 	#Check network
 	network="down"
-	while [ $network = "down" ]
-	do
-		for interface in /sys/class/net/*
-		do
+	while [ $network = "down" ]; do
+		for interface in /sys/class/net/*; do
 			[ -e "$interface" ] || continue
 
 			interface=${interface##*/}
@@ -110,8 +105,7 @@ lkp_jobfile_append_var()
 			break
 		done
 
-		if [ ! -d /sys/class/net/$network ]
-		then
+		if [ ! -d /sys/class/net/$network ]; then
 			network="down"
 			lkp_log "network down, try again after 10 seconds ..."
 			sleep 10
@@ -125,8 +119,7 @@ lkp_jobfile_append_var()
 	done
 
 	#Cleanup previous Job
-	if [ -d $LKP_JOB_DIR ]
-	then
+	if [ -d $LKP_JOB_DIR ]; then
 		lkp_log "Cleaning up Previous Job"
 
 		[ -d $LKP_PJOB_DIR ] && rm -rf $LKP_PJOB_DIR
@@ -137,20 +130,17 @@ lkp_jobfile_append_var()
 		[ -f /boot/$initrd ] && (rm -f /boot/$initrd && lkp_log "Removing /boot/$initrd")
 	fi
 
-
 	# Install New Job
 
 	# reboot after 4 hours
 	reboot_timeout=$(($(date +%s) + 14400))
 
-	while true
-	do
+	while true; do
 		mkdir -p $LKP_JOB_DIR
 
 		lkp_log "Loading Job Kernel"
 		get_config=true
-		while $get_config
-		do
+		while $get_config; do
 			rm -rf "${LKP_JOB_DIR:?}"/*
 
 			# reboot after 4 hours
@@ -165,8 +155,7 @@ lkp_jobfile_append_var()
 				lkp_log "Job config file downloaded at $LKP_JOB_DIR/$LKP_CONFIG_FILE"
 			fi
 
-			while read -r line
-			do
+			while read -r line; do
 				k=$(echo $line | awk '{print $1}')
 				v=$(echo $line | awk -F"$k " '{print $2}')
 				case $k in
@@ -176,44 +165,42 @@ lkp_jobfile_append_var()
 					option=$(echo $v | awk -F"$wkernel " '{print $2}')
 					kernel=$(basename $wkernel)
 					version=$(echo $kernel | awk -F"vmlinuz-" '{ print $2}')
-					echo $kernel > $LKP_JOB_DIR/kernel
+					echo $kernel >$LKP_JOB_DIR/kernel
 					# fetch out job, too
 					job=$(echo $v | awk -F"job=" '{print $2}' | awk '{print $1}')
 					;;
 				initrd)
 					winitrd=$v
 					initrd=$(basename $winitrd)
-					echo $initrd > $LKP_JOB_DIR/initrd
+					echo $initrd >$LKP_JOB_DIR/initrd
 					;;
 				esac
-			done < $LKP_JOB_DIR/$LKP_CONFIG_FILE
+			done <$LKP_JOB_DIR/$LKP_CONFIG_FILE
 
-			if [ "$version" = "$LKP_DEFAULT_KERNEL" ]
-			then
+			if [ "$version" = "$LKP_DEFAULT_KERNEL" ]; then
 				lkp_log "LKP default kernel $version can not be overridden"
 				sleep 30
 				continue
 			fi
 
-			if [ "$kernel" != "" ] && [ "$initrd" != "" ] && [ "$option" != "" ]
-			then
+			if [ "$kernel" != "" ] && [ "$initrd" != "" ] && [ "$option" != "" ]; then
 				get_config=false
 			else
 				lkp_log "Invalid kernel config file, sleep for 10 seconds"
-				cat $LKP_JOB_DIR/$LKP_CONFIG_FILE >> $LKP_LOG_FILE
+				cat $LKP_JOB_DIR/$LKP_CONFIG_FILE >>$LKP_LOG_FILE
 				sleep 10
 			fi
 		done
 
 		#Install next Job
 		lkp_log "Getting Job kernel from $wkernel"
-		if ! $WGET_CMD --directory-prefix="$LKP_JOB_DIR/" $wkernel > /dev/null; then
+		if ! $WGET_CMD --directory-prefix="$LKP_JOB_DIR/" $wkernel >/dev/null; then
 			lkp_log "Failed to get kernel from $wkernel"
 			continue
 		fi
 
 		lkp_log "Getting Job initrd from $winitrd"
-		if ! $WGET_CMD --directory-prefix="$LKP_JOB_DIR/" $winitrd > /dev/null; then
+		if ! $WGET_CMD --directory-prefix="$LKP_JOB_DIR/" $winitrd >/dev/null; then
 			lkp_log "Failed to get initrd from $winitrd"
 			continue
 		fi
@@ -248,6 +235,6 @@ lkp_jobfile_append_var()
 	# we have a chance to stop rebooting after boot in case there are some problems
 
 	grep -q "lkp_grub=noreboot" /proc/cmdline || reboot
-)&
+) &
 
 exit 0

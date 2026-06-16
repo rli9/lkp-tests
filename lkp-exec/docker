@@ -6,11 +6,11 @@ command="$1"
 shift
 
 case "$command" in
-	attach|build|init|install|rt|run|test)
-		$LKP_SRC/docker/$command "$@"
-		;;
-	*)
-		echo "Unknown command $command"
-		exit 1
-		;;
+attach | build | init | install | rt | run | test)
+	$LKP_SRC/docker/$command "$@"
+	;;
+*)
+	echo "Unknown command $command"
+	exit 1
+	;;
 esac

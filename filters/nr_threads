@@ -6,7 +6,7 @@ support_rapl()
 }
 
 [[ "$nr_threads" =~ %$ ]] || {
-	if (( nr_threads == 0 )); then
+	if ((nr_threads == 0)); then
 		echo "nr_cpu is $nr_cpu, nr_threads becomes 0, rm $job_file"
 		exit 2
 	else
@@ -16,7 +16,7 @@ support_rapl()
 nr_threads=${nr_threads%%%}
 nr_threads=${nr_threads%%.} # bash cannot handle float numbers
 
-(( nr_threads < 100 )) && ! support_rapl && {
+((nr_threads < 100)) && ! support_rapl && {
 	echo "rm $job_file to skip power testing on non-RAPL capable machine"
 	exit 1
 }

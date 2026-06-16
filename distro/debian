@@ -27,17 +27,18 @@ download()
 
 hardlink_to_symlink()
 {
-	while read -r line
-	do
-		read -r -a hard_links <<< "$line"
-		for i in {1..9}
-		do
+	while read -r line; do
+		read -r -a hard_links <<<"$line"
+		for i in {1..9}; do
 			[[ ${hard_links[$i]} ]] || break
 			echo \
-			ln -sf "${hard_links[0]#.}" "${hard_links[$i]}"
+				ln -sf "${hard_links[0]#.}" "${hard_links[$i]}"
 			ln -sf "${hard_links[0]#.}" "${hard_links[$i]}"
 		done
-	done < <(find . -type f -links +1 | while read i; do find . -samefile "$i" | awk '{printf "%s ", $1}'; printf "\n"; done | sort | uniq)
+	done < <(find . -type f -links +1 | while read i; do
+		find . -samefile "$i" | awk '{printf "%s ", $1}'
+		printf "\n"
+	done | sort | uniq)
 }
 
 install()
@@ -52,23 +53,22 @@ install()
 	#   gawk
 	[[ -s "opt/deb/sequence-deb.$BM_NAME" ]] && {
 		deb_files=$(find ./ -name "*.deb" -type f)
-		while read -r deb_pkgname
-		do
+		while read -r deb_pkgname; do
 			# deb package naming specification, the file name must contain '_'
 			deb_filename=$(echo "$deb_files" | grep "^\./${deb_pkgname}_")
 			if [[ -n "${deb_filename}" ]]; then
-				mv "$deb_filename"  opt/deb
+				mv "$deb_filename" opt/deb
 
 				# keep-deb content looks like:
 				#   libreadline7_7.0-1_amd64.deb
 				#   libssl1.1_1.1.0d-2_amd64.deb
 				#   gawk_1%3a4.1.3+dfsg-0.1+b1_amd64.deb
-				basename $deb_filename >> opt/deb/keep-deb.$BM_NAME
+				basename $deb_filename >>opt/deb/keep-deb.$BM_NAME
 			else
 				echo "error: $deb_pkgname is not exist." >&2
 				return 1
 			fi
-		done < opt/deb/sequence-deb.$BM_NAME
+		done <opt/deb/sequence-deb.$BM_NAME
 	}
 
 	local deb
@@ -124,7 +124,7 @@ pack()
 
 	{
 		find . -xdev |
-		grep -v -f $LKP_SRC/rootfs/rootfs-strip-list
+			grep -v -f $LKP_SRC/rootfs/rootfs-strip-list
 
 		local pkg_dir=$(get_pkg_dir $BM_NAME)
 		[[ -d $pkg_dir && -f $pkg_dir/allowlist ]] && cat $pkg_dir/allowlist
@@ -169,10 +169,10 @@ save_package_deps_info()
 	#   libreadline7
 	#   libssl1.1
 	#   gawk
-	[[ -n "$PACKAGE_LIST" ]] && \
-		echo "$PACKAGE_LIST" | grep -F -f "$LKP_SRC/distro/keep-deb" > "opt/deb/sequence-deb.$benchmark"
-	[[ -n "$PACKAGE_VERSION_LIST" ]] && \
-		echo "$PACKAGE_VERSION_LIST" > "opt/deb/${benchmark}-deps.packages"
+	[[ -n "$PACKAGE_LIST" ]] &&
+		echo "$PACKAGE_LIST" | grep -F -f "$LKP_SRC/distro/keep-deb" >"opt/deb/sequence-deb.$benchmark"
+	[[ -n "$PACKAGE_VERSION_LIST" ]] &&
+		echo "$PACKAGE_VERSION_LIST" >"opt/deb/${benchmark}-deps.packages"
 }
 
 do_apt_install()
@@ -223,7 +223,10 @@ fixup_distro_mirror()
 	# add extra apt source into sources.list
 	# use (echo) to append new line at last
 	[[ -f "$LKP_SRC/distro/apt-sources-list" ]] &&
-	($LKP_SRC/distro/apt-sources-list; echo) >> /etc/apt/sources.list
+		(
+			$LKP_SRC/distro/apt-sources-list
+			echo
+		) >>/etc/apt/sources.list
 
 	# remove testing and unstable source
 	[[ -f /etc/apt/sources.list ]] && sed -i -e '/testing/d' -e '/unstable/d' /etc/apt/sources.list
@@ -246,8 +249,7 @@ fixup_arch_install()
 
 pack_benchmark_deps()
 {
-	for BM_NAME in $benchmark
-	do
+	for BM_NAME in $benchmark; do
 		check_shared_package $BM_NAME
 
 		packages=$(get_dependency_packages $DISTRO $BM_NAME)
@@ -274,7 +276,7 @@ pack_benchmark_deps()
 		if download "$PACKAGE_VERSION_LIST"; then
 			install || exit 1
 			pack
-			echo "$PACKAGE_LIST" > $pack_to/.${BM_NAME}.packages
+			echo "$PACKAGE_LIST" >$pack_to/.${BM_NAME}.packages
 		else
 			echo "failed to pack-deps $BM_NAME" >&2
 		fi

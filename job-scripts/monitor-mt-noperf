@@ -20,12 +20,12 @@ export_top_env()
 	export result_root_template="/lkp/result/mytest/\$opt_test_name/\$testbox/\$rootfs/\$kconfig/\$compiler/\$commit"
 
 	[ -n "$LKP_SRC" ] ||
-	export LKP_SRC=/lkp/${user:-lkp}/src
+		export LKP_SRC=/lkp/${user:-lkp}/src
 }
 
 run_job()
 {
-	echo $$ > $TMP/run-job.pid
+	echo $$ >$TMP/run-job.pid
 
 	. $LKP_SRC/lib/http.sh
 	. $LKP_SRC/lib/job.sh

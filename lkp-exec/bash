@@ -3,13 +3,13 @@
 rc_file=$(mktemp -d /tmp/lkp-XXXXXX)
 trap 'rm -rf "$rc_file"' EXIT
 
-cat <<'EOF' > $rc_file
+cat <<'EOF' >$rc_file
 source $HOME/.bashrc
 export PS1="LKP:$PS1"
 EOF
 
 for lib in "$LKP_SRC"/lib/*.sh; do
-	echo "source $lib" >> $rc_file
+	echo "source $lib" >>$rc_file
 done
 
 /bin/bash --rcfile $rc_file

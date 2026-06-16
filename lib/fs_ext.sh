@@ -30,8 +30,7 @@ remove_dm()
 
 destroy_fs()
 {
-	for dev in $partitions
-	do
+	for dev in $partitions; do
 		do_wipefs $dev
 	done
 }
@@ -69,10 +68,9 @@ start_nfsd()
 		log_cmd mkdir /export
 		log_cmd mount -t tmpfs 'nfsv4_root_export' /export
 	}
-	echo "/export *(fsid=0,rw,no_subtree_check,no_root_squash)" > /etc/exports
+	echo "/export *(fsid=0,rw,no_subtree_check,no_root_squash)" >/etc/exports
 
-	for mp
-	do
+	for mp; do
 		log_cmd mkdir -p /export/$mp
 		log_cmd mount --bind $mp /export/$mp
 
@@ -93,7 +91,7 @@ start_nfsd()
 start_smbd()
 {
 	# setup smb.conf
-	cat >> /etc/samba/smb.conf <<EOF
+	cat >>/etc/samba/smb.conf <<EOF
 [fs]
    path = /fs
    comment = lkp cifs
@@ -101,7 +99,10 @@ start_smbd()
    read only = no
 EOF
 	# setup passwd
-	(echo "pass"; echo "pass") | smbpasswd -s -a "$(whoami)"
+	(
+		echo "pass"
+		echo "pass"
+	) | smbpasswd -s -a "$(whoami)"
 	# restart service
 	systemctl restart smbd.service
 }
@@ -109,25 +110,24 @@ EOF
 mount_local_cifs()
 {
 	local dir
-	for dir
-	do
+	for dir; do
 		local mnt=/cifs/"$(basename "$dir")"
 		local dev=//localhost$dir
 		log_cmd mkdir -p $mnt
 		log_cmd timeout 5m mount -t cifs $def_mount -o user=root,password=pass $dev $mnt
 		local errno=$?
 		case $errno in
-			0)
-				echo "mount cifs success"
-				;;
-			124)
-				echo "mount cifs timeout" >&2
-				exit $errno
-				;;
-			*)
-				echo "mount cifs failed"
-				exit $errno
-				;;
+		0)
+			echo "mount cifs success"
+			;;
+		124)
+			echo "mount cifs timeout" >&2
+			exit $errno
+			;;
+		*)
+			echo "mount cifs failed"
+			exit $errno
+			;;
 		esac
 		cifs_mount_points="${cifs_mount_points}$mnt "
 		cifs_server_paths="${cifs_server_paths}$dev "
@@ -137,25 +137,24 @@ mount_local_cifs()
 mount_local_nfs()
 {
 	local dir
-	for dir
-	do
+	for dir; do
 		local mnt=/nfs/"$(basename "$dir")"
 		local dev=localhost:$dir
 		log_cmd mkdir -p $mnt
 		log_cmd timeout 5m mount -t $fs ${mount:-$def_mount} $mount_option $dev $mnt
 		local errno=$?
 		case $errno in
-			0)
-				echo "mount nfs success"
-				;;
-			124)
-				echo "mount nfs timeout" >&2
-				exit $errno
-				;;
-			*)
-				echo "mount nfs failed"
-				exit $errno
-				;;
+		0)
+			echo "mount nfs success"
+			;;
+		124)
+			echo "mount nfs timeout" >&2
+			exit $errno
+			;;
+		*)
+			echo "mount nfs failed"
+			exit $errno
+			;;
 		esac
 		log_cmd touch $mnt/wait_for_nfs_grace_period
 		nfs_mount_points="${nfs_mount_points}$mnt "
@@ -166,7 +165,7 @@ mount_local_nfs()
 mount_tmpfs()
 {
 	local nr_tmpfs=$1
-	for i in $(seq 0 $((nr_tmpfs-1))); do
+	for i in $(seq 0 $((nr_tmpfs - 1))); do
 		local mnt=/fs/tmpfs$i
 		log_cmd mkdir -p $mnt
 		log_cmd mount -t tmpfs ${mount:-$def_mount} $mount_option none $mnt || exit

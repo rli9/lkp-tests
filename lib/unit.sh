@@ -4,14 +4,13 @@ export_meminfo()
 {
 	local key val unit
 
-	while read -r key val unit
-	do
+	while read -r key val unit; do
 		key="${key%%:}"
 		key="${key%%)}"
 		[ "${key#*\(}" != "$key" ] &&
-		key="${key%\(*}_${key#*\(}"
+			key="${key%\(*}_${key#*\(}"
 		export "$key=$val"
-	done < /proc/meminfo
+	done </proc/meminfo
 }
 
 to_byte()
@@ -26,24 +25,24 @@ to_byte()
 	}
 
 	case $unit in
-		PB|pb|P|p)
-			echo $((size << 50))
-			;;
-		TB|tb|T|t)
-			echo $((size << 40))
-			;;
-		GB|gb|G|g)
-			echo $((size << 30))
-			;;
-		MB|mb|M|m)
-			echo $((size << 20))
-			;;
-		KB|kb|K|k)
-			echo $((size << 10))
-			;;
-		B|b)
-			echo $size
-			;;
+	PB | pb | P | p)
+		echo $((size << 50))
+		;;
+	TB | tb | T | t)
+		echo $((size << 40))
+		;;
+	GB | gb | G | g)
+		echo $((size << 30))
+		;;
+	MB | mb | M | m)
+		echo $((size << 20))
+		;;
+	KB | kb | K | k)
+		echo $((size << 10))
+		;;
+	B | b)
+		echo $size
+		;;
 	esac
 }
 
@@ -74,28 +73,29 @@ to_seconds()
 	local unit
 
 	case $time in
-		*s)
-			unit=1
-			;;
-		*m)
-			unit=60
-			;;
-		*h)
-			unit=3600
-			;;
-		*d)
-			unit=$((24*3600))
-			;;
-		*w)
-			unit=$((7*24*3600))
-			;;
-		*y)
-			unit=$((365*24*3600))
-			;;
-		*)
-			echo $time
-			return
+	*s)
+		unit=1
+		;;
+	*m)
+		unit=60
+		;;
+	*h)
+		unit=3600
+		;;
+	*d)
+		unit=$((24 * 3600))
+		;;
+	*w)
+		unit=$((7 * 24 * 3600))
+		;;
+	*y)
+		unit=$((365 * 24 * 3600))
+		;;
+	*)
+		echo $time
+		return
+		;;
 	esac
 
-	echo $(( ${time%?} * unit ))
+	echo $((${time%?} * unit))
 }

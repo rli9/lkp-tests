@@ -86,8 +86,7 @@ set_perf_path()
 
 set_iptables_path()
 {
-	for iptables_bin in iptables ip6tables
-	do
+	for iptables_bin in iptables ip6tables; do
 		has_cmd $iptables_bin || {
 			if has_cmd $iptables_bin-nft; then
 				ln -sfv "$(cmd_path "$iptables_bin-nft")" "/usr/sbin/$iptables_bin"
@@ -105,8 +104,8 @@ set_iptables_path()
 disable_nmi_watchdog()
 {
 	# Disable NMI watchdog to free up one perf counter
-	test -e  /proc/sys/kernel/nmi_watchdog &&
-	echo 0 > /proc/sys/kernel/nmi_watchdog
+	test -e /proc/sys/kernel/nmi_watchdog &&
+		echo 0 >/proc/sys/kernel/nmi_watchdog
 }
 
 need_run_on_vmm()
@@ -135,11 +134,11 @@ get_kconfig()
 {
 	local config_file="$1"
 	if [[ -e "/proc/config.gz" ]]; then
-		gzip -dc "/proc/config.gz" > "$config_file"
+		gzip -dc "/proc/config.gz" >"$config_file"
 	elif [[ -e "/boot/config-$(uname -r)" ]]; then
-		cat "/boot/config-$(uname -r)" > "$config_file"
+		cat "/boot/config-$(uname -r)" >"$config_file"
 	elif [[ -e "/boot/config" ]]; then
-		cat "/boot/config" > "$config_file"
+		cat "/boot/config" >"$config_file"
 	else
 		echo "Failed to get current kernel config"
 		return 1

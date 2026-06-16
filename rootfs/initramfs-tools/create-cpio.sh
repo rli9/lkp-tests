@@ -6,7 +6,7 @@ cd "$dir" || exit
 
 echo "\
 find * | cpio -o -H newc | gzip -n -9 > ../$dir.cgz"
-find * | cpio -o -H newc | gzip -n -9 > ../$dir.cgz
+find * | cpio -o -H newc | gzip -n -9 >../$dir.cgz
 
 cd ..
 

@@ -34,7 +34,7 @@ load_container()
 		value=$(echo $value | xargs)
 
 		[[ $value ]] && eval "opt_$key=$value"
-	done < $container
+	done <$container
 
 	return 0
 }

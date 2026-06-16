@@ -13,12 +13,12 @@ escape_cgi_param()
 	# uri=${uri//:/%3A}
 	# uri=${uri//;/%3D}
 	echo "$uri" |
-	sed -r	-e 's/%/%25/g' \
-		-e 's/\+/%2B/g' \
-		-e 's/&/%26/g' \
-		-e 's/#/%23/g' \
-		-e 's/\?/%3F/g' \
-		-e 's/ /%20/g'
+		sed -r -e 's/%/%25/g' \
+			-e 's/\+/%2B/g' \
+			-e 's/&/%26/g' \
+			-e 's/#/%23/g' \
+			-e 's/\?/%3F/g' \
+			-e 's/ /%20/g'
 }
 
 reset_broken_ipmi()
@@ -88,7 +88,9 @@ http_do_request()
 	local path="$1"
 	shift
 
-	{ [ -n "$NO_NETWORK$VM_VIRTFS" ] || [ -z "$LKP_SERVER$HTTP_PREFIX" ]; } && {
+	{
+		[ -n "$NO_NETWORK$VM_VIRTFS" ] || [ -z "$LKP_SERVER$HTTP_PREFIX" ]
+	} && {
 		echo skip http request: $path "$@"
 		return
 	}
@@ -104,7 +106,7 @@ http_do_request()
 	fi
 
 	echo \
-	$http_client_cmd "$http_prefix/$path" "$@"
+		$http_client_cmd "$http_prefix/$path" "$@"
 	$http_client_cmd "$http_prefix/$path" "$@"
 }
 
@@ -112,9 +114,9 @@ http_setup_client()
 {
 	[ -n "$http_client_cmd" ] && return
 
-	. $LKP_SRC/lib/wget.sh	&& return
-	. $LKP_SRC/lib/curl.sh	&& return
-	. $LKP_SRC/lib/wget_busybox.sh	&& return
+	. $LKP_SRC/lib/wget.sh && return
+	. $LKP_SRC/lib/curl.sh && return
+	. $LKP_SRC/lib/wget_busybox.sh && return
 
 	echo "Cannot find wget/curl." >&2
 	return 1

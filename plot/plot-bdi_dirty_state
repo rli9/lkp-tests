@@ -2,12 +2,13 @@
 
 #	dd-3853  [004]   159.775867: bdi_dirty_state: bdi 8:64: reclaimable=27052 writeback=4100 thresh=74 dirtied=31200 written=80
 
-plot() {
-data=$1
-suffix=$2
-ls=points
-[[ $suffix =~ '300'$ ]] && ls=linespoints
-gnuplot <<EOF
+plot()
+{
+	data=$1
+	suffix=$2
+	ls=points
+	[[ $suffix =~ '300'$ ]] && ls=linespoints
+	gnuplot <<EOF
 set xlabel "time (s)"
 
 set size 1
@@ -25,11 +26,11 @@ plot \
 EOF
 }
 
-gnuplot_dirtied_written() {
+gnuplot_dirtied_written()
+{
 	prefix=$1
 	comma=""
-	for bdi in $bdis
-	do
+	for bdi in $bdis; do
 		# bdi=${file#$prefix-}
 		file=$prefix-$bdi
 		test -s $file || break
@@ -43,9 +44,10 @@ gnuplot_dirtied_written() {
 	echo
 }
 
-plot_all() {
-data=$1
-gnuplot <<EOF
+plot_all()
+{
+	data=$1
+	gnuplot <<EOF
 set xlabel "time (s)"
 
 set size 1
@@ -62,36 +64,43 @@ EOF
 
 [[ -f trace || -f ftrace.gz ]] || exit
 
-trace_tab() {
-	grep -o "[0-9.]\+: $1: .*" |\
-	sed -e 's/bdi [^ ]\+//' \
-	    -e 's/[^0-9.-]\+/ /g'
+trace_tab()
+{
+	grep -o "[0-9.]\+: $1: .*" |
+		sed -e 's/bdi [^ ]\+//' \
+			-e 's/[^0-9.-]\+/ /g'
 }
 
 trace="trace-bdi_dirty_state"
 
-bdis=$({ cat trace || zcat ftrace.gz; } |\
-		grep -F "bdi_dirty_state: bdi " |\
-		head -n 1000 |\
-		sed 's/.* bdi_dirty_state: bdi \([^ ]\+\): .*/\1/' |\
-		sort -u)
+bdis=$({
+	cat trace || zcat ftrace.gz
+} |
+	grep -F "bdi_dirty_state: bdi " |
+	head -n 1000 |
+	sed 's/.* bdi_dirty_state: bdi \([^ ]\+\): .*/\1/' |
+	sort -u)
 
 # bdis=$(cut -d' ' -f3 mountinfo)
 
 [[ $bdis ]] || exit
 
 n=0
-for bdi in $bdis
-do
-	{ cat trace || zcat ftrace.gz; } |\
-		grep -F "bdi_dirty_state: bdi $bdi: " |\
-		trace_tab bdi_dirty_state > $trace-$bdi
-	test -s $trace-$bdi || { rm $trace-$bdi; exit; }
-	tail -n300 $trace-$bdi > $trace-$bdi-300
+for bdi in $bdis; do
+	{
+		cat trace || zcat ftrace.gz
+	} |
+		grep -F "bdi_dirty_state: bdi $bdi: " |
+		trace_tab bdi_dirty_state >$trace-$bdi
+	test -s $trace-$bdi || {
+		rm $trace-$bdi
+		exit
+	}
+	tail -n300 $trace-$bdi >$trace-$bdi-300
 
 	plot $trace-$bdi -$bdi
 	plot $trace-$bdi-300 -$bdi-300
-	(( n=n+1 ))
+	((n = n + 1))
 	[[ $n -ge 3 ]] && break
 done
 

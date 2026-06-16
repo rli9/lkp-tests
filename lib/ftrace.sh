@@ -17,7 +17,7 @@ ftrace_set()
 {
 	target=$1
 	shift
-	stdbuf -oL echo "$@" > "$TRACING/$target"
+	stdbuf -oL echo "$@" >"$TRACING/$target"
 }
 
 ftrace_set_cpulist()
@@ -30,7 +30,7 @@ ftrace_set_cpulist()
 	target=$1
 	shift
 	for cpu in $ftrace_cpulist; do
-		stdbuf -oL echo "$@" > "$TRACING/per_cpu/cpu$cpu/$target"
+		stdbuf -oL echo "$@" >"$TRACING/per_cpu/cpu$cpu/$target"
 	done
 }
 
@@ -38,7 +38,7 @@ ftrace_append()
 {
 	target=$1
 	shift
-	stdbuf -oL echo "$@" >> "$TRACING/$target"
+	stdbuf -oL echo "$@" >>"$TRACING/$target"
 }
 
 echo_time()
@@ -50,8 +50,7 @@ ftrace_reset()
 {
 	ftrace_set tracing_on 0
 	ftrace_set current_tracer nop
-	for knob in set_event set_ftrace_filter set_graph_function trace
-	do
+	for knob in set_event set_ftrace_filter set_graph_function trace; do
 		ftrace_set "$knob"
 	done
 }
@@ -62,10 +61,10 @@ ftrace_test_save_time_delta()
 
 	[ "$(hostname)" = avoton2 ] &&
 		grep -q -F uptime "$TRACING/trace_clock" && {
-			ftrace_set trace_clock uptime
-			echo 0 > "$time_delta_file"
-			return
-		}
+		ftrace_set trace_clock uptime
+		echo 0 >"$time_delta_file"
+		return
+	}
 
 	ftrace_reset
 	ftrace_set tracing_on 1
@@ -76,7 +75,7 @@ ftrace_test_save_time_delta()
 		exit 0
 	}
 	ftrace_set tracing_on 0
-	echo "$date_ts - ${trace_ts%%:*}" | bc > "$time_delta_file"
+	echo "$date_ts - ${trace_ts%%:*}" | bc >"$time_delta_file"
 	ftrace_set trace
 }
 
@@ -137,8 +136,7 @@ ftrace_set_params()
 ftrace_show_params()
 {
 	for param in buffer_size_kb set_event current_tracer set_ftrace_filter \
-				    set_graph_function tracing_on trace_options
-	do
+		set_graph_function tracing_on trace_options; do
 		echo "$param:" "$(ftrace_get "$param")"
 	done
 	echo "cpu set: $ftrace_cpulist"
@@ -174,7 +172,7 @@ ftrace_run()
 	ftrace_stop
 
 	$WAIT_POST_TEST_CMD
-	cat >> "$TMP_RESULT_ROOT/post-run.ftrace" <<EOF
+	cat >>"$TMP_RESULT_ROOT/post-run.ftrace" <<EOF
 #!/bin/sh
 
 if [ -n "$ftrace_cpulist" ]; then

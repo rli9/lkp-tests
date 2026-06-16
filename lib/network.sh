@@ -7,11 +7,10 @@ get_net_devices()
 {
 	local net_devices
 	local i
-	for i in /sys/class/net/*/
-	do
+	for i in /sys/class/net/*/; do
 		[ "${i#*/lo/}" != "$i" ] && continue
 		[ "${i#*/eth}" != "$i" ] && net_devices="$net_devices $(basename $i)"
-		[ "${i#*/en}"  != "$i" ] && net_devices="$net_devices $(basename $i)"
+		[ "${i#*/en}" != "$i" ] && net_devices="$net_devices $(basename $i)"
 	done
 
 	echo "$net_devices"
@@ -23,8 +22,7 @@ net_devices_link()
 	local net_devices
 	net_devices=$(get_net_devices)
 	local ndev
-	for ndev in $net_devices
-	do
+	for ndev in $net_devices; do
 		if has_cmd ip; then
 			ip link set $ndev $operation
 		elif has_cmd ifconfig; then
@@ -36,11 +34,10 @@ net_devices_link()
 network_ok()
 {
 	local i
-	for i in /sys/class/net/*/
-	do
+	for i in /sys/class/net/*/; do
 		[ "${i#*/lo/}" != "$i" ] && continue
-		[ "$(cat $i/operstate)" = 'up' ]		&& return 0
-		[ "$(cat $i/carrier 2>/dev/null)" = '1' ]	&& return 0
+		[ "$(cat $i/operstate)" = 'up' ] && return 0
+		[ "$(cat $i/carrier 2>/dev/null)" = '1' ] && return 0
 	done
 
 	return 1
@@ -49,7 +46,10 @@ network_ok()
 network_up()
 {
 	net_devices_link up
-	network_ok || { echo "LKP: waiting for network..."; sleep 10; }
+	network_ok || {
+		echo "LKP: waiting for network..."
+		sleep 10
+	}
 	network_ok || sleep 20
 	network_ok || sleep 30
 	network_ok || return 1
@@ -72,6 +72,6 @@ network_down()
 {
 	set_tbox_wtmp 'network_down'
 	# backup route table
-	ip route > /tmp/ip_route
+	ip route >/tmp/ip_route
 	net_devices_link down
 }

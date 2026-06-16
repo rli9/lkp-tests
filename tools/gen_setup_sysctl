@@ -1,33 +1,34 @@
 #!/bin/sh
 
 output=$LKP_SRC/setup/sysctl
-echo "#!/bin/sh" > $output
+echo "#!/bin/sh" >$output
 
 # params
 find /proc/sys -maxdepth 2 -type f | sort -u |
-while read -r i
-do
-	j=$(basename $i | sed -r 's/-/_/g')
-	echo "# - sc_$j" >> $output
-done
+	while read -r i; do
+		j=$(basename $i | sed -r 's/-/_/g')
+		echo "# - sc_$j" >>$output
+	done
 
-cat >> "$output" <<EOF
+cat >>"$output" <<EOF
 
 . \$LKP_SRC/lib/reproduce-log.sh
 
 EOF
 
 # set
-for i in $(find /proc/sys -maxdepth 2 -type f| sort -u)
-do
+for i in $(find /proc/sys -maxdepth 2 -type f | sort -u); do
 	j=$(basename $i | sed -r 's/-/_/g')
-	cat >> $output << EOF
+	cat >>$output <<EOF
 [ -n "\$sc_$j" ] && log_eval "echo '\$sc_$j' > '$i'"
 EOF
 done
 
 # The script will return 1 unless the job file has set value for the last param
 # As returnning 1 will break the job run, return 0 explicitely.
-(echo; echo "exit 0") >> $output
+(
+	echo
+	echo "exit 0"
+) >>$output
 
 chmod +x $LKP_SRC/setup/sysctl

@@ -8,66 +8,66 @@ set -e
 
 while getopts "d:i:j:g:t:-:" opt; do
 	case $opt in
-		i)
-			opt_image="$OPTARG"
+	i)
+		opt_image="$OPTARG"
+		;;
+	j)
+		opt_job_yaml="$OPTARG"
+		;;
+	d)
+		opt_test_dir="$OPTARG"
+		;;
+	g)
+		opt_pattern="$OPTARG"
+		;;
+	t)
+		opt_container="$OPTARG"
+		;;
+	-)
+		case "${OPTARG}" in
+		any)
+			opt_any="--any"
 			;;
-		j)
-			opt_job_yaml="$OPTARG"
+		container)
+			opt_container="${!OPTIND}"
+			OPTIND=$((OPTIND + 1))
 			;;
-		d)
-			opt_test_dir="$OPTARG"
+		image)
+			opt_image="${!OPTIND}"
+			OPTIND=$((OPTIND + 1))
 			;;
-		g)
-			opt_pattern="$OPTARG"
+		hostname)
+			opt_hostname="${!OPTIND}"
+			OPTIND=$((OPTIND + 1))
 			;;
-		t)
-			opt_container="$OPTARG"
+		job-yaml)
+			opt_job_yaml="${!OPTIND}"
+			OPTIND=$((OPTIND + 1))
 			;;
-		-)
-			case "${OPTARG}" in
-				any)
-				    opt_any="--any"
-					;;
-				container)
-					opt_container="${!OPTIND}"
-					OPTIND=$((OPTIND + 1))
-					;;
-				image)
-					opt_image="${!OPTIND}"
-					OPTIND=$((OPTIND + 1))
-					;;
-				hostname)
-					opt_hostname="${!OPTIND}"
-					OPTIND=$((OPTIND + 1))
-					;;
-				job-yaml)
-					opt_job_yaml="${!OPTIND}"
-					OPTIND=$((OPTIND + 1))
-					;;
-				pattern)
-					opt_pattern="${!OPTIND}"
-					OPTIND=$((OPTIND + 1))
-					;;
-				proxy)
-					opt_proxy="${!OPTIND}"
-					OPTIND=$((OPTIND + 1))
-					;;
-				recreate)
-					opt_recreate=true
-					;;
-				privileged)
-					opt_privileged=true
-					;;
-				*)
-					echo "Unknown option --${OPTARG}"
-					exit 1
-					;;
-			esac
+		pattern)
+			opt_pattern="${!OPTIND}"
+			OPTIND=$((OPTIND + 1))
+			;;
+		proxy)
+			opt_proxy="${!OPTIND}"
+			OPTIND=$((OPTIND + 1))
+			;;
+		recreate)
+			opt_recreate=true
+			;;
+		privileged)
+			opt_privileged=true
 			;;
 		*)
-			echo "Unknown option -$opt"
+			echo "Unknown option --${OPTARG}"
 			exit 1
 			;;
+		esac
+		;;
+	*)
+		echo "Unknown option -$opt"
+		exit 1
+		;;
 	esac
 done
 
@@ -112,8 +112,7 @@ test()
 	[[ $proxy ]] && proxy_env="http_proxy=$proxy https_proxy=$proxy"
 
 	eval ${proxy_env} lkp install "${jobs[0]}" && [[ $action = test ]] && {
-		for job in "${jobs[@]}"
-		do
+		for job in "${jobs[@]}"; do
 			lkp run "$job"
 		done
 	}

@@ -9,17 +9,19 @@ sync_distro_sources()
 	distro_version=$_system_version
 
 	case $distro in
-	debian|ubuntu) apt-get update ;;
-	fedora|amazon_linux)
+	debian | ubuntu) apt-get update ;;
+	fedora | amazon_linux)
 		if [ "$distro_version" -ge 22 ]; then
 			dnf update
 		else
 			yum update
-		fi ;;
-	redhat|rocky) yum update ;;
-	archlinux) yay -Sy --needed;;
+		fi
+		;;
+	redhat | rocky) yum update ;;
+	archlinux) yay -Sy --needed ;;
 	opensuse)
-		zypper update ;;
+		zypper update
+		;;
 	oracle) yum update ;;
 	*) echo "Not support $distro to do update" ;;
 	esac
@@ -53,8 +55,7 @@ adapt_packages()
 
 	local distro_pkg=
 
-	for pkg in $generic_packages
-	do
+	for pkg in $generic_packages; do
 		local mapping=""
 		local is_arch_dep="$(echo $pkg | grep ":")"
 		if [ -n "$is_arch_dep" ]; then
@@ -136,30 +137,30 @@ map_python_packages()
 	#	debian 11 and higher version source anymore
 	#	ubuntu 20.04 and higher version source anymore
 	case "$distro-$_system_version" in
-		amazon_linux-2023)
-			map_python2_to_python3
-			;;
-		debian-1[1-9]*|debian-trixie_sid|debian-bookworm_sid)
-			map_python2_to_python3
-			;;
-		ubuntu-2[0-9].*)
-			map_python2_to_python3
-			;;
-		fedora-[3][8-9]*|fedora-41)
-			map_python2_to_python3
-			;;
-		centos-[9]*)
-			map_python2_to_python3
-			;;
-		opensuse-*)
-			map_python2_to_python3
-			;;
-		rocky-[9]*)
-			map_python2_to_python3
-			;;
-		oracle-[9]*)
-			map_python2_to_python3
-			;;
+	amazon_linux-2023)
+		map_python2_to_python3
+		;;
+	debian-1[1-9]* | debian-trixie_sid | debian-bookworm_sid)
+		map_python2_to_python3
+		;;
+	ubuntu-2[0-9].*)
+		map_python2_to_python3
+		;;
+	fedora-[3][8-9]* | fedora-41)
+		map_python2_to_python3
+		;;
+	centos-[9]*)
+		map_python2_to_python3
+		;;
+	opensuse-*)
+		map_python2_to_python3
+		;;
+	rocky-[9]*)
+		map_python2_to_python3
+		;;
+	oracle-[9]*)
+		map_python2_to_python3
+		;;
 	esac
 }
 
@@ -191,8 +192,7 @@ get_adaptation_pkg()
 	local distro_file="$LKP_SRC/distro/adaptation-pkg/$distro"
 	local distro_pkg=
 
-	for pkg in $generic_packages
-	do
+	for pkg in $generic_packages; do
 		local mapping="$(adapt_package $pkg $distro_file | tail -1)"
 		if [ -n "$mapping" ]; then
 			distro_pkg=$(echo $mapping | awk -F": " '{print $2}')
@@ -268,8 +268,8 @@ build_depends_pkg()
 		local pkg_dir="$(get_pkg_dir "$pkg")"
 		if [ -n "$pkg_dir" ]; then
 			(
-				cd "$pkg_dir" && \
-				PACMAN="$LKP_SRC/sbin/pacman-LKP" "$LKP_SRC/sbin/makepkg" $INSTALL --config "$LKP_SRC/etc/makepkg.conf" --skippgpcheck
+				cd "$pkg_dir" &&
+					PACMAN="$LKP_SRC/sbin/pacman-LKP" "$LKP_SRC/sbin/makepkg" $INSTALL --config "$LKP_SRC/etc/makepkg.conf" --skippgpcheck
 				cp -rf "$pkg_dir/pkg/$pkg"/* "$dest"
 				rm -rf "$pkg_dir/"{src,pkg}
 			)
@@ -288,11 +288,11 @@ parse_yaml()
 	local w='[a-zA-Z0-9_-]*'
 	local tmp_filter="$(mktemp /tmp/lkp-install-XXXXXXXXX)"
 
-	ls $LKP_SRC/programs > $tmp_filter
+	ls $LKP_SRC/programs >$tmp_filter
 
 	scripts=$(cat $1 | sed -ne "s|^\($s\):|\1|" \
-	         -e "s|^\($s\)\($w\)$s:${s}[\"']\(.*\)[\"']$s\$|\2|p" \
-	         -e "s|^\($s\)\($w\)$s:$s\(.*\)$s\$|\2|p" | grep -x -F -f \
-	         $tmp_filter | grep -v -e ':$' -e '^$' | sort -u)
+		-e "s|^\($s\)\($w\)$s:${s}[\"']\(.*\)[\"']$s\$|\2|p" \
+		-e "s|^\($s\)\($w\)$s:$s\(.*\)$s\$|\2|p" | grep -x -F -f \
+		$tmp_filter | grep -v -e ':$' -e '^$' | sort -u)
 	rm "$tmp_filter"
 }

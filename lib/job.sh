@@ -7,12 +7,11 @@ read_env_vars()
 	local key
 	local val
 
-	while read -r key val
-	do
+	while read -r key val; do
 		[ "${key%[a-zA-Z0-9_]:}" != "$key" ] || continue
 		key=${key%:}
 		export "$key=$val"
-	done < $TMP/env.yaml
+	done <$TMP/env.yaml
 
 	return 0
 }
@@ -43,7 +42,7 @@ wakeup_pre_test()
 		$LKP_SRC/bin/event/wakeup pre-test # compatibility code, remove after 1 month
 	fi
 	sleep 1
-	date '+%s' > $TMP/start_time
+	date '+%s' >$TMP/start_time
 }
 
 should_wait_cluster()
@@ -73,8 +72,7 @@ sync_cluster_state()
 
 wait_cluster_state()
 {
-	for i in $(seq 100)
-	do
+	for i in $(seq 100); do
 		result=$(sync_cluster_state $1)
 		case $result in
 		'abort')
@@ -86,17 +84,16 @@ wait_cluster_state()
 		'finish')
 			return
 			;;
-		'retry')
-			;;
+		'retry') ;;
 		esac
 	done
 
 	wakeup_pre_test
-	echo "cluster.abort: 1" >> $TMP_RESULT_ROOT/last_state
+	echo "cluster.abort: 1" >>$TMP_RESULT_ROOT/last_state
 
 	[ "$i" -eq 100 ] && {
 		sync_cluster_state 'abort'
-		echo "cluster.timeout: 1" >> $TMP_RESULT_ROOT/last_state
+		echo "cluster.timeout: 1" >>$TMP_RESULT_ROOT/last_state
 	}
 
 	exit 1
@@ -107,18 +104,17 @@ wait_other_nodes()
 	should_wait_cluster || return
 
 	local program_type=$1
-	[ "$program_type" = 'test' ] && echo "${*#test }" >> $TMP/executed-test-programs
+	[ "$program_type" = 'test' ] && echo "${*#test }" >>$TMP/executed-test-programs
 
 	mkdir $TMP/wait_other_nodes-once 2>/dev/null || return
 
 	sync_cluster_state 'write_state' "node_roles=$(echo "$node_roles" | tr -s ' ' '+')" \
-					 "ip=$(hostname -I | cut -d' ' -f1)" \
-					 "direct_macs=$(echo "$direct_macs" | tr -s ' ' '+')" \
-					 "direct_ips=$(echo "$direct_ips" | tr -s ' ' '+')"
+		"ip=$(hostname -I | cut -d' ' -f1)" \
+		"direct_macs=$(echo "$direct_macs" | tr -s ' ' '+')" \
+		"direct_ips=$(echo "$direct_ips" | tr -s ' ' '+')"
 
 	local idx=1
-	for mac in $direct_macs
-	do
+	for mac in $direct_macs; do
 		local device ip
 		device=$(ip link | grep -B1 $mac | awk -F': ' 'NR==1 {print $2}')
 		ip=$(echo $direct_ips | cut -d' ' -f $idx)
@@ -172,8 +168,8 @@ check_exit_code()
 	# when setup scripts fail, the monitors should be wakeup
 	wakeup_pre_test
 
-	echo "${program_type}.${program}.exit_code.$exit_code: 1" >> $TMP_RESULT_ROOT/last_state
-	echo "exit_fail: 1"				>> $TMP_RESULT_ROOT/last_state
+	echo "${program_type}.${program}.exit_code.$exit_code: 1" >>$TMP_RESULT_ROOT/last_state
+	echo "exit_fail: 1" >>$TMP_RESULT_ROOT/last_state
 	sync_cluster_state 'failed'
 	exit "$exit_code"
 }
@@ -183,12 +179,11 @@ get_program_name()
 	local i
 	local program
 
-	for i
-	do
+	for i; do
 		[ "$i" != "${i#*=}" ] && continue # skip env NAME=VALUE
 
 		case $i in
-		*/bin/run-test|*/bin/run-setup|*/bin/run-daemon|*/bin/run-monitor|*/bin/run-plain-monitor|*/bin/run-no-stdout-monitor|*/bin/run-one-shot-monitor) continue ;;
+		*/bin/run-test | */bin/run-setup | */bin/run-daemon | */bin/run-monitor | */bin/run-plain-monitor | */bin/run-no-stdout-monitor | */bin/run-one-shot-monitor) continue ;;
 		esac
 
 		program=${i##*/}
@@ -204,7 +199,7 @@ record_program()
 {
 	local program
 	program=$(get_program_name "$@") || return 1
-	echo "${program}" >> $TMP/program_list
+	echo "${program}" >>$TMP/program_list
 	echo "${program}"
 }
 
@@ -218,9 +213,8 @@ run_program()
 
 	local program="$(record_program "$@")"
 
-	for i
-	do
-		[ "$i" != "${i#*=}" ] && {	 # env NAME=VALUE
+	for i; do
+		[ "$i" != "${i#*=}" ] && { # env NAME=VALUE
 			has_env=1
 			break
 		}
@@ -267,7 +261,7 @@ run_setup()
 start_daemon()
 {
 	# will be killed by watchdog when timeout
-	echo $$ >> $TMP/pid-start-daemon
+	echo $$ >>$TMP/pid-start-daemon
 
 	# If cs-localhost mode, the pid of daemon is recorded and will be used
 	# to kill it in bin/post-run when the task is finished
@@ -289,7 +283,7 @@ start_daemon()
 		# above is not expected in our usage case.
 		local daemon="$(get_program_name "$@")"
 		run_program_in_background "$@"
-		echo $! >> $TMP/pid-bg-proc-$daemon
+		echo $! >>$TMP/pid-bg-proc-$daemon
 	else
 		run_program daemon "$@"
 	fi
@@ -320,7 +314,7 @@ run_test()
 	else
 		# wait other nodes may block until watchdog timeout,
 		# it should be able to killed by watchdog
-		echo $$ >> $TMP/pid-run-tests
+		echo $$ >>$TMP/pid-run-tests
 
 		wait_other_nodes 'test'
 		wakeup_pre_test
@@ -328,4 +322,3 @@ run_test()
 		sync_cluster_state 'finished'
 	fi
 }
-

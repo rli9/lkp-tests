@@ -29,8 +29,7 @@ setup_threads_to_iterate()
 	}
 
 	local i
-	for i in $(seq $nr_node)
-	do
+	for i in $(seq $nr_node); do
 		threads_to_iterate="${threads_to_iterate} ${cores_per_llc} $((i * cores_per_node))"
 	done
 
@@ -48,18 +47,17 @@ calc_cpu_utilization()
 	local sleep_secs=${1:-10}
 	local cpu user_t nice_t system_t previdle_t idle_t rest
 
-	read -r cpu user_t nice_t system_t previdle_t rest < /proc/stat
-	local prevtotal_t=$((user_t+nice_t+system_t+previdle_t))
+	read -r cpu user_t nice_t system_t previdle_t rest </proc/stat
+	local prevtotal_t=$((user_t + nice_t + system_t + previdle_t))
 
 	sleep $sleep_secs
 
-	read -r cpu user_t nice_t system_t idle_t rest < /proc/stat
-	local total_t=$((user_t+nice_t+system_t+idle_t))
+	read -r cpu user_t nice_t system_t idle_t rest </proc/stat
+	local total_t=$((user_t + nice_t + system_t + idle_t))
 
 	if [ $prevtotal_t -eq $total_t ]; then
 		cpu_utilization=0
 	else
-		cpu_utilization=$((100*((total_t-prevtotal_t)-(idle_t-previdle_t))/(total_t-prevtotal_t)))
+		cpu_utilization=$((100 * ((total_t - prevtotal_t) - (idle_t - previdle_t)) / (total_t - prevtotal_t)))
 	fi
 }
-

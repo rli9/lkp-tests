@@ -3,10 +3,11 @@
 # writeback_single_inode: bdi 0:21: ino=7307423 state=I_DIRTY_DATASYNC dirtied_when=xxx age=0 wrote=460 nr_to_write=14862
 #                                       2                                  3		4       5               6
 
-plot_inode() {
-data=$1
-suffix=$2
-gnuplot <<EOF
+plot_inode()
+{
+	data=$1
+	suffix=$2
+	gnuplot <<EOF
 set xlabel "time (s)"
 
 set size 1
@@ -24,10 +25,11 @@ plot "$data" using 1:(\$7/256)  axis x1y1 with      points pt 5 ps 0.6 title "wr
 EOF
 }
 
-plot() {
-data=$1
-suffix=$2
-gnuplot <<EOF
+plot()
+{
+	data=$1
+	suffix=$2
+	gnuplot <<EOF
 set xlabel "time (s)"
 
 set size 1
@@ -51,21 +53,22 @@ trace="trace-writeback_single_inode"
 ino=$(awk '{print $1; exit}' ls-files)
 [[ -n $ino ]] || exit
 
-trace_tab() {
-	grep -o "[0-9.]\+: $1: .*" |\
-	sed -e 's/bdi [^ ]\+//' \
-	    -e 's/[^0-9.-]\+/ /g'
+trace_tab()
+{
+	grep -o "[0-9.]\+: $1: .*" |
+		sed -e 's/bdi [^ ]\+//' \
+			-e 's/[^0-9.-]\+/ /g'
 }
 
-zcat ftrace.gz | grep -F "writeback_single_inode" |\
-	trace_tab writeback_single_inode |\
-	awk '{ if ($6 < 123456789) print }' > $trace
+zcat ftrace.gz | grep -F "writeback_single_inode" |
+	trace_tab writeback_single_inode |
+	awk '{ if ($6 < 123456789) print }' >$trace
 
-plot 		$trace
+plot $trace
 
-awk "{ if (\$2 == $ino) print }" < $trace > $trace-ino=$ino
+awk "{ if (\$2 == $ino) print }" <$trace >$trace-ino=$ino
 
-plot_inode	$trace-ino=$ino -ino=$ino
+plot_inode $trace-ino=$ino -ino=$ino
 
 # lines=$(wc -l $trace | cut -f1 -d' ')
 # if [[ $lines -ge 300 ]]; then

@@ -14,5 +14,5 @@ echo "LKP_SRC=$LKP_SRC"
 	find $LKP_SRC/programs -type f -name depends\*
 	find $LKP_SRC/etc -type f ! -name makepkg.conf ! -name \*.yml
 ) | while read -r f; do
-	LC_ALL=C sort -f $f | uniq > $f.tmp && mv $f.tmp $f
+	LC_ALL=C sort -f $f | uniq >$f.tmp && mv $f.tmp $f
 done
