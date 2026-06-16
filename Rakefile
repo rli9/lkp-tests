@@ -5,6 +5,11 @@ require 'rspec/core/rake_task'
 require 'fileutils'
 require 'rubocop/rake_task'
 require 'English'
+require 'term/ansicolor'
+
+class String
+  include Term::ANSIColor
+end
 
 desc 'Show help'
 task :help do
@@ -84,9 +89,14 @@ end
 
 desc 'Run shfmt'
 task :shfmt do
-  executables = ENV['file'] || `find -type f -executable ! -path "./.git*"  ! -path "./vendor*" ! -size +100k | xargs -P$(nproc) grep -s -l -e '^#!/.*bash$' -e '^#!/bin/sh$'`.split("\n").join(' ')
+  executables = if ENV['file']
+                  ENV['file']
+                else
+                  dir = ENV['dir'] || '.'
+                  `find #{dir} -type f -executable ! -path "./.git*" ! -path "./vendor*" ! -size +100k | xargs -P$(nproc) grep -s -l -e '^#!/.*bash$' -e '^#!/bin/sh$'`.split("\n").join(' ')
+                end
 
-  sh "shfmt -d -ln bash -i 0 -fn #{executables}", verbose: false do |ok, res|
+  sh "shfmt -w -ln bash -i 0 -fn #{executables}", verbose: false do |ok, res|
     if ok
       puts 'shfmt OK'.green
     else
