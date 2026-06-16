@@ -30,26 +30,28 @@ set_local_variables()
 	export arch=$(get_system_arch)
 	export compiler=$(grep -o "gcc version [0-9]*" /proc/version | awk '{print "gcc-"$NF}')
 	export compiler=${compiler:-gcc}
-	export rootfs=$(source /etc/os-release; echo $ID)
+	export rootfs=$(
+		source /etc/os-release
+		echo $ID
+	)
 	export rootfs=${rootfs:-default_rootfs}
 
 	export testbox=$HOSTNAME
 	export tbox_group=$HOSTNAME
 	export nr_cpu=$(grep -c ^processor /proc/cpuinfo)
 	local x=$(awk '/MemTotal/ {print $2}' /proc/meminfo)
-	export memory=$((x/1024/1024 + 1))G
+	export memory=$((x / 1024 / 1024 + 1))G
 }
 
-while getopts "o:s:" opt
-do
+while getopts "o:s:" opt; do
 	case $opt in
-	o ) opt_result_root="$OPTARG" ;;
-	s ) opt_test_name="$OPTARG" ;;
-	? ) usage ;;
+	o) opt_result_root="$OPTARG" ;;
+	s) opt_test_name="$OPTARG" ;;
+	?) usage ;;
 	esac
 done
 
-shift $((OPTIND-1))
+shift $((OPTIND - 1))
 job_script=$1
 [[ -n "$job_script" ]] || usage
 [[ $job_script == *"/"* ]] || {
@@ -79,13 +81,12 @@ if [[ $opt_result_root ]]; then
 elif [[ $RESULT_ROOT ]]; then
 	mkdir -p -m 02775 $RESULT_ROOT
 elif [[ $result_root_template ]]; then
-	for i in {0..99}
-	do
+	for i in {0..99}; do
 		export RESULT_ROOT=$(eval "echo $result_root_template")/$i
 		[[ -d $RESULT_ROOT ]] && continue
 		mkdir -p -m 02775 $RESULT_ROOT &&
-		echo "result_root: $RESULT_ROOT" &&
-		break
+			echo "result_root: $RESULT_ROOT" &&
+			break
 	done
 else
 	echo "$0 exit due to RESULT_ROOT is not specified, you can use either"
@@ -98,12 +99,12 @@ export LKP_LOCAL_RUN=1
 rm -rf $TMP
 mkdir $TMP
 
-set > $RESULT_ROOT/env
+set >$RESULT_ROOT/env
 
 [[ -f $job_script ]] && cp $job_script $RESULT_ROOT/job.sh
 [[ -f $job_script.yaml ]] &&
-cp $job_script.yaml $RESULT_ROOT/job.yaml &&
-cat <<EOF >> $RESULT_ROOT/job.yaml
+	cp $job_script.yaml $RESULT_ROOT/job.yaml &&
+	cat <<EOF >>$RESULT_ROOT/job.yaml
 
 mytest: $opt_test_name
 

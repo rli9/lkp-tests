@@ -12,7 +12,7 @@ check_incomplete_run()
 	[[ -s $file ]] && return
 	[[ -f "$LKP_SRC/programs/$program/run" ]] || return
 
-	echo -e "# missing $program $file\nis_incomplete_run: 1" >> "$RESULT_ROOT/last_state"
+	echo -e "# missing $program $file\nis_incomplete_run: 1" >>"$RESULT_ROOT/last_state"
 }
 
 check_soft_timeout()
@@ -21,7 +21,7 @@ check_soft_timeout()
 	[[ -f $file ]] || return
 
 	grep -xq "soft_timeout: 1" "$RESULT_ROOT/last_state" ||
-	echo -e "soft_timeout: 1" >> "$RESULT_ROOT/last_state"
+		echo -e "soft_timeout: 1" >>"$RESULT_ROOT/last_state"
 }
 
 check_die()
@@ -130,7 +130,7 @@ check_empty_json()
 			return 1
 		else
 			log_warn "$stats_group: no json file generated" "$RESULT_ROOT"
-			echo -e "# no json file for $stats_group\nis_incomplete_run: 1" >> $RESULT_ROOT/last_state
+			echo -e "# no json file for $stats_group\nis_incomplete_run: 1" >>$RESULT_ROOT/last_state
 			return 1
 		fi
 	fi
@@ -138,8 +138,8 @@ check_empty_json()
 
 generate_log_from_serial()
 {
-	[[ -f $dmesg_log.xz ]] && xzcat "$dmesg_log".xz > "$dmesg_log"
-	[[ -f $kmsg_log.xz ]] && xzcat "$kmsg_log".xz > "$kmsg_log"
+	[[ -f $dmesg_log.xz ]] && xzcat "$dmesg_log".xz >"$dmesg_log"
+	[[ -f $kmsg_log.xz ]] && xzcat "$kmsg_log".xz >"$kmsg_log"
 
 	# remove [xxx][xxx] at the beginning of each line
 	# vi $RESULT_ROOT/dmesg.xz
@@ -150,9 +150,9 @@ generate_log_from_serial()
 	# [    0.000000][    T0] BIOS-provided physical RAM map:
 	# [    0.000000][    T0] BIOS-e820: [mem 0x0000000000000100-0x000000000009ebff] usable
 	if [[ -f $dmesg_log ]]; then
-		perl -pe 's/^(\[.*?\])* *//g' < "$dmesg_log" > "$log"
+		perl -pe 's/^(\[.*?\])* *//g' <"$dmesg_log" >"$log"
 	elif [[ -f $kmsg_log ]]; then
-		perl -pe 's/^(\[.*?\])* *//g' < "$kmsg_log" > "$log"
+		perl -pe 's/^(\[.*?\])* *//g' <"$kmsg_log" >"$log"
 	fi
 }
 
@@ -178,7 +178,10 @@ dump_stat()
 	local file=$2
 	local stat_file=$3
 
-	$LKP_SRC/sbin/dump-stat $stats_group $stat_file < $file || { log_error "failed to dump-stat $program" "errno: $?\nfile: $file"; exit 1; }
+	$LKP_SRC/sbin/dump-stat $stats_group $stat_file <$file || {
+		log_error "failed to dump-stat $program" "errno: $?\nfile: $file"
+		exit 1
+	}
 	rm $file
 }
 
@@ -210,24 +213,24 @@ LKP_SRC_ETC=$(lkp_src)/etc
 
 if [ -e $log.gz ]; then
 	[ -s $log.gz ] || exit 0
-	zcat $log.gz > $log
+	zcat $log.gz >$log
 elif [ -e $log.xz ]; then
 	[ -s $log.xz ] || exit 0
-	xzcat $log.xz > $log
+	xzcat $log.xz >$log
 fi
 
 kmsg_log=$RESULT_ROOT/kmsg
 
 # extract kmsg for kmsg related stats
 if [[ $log =~ ^"$RESULT_ROOT"/(boot-memory|boot-time|dmesg)$ ]]; then
-	[ -f $kmsg_log.xz ] && xzcat $kmsg_log.xz > $kmsg_log
+	[ -f $kmsg_log.xz ] && xzcat $kmsg_log.xz >$kmsg_log
 fi
 
 dmesg_log=$RESULT_ROOT/dmesg
 
 # extract dmesg for dmesg related stats
 if [[ $log =~ ^"$RESULT_ROOT"/kmsg$ ]]; then
-	[ -f $dmesg_log.xz ] && xzcat $dmesg_log.xz > $dmesg_log
+	[ -f $dmesg_log.xz ] && xzcat $dmesg_log.xz >$dmesg_log
 fi
 
 testcase=$(get_testcase)
@@ -248,26 +251,31 @@ check_env_issue || exit 1
 tmpfile=$(mktemp --tmpdir=/tmp lkp-stats.XXXXXXXX)
 if [[ -f "$log" ]]; then
 	# shellcheck disable=SC2094
-	"$program_path" "$log" < "$log" > "$tmpfile" || { log_error "failed to stat $program" "$program_path $log < $log\nerrno: $?\ntmpfile: $tmpfile"; is_bad_rt_candidate && exit 1; }
+	"$program_path" "$log" <"$log" >"$tmpfile" || {
+		log_error "failed to stat $program" "$program_path $log < $log\nerrno: $?\ntmpfile: $tmpfile"
+		is_bad_rt_candidate && exit 1
+	}
 else
-	"$program_path" < /dev/null > "$tmpfile" || { log_error "failed to stat $program" "$program_path < /dev/null\nerrno: $?\ntmpfile: $tmpfile"; is_bad_rt_candidate && exit 1; }
+	"$program_path" </dev/null >"$tmpfile" || {
+		log_error "failed to stat $program" "$program_path < /dev/null\nerrno: $?\ntmpfile: $tmpfile"
+		is_bad_rt_candidate && exit 1
+	}
 fi
 
 grep -q "^$program\." <(cat $LKP_SRC_ETC/failure $LKP_SRC_ETC/pass) ||
-check_incomplete_run $tmpfile
+	check_incomplete_run $tmpfile
 
 warn_empty_stats
 
 # cleanup program raw data
 [[ $is_empty_stats != 1 && $lite_mode == 1 ]] && {
-    rm -f $RESULT_ROOT/$program
-    rm -f $RESULT_ROOT/$program.xz
-    rm -f $RESULT_ROOT/$program.gz
+	rm -f $RESULT_ROOT/$program
+	rm -f $RESULT_ROOT/$program.xz
+	rm -f $RESULT_ROOT/$program.gz
 }
 
 if [[ $program = 'ftrace' ]]; then
-	for file in "$RESULT_ROOT/$program".*.yaml
-	do
+	for file in "$RESULT_ROOT/$program".*.yaml; do
 		stats_group=$(basename $file .yaml)
 		dump_stat $stats_group $file $stat_file
 	done

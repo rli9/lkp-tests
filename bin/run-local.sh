@@ -18,15 +18,14 @@ EOF
 	exit 1
 }
 
-while getopts "o:" opt
-do
+while getopts "o:" opt; do
 	case $opt in
-	o ) opt_result_root="$OPTARG" ;;
-	? ) usage ;;
+	o) opt_result_root="$OPTARG" ;;
+	?) usage ;;
 	esac
 done
 
-shift $((OPTIND-1))
+shift $((OPTIND - 1))
 job_script=$1
 [ -n "$job_script" ] || usage
 job_script=$(readlink -e -v $job_script)

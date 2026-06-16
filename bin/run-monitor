@@ -38,24 +38,24 @@ if grep -q -x -F $program $LKP_SRC/etc/monitors_need_gzip; then
 
 	if [ "$program" = 'ftrace' ]; then
 		# ftrace output may be too large for tmpfs
-		$gzip -c < $fifo | cat	> $RESULT_ROOT/$program.gz &
+		$gzip -c <$fifo | cat >$RESULT_ROOT/$program.gz &
 	else
-		$gzip -c < $fifo	> $TMP_RESULT_ROOT/$program.gz &
+		$gzip -c <$fifo >$TMP_RESULT_ROOT/$program.gz &
 	fi
 else
 	if [ -z "$avoid_nfs" ] &&
-		( [ "$program" = heartbeat ] || [ "$program" = kmsg ] ); then
-		cat $fifo > $RESULT_ROOT/$program &
+		([ "$program" = heartbeat ] || [ "$program" = kmsg ]); then
+		cat $fifo >$RESULT_ROOT/$program &
 	else
-		cat $fifo > $TMP_RESULT_ROOT/$program &
+		cat $fifo >$TMP_RESULT_ROOT/$program &
 	fi
 fi
 
-echo $! >> $TMP/.pid-pipes
+echo $! >>$TMP/.pid-pipes
 
 # Save pid to be killed when the tests complete.
 # gzip/cat will auto quit when the FIFO writer is killed.
-echo $$ >> $TMP/pid-bg-proc-$program
+echo $$ >>$TMP/pid-bg-proc-$program
 
 # Some setup scripts take time and we don't want to profile them.
 $LKP_SRC/bin/event/wait 'activate-monitor'
@@ -64,6 +64,6 @@ program_path=$program_dir/$program
 [ -x "$program_path" ] || program_path=$LKP_SRC/programs/$program/monitor
 
 has_cmd stdbuf &&
-stdbuf='stdbuf -oL -e0'
+	stdbuf='stdbuf -oL -e0'
 
-exec $stdbuf $program_path "$@" > $fifo
+exec $stdbuf $program_path "$@" >$fifo

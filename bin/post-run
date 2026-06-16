@@ -23,7 +23,7 @@ any_pid_alive()
 		while read -r pid || [ -n "$pid" ]; do
 			[ -n "$pid" ] || continue
 			test -d "/proc/$pid" && return
-		done < "$pidfile"
+		done <"$pidfile"
 		return 1
 	fi
 }
@@ -35,8 +35,7 @@ wait_for_bg_procs()
 
 	echo wait for background processes: "$(cat "$pidfile" "$TMP/.name-wait-bg-procs")"
 
-	for i in $(seq 15)
-	do
+	for i in $(seq 15); do
 		sleep $i
 		any_pid_alive $pidfile && continue
 		return $i
@@ -48,7 +47,7 @@ wait_for_bg_procs()
 	else
 		ps axho pid | grep -Fxf $pidfile | xargs ps u
 		ps faux
-	fi > $TMP_RESULT_ROOT/bg-procs-debug
+	fi >$TMP_RESULT_ROOT/bg-procs-debug
 
 	return $i
 }
@@ -60,8 +59,7 @@ kill_bg_procs()
 	local pids
 	local pid
 
-	for pidfile in "$TMP"/pid-bg-proc-*
-	do
+	for pidfile in "$TMP"/pid-bg-proc-*; do
 		[ -s "$pidfile" ] || continue
 
 		if [ -s "$wait_pidfile" ]; then
@@ -72,12 +70,11 @@ kill_bg_procs()
 
 		[ -n "$pids" ] || continue
 
-		for pid in $pids
-		do
+		for pid in $pids; do
 			[ -d /proc/$pid ] || continue
 			explain_kill $pid
 			/bin/kill $signal $pid ||
-			echo "failed to kill background process	${pidfile##*/pid-bg-proc--}" >&2
+				echo "failed to kill background process	${pidfile##*/pid-bg-proc--}" >&2
 		done
 	done
 }
@@ -125,8 +122,7 @@ wait_for_pipe()
 	# will be missing.
 	[ -e $TMP/.pid-pipes ] || return
 
-	for i in $(seq 5)
-	do
+	for i in $(seq 5); do
 		sleep $i
 		if has_advance_pgrep; then
 			pgrep --pidfile $TMP/.pid-pipes 'tee|cat|gzip' >/dev/null && continue
@@ -136,12 +132,10 @@ wait_for_pipe()
 		break
 	done
 
-	for i in $(seq 5)
-	do
+	for i in $(seq 5); do
 		sleep $i
 
-		for result in ${tmp_results}
-		do
+		for result in ${tmp_results}; do
 			[ "${result%.gz}" != "$result" ] || continue
 			[ -s "$result" ] && continue
 
@@ -156,10 +150,10 @@ wait_for_pipe()
 
 	# Throw out stderr when monitors did not start due to waiting on activate-monitor
 	has_cmd pgrep &&
-	pgrep -f "$LKP_SRC/bin/event/wait activate-monitor" >/dev/null &&
+		pgrep -f "$LKP_SRC/bin/event/wait activate-monitor" >/dev/null &&
 		echo "some monitors are blocked by activate-monitor" >&2
 
-	ps faux 2>/dev/null > $RESULT_ROOT/pipe-debug || ps > $RESULT_ROOT/pipe-debug
+	ps faux 2>/dev/null >$RESULT_ROOT/pipe-debug || ps >$RESULT_ROOT/pipe-debug
 	ls -l $TMP_RESULT_ROOT
 	return 1
 }
@@ -183,12 +177,11 @@ copy_time_files()
 {
 	local ret_copy_time_files=0
 
-	for time_file in "$TMP"/*.time
-	do
+	for time_file in "$TMP"/*.time; do
 		[ -e "$time_file" ] || return
 
 		if upload_files $time_file; then
-			cat $time_file >> $TMP/time
+			cat $time_file >>$TMP/time
 		else
 			ret_copy_time_files=1
 		fi
@@ -199,7 +192,7 @@ copy_time_files()
 	return $ret_copy_time_files
 }
 
-copy_time_files || ps faux --cols 1000 2>/dev/null > $RESULT_ROOT/time-debug || ps > $RESULT_ROOT/time-debug
+copy_time_files || ps faux --cols 1000 2>/dev/null >$RESULT_ROOT/time-debug || ps >$RESULT_ROOT/time-debug
 
 copy_results
 
@@ -214,12 +207,11 @@ kmemleak_is_enabled && {
 }
 
 # the busybox reduced dmesg/truncate will refuse to run and it's not a big deal
-dmesg --facility user --human --decode --color=always > $TMP/umesg 2>/dev/null
+dmesg --facility user --human --decode --color=always >$TMP/umesg 2>/dev/null
 truncate --no-create --size='<10M' $TMP/output $TMP/stdout $TMP/stderr $TMP/umesg 2>/dev/null
 
 files=""
-for file in $TMP/boot-time $TMP/stdout $TMP/stderr $TMP/output $TMP/umesg $TMP/env.yaml $TMP/program_list $TMP/OOM $TMP/soft_timeout
-do
+for file in $TMP/boot-time $TMP/stdout $TMP/stderr $TMP/output $TMP/umesg $TMP/env.yaml $TMP/program_list $TMP/OOM $TMP/soft_timeout; do
 	[ -f $file ] && files="$files $file"
 done
 
@@ -244,7 +236,7 @@ upload_qemu_results()
 	}
 
 	upload_files -t host_result /tmp/host_rt/*
-	upload_files $guest_rt/*  # override the origin results
+	upload_files $guest_rt/* # override the origin results
 }
 
 need_run_on_vmm && upload_qemu_results

@@ -5,12 +5,12 @@ echo "$date $*"
 
 args=''
 for i in "$@"; do
-    # insert a space to avoid conflicting with reserve parameters of echo , such as '-n'
-    i=$(echo " $i" | sed 's/^ //' | sed 's/\\/\\\\/g' | sed 's/\"/\\\"/g')
-    args="$args \"${i}\""
+	# insert a space to avoid conflicting with reserve parameters of echo , such as '-n'
+	i=$(echo " $i" | sed 's/^ //' | sed 's/\\/\\\\/g' | sed 's/\"/\\\"/g')
+	args="$args \"${i}\""
 done
 
-echo "$args" >> $TMP_RESULT_ROOT/reproduce.sh
+echo "$args" >>$TMP_RESULT_ROOT/reproduce.sh
 
 # Attention!!! This script cannot be used to execute "cd <dir>" command,
 # it only takes effect in subshell but won't change the directory of parent shell.

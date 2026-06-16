@@ -7,4 +7,4 @@ shift
 program_path=$program_dir/$program
 [ -x "$program_path" ] || program_path=$LKP_SRC/programs/$program/one-shot-monitor
 
-$program_path "$@" > $TMP_RESULT_ROOT/$program
+$program_path "$@" >$TMP_RESULT_ROOT/$program

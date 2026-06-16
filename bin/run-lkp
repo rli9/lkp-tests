@@ -27,7 +27,7 @@ fail_job()
 job_init
 export LKP_USER=$user
 
-echo $$ > $TMP/run-lkp.pid	# for use by monitors/watchdog
+echo $$ >$TMP/run-lkp.pid # for use by monitors/watchdog
 
 setup_result_root || fail_job
 
@@ -38,7 +38,7 @@ kernel_release=$(uname -r)
 }
 
 # the NMI warning messages are often in a mess
-[ -f '/sys/kernel/debug/x86/nmi_longest_ns' ] && echo 100000000 > /sys/kernel/debug/x86/nmi_longest_ns
+[ -f '/sys/kernel/debug/x86/nmi_longest_ns' ] && echo 100000000 >/sys/kernel/debug/x86/nmi_longest_ns
 
 echo run-job $job
 set_job_state 'running'
@@ -57,7 +57,7 @@ else
 fi
 
 # set subprocess oom_score_adj to 0 (default value)
-cat > /proc/$$/oom_score_adj <<EOF
+cat >/proc/$$/oom_score_adj <<EOF
 0
 EOF
 
@@ -91,25 +91,25 @@ $LKP_SRC/bin/post-run
 
 [ -s "$TMP/time_delta" ] && time_delta="time_delta=$(cat $TMP/time_delta)"
 [ -s "$LKP_SRC/version" ] && version="version=$(cat $LKP_SRC/version)"
-jobfile_append_var		"loadavg=$(cat /proc/loadavg)" \
-				"start_time=$(cat $TMP/start_time)" \
-				"end_time=$end_time" \
-				"$version" \
-				"$time_delta"
+jobfile_append_var "loadavg=$(cat /proc/loadavg)" \
+	"start_time=$(cat $TMP/start_time)" \
+	"end_time=$end_time" \
+	"$version" \
+	"$time_delta"
 
 if [ ! -f $TMP/oom-killer-ignored ] && ([ -f "$TMP/OOM" ] || check_oom); then
 	set_job_state "OOM"
-	echo "force_reboot: 1" >> $job
+	echo "force_reboot: 1" >>$job
 elif [ -f "$TMP/soft_timeout" ]; then
 	set_job_state 'soft_timeout'
 elif [ "$run_job_exit_code" != 0 ]; then
-		program_type=$(sed -ne "s/\(.*\)\..*\.exit_code\..*/\\1/p" "$last_state_file")
-		# "99" is a fixed number from lib/debug die() function
-		if [ "$run_job_exit_code" = "99" ] || [ "$program_type" = "setup" ] || [ "$program_type" = "daemon" ]; then
-			set_job_state 'incomplete'
-		else
-			set_job_state 'failed'
-		fi
+	program_type=$(sed -ne "s/\(.*\)\..*\.exit_code\..*/\\1/p" "$last_state_file")
+	# "99" is a fixed number from lib/debug die() function
+	if [ "$run_job_exit_code" = "99" ] || [ "$program_type" = "setup" ] || [ "$program_type" = "daemon" ]; then
+		set_job_state 'incomplete'
+	else
+		set_job_state 'failed'
+	fi
 elif [ -f '/var/log/wtmp' ] && has_cmd last && last -n1 | grep -q -E '(pts/|tty)[0-9].*(still logged in)'; then
 	set_job_state 'disturbed'
 	disturbed=1

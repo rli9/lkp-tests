@@ -4,7 +4,7 @@ program=$1
 program_dir=$(dirname $0)
 shift
 
-echo $$ >> $TMP/pid-bg-proc-$program
+echo $$ >>$TMP/pid-bg-proc-$program
 
 $LKP_SRC/bin/event/wait 'activate-monitor'
 
