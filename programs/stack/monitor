@@ -14,6 +14,6 @@ while :; do
 			echo "$proc $comm"
 			cat $proc/stack 2>/dev/null
 		}
-        done
+	done
 	wait_timeout $interval
 done

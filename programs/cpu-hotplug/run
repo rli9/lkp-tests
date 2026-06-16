@@ -19,13 +19,11 @@ NUMBER_OF_CPUS=$(ls -d $CPUPATH/cpu[0-9]* | wc -l)
 
 do_test()
 {
-	for interval in 0 0.1 1
-	do
-		for i in $(seq $((NUMBER_OF_CPUS - 1)))
-		do
+	for interval in 0 0.1 1; do
+		for i in $(seq $((NUMBER_OF_CPUS - 1))); do
 			sleep $interval
 			state=$(cat $CPUPATH/cpu$i/online)
-			echo $((state^1)) > $CPUPATH/cpu$i/online
+			echo $((state ^ 1)) >$CPUPATH/cpu$i/online
 		done
 	done
 }

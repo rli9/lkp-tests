@@ -42,18 +42,17 @@ setup_wakeup_timer()
 }
 
 for event in "${tevents[@]}"; do
-        echo 1 > $event_dir/$event/enable
+	echo 1 >$event_dir/$event/enable
 done
 
-for i in $(seq $iterations)
-do
+for i in $(seq $iterations); do
 	setup_wakeup_timer "$wakeup_interval"
 	[ "$presync" != "presync" ] || sync
-	echo $mode > /sys/power/state
+	echo $mode >/sys/power/state
 done
 
 for event in "${tevents[@]}"; do
-        echo 0 > $event_dir/$event/enable
+	echo 0 >$event_dir/$event/enable
 done
 
 cat $trace_dir/trace

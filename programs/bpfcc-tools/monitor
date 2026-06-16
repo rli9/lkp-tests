@@ -34,7 +34,7 @@ cd "$tmpdir" || die "Failed to goto temporary directory"
 
 cp "$tool_file" "$tool.py"
 
-cat > run-bpf.py <<EOF
+cat >run-bpf.py <<EOF
 import signal
 
 def on_int(*args):

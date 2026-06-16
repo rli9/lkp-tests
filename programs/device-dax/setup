@@ -19,7 +19,7 @@ fi
 
 daxes=$(echo $daxes | cut -f1-$nr_daxes -d' ')
 
-cat >> $TMP/env.yaml <<EOF
+cat >>$TMP/env.yaml <<EOF
 
 # setup/device-dax
 nr_partitions: $nr_daxes

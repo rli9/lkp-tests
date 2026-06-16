@@ -8,8 +8,7 @@
 check_mysql_server()
 {
 	retries=10
-	for i in $(seq $retries);
-	do
+	for i in $(seq $retries); do
 		mysqladmin ping | grep alive
 		return_value=$?
 		if [ "$return_value" -eq 1 ]; then
@@ -28,7 +27,7 @@ cd "$BENCHMARK_ROOT/linkbench" || exit
 
 cp config/LinkConfigMysql.properties config/MyConfig.properties
 
-mysql << "MY_QUERY"
+mysql <<"MY_QUERY"
 SET GLOBAL max_connections = 1025;
 DROP DATABASE IF EXISTS linkdb;
 CREATE DATABASE linkdb;
@@ -67,7 +66,7 @@ CREATE TABLE `nodetable` (
 GRANT ALL ON linkdb.* TO 'linkbench'@'localhost' IDENTIFIED BY 'mypassword';
 MY_QUERY
 
-mysql << "MY_QUERY"
+mysql <<"MY_QUERY"
 USE linkdb;
 ALTER TABLE linktable DROP KEY `id1_type`;
 SET GLOBAL innodb_flush_log_at_trx_commit = 2;
@@ -75,9 +74,9 @@ SET GLOBAL sync_binlog = 0;
 MY_QUERY
 
 ./bin/linkbench 2>&1 -c config/MyConfig.properties \
--D host=localhost -D user=linkbench -D password=mypassword  -l
+	-D host=localhost -D user=linkbench -D password=mypassword -l
 
-mysql << "MY_QUERY"
+mysql <<"MY_QUERY"
 USE linkdb;
 SET GLOBAL innodb_flush_log_at_trx_commit = 1;
 SET GLOBAL sync_binlog = 1;

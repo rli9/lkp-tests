@@ -42,7 +42,7 @@ mkdir -p "$memtier_dir"
 
 [[ -n "$key_max" ]] || die "$(basename $0) key_max must be specified!\n"
 
-proc_key_max=$((key_max/nr_processes/nr_instances))
+proc_key_max=$((key_max / nr_processes / nr_instances))
 
 opt1="--key-minimum=$key_min --threads=$nr_threads"
 
@@ -56,7 +56,7 @@ opt="$opt1 --key-maximum=$proc_key_max"
 if [[ -n "$requests" ]] || [[ -n "$requests_multiple" ]]; then
 	: "${requests_multiple:=1}"
 	[[ -z "$requests" ]] && requests=$((key_max * requests_multiple))
-	proc_requests=$((requests/nr_processes/nr_instances))
+	proc_requests=$((requests / nr_processes / nr_instances))
 	opt_requests="-n $proc_requests"
 else
 	opt_time="--test-time=$runtime"
@@ -71,34 +71,31 @@ if [[ -n "$preload" ]]; then
 		ppreload_proc_key_max=$((ppreload_key_max / nr_processes / nr_instances))
 		ppreload_requests=$((ppreload_key_max * 2))
 		ppreload_proc_requests=$((ppreload_requests / nr_processes / nr_instances))
-		for i in $(seq 1 "${nr_processes}")
-		do
-			port=$((6379+i+instance_id))
+		for i in $(seq 1 "${nr_processes}"); do
+			port=$((6379 + i + instance_id))
 			numa_bind=$(numa_node_binding "$i")
-			log_test $numa_bind memtier_benchmark $opt1 --key-maximum=$ppreload_proc_key_max --ratio="100:1" -n $ppreload_proc_requests --key-pattern=$preload_key_pattern -p $port > /dev/null &
+			log_test $numa_bind memtier_benchmark $opt1 --key-maximum=$ppreload_proc_key_max --ratio="100:1" -n $ppreload_proc_requests --key-pattern=$preload_key_pattern -p $port >/dev/null &
 		done
 		wait
 	fi
 
 	preload_requests=$((key_max * 2))
-	preload_proc_requests=$((preload_requests/nr_processes/nr_instances))
-	for i in $(seq 1 "${nr_processes}")
-	do
-		port=$((6379+i+instance_id))
+	preload_proc_requests=$((preload_requests / nr_processes / nr_instances))
+	for i in $(seq 1 "${nr_processes}"); do
+		port=$((6379 + i + instance_id))
 		numa_bind=$(numa_node_binding "$i")
-		log_test $numa_bind memtier_benchmark $opt --ratio="100:1" -n $preload_proc_requests --key-pattern=$preload_key_pattern -p $port > /dev/null &
+		log_test $numa_bind memtier_benchmark $opt --ratio="100:1" -n $preload_proc_requests --key-pattern=$preload_key_pattern -p $port >/dev/null &
 	done
 	wait
 	end=$(date +%s.%N)
-	duration=$(echo "$end-$begin" |bc)
+	duration=$(echo "$end-$begin" | bc)
 	echo "preload duration: $duration"
 fi
 
-for i in $(seq 1 "${nr_processes}")
-do
-	port=$((6379+i+instance_id))
+for i in $(seq 1 "${nr_processes}"); do
+	port=$((6379 + i + instance_id))
 	numa_bind=$(numa_node_binding "$i")
-	log_test $numa_bind memtier_benchmark $opt $opt_time $opt_requests --ratio=$n_ratio --key-pattern=$key_pattern -p $port > $memtier_dir/memtier.$i &
+	log_test $numa_bind memtier_benchmark $opt $opt_time $opt_requests --ratio=$n_ratio --key-pattern=$key_pattern -p $port >$memtier_dir/memtier.$i &
 done
 wait
 

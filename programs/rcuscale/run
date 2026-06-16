@@ -15,13 +15,13 @@ log_cmd depmod
 log=$(log_cmd modprobe rcuscale $args 2>&1) || {
 	echo "$log"
 	echo "$log" | grep -q "Invalid argument" ||
-	die "failed to load rcuscale module, try to enable CONFIG_RCU_SCALE_TEST as module and build rcuscale.ko"
+		die "failed to load rcuscale module, try to enable CONFIG_RCU_SCALE_TEST as module and build rcuscale.ko"
 	echo "$scale_type-scale: Skip"
 	exit
 }
 
 log_cmd sleep $runtime
 
-log_cmd rmmod rcuscale 2> /dev/null
+log_cmd rmmod rcuscale 2>/dev/null
 
 dmesg | grep scale:

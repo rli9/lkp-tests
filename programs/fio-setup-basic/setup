@@ -74,8 +74,7 @@ else
 	storages=$mount_points
 fi
 [ -z "$storages" ] && die "storages is empty, we can't get jobs_per_storage and nr_task_remain"
-for storage in $storages
-do
+for storage in $storages; do
 	if [ "$raw_disk" = 1 ]; then
 		# for raw disk, using lsblk to get disk capacity in bytes instead of reading filesystem stats
 		# because raw disk will not mount filesystem
@@ -88,7 +87,6 @@ do
 		[ -n "$available_storage_size" ] || die "storage $storage doesn't mounted"
 		available_storage_size=$(to_byte ${available_storage_size}k)
 	fi
-
 
 	require_size=$test_size
 	df | grep $mnt_point$ | awk '{print $1}' | grep -q /dev/pmem && require_size=$size
@@ -126,7 +124,7 @@ fallocate=$fallocate
 io_size=$io_size
 "
 else
-    create_task="
+	create_task="
 $create_task
 offset_increment=$offset_increment
 "
@@ -147,14 +145,14 @@ cpuload=$cpuload
 fi
 
 if parse_bool -q "$refill_buffers"; then
-       create_task="
+	create_task="
 $create_task
 refill_buffers
 "
 fi
 
 if parse_bool -q "$donorname"; then
-       create_task="
+	create_task="
 $create_task
 donorname=$donorname
 "
@@ -167,14 +165,14 @@ buffered=$buffered
 "
 
 if parse_bool -q "$norandommap"; then
-        create_task="
+	create_task="
 $create_task
 norandommap
 "
 fi
 
 if [ -n "$random_generator" ]; then
-        create_task="
+	create_task="
 $create_task
 random_generator=$random_generator
 "
@@ -187,21 +185,21 @@ allrandrepeat=$allrandrepeat
 "
 
 if parse_bool -q "$group_reporting"; then
-        create_task="
+	create_task="
 $create_task
 group_reporting
 "
 fi
 
 if parse_bool -q "$exitall"; then
-        create_task="
+	create_task="
 $create_task
 exitall
 "
 fi
 
 if [ -n "$ramp_time" ]; then
-        create_task="
+	create_task="
 $create_task
 ramp_time=$ramp_time
 "
@@ -233,14 +231,13 @@ __numa_mem_policy()
 	__seq_no=$1
 
 	case "$__numa_mem_policy_setup" in
-		none)
+	none) ;;
+	even)
+		echo "numa_mem_policy=${__numa_mem_policy_mode}:$((__seq_no % nr_node))"
 		;;
-		even)
-			echo "numa_mem_policy=${__numa_mem_policy_mode}:$((__seq_no%nr_node))"
-			;;
-		orig)
-			echo "numa_mem_policy=${numa_mem_policy}"
-			;;
+	orig)
+		echo "numa_mem_policy=${numa_mem_policy}"
+		;;
 	esac
 }
 
@@ -260,14 +257,13 @@ __numa_cpu_nodes()
 	__seq_no=$1
 
 	case "$__numa_cpu_nodes_setup" in
-		none)
+	none) ;;
+	even)
+		echo "numa_cpu_nodes=$((__seq_no % nr_node))"
 		;;
-		even)
-			echo "numa_cpu_nodes=$((__seq_no%nr_node))"
-			;;
-		orig)
-			echo "numa_cpu_nodes=${numa_cpu_nodes}"
-			;;
+	orig)
+		echo "numa_cpu_nodes=${numa_cpu_nodes}"
+		;;
 	esac
 }
 
@@ -276,23 +272,23 @@ parse_numa_cpu_nodes
 
 parse_cpus_allowed_policy()
 {
-        if [ "$cpus_allowed_policy" = "split" ]; then
-                echo "cpus_allowed_policy=${cpus_allowed_policy}"
-        elif [ "$cpus_allowed_policy" = "shared" ]; then
-                echo "cpus_allowed_policy=${cpus_allowed_policy}"
-        fi
+	if [ "$cpus_allowed_policy" = "split" ]; then
+		echo "cpus_allowed_policy=${cpus_allowed_policy}"
+	elif [ "$cpus_allowed_policy" = "shared" ]; then
+		echo "cpus_allowed_policy=${cpus_allowed_policy}"
+	fi
 
 }
 
 parse_cpus_allowed()
 {
-        if [ "$cpus_allowed_policy" = "split" ]; then
-                [ -n "$cpus_allowed" ] || die "cpus_allowed must be specified for fio"
-				
-                echo "cpus_allowed=${cpus_allowed}"
-        else
-                [ -z "$cpus_allowed" ] || die "cpus_allowed_policy is not split, cpus_allowed shouldn't  be specified for fio"
-        fi
+	if [ "$cpus_allowed_policy" = "split" ]; then
+		[ -n "$cpus_allowed" ] || die "cpus_allowed must be specified for fio"
+
+		echo "cpus_allowed=${cpus_allowed}"
+	else
+		[ -z "$cpus_allowed" ] || die "cpus_allowed_policy is not split, cpus_allowed shouldn't  be specified for fio"
+	fi
 }
 
 parse_cpus_allowed_policy
@@ -323,10 +319,10 @@ filename=fio_testfile
 	else
 		storage_setup="directory=$storage"
 	fi
-        if [ "$ioengine" = "sg" ]; then
-                dev_src=$(findmnt $storage -no source)
-                storage_setup="filename=$dev_src\nallow_mounted_write=1"
-        fi
+	if [ "$ioengine" = "sg" ]; then
+		dev_src=$(findmnt $storage -no source)
+		storage_setup="filename=$dev_src\nallow_mounted_write=1"
+	fi
 	create_task="\
 $create_task
 [task_$no]
@@ -339,8 +335,8 @@ $(__numa_cpu_nodes $no)
 $(parse_cpus_allowed_policy)
 $(parse_cpus_allowed)
 "
-	no=$((no+1))
+	no=$((no + 1))
 done
 
-echo -n "$create_task" | sed '/create_only/d' > $TMP_RESULT_ROOT/fio.task
-echo -n "$create_task" | fio --output-format=json - > /dev/null
+echo -n "$create_task" | sed '/create_only/d' >$TMP_RESULT_ROOT/fio.task
+echo -n "$create_task" | fio --output-format=json - >/dev/null

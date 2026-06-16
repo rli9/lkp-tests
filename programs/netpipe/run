@@ -29,8 +29,8 @@ fixup_mpi
 log_cmd make CFLAGS="-fcommon" $test || die "failed to compile $test"
 
 case $test in
-mpi )
-	echo "$server slots=1" > mpihost
+mpi)
+	echo "$server slots=1" >mpihost
 	log_cmd mpirun -np 1 --hostfile mpihost --allow-run-as-root NPmpi --repeats 1000 2>&1
 	;;
 esac

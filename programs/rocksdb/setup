@@ -18,6 +18,6 @@ run_opts=" --use_existing_db"
 [ -n "$num" ] && run_opts="$run_opts --num=$num"
 
 # value_size = 4K/32K
-cat > "$TMP_RESULT_ROOT"/run.rocksdb <<EOF
+cat >"$TMP_RESULT_ROOT"/run.rocksdb <<EOF
 $DB_BENCH $run_opts
 EOF

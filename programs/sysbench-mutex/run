@@ -14,11 +14,6 @@
 : "${mutex_loops:=10000}"
 
 args="\
- --threads=$nr_threads\
- --time=$runtime\
- mutex\
- --mutex-num=$mutex_num\
- --mutex-locks=$mutex_locks\
- --mutex-loops=$mutex_loops\
-"
+ --threads=$nr_threads --time=$runtime mutex\
+ --mutex-num=$mutex_num --mutex-locks=$mutex_locks --mutex-loops=$mutex_loops"
 log_cmd sysbench $args run

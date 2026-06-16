@@ -15,4 +15,4 @@ task=$(cat /$TMP_RESULT_ROOT/fio.task)
 
 log_echo "\
 echo '$task' | fio --output-format=json -"
-echo "$task" | fio --output-format=json - > $TMP_RESULT_ROOT/fio.output
+echo "$task" | fio --output-format=json - >$TMP_RESULT_ROOT/fio.output

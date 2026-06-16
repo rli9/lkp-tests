@@ -19,8 +19,7 @@ exclude_tests()
 	mapfile -t excluded_tests < <(grep -v "#" "$exclude")
 
 	local test
-	for test in "${excluded_tests[@]}"
-	do
+	for test in "${excluded_tests[@]}"; do
 		sed -i "/$test/d" "$test_file"
 	done
 }
@@ -29,24 +28,22 @@ exclude_tests
 
 denylist=$BENCHMARK_ROOT/igt/tests/intel-ci/blacklist.txt
 if [[ -f "$denylist" ]]; then
-	grep -v -e ^# -e ^$ "$denylist" > "$(dirname "$denylist")/denylist"
+	grep -v -e ^# -e ^$ "$denylist" >"$(dirname "$denylist")/denylist"
 	denylist=$(dirname "$denylist")/denylist
 else
 	denylist=
 fi
 
-while read -r testcase
-do
+while read -r testcase; do
 	if [[ $test ]]; then
 		# get subtests from test
-		read -r -a subtests <<< "$test"
+		read -r -a subtests <<<"$test"
 	else
 		# "sort -u" is to rm duplicate subtest "interruptible"
 		mapfile -t subtests < <(build/tests/"$testcase" --list-subtest | sort -u)
 	fi
 
-	for subtest in "${subtests[@]}"
-	do
+	for subtest in "${subtests[@]}"; do
 		full_test_name=igt@$testcase@$subtest
 
 		echo "$subtest" | grep -q -e suspend -e hibernate -e S3 && {
@@ -68,6 +65,6 @@ do
 		# testing past this point can yeild unexpected reasults and is not recommended
 		[[ $? -eq 112 ]] && exit 112
 	done
-done < "$test_file"
+done <"$test_file"
 
 exit 0

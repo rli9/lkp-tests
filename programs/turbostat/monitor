@@ -13,15 +13,14 @@ turbostat="/lkp/benchmarks/turbostat/turbostat"
 }
 
 # skip if cpu doesn't have msr
-grep flags /proc/cpuinfo|grep -q ' msr ' || exit 0
+grep flags /proc/cpuinfo | grep -q ' msr ' || exit 0
 
 # skip unreliable machines
-[ "${HOSTNAME#*lkp-a0[1-9]}"	!= "$HOSTNAME" ] && exit 0
+[ "${HOSTNAME#*lkp-a0[1-9]}" != "$HOSTNAME" ] && exit 0
 
 modprobe msr 2>&1
 
-for cpu_dir in /dev/cpu/[0-9]*
-do
+for cpu_dir in /dev/cpu/[0-9]*; do
 	[ -c $cpu_dir/msr ] || die "$cpu_dir/msr not available"
 	break
 done

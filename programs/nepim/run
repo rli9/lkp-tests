@@ -12,8 +12,8 @@
 . $LKP_SRC/lib/run.sh
 
 [[ -n "$nr_threads" ]] && opt_streams="-n $nr_threads"
-[[ "${protocol#udp}" != "$protocol" ]]	&& opt_udp=-u
-[[ "${protocol%6}" != "$protocol" ]]	&& opt_addr='::1'
+[[ "${protocol#udp}" != "$protocol" ]] && opt_udp=-u
+[[ "${protocol%6}" != "$protocol" ]] && opt_addr='::1'
 [[ -n "$runtime" ]] || runtime=300
 
 #TODO: support ipv6 addr of remote host

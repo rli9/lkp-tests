@@ -52,7 +52,7 @@ $perf record -q $opt_cpu -e intel_pt/$option/k --filter "filter $filter_begin / 
 
 # The generated perf-pt.gz can be further analysed with tools/pt-call-summary.py
 # written by Andi Kleen to give a summary of function call numbers and durations, etc.
-cat > "$TMP_RESULT_ROOT/post-run.perf-pt" <<EOF
+cat >"$TMP_RESULT_ROOT/post-run.perf-pt" <<EOF
 [ -s "$perf_data" ] && {
 	$perf script --ns --itrace=cr -F cpu,ip,time,sym,flags,addr,symoff -i $perf_data |
 	gzip > $RESULT_ROOT/perf-pt.gz && {

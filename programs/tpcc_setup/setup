@@ -23,8 +23,7 @@ rm -rf /scalemp/mysql
 mkdir /scalemp/mysql
 chown -R mysql.mysql /scalemp/mysql
 cd /scalemp || exit
-for i in $(seq 0 $((instance_number-1)))
-do
+for i in $(seq 0 $((instance_number - 1))); do
 	if [ $do_fresh -eq 1 ]; then
 		echo "fresh $i"
 		./fresh.sh $i
@@ -51,22 +50,19 @@ DEBIAN_FRONTEND=noninteractive dpkg -i --force-all /scalemp/software/debian/perc
 chown -R mysql.mysql /scalemp/mysql*
 
 # start the databases
-for i in $(seq 0 $((instance_number-1)))
-do
+for i in $(seq 0 $((instance_number - 1))); do
 	mysqld_multi start $i
 done
 
 # verify the database instances are started
-for i in $(seq 0 $((instance_number-1)))
-do
-	while :
-	do
-		mysqld_multi report $i |grep -q "is running" && break
+for i in $(seq 0 $((instance_number - 1))); do
+	while :; do
+		mysqld_multi report $i | grep -q "is running" && break
 		sleep 5
 	done
 done
 
-cat >> $TMP/env.yaml <<EOF
+cat >>$TMP/env.yaml <<EOF
 
 # setup/tpcc_setup
 instance_number: $instance_number

@@ -8,8 +8,8 @@ setup_mysql()
 	# fix "Neither host 'lkp-bdw-ex1' nor 'localhost'
 	# could be looked up with '/usr/sbin/resolveip'"
 	# from mysql_install_db on Debian.
-	[ ! -x /usr/sbin/resolveip ] && \
-	ln -s "$(which resolveip)" /usr/sbin/resolveip
+	[ ! -x /usr/sbin/resolveip ] &&
+		ln -s "$(which resolveip)" /usr/sbin/resolveip
 
 	mkdir -p $mnt_point/mysql
 	mysql_install_db --datadir="$mnt_point/mysql" --user=mysql
@@ -30,7 +30,10 @@ setup_mysql()
 	$exec_mysqld --datadir="$mnt_point/mysql" --max-connections="$max_conn" --skip-grant-tables --user=mysql &
 }
 
-[ -n "$mount_points" ] || { echo "empty mount_points, disk failed?" >&2; exit; }
+[ -n "$mount_points" ] || {
+	echo "empty mount_points, disk failed?" >&2
+	exit
+}
 
 mnt_point="${mount_points%% *}"
 [ -f /var/run/mysqld/mysqld.sock ] || {

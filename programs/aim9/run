@@ -19,7 +19,7 @@ aim9_setup()
 	if [[ -f "s9workfile.$test" ]]; then
 		cp s9workfile.$test s9workfile
 	else
-		cat > s9workfile <<EOF
+		cat >s9workfile <<EOF
 # @(#) s9workfile:1.2 1/22/96 00:00:00
 # AIM Independent Resource Benchmark - Suite IX Workfile
 FILESIZE: 5M

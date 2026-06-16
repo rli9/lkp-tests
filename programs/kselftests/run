@@ -18,7 +18,7 @@ run_tests $selftest_mfs
 
 [ "$(file -i $TMP_RESULT_ROOT/kselftests | awk '{print $2}')" = "application/octet-stream;" ] && {
 	mv $TMP_RESULT_ROOT/kselftests $TMP_RESULT_ROOT/kselftests.orig
-	cat $TMP_RESULT_ROOT/kselftests.orig | tr -d '\0' > $TMP_RESULT_ROOT/kselftests
+	cat $TMP_RESULT_ROOT/kselftests.orig | tr -d '\0' >$TMP_RESULT_ROOT/kselftests
 }
 
 exit 0

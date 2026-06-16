@@ -9,15 +9,14 @@ set_perf_path "/lkp/benchmarks/perf/perf"
 
 TRACING_ROOT=/sys/kernel/debug/tracing
 
-echo sym-offset	> $TRACING_ROOT/trace_options
-echo sym-addr	> $TRACING_ROOT/trace_options
-echo stacktrace	> $TRACING_ROOT/trace_options
+echo sym-offset >$TRACING_ROOT/trace_options
+echo sym-addr >$TRACING_ROOT/trace_options
+echo stacktrace >$TRACING_ROOT/trace_options
 
 $perf -v || die 'perf command failed'
-for event in $events
-do
+for event in $events; do
 	$perf probe $event
-	echo 1 > $TRACING_ROOT/events/probe/$event/enable
+	echo 1 >$TRACING_ROOT/events/probe/$event/enable
 done
 
 cat $TRACING_ROOT/trace_pipe

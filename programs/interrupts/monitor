@@ -16,8 +16,7 @@ take_snapshot()
 setup_wait
 
 if [ -n "$interval" ]; then
-	while :
-	do
+	while :; do
 		take_snapshot
 		wait_timeout $interval
 	done

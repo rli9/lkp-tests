@@ -20,7 +20,7 @@ export LANG=C
 [ -n "$runtime" ] || runtime=300
 
 # Each iteration in UnixBench is about 10 seconds
-iteration=$(( runtime / 10 ))
+iteration=$((runtime / 10))
 
 [ $test = "shell8" ] && iteration=1
 
@@ -31,5 +31,5 @@ exit_status=$?
 
 upload_files -t results $BENCHMARK_ROOT/unixbench/UnixBench/results/*
 
-echo $exit_status > /tmp/unixbench.xinitrc.exit-status
+echo $exit_status >/tmp/unixbench.xinitrc.exit-status
 exit $exit_status

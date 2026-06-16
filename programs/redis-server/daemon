@@ -20,14 +20,14 @@ parse_numa_node_binding "$redis_cpu_node_bind" "$redis_mem_node_bind"
 
 # start redis server
 for i in $(seq 1 "${nr_processes}"); do
-	port=$((6379+i+instance_id))
+	port=$((6379 + i + instance_id))
 	numa_bind=$(numa_node_binding "$i")
 	log_eval "$numa_bind $redis_server --port $port --save \"\" &"
 	bg_pids="$bg_pids $!"
 done
 
-echo "$bg_pids" > "$TMP"/pid-daemons
+echo "$bg_pids" >"$TMP"/pid-daemons
 
-cat > $TMP_RESULT_ROOT/post-run.redis <<EOF
+cat >$TMP_RESULT_ROOT/post-run.redis <<EOF
 /bin/kill -9 $bg_pids
 EOF

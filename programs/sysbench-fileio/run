@@ -16,7 +16,7 @@
 [[ -n "$period" ]] || period=600
 [[ -n "$rwmode" ]] || rwmode=rndrw
 [[ -n "$iomode" ]] || iomode=sync
-[[ -n "$size" ]] || size=$((128<<30))
+[[ -n "$size" ]] || size=$((128 << 30))
 [[ -n "$filenum" ]] || filenum=128
 
 filenum=${filenum%f}
@@ -43,8 +43,7 @@ prepare_fallocate()
 	[[ "$rwmode" = "seqwr" ]] && return
 
 	local filesize="$((size / filenum))"
-	for i in $(seq 0 $((filenum-1)))
-	do
+	for i in $(seq 0 $((filenum - 1))); do
 		log_cmd fallocate -l $filesize test_file.$i
 	done
 }

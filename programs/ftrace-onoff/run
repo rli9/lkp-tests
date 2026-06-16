@@ -21,7 +21,7 @@ do_test()
 		log_eval "echo $tracer > current_tracer"
 		log_eval "echo 1 > tracing_on"
 		log_eval "echo 0 > tracing_on"
-	done < available_tracers
+	done <available_tracers
 }
 
 runtime_loop

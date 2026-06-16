@@ -24,7 +24,7 @@ byte2blocks()
 	local bytes=$1
 	local blk_size_bytes_hex="$(cat /sys/devices/system/memory/block_size_bytes)"
 
-	echo $(( bytes / 0x$blk_size_bytes_hex ))
+	echo $((bytes / 0x$blk_size_bytes_hex))
 }
 
 nr_node_blocks()
@@ -92,10 +92,9 @@ traverse_nodes()
 	local remain_nodes=
 	local node
 
-	for node
-	do
+	for node; do
 		resize_node $node ||
-		remain_nodes="$remain_nodes $node"
+			remain_nodes="$remain_nodes $node"
 	done
 
 	echo "$remain_nodes"
@@ -109,7 +108,7 @@ for i in {1..5}; do
 	[ -z "$remain_nodes" ] && exit 0
 
 	[ "$state_op" = 'offline' ] &&
-	echo 3 > /proc/sys/vm/drop_caches
+		echo 3 >/proc/sys/vm/drop_caches
 done
 
 log_err "Hot plug memory failed"

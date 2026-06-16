@@ -59,10 +59,10 @@ set_env()
 {
 	local partition
 	case "$test" in
-	nbd-*|loop-*)
+	nbd-* | loop-*)
 		partition=""
 		;;
-	scsi-*|block-*)
+	scsi-* | block-*)
 		partition=${partitions%% *}
 		# block/019 and block/011 need a whole disk to test PCI hotplug
 		if [[ "$test" == "block-019" ]] || [[ "$test" == "block-011" ]] || is_virt; then
@@ -92,7 +92,7 @@ set_env()
 	esac
 
 	if [[ -n "$partition" ]]; then
-		echo "TEST_DEVS=$partition" > config
+		echo "TEST_DEVS=$partition" >config
 		if [[ "${test%%-*}" == "nvme" ]]; then
 			enable_nvme_auth
 
@@ -102,8 +102,8 @@ set_env()
 		fi
 	fi
 
-	[[ "$nvme_trtype" ]] && echo "nvme_trtype=$nvme_trtype" >> config
-	[[ "$use_siw" == "true" ]] && echo "use_siw=1" >> config
+	[[ "$nvme_trtype" ]] && echo "nvme_trtype=$nvme_trtype" >>config
+	[[ "$use_siw" == "true" ]] && echo "use_siw=1" >>config
 
 	# fix the issue: losetup: cannot find an unused loop device
 	lsmod | grep -q loop || modprobe loop
@@ -134,7 +134,7 @@ run_test()
 	[[ "$test" == nvme-* ]] && args+=(-o "/mnt/$test")
 
 	local tests_array=()
-	mapfile -t tests_array <<< "$all_tests"
+	mapfile -t tests_array <<<"$all_tests"
 	args+=("${tests_array[@]}")
 
 	log_cmd ./check "${args[@]}"

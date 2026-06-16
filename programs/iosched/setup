@@ -9,23 +9,22 @@
 
 iosched_dev=${iosched_dev:-*}
 
-for i in /sys/block/$iosched_dev/queue/scheduler
-do
-	echo $iosched > $i
+for i in /sys/block/$iosched_dev/queue/scheduler; do
+	echo $iosched >$i
 done
 
 if [ "$iosched" = "deadline" ] || [ "$iosched" = "mq-deadline" ]; then
 	for dev_iosched in /sys/block/$iosched_dev/queue/iosched; do
 		[ -n "$read_expire" ] &&
-			echo $read_expire > $dev_iosched/read_expire
+			echo $read_expire >$dev_iosched/read_expire
 		[ -n "$write_expire" ] &&
-			echo $write_expire > $dev_iosched/write_expire
+			echo $write_expire >$dev_iosched/write_expire
 		[ -n "$fifo_batch" ] &&
-			echo $fifo_batch > $dev_iosched/fifo_batch
+			echo $fifo_batch >$dev_iosched/fifo_batch
 		[ -n "$writes_starved" ] &&
-			echo $writes_starved > $dev_iosched/writes_starved
+			echo $writes_starved >$dev_iosched/writes_starved
 		[ -n "$front_merges" ] &&
-			echo $front_merges > $dev_iosched/front_merges
+			echo $front_merges >$dev_iosched/front_merges
 	done
 fi
 

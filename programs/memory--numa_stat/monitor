@@ -3,7 +3,7 @@
 
 file=$(basename "$0")
 file=${file#cgroup-}
-file=$(echo "$file" |  sed -e 's/--/./g')
+file=$(echo "$file" | sed -e 's/--/./g')
 
 cgname=$testcase
 
@@ -21,20 +21,19 @@ fi
 
 if [ -z "$interval" ]; then
 	case "$file" in
-		memory.numa_stat)
-			interval=10
-			;;
-		*)
-			interval=1
-			;;
+	memory.numa_stat)
+		interval=10
+		;;
+	*)
+		interval=1
+		;;
 	esac
 fi
 
 . $LKP_SRC/lib/wait.sh
 setup_wait
 
-while :
-do
+while :; do
 	echo time: "$(date +%s)"
 	cd "$cgdir" || exit
 	for cg in "$cgname"*; do

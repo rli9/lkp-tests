@@ -30,8 +30,7 @@ run()
 			test_dev="/dev/video0"
 		}
 		;;
-	*)
-		;;
+	*) ;;
 	esac
 
 	log_cmd v4l2-compliance $test_option $test_dev 2>&1

@@ -20,8 +20,8 @@ build_libhugetlbfs || die "make failed"
 [[ -z $pagesize ]] && die "invalid parameter"
 
 # in order to config huge pages size and number
-log_cmd obj/hugeadm --add-temp-swap=32 --pool-pages-min $pagesize:32 --hard \
-	|| die "config huge pages size and number failed"
+log_cmd obj/hugeadm --add-temp-swap=32 --pool-pages-min $pagesize:32 --hard ||
+	die "config huge pages size and number failed"
 
 log_cmd make check
 

@@ -17,13 +17,10 @@ args="\
 	--mysql-user=root\
 	--mysql-db=mysql\
 	--events=0\
-	--threads=$nr_threads\
-	--time=$runtime\
-	$arg_table_size\
-	oltp_read_only.lua\
+	--threads=$nr_threads	--time=$runtime	$arg_table_size	oltp_read_only.lua\
 "
 
-cat > "$TMP_RESULT_ROOT"/run.oltp <<EOF
+cat >"$TMP_RESULT_ROOT"/run.oltp <<EOF
 . "$LKP_SRC"/lib/reproduce-log.sh
 
 cd /usr/share/sysbench

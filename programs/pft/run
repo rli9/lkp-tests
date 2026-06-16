@@ -35,11 +35,9 @@ if [[ -z "$nr_task" ]]; then
 
 	setup_threads_to_iterate
 
-	for clients in $threads_to_iterate
-	do
+	for clients in $threads_to_iterate; do
 		echo "Clients: $clients"
-		for iteration in $(seq 1 "$iterations")
-		do
+		for iteration in $(seq 1 "$iterations"); do
 			echo "Iteration: $iteration"
 			log_test ./pft -m "$pft_mapping_size" -n "$clients" -F
 		done
@@ -57,8 +55,7 @@ elif [[ -n "$runtime" ]]; then
 	done
 elif [[ -n "$iterations" ]]; then
 	echo "Clients: $nr_task"
-	for iteration in $(seq 1 "$iterations")
-	do
+	for iteration in $(seq 1 "$iterations"); do
 		echo "Iteration: $iteration"
 		log_test ./pft -m "$pft_mapping_size" -n "$nr_task" -F
 	done

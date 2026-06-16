@@ -17,16 +17,16 @@ numactl_client=""
 
 tune_param()
 {
-    set -- $tune
-    while [[ $# -ge 2 ]]; do
-        key=$1
-        val=$2
-        shift 2
+	set -- $tune
+	while [[ $# -ge 2 ]]; do
+		key=$1
+		val=$2
+		shift 2
 
-        [[ -n "$key" ]] && [[ -n "$val" ]] || continue
+		[[ -n "$key" ]] && [[ -n "$val" ]] || continue
 
-        sysctl -w "$key=$val" > /dev/null
-   done
+		sysctl -w "$key=$val" >/dev/null
+	done
 }
 
 [[ -n "$tune" ]] && tune_param
@@ -41,9 +41,9 @@ server=${server%% *}
 if [[ -n "$sessions" ]]; then
 	server_is_localhost=false
 	case "$server" in
-		127.0.0.1|::1|localhost)
-			server_is_localhost=true
-			;;
+	127.0.0.1 | ::1 | localhost)
+		server_is_localhost=true
+		;;
 	esac
 
 	if [[ "$server_is_localhost" = true ]]; then
@@ -51,11 +51,11 @@ if [[ -n "$sessions" ]]; then
 			if [[ "$numactl" = true ]]; then
 				numactl_server="numactl -C $(($cores_per_node + i))"
 			fi
-			$numactl_server iperf3 -s -B $server -p $(($port+i-1)) -1 > /dev/null &
+			$numactl_server iperf3 -s -B $server -p $(($port + i - 1)) -1 >/dev/null &
 		done
 
 		for i in $(seq 1 $sessions); do
-			local_port=$(($port+i-1))
+			local_port=$(($port + i - 1))
 			for _ in $(seq 1 10); do
 				ss -tln | grep -q ":${local_port} " && break
 				sleep 0.1
@@ -68,9 +68,9 @@ if [[ -n "$sessions" ]]; then
 	mkdir -p "$client_output_dir"
 
 	for i in $(seq 1 $sessions); do
-		echo "$(date +'%F %T') iperf3 -c $server -p $(($port+i-1)) -i 10 -T $((0+i-1)) -J -t $runtime $opt_udp &" >> $RESULT_ROOT/reproduce.sh
+		echo "$(date +'%F %T') iperf3 -c $server -p $(($port + i - 1)) -i 10 -T $((0 + i - 1)) -J -t $runtime $opt_udp &" >>$RESULT_ROOT/reproduce.sh
 	done
-	echo "$(date +'%F %T') wait" >> $RESULT_ROOT/reproduce.sh
+	echo "$(date +'%F %T') wait" >>$RESULT_ROOT/reproduce.sh
 
 	client_pids=()
 
@@ -78,7 +78,7 @@ if [[ -n "$sessions" ]]; then
 		if [[ "$numactl" = true ]]; then
 			numactl_client="numactl -C $((0 + i))"
 		fi
-		$numactl_client iperf3 -c $server -p $(($port+i-1)) -i 10 -T $((0+i-1)) -J -t $runtime $opt_udp > "$client_output_dir/client-$i.json" &
+		$numactl_client iperf3 -c $server -p $(($port + i - 1)) -i 10 -T $((0 + i - 1)) -J -t $runtime $opt_udp >"$client_output_dir/client-$i.json" &
 		client_pids+=($!)
 	done
 
@@ -93,6 +93,6 @@ if [[ -n "$sessions" ]]; then
 	rm -rf "$client_output_dir"
 else
 	client_cmd="iperf3 -t $runtime -J -c $server $opt_udp"
-	echo "$(date +'%F %T') ${client_cmd}" >> $RESULT_ROOT/reproduce.sh
+	echo "$(date +'%F %T') ${client_cmd}" >>$RESULT_ROOT/reproduce.sh
 	${client_cmd}
 fi

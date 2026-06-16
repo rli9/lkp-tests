@@ -13,13 +13,12 @@ cd_benchmark
 
 TESTFILE=ubuntu-18.04.3-desktop-amd64.iso
 if [ ! -f "$TESTFILE" ]; then
-    lkp_download "http://old-releases.ubuntu.com/releases/18.04.3/$TESTFILE" "$TESTFILE"
+	lkp_download "http://old-releases.ubuntu.com/releases/18.04.3/$TESTFILE" "$TESTFILE"
 fi
 
 echo "Running lz4-test benchmark..."
 
-for i in $(seq $iterations)
-do
-    echo Iterations: $i
-    log_cmd ./lz4 -q -i10 -b$compression -e$compression $TESTFILE 2>&1
+for i in $(seq $iterations); do
+	echo Iterations: $i
+	log_cmd ./lz4 -q -i10 -b$compression -e$compression $TESTFILE 2>&1
 done

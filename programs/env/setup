@@ -7,7 +7,7 @@ set_tbox_group "$(get_hostname)"
 
 [ -d $TMP ] || mkdir -p $TMP
 
-cat - $LKP_SRC/hosts/${tbox_group} > $TMP/env.yaml <<EOF
+cat - $LKP_SRC/hosts/${tbox_group} >$TMP/env.yaml <<EOF
 # setup/env
 nr_cpu: $(getconf _NPROCESSORS_CONF)
 nr_node: $(echo /sys/devices/system/node/node[0-9]* | wc -w)

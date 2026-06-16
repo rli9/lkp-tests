@@ -49,8 +49,7 @@ run_netperf()
 {
 	[[ -n "$delay" ]] && $WAIT_POST_TEST_CMD --timeout "$delay"
 
-	for i in $(seq $nr_threads)
-	do
+	for i in $(seq $nr_threads); do
 		log_eval "netperf $opt_ip -H $server -t $test -c -C -l $runtime $test_options &"
 	done
 

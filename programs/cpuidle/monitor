@@ -7,13 +7,12 @@ take_snapshot()
 {
 	echo time: "$(date +%s.%N)"
 
-	for dir in /sys/devices/system/cpu/cpu*/cpuidle/state*/
-	do
+	for dir in /sys/devices/system/cpu/cpu*/cpuidle/state*/; do
 		cpu=${dir#/sys/devices/system/cpu/}
 		cpu=${cpu%%/*}
 		cat $dir/name | sed 's/ /-/g' | read -r state_name
-		read -r state_time  < $dir/time
-		read -r state_usage < $dir/usage
+		read -r state_time <$dir/time
+		read -r state_usage <$dir/usage
 		echo $cpu.${state_name}.time: ${state_time}
 		echo $cpu.${state_name}.usage: ${state_usage}
 	done
@@ -31,8 +30,7 @@ if [ -z "$interval" ]; then
 	exit
 fi
 
-while :
-do
+while :; do
 	take_snapshot
 	wait_timeout $interval
 done

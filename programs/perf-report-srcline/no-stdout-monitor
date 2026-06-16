@@ -25,7 +25,7 @@ default_events()
 : "${delay:=100}"
 
 [ -n "$freq" ] &&
-opt_freq="--freq=$freq"
+	opt_freq="--freq=$freq"
 opt_events="-e $(echo "$events" | sed 's/ / -e /g')"
 
 # perf may consume lots of fd
@@ -42,7 +42,7 @@ $perf record -q -ag --realtime=1 -m 256 $opt_freq $opt_events \
 	timeout $((delay + duration)) \
 	$WAIT_POST_TEST_CMD
 
-cat > "$TMP_RESULT_ROOT/post-run.perf-report-srcline" <<EOF
+cat >"$TMP_RESULT_ROOT/post-run.perf-report-srcline" <<EOF
 [ -s $PERF_REPORT_SRCLINE_DATA ] && {
 	$perf report --header -i $PERF_REPORT_SRCLINE_DATA --no-children -f -v \
 	      --stdio --sort sym,srcline -w 10,50,100 --full-source-path |

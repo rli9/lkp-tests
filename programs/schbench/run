@@ -26,8 +26,7 @@ cd_benchmark
 [[ -n "$intervaltime_s" ]] && interval_opt="-i $intervaltime_s"
 
 # the source code print the output to stderr, here redirection stderr to stdout
-for i in $(seq $iterations)
-do
+for i in $(seq $iterations); do
 	echo Iteration : $i
 	log_cmd ./schbench -m $message_threads -t $worker_threads -r $runtime $interval_opt 2>&1 || die "Schbench run failed"
 done

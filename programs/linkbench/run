@@ -13,6 +13,6 @@ cd "$BENCHMARK_ROOT/linkbench" || die "no $BENCHMARK_ROOT/linkbench"
 duration=${duration%%s}
 
 ./bin/linkbench 2>&1 \
--c config/MyConfig.properties -D host=localhost -D user=linkbench -D password=mypassword -D requesters="$nr_task" \
--c config/LinkConfigMysql.properties -D maxtime="$duration" \
--r
+	-c config/MyConfig.properties -D host=localhost -D user=linkbench -D password=mypassword -D requesters="$nr_task" \
+	-c config/LinkConfigMysql.properties -D maxtime="$duration" \
+	-r

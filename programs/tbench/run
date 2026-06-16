@@ -23,9 +23,8 @@ cd_benchmark
 [[ -f share/client.txt ]] || die "can not find load file"
 
 server=${server%% *}
-for i in $(seq $iterations)
-do
-  log_cmd tbench -c share/client.txt -t $runtime $nr_threads $server || die "tbench run failed, check run log"
+for i in $(seq $iterations); do
+	log_cmd tbench -c share/client.txt -t $runtime $nr_threads $server || die "tbench run failed, check run log"
 done
 
 log_echo killall -KILL tbench_srv

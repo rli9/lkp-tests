@@ -9,9 +9,9 @@ install_pkg()
 	has_cmd generate-md && return
 
 	has_cmd npm ||
-	sudo apt-get -y install npm
+		sudo apt-get -y install npm
 	has_cmd node ||
-	sudo ln -s /usr/bin/nodejs /usr/local/bin/node
+		sudo ln -s /usr/bin/nodejs /usr/local/bin/node
 	sudo npm install -g markdown-styles
 }
 

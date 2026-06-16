@@ -23,10 +23,10 @@ syspath=$(get_sysfs_path) || exit
 
 if [ -z "$interval" ]; then
 	case $file in
-		sched_debug)	interval=60 ;;
-		stat)		interval=10 ;;
-		zoneinfo)	interval=10 ;;
-		*)		interval=1  ;;
+	sched_debug) interval=60 ;;
+	stat) interval=10 ;;
+	zoneinfo) interval=10 ;;
+	*) interval=1 ;;
 	esac
 fi
 
@@ -40,8 +40,7 @@ if [ $file = 'vmstat' ]; then
 	}
 fi
 
-while :
-do
+while :; do
 	echo time: "$(date +%s)"
 	cat $syspath
 	wait_timeout $interval

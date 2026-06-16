@@ -19,18 +19,18 @@ keep_quiet()
 __probe_devs()
 {
 	case "$mode" in
-		raw|fsdax)
-			# shellcheck disable=SC2010
-			rdevs=$(ls /dev/pmem* | grep '/dev/pmem[0-9]\+$')
-			;;
-		dax)
-			rdevs=$(ls /dev/dax*)
-			ignore_parts=1
-			;;
-		*)
-			echo "Invalid nvdimm mode: $mode!" >&2
-			exit 1
-			;;
+	raw | fsdax)
+		# shellcheck disable=SC2010
+		rdevs=$(ls /dev/pmem* | grep '/dev/pmem[0-9]\+$')
+		;;
+	dax)
+		rdevs=$(ls /dev/dax*)
+		ignore_parts=1
+		;;
+	*)
+		echo "Invalid nvdimm mode: $mode!" >&2
+		exit 1
+		;;
 	esac
 	rnr_dev=$(echo $rdevs | wc -w)
 	: "${nr_dev:=$rnr_dev}"
@@ -143,7 +143,7 @@ else
 	probe_create_parts
 fi
 
-cat >> $TMP/env.yaml <<EOF
+cat >>$TMP/env.yaml <<EOF
 
 # setup/nvdimm
 nr_partitions: $nr_part

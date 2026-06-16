@@ -10,7 +10,7 @@ should_touch_watchdog=
 watchdog_initial_countdown=${boot_timeout:-300}
 watchdog_reset_period=32
 
-[ -x /usr/bin/schedtool ] && /usr/bin/schedtool -R -p 1 $$	# SCHED_RR
+[ -x /usr/bin/schedtool ] && /usr/bin/schedtool -R -p 1 $$ # SCHED_RR
 
 timed_echo()
 {
@@ -21,14 +21,13 @@ wait_touch_watchdog()
 {
 	local elapsed=0
 
-	while :
-	do
+	while :; do
 		wait_job_finished --timeout $watchdog_reset_period && exit 0
 		[ -f "$TMP/job-finished" ] && exit
 
 		bmc-watchdog --reset
 
-		elapsed=$(( elapsed + watchdog_reset_period ))
+		elapsed=$((elapsed + watchdog_reset_period))
 		[ $elapsed -gt $max_uptime ] && return
 	done
 }
@@ -52,7 +51,7 @@ start_bmc_watchdog()
 	fi
 
 	[ -x /usr/local/bin/ipmi-setup ] || return
-	if ! ipmi-setup 2> /dev/null | grep "BMC"; then
+	if ! ipmi-setup 2>/dev/null | grep "BMC"; then
 		echo "ipmi setup fail, skip bmc-watchdog setup!"
 		return
 	fi
@@ -60,16 +59,16 @@ start_bmc_watchdog()
 	[ -f /var/run/watchdog.pid ] && return
 	[ -f /var/run/bmc-watchdog.pid ] && return
 	(
-	        set -o noclobber
-		echo $$ > /var/lock/bmc-watchdog
+		set -o noclobber
+		echo $$ >/var/lock/bmc-watchdog
 	) 2>/dev/null || return
 
 	bmc-watchdog -d -u 4 -p 0 -a 1 -F -P -L -S -O -i $watchdog_initial_countdown -e $watchdog_reset_period && {
 		sleep 10
 		local pid="$(pidof bmc-watchdog)"
 		[ -n "$pid" ] &&
-		bmc-watchdog --get | grep -q 'Timer:.*Running' && {
-			echo $pid > /var/run/bmc-watchdog.pid
+			bmc-watchdog --get | grep -q 'Timer:.*Running' && {
+			echo $pid >/var/run/bmc-watchdog.pid
 			return
 		}
 	}
@@ -99,7 +98,7 @@ start_watchdog()
 		touch $RESULT_ROOT/soft_timeout
 	fi
 
-	ps faux 2>/dev/null > $TMP_RESULT_ROOT/watchdog-debug || ps > $TMP_RESULT_ROOT/watchdog-debug
+	ps faux 2>/dev/null >$TMP_RESULT_ROOT/watchdog-debug || ps >$TMP_RESULT_ROOT/watchdog-debug
 
 	# try to unblock the main shell, which will copy files to
 	# $RESULT_ROOT, which helps debug the hang reason
@@ -119,10 +118,10 @@ start_watchdog()
 
 	sleep 144 || exit
 
-	echo w > /proc/sysrq-trigger
-	echo s > /proc/sysrq-trigger
+	echo w >/proc/sysrq-trigger
+	echo s >/proc/sysrq-trigger
 	sleep 10
-	echo b > /proc/sysrq-trigger
+	echo b >/proc/sysrq-trigger
 }
 
 start_bmc_watchdog

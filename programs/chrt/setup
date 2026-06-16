@@ -14,7 +14,7 @@ fi
 
 : "${sched_priority:="$default_priority"}"
 
-cat >> "$TMP"/env.yaml <<EOF
+cat >>"$TMP"/env.yaml <<EOF
 
 # setup/chrt
 exec_prefix: chrt --$sched_policy $sched_priority $exec_prefix

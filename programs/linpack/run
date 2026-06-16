@@ -16,7 +16,7 @@ cd_benchmark
 
 if [[ -z "$test_memory_size" ]]; then
 	test_memory_size=$(($(to_byte $memory) / 2))
-	max_mem=$((32<<30))
+	max_mem=$((32 << 30))
 	[[ "$test_memory_size" -gt "$max_mem" ]] && test_memory_size=$max_mem
 fi
 
@@ -26,7 +26,7 @@ echo "test_memory_size=$test_memory_size dimension=$dimension"
 
 [[ -n "$nr_task" ]] && export MKL_NUM_THREADS="$nr_task"
 
-cat > lininput_xeon64 <<EOF
+cat >lininput_xeon64 <<EOF
 Sample Intel(R) Optimized LINPACK Benchmark data file (lininput_xeon64)
 Intel(R) Optimized LINPACK Benchmark data
 1		# number of tests

@@ -9,17 +9,17 @@ setup_swap_size()
 		swap_size=$(((totalmem >> 10) * swap_size / 100))
 	else
 		case $swap_size in
-			*M)
-				bits=0
-				;;
-			*G)
-				bits=10
-				;;
-			*T)
-				bits=20
-				;;
+		*M)
+			bits=0
+			;;
+		*G)
+			bits=10
+			;;
+		*T)
+			bits=20
+			;;
 		esac
-		[ -n "$bits" ] && swap_size=$(( ${swap_size%%[A-Z]*} << bits  ))
+		[ -n "$bits" ] && swap_size=$((${swap_size%%[A-Z]*} << bits))
 	fi
 }
 
@@ -27,7 +27,7 @@ sysctl -w kernel.softlockup_panic=0
 modprobe -r scsi_debug 2>/dev/null
 freemem=$(grep MemFree /proc/meminfo | awk '{print $2}')
 setup_swap_size
-[ -n "$swap_size" ] || swap_size=$(((freemem >> 10 ) * 4 / 5 ))
+[ -n "$swap_size" ] || swap_size=$(((freemem >> 10) * 4 / 5))
 modprobe scsi_debug dev_size_mb=$swap_size
 errno=$?
 sysctl -w kernel.softlockup_panic=1

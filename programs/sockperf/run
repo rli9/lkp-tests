@@ -18,8 +18,7 @@ msg_size=${msg_size%%[bB]}
 [[ -z "$server" ]] && server=127.0.0.1
 server=${server%% *}
 
-for subcmd in under-load ping-pong throughput
-do
+for subcmd in under-load ping-pong throughput; do
 	echo "sockperf: subcommand $subcmd UDP"
 	log_cmd ./sockperf $subcmd -i $server --time $time --msg-size $msg_size
 	echo "sockperf: subcommand $subcmd TCP"

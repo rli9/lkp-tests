@@ -14,7 +14,7 @@ opt_events="-e $(echo $events | sed 's/ / -e /g')"
 
 take_snapshot()
 {
-	$perf stat -a -x' ' $opt_events 2>&1 -- $1
+	$perf stat -a -x' ' $opt_events -- $1 2>&1
 }
 
 . $LKP_SRC/lib/wait.sh

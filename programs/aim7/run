@@ -42,7 +42,7 @@ EOF"
 		log_eval "echo \"$mount_points\" > config"
 	else
 		log_cmd mkdir -p /fs/shm
-		log_cmd umount /fs/shm > /dev/null 2>&1
+		log_cmd umount /fs/shm >/dev/null 2>&1
 		log_cmd mount -t tmpfs /dev/shm /fs/shm
 		log_eval 'echo "/fs/shm" > config'
 	fi

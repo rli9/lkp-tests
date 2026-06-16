@@ -33,8 +33,7 @@ run_reaim()
 run_for_time()
 {
 	start_time=$(date +%s)
-	while :
-	do
+	while :; do
 		run_reaim
 		now=$(date +%s)
 		[[ $((now - start_time)) -gt "$runtime" ]] && break
@@ -50,8 +49,8 @@ cd_benchmark
 
 if [[ -z "$nr_task" ]]; then
 	REAIM_STARTUSERS=1
-	REAIM_ENDUSERS=$((nr_cpu*4))
-	REAIM_INCREMENT=$((nr_cpu/4))
+	REAIM_ENDUSERS=$((nr_cpu * 4))
+	REAIM_INCREMENT=$((nr_cpu / 4))
 	[[ "$REAIM_INCREMENT" = 0 ]] && REAIM_INCREMENT=1
 else
 	REAIM_STARTUSERS=$nr_task
@@ -75,7 +74,7 @@ if [[ -n "$mount_points" ]]; then
 	REAIM_TESTDIR="${mount_points%% *}"
 else
 	log_cmd mkdir -p /fs/shm
-	log_cmd umount /fs/shm > /dev/null 2>&1
+	log_cmd umount /fs/shm >/dev/null 2>&1
 	log_cmd mount -t tmpfs tmpfs /fs/shm
 	REAIM_TESTDIR="/fs/shm"
 fi

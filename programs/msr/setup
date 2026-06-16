@@ -14,12 +14,11 @@
 : "${check_msr:=y}"
 : "${restore_msr:=y}"
 
-modprobe msr > /dev/null 2>&1
+modprobe msr >/dev/null 2>&1
 
 sanity_check()
 {
-	for cpu_dir in /dev/cpu/[0-9]*
-	do
+	for cpu_dir in /dev/cpu/[0-9]*; do
 		[ -c $cpu_dir/msr ] || die "$cpu_dir/msr not available"
 		return
 	done
@@ -30,7 +29,7 @@ restore_msr()
 	local reg=$1
 
 	oval=$(rdmsr -c "$reg")
-	cat >> "$TMP_RESULT_ROOT/post-run.msr" <<EOF
+	cat >>"$TMP_RESULT_ROOT/post-run.msr" <<EOF
 wrmsr -a "$reg" "$oval"
 EOF
 }

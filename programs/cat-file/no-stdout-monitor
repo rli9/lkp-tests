@@ -16,8 +16,8 @@ for file in "$@" $files; do
 	for prefix in / /proc /sys /sys/kernel/debug; do
 		path=$prefix/$file
 		if [ -f $path ]; then
-			cat $path > $TMP_RESULT_ROOT/$base
-			break;
+			cat $path >$TMP_RESULT_ROOT/$base
+			break
 		fi
 	done
 done

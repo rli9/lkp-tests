@@ -11,7 +11,7 @@ fi
 
 script="$TMP_RESULT_ROOT"/setup_migratepages
 
-cat <<EOF > "$script"
+cat <<EOF >"$script"
 . "$LKP_SRC"/lib/wait.sh
 . "$LKP_SRC"/lib/reproduce-log.sh
 

@@ -14,8 +14,7 @@ setup_wait
 echo "scan=off" >/sys/kernel/debug/kmemleak
 
 i=0
-while :
-do
+while :; do
 	echo scan >/sys/kernel/debug/kmemleak
 	cat /sys/kernel/debug/kmemleak
 	echo clear >/sys/kernel/debug/kmemleak
@@ -24,5 +23,5 @@ do
 	else
 		wait_timeout $interval
 	fi
-	i=$((i+1))
+	i=$((i + 1))
 done

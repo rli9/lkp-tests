@@ -6,15 +6,14 @@
 
 wifi_dev=
 
-for i in /sys/class/net/*
-do
-       [ -e "$i" ] || continue
+for i in /sys/class/net/*; do
+	[ -e "$i" ] || continue
 
-       i=${i##*/}
+	i=${i##*/}
 
-       grep -q wlan /sys/class/net/$i/uevent || continue
-       wifi_dev=$i
-       break
+	grep -q wlan /sys/class/net/$i/uevent || continue
+	wifi_dev=$i
+	break
 done
 
 [ -z $wifi_dev ] && exit 0
@@ -22,7 +21,7 @@ done
 if [ -n "$ssid" ] && [ -n "$passwd" ]; then
 	rfkill unblock wifi
 	ifconfig $wifi_dev up
-	wpa_passphrase $ssid $passwd > /etc/wpa_supplicant.conf
+	wpa_passphrase $ssid $passwd >/etc/wpa_supplicant.conf
 	wpa_supplicant -B -D nl80211 -i $wifi_dev -c /etc/wpa_supplicant.conf
 	dhclient $wifi_dev
 fi

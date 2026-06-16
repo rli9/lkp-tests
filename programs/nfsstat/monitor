@@ -6,8 +6,7 @@
 . $LKP_SRC/lib/wait.sh
 setup_wait
 
-while :
-do
+while :; do
 	echo time: "$(date +%s.%N)"
 	nfsstat -v
 	wait_timeout $interval

@@ -10,7 +10,7 @@ stat_files="stripe_cache_active stripe_cache_size"
 
 while true; do
 	echo time: "$(date +%s.%N)"
-	grep . $stat_files  | sed 's/:/: /'
+	grep . $stat_files | sed 's/:/: /'
 
 	sleep 1
 done

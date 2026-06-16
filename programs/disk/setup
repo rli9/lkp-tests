@@ -59,8 +59,7 @@ check_nr_partitions()
 
 wait_disks()
 {
-	for _ in $(seq $wait_disks_timeout)
-	do
+	for _ in $(seq $wait_disks_timeout); do
 		check_nr_partitions 2>/dev/null && return
 		sleep 1
 	done
@@ -92,11 +91,11 @@ partition2disk()
 	local pat=
 
 	case "$part" in
-		/dev/nvme*) pat='p[0-9]+';;
-		/dev/disk/by-id/*) pat='-part[0-9]+';;
-		/dev/dm-*|/dev/mapper/*);;
-		# General fallback pattern with /dev/sda1 /dev/loop0, etc.
-		*) pat='[0-9]+';;
+	/dev/nvme*) pat='p[0-9]+' ;;
+	/dev/disk/by-id/*) pat='-part[0-9]+' ;;
+	/dev/dm-* | /dev/mapper/*) ;;
+	# General fallback pattern with /dev/sda1 /dev/loop0, etc.
+	*) pat='[0-9]+' ;;
 	esac
 	if [ -n "$pat" ]; then
 		echo $part | sed -re "s/$pat$//"
@@ -183,7 +182,7 @@ if [ -z "$disks" ]; then
 	done
 fi
 
-cat >> $TMP/env.yaml <<EOF
+cat >>$TMP/env.yaml <<EOF
 
 # setup/disk
 nr_partitions: $nr_partitions

@@ -23,4 +23,4 @@ mb_proc=$(to_mb $mem_proc)
 
 log_cmd numactl --hard || die "Test needs available numa"
 
-log_cmd  $perf bench numa mem -p $nr_processes -t $nr_threads -m -0 -P $mb_proc --thp $thp_num $extra_params
+log_cmd $perf bench numa mem -p $nr_processes -t $nr_threads -m -0 -P $mb_proc --thp $thp_num $extra_params

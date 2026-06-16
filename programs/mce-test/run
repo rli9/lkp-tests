@@ -48,7 +48,7 @@ test_all()
 	log_cmd cp -af "$BENCHMARK_ROOT"/mce-test "$mount_points"
 	cd "$mount_points"/mce-test || return
 
-	cat > $MCE_CASELIST <<EOF
+	cat >$MCE_CASELIST <<EOF
 APEI-INJ cases/function/apei-inj/runtest.sh
 EINJ-EXT cases/function/einj-ext/runtest.sh
 ERST-INJ cases/function/erst-inject/runtest.sh
@@ -69,7 +69,7 @@ EOF
 
 	# shellcheck disable=SC2206
 	file=($MCE_SUMDIR/*.log)
-	if (( ${#file[@]} )); then
+	if ((${#file[@]})); then
 		cat "${file[@]}"
 	else
 		echo "WARNING: mce-test test results is not exist."
@@ -116,7 +116,7 @@ test_choice()
 	cd "$mount_points"/mce-test || return
 	for i in ${mce_case}; do
 		if grep -q "^$i" "$MCE_SCENARIO_DIR"/*; then
-			grep -h "^$i" "$MCE_SCENARIO_DIR"/* | awk '{print $1" "$2}' >> $MCE_CASELIST
+			grep -h "^$i" "$MCE_SCENARIO_DIR"/* | awk '{print $1" "$2}' >>$MCE_CASELIST
 		else
 			die "mce test case: $i not found"
 		fi
@@ -131,7 +131,7 @@ test_choice()
 
 	# shellcheck disable=SC2206
 	file=($MCE_SUMDIR/*.log)
-	if (( ${#file[@]} )); then
+	if ((${#file[@]})); then
 		cat "${file[@]}"
 	else
 		echo "WARNING: mce-test test results is not exist."

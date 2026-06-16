@@ -1,7 +1,6 @@
 #!/bin/bash
 # - node_size
 
-
 #
 # node_size is the size for each AEP node that users
 # want to enable.
@@ -18,8 +17,7 @@ wait_initialization_timeout=30
 
 remove_dax_pmem_compat()
 {
-	for i in $(seq $rmmod_retries)
-	do
+	for i in $(seq $rmmod_retries); do
 		log_cmd modprobe -r dax_pmem_compat && return
 		sleep 10
 	done
@@ -28,8 +26,7 @@ remove_dax_pmem_compat()
 
 wait_initialization()
 {
-	for i in $(seq $wait_initialization_timeout)
-	do
+	for i in $(seq $wait_initialization_timeout); do
 		[ -f /sys/bus/dax/drivers/device_dax/unbind ] && return
 		sleep 1
 	done
@@ -69,9 +66,9 @@ for n in 2 3; do
 
 	for m in /sys/devices/system/node/node"$n"/memory*; do
 		if [ -n "$node_size" ] && [ $i -ge "$aep_banks" ]; then
-			break;
+			break
 		fi
-		: $((i=i+1))
+		: $((i = i + 1))
 		log_write_file "$m"/state -n online_movable
 	done
 done

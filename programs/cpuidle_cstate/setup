@@ -8,8 +8,7 @@
 is_virt && exit 0
 is_docker && exit 0
 
-if [ -z "$max" ] && [ -z "$fb_list" ]
-then
+if [ -z "$max" ] && [ -z "$fb_list" ]; then
 	log_echo cpuidle_cstate: Invalid parameters
 	exit 0
 fi
@@ -19,12 +18,10 @@ fi
 
 #override forbidden_list if max cstates is specified
 #we assume all the processors share the same cstates
-if [ -n "$max" ]
-then
+if [ -n "$max" ]; then
 	fb_list=
 	cstate=$max
-	while [ -d /sys/devices/system/cpu/cpu0/cpuidle/state$cstate ]
-	do
+	while [ -d /sys/devices/system/cpu/cpu0/cpuidle/state$cstate ]; do
 		fb_list="$fb_list $cstate"
 		cstate=$((cstate + 1))
 	done
@@ -32,24 +29,20 @@ then
 fi
 
 echo -n Disable cstate:
-for c in $fb_list
-do
+for c in $fb_list; do
 	echo -n " $(cat /sys/devices/system/cpu/cpu0/cpuidle/state$c/name)"
 done
 echo
 
-for cpu_dir in /sys/devices/system/cpu/cpu[0-9]*
-do
-        online_file="$cpu_dir"/online
-        [ -f "$online_file" ] && [ "$(cat "$online_file")" -eq 0 ] && continue
+for cpu_dir in /sys/devices/system/cpu/cpu[0-9]*; do
+	online_file="$cpu_dir"/online
+	[ -f "$online_file" ] && [ "$(cat "$online_file")" -eq 0 ] && continue
 
-	for cstate in $fb_list
-	do
-		echo 1 > $cpu_dir/cpuidle/state$cstate/disable
+	for cstate in $fb_list; do
+		echo 1 >$cpu_dir/cpuidle/state$cstate/disable
 	done
 
-	for state_dir in "$cpu_dir"/cpuidle/state[0-9]
-	do
+	for state_dir in "$cpu_dir"/cpuidle/state[0-9]; do
 		name=$(cat $state_dir/name)
 		desc=$(cat $state_dir/desc)
 		status=disabled

@@ -15,9 +15,8 @@
 [ -n "$rtcwake" ] || rtcwake=60
 [ -n "$idle_time" ] || idle_time=10
 
-if [ -z "$runtime" ]
-then
-	runtime=$(( iterations * 120))
+if [ -z "$runtime" ]; then
+	runtime=$((iterations * 120))
 fi
 
 rtcwake_file=/sys/class/rtc/rtc0/wakealarm
@@ -28,77 +27,68 @@ f_lkp_output=./suspend-stress
 
 echo "SUSPEND RESUME TEST STARTED"
 
-if [ "$mode" = "mem" ]
-then
-	if [ -f "/sys/power/mem_sleep" ]
-	then
-		echo deep > /sys/power/mem_sleep || {
+if [ "$mode" = "mem" ]; then
+	if [ -f "/sys/power/mem_sleep" ]; then
+		echo deep >/sys/power/mem_sleep || {
 			echo "mem sleep not supported. avaliable mem sleep type: $(cat /sys/power/mem_sleep)"
 			exit 1
 		}
 	fi
 fi
 
-if [ -n "$pm_test" ]
-then
+if [ -n "$pm_test" ]; then
 	echo "pm_test set to $pm_test"
-	echo $pm_test > /sys/power/pm_test || {
+	echo $pm_test >/sys/power/pm_test || {
 		echo failed to set pm_test
 		exit 1
 	}
 	[ "none" = "$pm_test" ] && pm_test=""
 fi
 
-if [ "$mode" = "disk" ]
-then
+if [ "$mode" = "disk" ]; then
 	echo "test_resume for hibernation is enabled"
-	echo test_resume > /sys/power/disk || {
+	echo test_resume >/sys/power/disk || {
 		echo failed to set test_resume
 		exit 1
 	}
 fi
 
-for i in $(seq $iterations)
-do
+for i in $(seq $iterations); do
 	echo "Suspend to $mode $i/$iterations:"
-	echo "Suspend to $mode $i/$iterations:" >> $log_file
+	echo "Suspend to $mode $i/$iterations:" >>$log_file
 
 	retry=30
-	while true
-	do
-		ping -c 1 -W 1 internal-lkp-server > /dev/null && break
+	while true; do
+		ping -c 1 -W 1 internal-lkp-server >/dev/null && break
 		echo network not ready
-		echo network not ready >> $log_file
+		echo network not ready >>$log_file
 		retry=$((retry - 1))
 		[ $retry -eq 0 ] && break
 	done
 
 	# restart network if network is not back in 10 seconds
-	if [ $retry -eq 0 ]
-	then
+	if [ $retry -eq 0 ]; then
 		$LKP_SRC/bin/run-ipconfig
-		ping -c 1 -W 1 internal-lkp-server > /dev/null || {
+		ping -c 1 -W 1 internal-lkp-server >/dev/null || {
 			echo network down
-			echo network down >> $log_file
+			echo network down >>$log_file
 			[ -n "$debug" ] && sleep 72000
 			exit 1
 		}
 
 		echo network recovered by run-ipconfig
-		echo network recovered by run-ipconfig >> $log_file
+		echo network recovered by run-ipconfig >>$log_file
 	fi
 
-	if [ -n "$debug" ]
-	then
+	if [ -n "$debug" ]; then
 		set_job_state "suspending_debug-$i/$iterations"
 	else
 		set_job_state "suspending-$i/$iterations"
 	fi
 
-	if [[ ( -z "$pm_test" ) && ( "$mode" != "disk" ) ]]
-	then
-		echo 0 > $rtcwake_file
-		echo "+$rtcwake" > $rtcwake_file || {
+	if [[ (-z "$pm_test") && ("$mode" != "disk") ]]; then
+		echo 0 >$rtcwake_file
+		echo "+$rtcwake" >$rtcwake_file || {
 			echo failed to set rtcwake
 			ls /sys/class/
 			ls /sys/class/rtc/
@@ -107,20 +97,20 @@ do
 		}
 	fi
 
-	dmesg > $dmesg_file
+	dmesg >$dmesg_file
 	upload_files -t result $log_file
 	upload_files -t result $dmesg_file
 	#make sure test either PASS or FAIL, no INCOMPLETE
-	echo "test started" > $f_lkp_output
+	echo "test started" >$f_lkp_output
 	upload_files $f_lkp_output
 
-	echo $mode > /sys/power/state || {
+	echo $mode >/sys/power/state || {
 		echo "Failed"
 		exit 1
 	}
 
 	echo "Done"
-	echo "Done" >> $log_file
+	echo "Done" >>$log_file
 	echo "Sleep for $idle_time seconds"
 	sleep $idle_time
 done

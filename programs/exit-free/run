@@ -7,5 +7,5 @@ kill "$(cat $TMP/pid-bg-proc-eatmem)"
 wait
 end=$(date +%s.%N)
 echo "end: $end"
-duration=$(echo "$end-$begin" |bc)
+duration=$(echo "$end-$begin" | bc)
 echo "duration: $duration"

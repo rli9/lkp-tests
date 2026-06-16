@@ -46,10 +46,10 @@ fi
 [ "$delay" = 0 ] || opt_delay="-D $((delay * 1000))"
 
 [ -n "$freq" ] &&
-opt_freq="--freq=$freq"
+	opt_freq="--freq=$freq"
 
 [ -n "$period" ] &&
-opt_period="--count=$period"
+	opt_period="--count=$period"
 
 if [ -n "$cpu" ]; then
 	opt_cpu="-C $cpu"
@@ -80,7 +80,7 @@ perf_data=$TMP/perf.data
 kptr_restrict_file=/proc/sys/kernel/kptr_restrict
 kptr_restrict=0
 [ -f "$kptr_restrict_file" ] && kptr_restrict=$(cat "$kptr_restrict_file")
-[ "$kptr_restrict" -ne 0 ] && echo 0 > "$kptr_restrict_file"
+[ "$kptr_restrict" -ne 0 ] && echo 0 >"$kptr_restrict_file"
 
 $perf -v || die 'perf command failed'
 # WAIT_POST_TEST_CMD will start at the same time with perf
@@ -90,7 +90,7 @@ $perf record -q -g --realtime=1 -m 256 $opt_cpu $opt_freq $opt_period $opt_event
 	-o $perf_data $opt_delay -- \
 	$WAIT_POST_TEST_CMD --timeout $((delay + duration))
 
-cat > "$TMP_RESULT_ROOT/post-run.perf-profile" <<EOF
+cat >"$TMP_RESULT_ROOT/post-run.perf-profile" <<EOF
 [ -s "$perf_data" ] && {
 	$perf report $opt_inline $opt_children --header -U -g $callgraph --sort=dso,symbol -i $perf_data |
 	gzip > $TMP_RESULT_ROOT/perf-profile.gz && {

@@ -41,24 +41,22 @@ setup_one_cgroup2()
 
 	#Set the parameter defined in the jobfile and enable the cgroup
 	env | grep -F '_46_' |
-	while read -r line
-	do
-		key=${line%%=*}
-		val=${line##*=}
-		[ -n "$val" ] || continue
-		param=$(echo "$key" | sed 's/_46_/./g')
+		while read -r line; do
+			key=${line%%=*}
+			val=${line##*=}
+			[ -n "$val" ] || continue
+			param=$(echo "$key" | sed 's/_46_/./g')
 
-		for i in 0 10 30
-		do
-			[ -w "$CGROUP2_MNT/$cgname/$param" ] || {
-				sleep $i
-				controller=${param%%.*}
-				log_eval "echo '+$controller' > '$CGROUP2_MNT/cgroup.subtree_control'"
-			}
+			for i in 0 10 30; do
+				[ -w "$CGROUP2_MNT/$cgname/$param" ] || {
+					sleep $i
+					controller=${param%%.*}
+					log_eval "echo '+$controller' > '$CGROUP2_MNT/cgroup.subtree_control'"
+				}
+			done
+
+			log_eval "echo $val > '$CGROUP2_MNT/$cgname/$param'"
 		done
-
-		log_eval "echo $val > '$CGROUP2_MNT/$cgname/$param'"
-	done
 }
 
 #Bind all the subsystem controller to a unified hierarchy
@@ -75,7 +73,7 @@ if parse_bool -q "$cg_bind"; then
 	log_eval "echo $PPID > '$CGROUP2_MNT/$testcase.1/cgroup.procs'"
 fi
 
-cat >> $TMP/env.yaml <<EOF
+cat >>$TMP/env.yaml <<EOF
 
 # setup/cgroup2
 CGROUP_MNT: $CGROUP2_MNT

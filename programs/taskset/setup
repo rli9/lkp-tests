@@ -8,7 +8,7 @@
 . "$LKP_SRC"/lib/reproduce-log.sh
 
 if [ -n "$test_cpulist" ]; then
-	cat >> "$TMP"/env.yaml <<EOF
+	cat >>"$TMP"/env.yaml <<EOF
 
 # setup/taskset
 exec_prefix: taskset -c $test_cpulist $exec_prefix

@@ -10,8 +10,7 @@ get_mem_blk_size()
 
 get_node_id()
 {
-	for file in "$path"/node/*
-	do
+	for file in "$path"/node/*; do
 		[ -e "$file" ] || continue
 
 		file=${file##*/}
@@ -21,8 +20,7 @@ get_node_id()
 
 get_mem_blk_index()
 {
-	for file in "$path"/memory/*
-	do
+	for file in "$path"/memory/*; do
 		[ -e "$file" ] || continue
 
 		file=${file##*/}
@@ -35,26 +33,25 @@ get_mem_blk_index()
 get_mem_range()
 {
 	sum=$(get_mem_blk_index $1 | wc -l)
-	nums=$(get_mem_blk_index $1 |sort -n)
+	nums=$(get_mem_blk_index $1 | sort -n)
 	i=-1
 	count=0
-	for num in $nums
-	do
+	for num in $nums; do
 		if [ $i = -1 ]; then
 			printf "%s" "["$((num * blk_size))$size_unit
 			printf "-"
 			i=$num
 		else
-			if [ $((i+1)) != $num ]; then
+			if [ $((i + 1)) != $num ]; then
 				echo $((i * blk_size + blk_size))$size_unit")"
 				printf "%s" "["$((num * blk_size))$size_unit
 				printf "-"
 				i=$num
 			else
-				i=$((i+1))
+				i=$((i + 1))
 			fi
 		fi
-		count=$((count+1))
+		count=$((count + 1))
 		if [ $count = $sum ]; then
 			echo $((num * blk_size + blk_size))$size_unit")"
 		fi
@@ -75,8 +72,7 @@ echo memory block size: $blk_size$size_unit
 
 nodes=$(get_node_id)
 
-for node in $nodes
-do
+for node in $nodes; do
 	echo $node
 	get_mem_range $node
 	echo "================="

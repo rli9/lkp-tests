@@ -10,13 +10,12 @@ any_pid_alive()
 	while read -r pid || [[ -n "$pid" ]]; do
 		[[ -n "$pid" ]] || continue
 		test -d "/proc/$pid" && return
-	done < "$pidfile"
+	done <"$pidfile"
 	return 1
 }
 
 # wait till those detached processes exit
-while true
-do
+while true; do
 	sleep 5
 	any_pid_alive $TMP/pidfile && continue
 	break

@@ -22,7 +22,7 @@ for i in $(seq $nr_task); do
 	sparsefile=$fs/sparse_$i
 	log "dealing with $sparsefile"
 	fallocate -l 10G $sparsefile
-	cat $sparsefile > /dev/null &
+	cat $sparsefile >/dev/null &
 done
 
 wait

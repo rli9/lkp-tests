@@ -94,7 +94,7 @@ setup_config()
 	sed -i "/    confirm_media_path()/i\\
     Runner.HDDDEV = \"$partition\"\n\
     Runner.SSDDEV = \"$partition\"\n\
-    run_config = [(Runner.CORE_COARSE_GRAIN, PerfMon.LEVEL_LOW, (\"$media\", \"$fstype\", \"$test\", \"$thread_nr\", \"$directio\")),]"  bin/run-fxmark.py
+    run_config = [(Runner.CORE_COARSE_GRAIN, PerfMon.LEVEL_LOW, (\"$media\", \"$fstype\", \"$test\", \"$thread_nr\", \"$directio\")),]" bin/run-fxmark.py
 
 	sed -i "/    (opts, args) = parser.parse_args()/i\\
     parser.add_option(\"--directio\", help=\"directio\")" bin/run-*bench.py
@@ -126,7 +126,7 @@ do_backup
 setup_config || die "failed to setup configuration"
 
 # run-fxmark.py has been changed much, save a copy for check
-cp ./bin/run-fxmark.py	$TMP_RESULT_ROOT/
+cp ./bin/run-fxmark.py $TMP_RESULT_ROOT/
 
 run
 

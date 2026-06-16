@@ -1,15 +1,15 @@
 #!/bin/sh
 # - nr_rd
 
-[ -n "$size"	] || size=$(( 1024 * 1024 * 1024 ))
-[ -n "$nr_rd"	] || nr_rd=1
+[ -n "$size" ] || size=$((1024 * 1024 * 1024))
+[ -n "$nr_rd" ] || nr_rd=1
 
-K_size=$(( size >> 10 ))
+K_size=$((size >> 10))
 modprobe -r brd
 modprobe brd rd_nr=$nr_rd rd_size=$K_size
 partitions=$(ls /dev/ram*)
 
-cat >> $TMP/env.yaml <<EOF
+cat >>$TMP/env.yaml <<EOF
 
 # setup/ramdisk
 nr_partitions: $nr_rd

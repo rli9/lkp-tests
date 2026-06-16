@@ -31,7 +31,7 @@ setup_wait
 
 [ -n "$delay" ] && $WAIT_POST_TEST_CMD --timeout "$delay"
 
-LC_ALL=C S_TIME_FORMAT=ISO $mpstat $opt_node $opt_cpu -o JSON $interval $count&
+LC_ALL=C S_TIME_FORMAT=ISO $mpstat $opt_node $opt_cpu -o JSON $interval $count &
 
 pid=$!
 

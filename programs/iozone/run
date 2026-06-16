@@ -5,12 +5,11 @@
 
 . $LKP_SRC/lib/reproduce-log.sh
 
-for mnt in $mount_points
-do
+for mnt in $mount_points; do
 	cmd="iozone -a -f $mnt/iozonetest"
 	log_echo "$cmd &"
-	$cmd > $TMP/iozone-$i &
-	i=$((i+1))
+	$cmd >$TMP/iozone-$i &
+	i=$((i + 1))
 done
 
 log_eval wait

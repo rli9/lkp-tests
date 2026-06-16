@@ -22,15 +22,14 @@ make test
 
 # shellcheck disable=SC2206
 files=($BENCHMARK_ROOT/mce-log/tests/*/results)
-if (( ${#files[@]} )); then
-    for file in "${files[@]}"
-    do
-        item=$(dirname $file)
-        echo "mce-log-item:${item##*/}"
-        cat $file
-    done
+if ((${#files[@]})); then
+	for file in "${files[@]}"; do
+		item=$(dirname $file)
+		echo "mce-log-item:${item##*/}"
+		cat $file
+	done
 else
-    echo "WARNING: mcelog test results is not exist."
+	echo "WARNING: mcelog test results is not exist."
 fi
 
 exit 0

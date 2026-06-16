@@ -22,10 +22,10 @@ check_module()
 	# crc8                   12288  1 intel_qat
 	# authenc                12288  1 intel_qat
 	lsmod | grep "^qat_4xxx" &&
-	lsmod | grep "^intel_qat" &&
-	lsmod | grep "^dh_generic" &&
-	lsmod | grep "^crc8" &&
-	lsmod | grep "^authenc"
+		lsmod | grep "^intel_qat" &&
+		lsmod | grep "^dh_generic" &&
+		lsmod | grep "^crc8" &&
+		lsmod | grep "^authenc"
 }
 
 check_dmesg()

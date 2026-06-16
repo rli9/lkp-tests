@@ -14,9 +14,9 @@
 ## can be easily added.
 
 if [[ "$need_x" = true ]]; then
-	mkdir -p		/tmp/.X11-unix
-	chmod 1777		/tmp/.X11-unix
-	chown root:root		/tmp/.X11-unix
+	mkdir -p /tmp/.X11-unix
+	chmod 1777 /tmp/.X11-unix
+	chown root:root /tmp/.X11-unix
 
 	xinit $LKP_SRC/programs/pts/xinitrc
 else

@@ -62,15 +62,14 @@ setup_class()
 		stress_opts="--minimize"
 		mount_dev
 		;;
-	"filesystem"|"interrupt"|"io")
+	"filesystem" | "interrupt" | "io")
 		mount_dev
 		;;
 	"vm")
 		# shellcheck disable=SC2164
 		log_cmd cd ${mount_points%% *}
 		;;
-	*)
-		;;
+	*) ;;
 	esac
 }
 
@@ -93,19 +92,19 @@ setup_test()
 		log_cmd sysctl -w fs.mqueue.queues_max=2048
 		log_cmd sysctl -w fs.mqueue.msg_max=2048
 		;;
-	"aio"|"aiol")
+	"aio" | "aiol")
 		# Default: 65536. Prevent io_setup failure with large numbers of async IO requests
 		log_cmd sysctl -w fs.aio-max-nr=1048576
 		[[ "$test" = "aiol" ]] && log_cmd sleep 2
 
 		return 0
 		;;
-	"inotify"|"dnotify")
+	"inotify" | "dnotify")
 		# Default: instances=128, watches=8192. Allow mass filesystem event watching
 		log_cmd sysctl -w fs.inotify.max_user_instances=8192
 		log_cmd sysctl -w fs.inotify.max_user_watches=524288
 		;;
-	"epoll"|"sock"|"sockmany"|"udp"|"udp-flood")
+	"epoll" | "sock" | "sockmany" | "udp" | "udp-flood")
 		# Default: 128 or 4096. Increase socket listen backlog queue size to prevent dropped connections
 		log_cmd sysctl -w net.core.somaxconn=4096
 		;;
@@ -113,21 +112,20 @@ setup_test()
 		log_cmd sysctl -w net.core.somaxconn=4096
 		common_opts="${common_opts} --oom-avoid"
 		;;
-	"bigheap"|"brk"|"loadavg"|"memthrash"|"mmaphuge"|"mmapcow"|"mmapmany")
+	"bigheap" | "brk" | "loadavg" | "memthrash" | "mmaphuge" | "mmapcow" | "mmapmany")
 		common_opts="${common_opts} --oom-avoid"
 		;;
-	"bad-ioctl"|"sysinval"|"cpu-online"|"mlockmany"|"oom-pipe"|"bind-mount"|"watchdog"|"smi")
+	"bad-ioctl" | "sysinval" | "cpu-online" | "mlockmany" | "oom-pipe" | "bind-mount" | "watchdog" | "smi")
 		common_opts="${common_opts} --pathological"
 		;;
-	*)
-		;;
+	*) ;;
 	esac
 }
 
 setup_sysctl()
 {
 	# stress-ng: info: note: /proc/sys/kernel/sched_autogroup_enabled is 1 and this can impact scheduling throughput for processes not attached to a tty. Setting this to 0 may improve performance metrics
-	[[ -w /proc/sys/kernel/sched_autogroup_enabled ]] && \
+	[[ -w /proc/sys/kernel/sched_autogroup_enabled ]] &&
 		log_cmd sysctl -w kernel.sched_autogroup_enabled=0
 }
 

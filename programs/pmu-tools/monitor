@@ -33,8 +33,8 @@ ocperf=$BENCHMARK_ROOT/pmu-tools/ocperf.py
 }
 
 if [ -n "$list_pmu_events" ]; then
-    create_links
-    python "$BENCHMARK_ROOT/pmu-tools/list-events.py" > "$TMP_RESULT_ROOT/pmu-events-list"
+	create_links
+	python "$BENCHMARK_ROOT/pmu-tools/list-events.py" >"$TMP_RESULT_ROOT/pmu-events-list"
 fi
 
 # perf may consume lots of fd
@@ -50,8 +50,8 @@ opt_events="-e $(echo $events | sed 's/ / -e /g')"
 [ "$run" = 0 ] && exit 0
 
 $ocperf stat $opt_events --log-fd 1 true 2>&1 |
-grep 'invalid or unsupported event' &&
-exit 99
+	grep 'invalid or unsupported event' &&
+	exit 99
 
 . $LKP_SRC/lib/wait.sh
 

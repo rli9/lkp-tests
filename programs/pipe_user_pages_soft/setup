@@ -7,4 +7,4 @@ pipe_user_pages_soft=${1:-0}
 # for old kernel without the sysctl
 [ -f $sysctl_path ] || exit 0
 
-echo $pipe_user_pages_soft > $sysctl_path
+echo $pipe_user_pages_soft >$sysctl_path

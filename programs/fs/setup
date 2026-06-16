@@ -42,8 +42,7 @@ fs_options()
 	ext4)
 		ensure_mkfs='-q -E lazy_itable_init=0,lazy_journal_init=0 -F'
 		;;
-	btrfs)
-		;;
+	btrfs) ;;
 	f2fs)
 		modprobe f2fs 2>/dev/null
 		;;
@@ -56,8 +55,7 @@ fs_options()
 		fs="nfs"
 		;;
 	# https://www.mankier.com/8/mount.cifs
-	cifs)
-		;;
+	cifs) ;;
 	smbv2)
 		def_mount="-o vers=2.0"
 		;;
@@ -73,11 +71,10 @@ fs_options()
 	smbv3p11)
 		def_mount="-o vers=3.11"
 		;;
-	cifs*|smb*)
+	cifs* | smb*)
 		die "unknow cifs/smb version"
 		;;
-	udf)
-		;;
+	udf) ;;
 	ocfs2)
 		ensure_mkfs='-q -F'
 		;;
@@ -89,10 +86,10 @@ is_btrfs_raid_levels()
 	[ "$fs" != 'btrfs' ] && return 1
 
 	[ "$raid_level" = 'braid0' ] ||
-	[ "$raid_level" = 'braid1' ] ||
-	[ "$raid_level" = 'braid5' ] ||
-	[ "$raid_level" = 'braid6' ] ||
-	[ "$raid_level" = 'braid10' ]
+		[ "$raid_level" = 'braid1' ] ||
+		[ "$raid_level" = 'braid5' ] ||
+		[ "$raid_level" = 'braid6' ] ||
+		[ "$raid_level" = 'braid10' ]
 }
 
 make_fs()
@@ -109,8 +106,7 @@ make_fs()
 	}
 
 	local pids=
-	for dev in $bdevs
-	do
+	for dev in $bdevs; do
 		if [ ! "$format" = 'n' ]; then
 			has_cmd mkfs.$fs || die "failed to find mkfs.$fs"
 
@@ -133,8 +129,7 @@ probe_filesystem()
 
 mount_fs()
 {
-	for dev in $bdevs
-	do
+	for dev in $bdevs; do
 		local mnt="/fs/$(basename "$dev")"
 		log_cmd mkdir -p $mnt
 		probe_filesystem $fs
@@ -154,38 +149,37 @@ fi
 fs_options
 
 case $fs in
-	nfs)
-		start_nfsd $mount_points
-		mount_local_nfs $mount_points
-		[ "$program_name" = "fs1" ] && mount_points=
-		;;
-	cifs|smb*)
-		start_smbd $mount_points
-		mount_local_cifs $mount_points
-		[ "$program_name" = "fs1" ] && mount_points=
-		;;
+nfs)
+	start_nfsd $mount_points
+	mount_local_nfs $mount_points
+	[ "$program_name" = "fs1" ] && mount_points=
+	;;
+cifs | smb*)
+	start_smbd $mount_points
+	mount_local_cifs $mount_points
+	[ "$program_name" = "fs1" ] && mount_points=
+	;;
 
+tmpfs)
+	: "${nr_tmpfs:=1}"
+	mount_tmpfs $nr_tmpfs
+	;;
 
-	tmpfs)
-		: "${nr_tmpfs:=1}"
-		mount_tmpfs $nr_tmpfs
-		;;
-
-	*)
-		. $LKP_SRC/lib/fs_ext.sh
-		if [ ! "$format" = 'n' ]; then
-			if [ -n "$raid_device" ] || [ -n "$LKP_LOCAL_RUN" ]; then
-				destroy_fs
-			else
-				destroy_devices
-			fi
+*)
+	. $LKP_SRC/lib/fs_ext.sh
+	if [ ! "$format" = 'n' ]; then
+		if [ -n "$raid_device" ] || [ -n "$LKP_LOCAL_RUN" ]; then
+			destroy_fs
+		else
+			destroy_devices
 		fi
-		make_fs
-		mount_fs
-		;;
+	fi
+	make_fs
+	mount_fs
+	;;
 esac
 
-cat > "$TMP_RESULT_ROOT/post-run.fs" <<EOF
+cat >"$TMP_RESULT_ROOT/post-run.fs" <<EOF
 
 #!/bin/sh
 
@@ -204,7 +198,7 @@ else
 	fs_key=fs
 fi
 
-cat >> $TMP/env.yaml <<EOF
+cat >>$TMP/env.yaml <<EOF
 
 # setup/$fs_key
 $fs_key: $fs

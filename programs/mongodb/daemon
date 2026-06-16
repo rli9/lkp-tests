@@ -31,7 +31,7 @@ setup_cache_size()
 		memory_byte=$((memory_byte / nr_node)) # memory per node
 	}
 
-	cache_size_gb=$((memory_byte / 2)) # 50% memory
+	cache_size_gb=$((memory_byte / 2))              # 50% memory
 	cache_size_gb=$((cache_size_gb / nr_processes)) # memory per mongodb instance
 	cache_size_gb=$(to_gb $cache_size_gb)
 	[ $cache_size_gb -eq 0 ] && cache_size_gb=1
@@ -39,11 +39,10 @@ setup_cache_size()
 
 setup_cache_size
 
-for i in $(seq 1 "$nr_processes")
-do
-        mkdir -p "$MONGODB_DIR/mongodb/dbdir_$i"
-        port=$((27016 + i))
-        cat > "$TMP_RESULT_ROOT/mongod.conf.$i" <<EOF
+for i in $(seq 1 "$nr_processes"); do
+	mkdir -p "$MONGODB_DIR/mongodb/dbdir_$i"
+	port=$((27016 + i))
+	cat >"$TMP_RESULT_ROOT/mongod.conf.$i" <<EOF
 # for documentation of all options, see:
 # http://docs.mongodb.org/manual/reference/configuration-options/
 
@@ -72,14 +71,13 @@ done
 parse_numa_node_binding "$mongodb_cpu_node_bind" "$mongodb_mem_node_bind"
 
 # start mongodb server
-for i in $(seq 1 "$nr_processes")
-do
-	port=$((27016+i))
+for i in $(seq 1 "$nr_processes"); do
+	port=$((27016 + i))
 	numa_bind=$(numa_node_binding "$i")
 	log_eval "$numa_bind $mongodb_server --port $port --dbpath=${MONGODB_DIR}/mongodb/dbdir_$i/ --config ${TMP_RESULT_ROOT}/mongod.conf.$i &"
 	bg_pids="$bg_pids $!"
 done
 
-cat > "$TMP_RESULT_ROOT/post-run.mongodb" <<EOF
+cat >"$TMP_RESULT_ROOT/post-run.mongodb" <<EOF
 /bin/kill -15 $bg_pids
 EOF

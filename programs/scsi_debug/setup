@@ -3,10 +3,10 @@
 # - num_tgts
 # - max_luns
 
-[ -n "$size" ] || size=$(( 1024 * 1024 * 1024 ))
-nr_srd=$(( add_host * num_tgts * max_luns ))
+[ -n "$size" ] || size=$((1024 * 1024 * 1024))
+nr_srd=$((add_host * num_tgts * max_luns))
 
-M_size=$(( size >> 20 ))
+M_size=$((size >> 20))
 modprobe -r scsi_debug
 modprobe scsi_debug add_host=$add_host num_tgts=$num_tgts max_luns=$max_luns dev_size_mb=$M_size
 
@@ -17,7 +17,7 @@ nr_partitions=$(echo $partitions | wc -w)
 	exit 1
 }
 
-cat >> $TMP/env.yaml <<EOF
+cat >>$TMP/env.yaml <<EOF
 
 # setup/ramdisk
 nr_partitions: $nr_srd

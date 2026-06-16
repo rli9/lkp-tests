@@ -42,7 +42,7 @@ $perf mem record -a $opt_type $opt_event $opt_ldlat \
 	-o $perf_mem_data --delay $((delay * 1000)) -- \
 	$WAIT_POST_TEST_CMD --timeout $((delay + duration))
 
-cat > "$TMP_RESULT_ROOT/post-run.perf-mem" <<EOF
+cat >"$TMP_RESULT_ROOT/post-run.perf-mem" <<EOF
 [ -s "$perf_mem_data" ] && {
 	$perf mem report --header -i $perf_mem_data --stdio -F sample,local_weight,mem |
 	gzip > $TMP_RESULT_ROOT/perf-mem.gz

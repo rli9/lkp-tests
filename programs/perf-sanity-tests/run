@@ -45,7 +45,6 @@ prepare_test_range
 # linux version from v4.11-rc1 to v4.11 will return 255 at this script without sudo
 # the first bad commit is ecc4c5614b24ee8ebaa35b834b5768dc9302ee3e
 # FIXME: using sudo to workaround it temporarily.
-for num in $(seq $start $end)
-do
+for num in $(seq $start $end); do
 	log_cmd sudo ASAN_OPTIONS=fast_unwind_on_malloc=0 $perf test $num -v 2>&1
 done

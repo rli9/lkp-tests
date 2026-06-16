@@ -6,18 +6,15 @@
 . $LKP_SRC/lib/wait.sh
 setup_wait
 
-while :
-do
+while :; do
 	echo time: "$(date +%s.%N)"
 
-	for cpu in $(cd /sys/devices/system/cpu && echo cpu[0-9]*)
-	do
-		while read -r state time_in_state
-		do
+	for cpu in $(cd /sys/devices/system/cpu && echo cpu[0-9]*); do
+		while read -r state time_in_state; do
 			echo "${cpu}.time_in_state.$state: $time_in_state"
-		done < /sys/devices/system/cpu/$cpu/cpufreq/stats/time_in_state
+		done </sys/devices/system/cpu/$cpu/cpufreq/stats/time_in_state
 
-		read -r total_trans < /sys/devices/system/cpu/$cpu/cpufreq/stats/total_trans
+		read -r total_trans </sys/devices/system/cpu/$cpu/cpufreq/stats/total_trans
 		echo "${cpu}.total_trans: $total_trans"
 	done
 

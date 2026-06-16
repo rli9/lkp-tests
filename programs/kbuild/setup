@@ -28,7 +28,7 @@ sync
 sync
 sync
 
-cat >> $TMP/env.yaml <<EOF
+cat >>$TMP/env.yaml <<EOF
 
 #setup/setup-kbuild
 kbuild_work_dirs: $kbuild_work_dirs

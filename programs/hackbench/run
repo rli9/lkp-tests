@@ -43,7 +43,7 @@ set_env()
 
 set_loops()
 {
-	loops=$(( 30000 * nr_cpu / nr_threads ))
+	loops=$((30000 * nr_cpu / nr_threads))
 }
 
 run_hackbench()
@@ -55,8 +55,7 @@ run_hackbench()
 run_for_time()
 {
 	start_time=$(date +%s)
-	while :
-	do
+	while :; do
 		run_hackbench
 		now=$(date +%s)
 		[[ $((now - start_time)) -gt "$runtime" ]] && break

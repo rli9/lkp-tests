@@ -50,7 +50,7 @@ parse_numa_node_binding "$cpu_node_bind" "$mem_node_bind"
 for i in $(seq 1 $nr_processes); do
 	numa_bind=$(numa_node_binding "$i")
 	log_echo "$exec_prefix $numa_bind sysbench $args run > $sb_tmp_dir/sysbench-memory.$i &"
-	$numa_bind sysbench $args run > "$sb_tmp_dir/sysbench-memory.$i" &
+	$numa_bind sysbench $args run >"$sb_tmp_dir/sysbench-memory.$i" &
 done
 
 wait

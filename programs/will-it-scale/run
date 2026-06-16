@@ -26,7 +26,7 @@ ls *"${test}_"* >/dev/null 2>&1 || die "test $test doesn't exist"
 setup_params()
 {
 	iterations=$((3 + nr_node))
-	duration=$(( runtime / iterations / 2 - WARMUP_ITERATIONS ))
+	duration=$((runtime / iterations / 2 - WARMUP_ITERATIONS))
 	[[ "$duration" -lt 5 ]] && duration=5
 }
 
@@ -37,7 +37,7 @@ WARMUP_ITERATIONS=5 # defined in will-it-scale/main.c
 
 if [[ -n "$nr_task" ]]; then
 	# one shot run
-	duration=$(( runtime - WARMUP_ITERATIONS ))
+	duration=$((runtime - WARMUP_ITERATIONS))
 	threads_to_iterate=$nr_task
 else
 	. $LKP_SRC/lib/sysinfo.sh

@@ -2,7 +2,7 @@
 # - test
 
 case $test in
-tcp )
+tcp)
 	NPtcp &
 	;;
 esac

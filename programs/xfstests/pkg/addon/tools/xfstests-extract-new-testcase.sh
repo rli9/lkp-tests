@@ -10,13 +10,13 @@
 usage()
 {
 	cat <<-EOF
-Usage:
-	$0 < fs xfstests-result >
-	$0 generic group_number
-Example:
-	$0 xfs $RESULT_ROOT_DIR/xfstests/4HDD-ext4-ext4-new/snb-drag/debian-x86_64-2016-08-31.cgz/x86_64-rhel-7.2/gcc-6/4f7d029b9bf009fbee76bb10c0c4351a1870d2f3/0/output
-	$0 generic 1
-EOF
+		Usage:
+			$0 < fs xfstests-result >
+			$0 generic group_number
+		Example:
+			$0 xfs $RESULT_ROOT_DIR/xfstests/4HDD-ext4-ext4-new/snb-drag/debian-x86_64-2016-08-31.cgz/x86_64-rhel-7.2/gcc-6/4f7d029b9bf009fbee76bb10c0c4351a1870d2f3/0/output
+			$0 generic 1
+	EOF
 	exit 1
 }
 
@@ -29,12 +29,11 @@ generate_averaged_group()
 {
 	local n=$1
 	local number=$2
-	for((i=0;i<"$n";i++))
-	do
-		awk -v n="$n" -v i="$i" '{if(NR%n == i) print $1}' data_completed > "$tmpfile"
-		awk -v n="$n" -v i="$i" '{if(NR%n == i) print $1}' data_skip >> "$tmpfile"
-		sort -u "$tmpfile" > "$fs-group$number"
-		((number=number+1))
+	for ((i = 0; i < "$n"; i++)); do
+		awk -v n="$n" -v i="$i" '{if(NR%n == i) print $1}' data_completed >"$tmpfile"
+		awk -v n="$n" -v i="$i" '{if(NR%n == i) print $1}' data_skip >>"$tmpfile"
+		sort -u "$tmpfile" >"$fs-group$number"
+		((number = number + 1))
 	done
 }
 
@@ -48,20 +47,20 @@ generate_fs_group()
 	# 1. grep passed and skipped cases
 	# 2. sort those passed cases by runtime
 	# 3. sed to get only testcase name info
-	grep "[0-9]s" "$output" | sort -k 2 -n | sed 's/'$fs'\///' | sed 's/s//' > data_completed
-	grep "\[not run\]" "$output" | sort -k 1 | sed 's/'$fs'\///' > data_skip
+	grep "[0-9]s" "$output" | sort -k 2 -n | sed 's/'$fs'\///' | sed 's/s//' >data_completed
+	grep "\[not run\]" "$output" | sort -k 1 | sed 's/'$fs'\///' >data_skip
 	total_time=$(awk '{a+=$2} END {print a}' data_completed)
 	# find max group_number, if not, return 0
 	group_number=$(find "$(get_pkg_dir xfstests)/addon/tests" -name "$fs-group*" | grep -o "[0-9]*" | sort -n | tail -1)
 	[[ -n "$group_number" ]] || group_number=0
 
-	((group_number=group_number+1))
+	((group_number = group_number + 1))
 
 	# If total_time is over 10m, spilt them into averaged parts.
 	# To make sure each group run similar time and within 10m.
 	# Put skipped cases to each group in case they will pass in the future.
 	if [[ "$total_time" -gt 600 ]]; then
-		((n=total_time/600+1))
+		((n = total_time / 600 + 1))
 		generate_averaged_group "$n" "$group_number"
 	else
 		generate_averaged_group 1 "$group_number"
@@ -81,7 +80,7 @@ delete_duplicated_testcases()
 {
 	local generic_group=$1
 	local fs_group=$2
-	grep -v -f "$generic_group" "$fs_group" > "$tmpfile"
+	grep -v -f "$generic_group" "$fs_group" >"$tmpfile"
 	cp -v "$tmpfile" "$fs_group"
 }
 
@@ -95,7 +94,7 @@ generate_generic_group()
 	xfs_group="xfs-group$group_number"
 
 	# The generic group includes cases which can pass with at least two fs.
-	cat "$ext4_group" "$btrfs_group" "$btrfs_group" | sort | uniq | sort -u > "$generic_group"
+	cat "$ext4_group" "$btrfs_group" "$btrfs_group" | sort | uniq | sort -u >"$generic_group"
 
 	delete_duplicated_testcases "$generic_group" "$ext4_group"
 	delete_duplicated_testcases "$generic_group" "$btrfs_group"

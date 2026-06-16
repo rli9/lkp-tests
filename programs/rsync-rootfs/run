@@ -13,4 +13,3 @@
 [ -n "$rootfs_partition" ] || exit
 
 log_cmd $LKP_SRC/bin/rsync-rootfs $source $rootfs_partition
-

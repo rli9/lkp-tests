@@ -24,8 +24,7 @@ generate_png()
 	dia_files="$(find $input_dir -name '*.dia')"
 	upper_dir=
 
-	for file in $dia_files
-	do
+	for file in $dia_files; do
 		upper_dir="$(echo $file | awk -F'/' '{printf("%s",$(NF-1))}')"
 		output_dir="$output_dir/$upper_dir"
 		[ -d $output_dir ] || mkdir -p $output_dir

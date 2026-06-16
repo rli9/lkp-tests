@@ -29,7 +29,7 @@ check_raid_level()
 	[ "${raid_level#*braid}" != "$raid_level" ] && {
 		# Need to create env.yaml when matching braid so that export
 		# raid_level to is_btrfs_raid_levels() in setup/fs
-		cat >> $TMP/env.yaml <<EOF
+		cat >>$TMP/env.yaml <<EOF
 
 # setup/md
 # used in setup/fs
@@ -40,12 +40,13 @@ EOF
 }
 check_raid_level
 
-check_partition_size() {
+check_partition_size()
+{
 	# though we can set 'show_part=1' for brd to make those ram disk to
 	# show up at /proc/partitions, it's new parameter added lately, hence
 	# we still meet troubles with old kernele. Here workaround it.
 	[ "${disk_description#*brd}" != "$disk_description" ] && return
-	for dev do
+	for dev; do
 		[ "${dev#*:/}" != "$dev" ] && continue
 
 		local part="$(basename $dev)"
@@ -67,7 +68,8 @@ check_partition_size() {
 }
 check_partition_size $partitions
 
-make_md() {
+make_md()
+{
 	# With RAID0 since kernel commit c84a137, we cannot create a new multi-zone array for
 	# the disks that are not all same size if we don't specify what layout to use.  So
 	# specify layout by inserting raid0 module with default_layout parameter.
@@ -88,14 +90,14 @@ make_md() {
 		# raid1 does not use chunk sizes
 		[ "$raid_level" = "raid1" ] || chunk_opt="--chunk=$raid_chunk"
 
-		echo y | log_cmd mdadm -q				\
-					--$mdadm_mode $raid_device	\
-					$chunk_opt			\
-					--level=$raid_level		\
-					--raid-devices=$nr_partitions	\
-					--force				\
-					--assume-clean $partitions	\
-					2> $TMP/mdadm_stderr && return
+		echo y | log_cmd mdadm -q \
+			--$mdadm_mode $raid_device \
+			$chunk_opt \
+			--level=$raid_level \
+			--raid-devices=$nr_partitions \
+			--force \
+			--assume-clean $partitions \
+			2>$TMP/mdadm_stderr && return
 
 		sleep 5
 	done
@@ -103,14 +105,14 @@ make_md() {
 	echo "Failed to create RAID!" 1>&2
 	cat $TMP/mdadm_stderr 1>&2
 	echo \
-	cat /proc/mdstat
+		cat /proc/mdstat
 	cat /proc/mdstat
 	exit 1
 }
 
 make_md
 
-cat >> $TMP/env.yaml <<EOF
+cat >>$TMP/env.yaml <<EOF
 
 # setup/md
 nr_partitions: 1

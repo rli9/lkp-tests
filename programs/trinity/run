@@ -19,7 +19,7 @@
 		seed=${seed%% *}
 	else
 		seed=$(echo "$seed_source" | md5sum | cut -c1-5)
-		seed=$(( 0x$seed ))
+		seed=$((0x$seed))
 	fi
 
 	echo "Seeding trinity by $seed based on $seed_source"
@@ -34,10 +34,10 @@
 }
 
 has_cmd trinity || {
-	 [[ -x /lkp/benchmarks/trinity/bin/trinity ]] && {
+	[[ -x /lkp/benchmarks/trinity/bin/trinity ]] && {
 		ln -sf /lkp/benchmarks/trinity/bin/trinity /bin/trinity
 		ln -sf /lkp/benchmarks/trinity/bin/trinity /usr/bin/trinity
-	 }
+	}
 }
 
 has_cmd trinity || die "trinity is not installed"
@@ -55,13 +55,12 @@ if [[ -n "$group" ]]; then
 		# entrypoint 433 fspick : [64-bit] Enabled
 		# entrypoint 434 pidfd_open : [64-bit] Enabled
 		# entrypoint 435 clone3 : [64-bit] Enabled AVOID
-		for syscall in $(trinity -L | grep "entrypoint .* Enabled" | awk '{print $3}' | sort -u)
-		do
+		for syscall in $(trinity -L | grep "entrypoint .* Enabled" | awk '{print $3}' | sort -u); do
 			echo "$syscall" | grep -qE "^(get_robust_list|remap_file_pages|ni_syscall)$" && continue
 			echo "$syscall" | grep -qE "^[a-z0-9_]*$" || continue
 			num=$(echo "$syscall" | md5sum | cut -c1-2)
-			num=$(( 0x$num ))
-			[[ group-0$(( seed % num % nr_groups )) = "$group" ]] && targets="$targets -c $syscall"
+			num=$((0x$num))
+			[[ group-0$((seed % num % nr_groups)) = "$group" ]] && targets="$targets -c $syscall"
 		done
 
 		cmd="trinity -q -q -l off -s $seed -N $number $targets"

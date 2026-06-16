@@ -49,11 +49,11 @@ setup_test_env()
 	pip install $timing || die "pip install $timing fail"
 
 	# add /sbin to PATH for some ocfs2 command.
-	echo "PATH=$PATH:/sbin" >> $OCFS2TEST_HOME/.bashrc
+	echo "PATH=$PATH:/sbin" >>$OCFS2TEST_HOME/.bashrc
 	su - ocfs2test -c "source .bashrc"
 
 	# add "ocfs2test" user into sudo list
-	echo "ocfs2test ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+	echo "ocfs2test ALL=(ALL) NOPASSWD:ALL" >>/etc/sudoers
 
 	# due to the type of disk is not limited.
 	# here we have to consider getting SSD or HDD partitions.
@@ -85,11 +85,10 @@ single_node_test()
 	}
 
 	local test_dir="$(get_pkg_dir ocfs2test)/addon/tests"
-	while read -r test_name
-	do
+	while read -r test_name; do
 		su - ocfs2test -c "cd $OCFS2TEST_HOME/ocfs2/bin && ./single_run-WIP.sh -k $OCFS2TEST_HOME/linux-kernel.tar.gz \
 		  -m /mnt/ocfs2 -l $OCFS2TEST_HOME/ocfs2log -t $test_name -d $partition"
-	done < $test_dir/$test
+	done <$test_dir/$test
 
 	find "$OCFS2TEST_HOME/ocfs2log" -name single_run.log -type f -exec cat {} +
 }

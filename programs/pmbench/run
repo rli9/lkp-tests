@@ -31,11 +31,11 @@ set_opt()
 		setsize=$((total_setsize / nr_inst / nr_processes))
 	fi
 	if [[ -n "$setsize" ]]; then
-		opt="${opt} -s$((setsize/1024/1024))"
+		opt="${opt} -s$((setsize / 1024 / 1024))"
 		[[ -z "$mapsize" ]] && mapsize="$setsize"
 	fi
 	[[ -n "$mapsize" ]] && {
-		mapsize=$((mapsize/1024/1024))
+		mapsize=$((mapsize / 1024 / 1024))
 		[[ "$mapsize" -eq 0 ]] && mapsize=256
 		opt="${opt} -m${mapsize}"
 	}
@@ -64,8 +64,8 @@ pmbench=/usr/local/bin/pmbench
 
 for i in $(seq "$nr_processes"); do
 	log_echo "$exec_prefix $pmbench $opt $runtime > $pmb_tmp_dir/pmbench.$i &"
-	$pmbench $opt $runtime > "$pmb_tmp_dir/pmbench.$i" &
-	echo $! >> $TMP/pid-tests
+	$pmbench $opt $runtime >"$pmb_tmp_dir/pmbench.$i" &
+	echo $! >>$TMP/pid-tests
 done
 
 wait

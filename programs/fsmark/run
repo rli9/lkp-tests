@@ -55,14 +55,14 @@ done
 filesize=$(to_byte $filesize)
 
 case "$sync_method" in
-	NoSync)			sync_method=0 ;;
-	fsyncBeforeClose)	sync_method=1 ;;
-	syncFsync)		sync_method=2 ;;
-	PostReverseFsync)	sync_method=3 ;;
-	syncPostReverseFsync)	sync_method=4 ;;
-	PostFsync)		sync_method=5 ;;
-	syncPostFsync)		sync_method=6 ;;
-	'')			sync_method=1 ;;
+NoSync) sync_method=0 ;;
+fsyncBeforeClose) sync_method=1 ;;
+syncFsync) sync_method=2 ;;
+PostReverseFsync) sync_method=3 ;;
+syncPostReverseFsync) sync_method=4 ;;
+PostFsync) sync_method=5 ;;
+syncPostFsync) sync_method=6 ;;
+'') sync_method=1 ;;
 esac
 
 # calculate how many files we need create at one loop
@@ -77,7 +77,7 @@ calc_nr_file()
 	}
 	test_size=$(to_byte $test_size)
 
-	local disk_size="$(df -B M | grep $test_dir  | awk '{print $2}')"
+	local disk_size="$(df -B M | grep $test_dir | awk '{print $2}')"
 	disk_size=$(to_byte $disk_size)
 	[[ "$test_size" -gt "$disk_size" ]] && test_size=$disk_size
 
@@ -117,7 +117,7 @@ fi
 
 log_cmd ./fs_mark \
 	$PARAM \
-	-n $nr_files	\
+	-n $nr_files \
 	-L $iterations \
 	-S $sync_method \
 	-s $filesize

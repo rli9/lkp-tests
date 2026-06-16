@@ -6,9 +6,9 @@
 [[ -d $BENCHMARK_ROOT/pm-qa ]] || die "no $BENCHMARK_ROOT/pm-qa"
 
 if [[ "$test" = "all" ]] || [[ "$test" = "thermal" ]]; then
-	mkdir -p		/tmp/.X11-unix
-	chmod 1777		/tmp/.X11-unix
-	chown root:root		/tmp/.X11-unix
+	mkdir -p /tmp/.X11-unix
+	chmod 1777 /tmp/.X11-unix
+	chown root:root /tmp/.X11-unix
 
 	# have a delay after start cpu_heat to make sure cpu_heat have been started when cpu is very busy
 	# shellcheck disable=SC2016

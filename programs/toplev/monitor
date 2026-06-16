@@ -37,8 +37,8 @@ toplev=$BENCHMARK_ROOT/pmu-tools/toplev.py
 [ -n "$HOME" ] || export HOME=/root
 
 [ -d "$HOME/.cache/pmu-events" ] || {
-    mkdir -p "$HOME/.cache"
-    cp -af "$BENCHMARK_ROOT/pmu-tools/pmu-events" "$HOME/.cache"
+	mkdir -p "$HOME/.cache"
+	cp -af "$BENCHMARK_ROOT/pmu-tools/pmu-events" "$HOME/.cache"
 }
 
 # perf may consume lots of fd
@@ -50,10 +50,10 @@ ulimit -n 102400
 
 set_opt()
 {
-    opt=
-    [ -n "$cpu" ] && opt="${opt} --cpu ${cpu}"
-    [ -n "$core" ] && opt="${opt} --core ${core}"
-    [ -n "$forcecpu" ] && opt="${opt} --force-cpu ${forcecpu}"
+	opt=
+	[ -n "$cpu" ] && opt="${opt} --cpu ${cpu}"
+	[ -n "$core" ] && opt="${opt} --core ${core}"
+	[ -n "$forcecpu" ] && opt="${opt} --force-cpu ${forcecpu}"
 }
 
 create_links

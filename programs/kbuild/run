@@ -27,7 +27,12 @@ run_kbuild()
 		log_cmd scripts/config --file .config --enable CONFIG_TRIM_UNUSED_KSYMS
 
 		echo "start time: $(date +%s.%N)"
-		{ TIMEFORMAT=$'\nreal: %Rs\nuser: %Us\nsys: %Ss'; time { make -j $parallel $target > /dev/null; }; } 2>&1 || die "make -j $parallel $target failed"
+		{
+			TIMEFORMAT=$'\nreal: %Rs\nuser: %Us\nsys: %Ss'
+			time {
+				make -j $parallel $target >/dev/null
+			}
+		} 2>&1 || die "make -j $parallel $target failed"
 		echo "end time: $(date +%s.%N)"
 		iterations=$((iterations + 1))
 		now=$(date +%s)
@@ -56,9 +61,9 @@ for wdir in $kbuild_work_dirs; do
 	(
 		iwdir="$wdir/$instance_id"
 		log_eval cd "$iwdir"
-		run_kbuild > "$kbuild_tmp_dir/kbuild.$i"
+		run_kbuild >"$kbuild_tmp_dir/kbuild.$i"
 	) &
-	i=$((i+1))
+	i=$((i + 1))
 done
 
 wait

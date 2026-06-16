@@ -21,9 +21,7 @@ duration=${duration%%s}
 [[ -n "$mmap" ]] && opt_mmap=" -m "
 [[ -n "$linear" ]] && opt_linear=" -z "
 
-
-for i in $(seq 1 $iterations)
-do
+for i in $(seq 1 $iterations); do
 	echo Iteration: $i
 	log_cmd ./ebizzy -t $nr_threads -S $duration \
 		$opt_mmap $opt_linear

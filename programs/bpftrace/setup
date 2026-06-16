@@ -5,7 +5,7 @@
 : "${interval:=10}"
 : "${kernel_function:="__alloc_pages_nodemask"}"
 
-cat > "$TMP_RESULT_ROOT"/latency.bt <<EOF
+cat >"$TMP_RESULT_ROOT"/latency.bt <<EOF
 #!/usr/bin/env bpftrace
 
 BEGIN

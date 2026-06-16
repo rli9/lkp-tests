@@ -33,8 +33,8 @@ export PATH="$BENCHMARK_ROOT/redis/bin:$PATH"
 
 [[ -z "$requests" ]] && requests=$((key_len * requests_multiple))
 
-proc_key_len=$((key_len/nr_processes))
-proc_requests=$((requests/nr_processes))
+proc_key_len=$((key_len / nr_processes))
+proc_requests=$((requests / nr_processes))
 
 opt="-r $proc_key_len -n $proc_requests"
 
@@ -49,11 +49,10 @@ mkdir -p "$redis_dir"
 
 parse_numa_node_binding "$cpu_node_bind" "$mem_node_bind"
 
-for i in $(seq 1 "$nr_processes")
-do
-	port=$((6380+i))
+for i in $(seq 1 "$nr_processes"); do
+	port=$((6380 + i))
 	numa_bind=$(numa_node_binding "$i")
-	log_test $numa_bind redis-benchmark $opt -p "$port" > "$redis_dir/redis.$i" &
+	log_test $numa_bind redis-benchmark $opt -p "$port" >"$redis_dir/redis.$i" &
 done
 
 wait
