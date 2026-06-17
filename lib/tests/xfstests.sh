@@ -177,6 +177,17 @@ setup_mkfs_options()
 			mkfs_options="-O encrypt"
 		fi
 		;;
+	btrfs)
+		# Disable block-group-tree if any test in this group requires its absence.
+		# mkfs.btrfs enables block-group-tree by default; _require_btrfs_no_block_group_tree
+		# skips the test when BLOCK_GROUP_TREE is present in the superblock.
+		local group_file="$BENCHMARK_ROOT/xfstests/tests/$test"
+		if [[ -f "$group_file" ]]; then
+			sed "s|.*|$BENCHMARK_ROOT/xfstests/tests/${test%%-*}/&|" "$group_file" | \
+				xargs grep -qlF '_require_btrfs_no_block_group_tree' 2>/dev/null && \
+				mkfs_options="-O ^block-group-tree"
+		fi
+		;;
 	esac
 
 	[[ $mkfs_options ]] || return 0
