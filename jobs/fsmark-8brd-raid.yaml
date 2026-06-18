@@ -1,4 +1,4 @@
-<< : jobs/fsmark.yaml
+<< : fsmark.yaml
 
 need_memory: 100G
 

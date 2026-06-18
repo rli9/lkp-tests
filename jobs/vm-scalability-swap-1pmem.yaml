@@ -1,4 +1,4 @@
-<<: jobs/vm-scalability-swap.yaml
+<<: vm-scalability-swap.yaml
 
 disk:
   nr_pmem: 1

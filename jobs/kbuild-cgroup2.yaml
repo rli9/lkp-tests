@@ -1,2 +1,2 @@
-<< : jobs/cgroup2.yaml
-<< : jobs/kbuild.yaml
+<< : cgroup2.yaml
+<< : kbuild.yaml

@@ -1,2 +1,2 @@
-<< : jobs/cgroup2.yaml
-<< : jobs/will-it-scale.yaml
+<< : cgroup2.yaml
+<< : will-it-scale.yaml

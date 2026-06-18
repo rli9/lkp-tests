@@ -1,2 +1,2 @@
-<< : jobs/cgroup2.yaml
-<< : jobs/unixbench.yaml
+<< : cgroup2.yaml
+<< : unixbench.yaml

@@ -1,2 +1,2 @@
-<< : jobs/cgroup2.yaml
-<< : jobs/netperf.yaml
+<< : cgroup2.yaml
+<< : netperf.yaml

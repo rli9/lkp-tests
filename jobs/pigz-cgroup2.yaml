@@ -1,2 +1,2 @@
-<< : jobs/cgroup2.yaml
-<< : jobs/pigz.yaml
+<< : cgroup2.yaml
+<< : pigz.yaml

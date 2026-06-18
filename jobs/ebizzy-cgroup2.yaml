@@ -1,2 +1,2 @@
-<< : jobs/cgroup2.yaml
-<< : jobs/ebizzy.yaml
+<< : cgroup2.yaml
+<< : ebizzy.yaml
