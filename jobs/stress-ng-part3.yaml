@@ -19,6 +19,7 @@ stress-ng:
     - "null"
     # - null
     - numa
+    - numacopy
     - pagemove
     - pageswap
     - pci
@@ -30,6 +31,7 @@ stress-ng:
     - ping-sock
     - pipeherd
     - pkey
+    - plugin
     - poll
     - powmath
     - prctl
@@ -52,10 +54,12 @@ stress-ng:
     - regex
     - regs
     - remap
+    - resched
     - revio
     - ring-pipe
     - rlimit
     - rmap
+    - rofs
     - rotate
     - rseq
     - rtc
@@ -131,4 +135,5 @@ stress-ng:
 ---
 need_memory: 224G
 stress-ng:
-  test: resources
+  test:
+    - resources

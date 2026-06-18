@@ -13,10 +13,12 @@ stress-ng:
     - affinity
     - aio
     - alarm
+    - apparmor
     - atomic
     - bad-altstack
     - besselmath
     - bigheap
+    - binderfs
     - bitonicsort
     - bitops
     - branch
@@ -33,9 +35,11 @@ stress-ng:
     - cpu
     - cpu-online
     - cpu-sched
+    - crc
     - crypt
     - ctrig
     - daemon
+    - dccp
     - dekker
     - dev
     - dev-shm
@@ -43,9 +47,12 @@ stress-ng:
     - dynlib
     - easy-opcode
     - efivar
+    - eigen
     - eigen-ops
     - enosys
+    - env
     - epoll
+    - eth-sniff
     - exec
     - exit-group
     - expmath
@@ -57,12 +64,14 @@ stress-ng:
     - fd-race
     - fibsearch
     - fifo
+    - filehole
     - filerace
     - flipflop
     - fma
     - fork
     - fp
     - fp-error
+    - fp-misc
     - full
     - funccall
     - funcret

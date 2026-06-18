@@ -55,10 +55,12 @@ stress-ng:
     - sparsematrix
     - spawn
     - splice
+    - stack
     - stackmmap
     - statmount
     - str
     - stream
+    - strnum
     - syncload
     - sysbadaddr
     - syscall

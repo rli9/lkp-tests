@@ -1,1 +1,0 @@
-<<: stress-ng-1hdd.yaml, disk: "1SSD"

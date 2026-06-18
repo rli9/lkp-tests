@@ -44,6 +44,7 @@ stress-ng:
     - softlockup
     - spawn
     - tee
+    - vfork
     - vforkmany
     - wait
     - workload
