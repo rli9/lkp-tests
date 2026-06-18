@@ -108,9 +108,6 @@ set_env()
 	# fix the issue: losetup: cannot find an unused loop device
 	lsmod | grep -q loop || modprobe loop
 
-	# # fix the issue: module scsi_debug is not available
-	# lsmod | grep -q scsi_debug || modprobe scsi_debug
-
 	# fix blkzone is not available
 	ln -sf $BENCHMARK_ROOT/blktests/util-linux/blkzone /usr/bin/blkzone
 }

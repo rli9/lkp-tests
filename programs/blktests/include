@@ -38,6 +38,7 @@ need_kconfig:
 - BLK_INLINE_ENCRYPTION_FALLBACK: y
 - FS_ENCRYPTION: y
 - FS_ENCRYPTION_INLINE_CRYPT: y
+- SCSI_DEBUG: m
 % elsif ___.test =~ /block/
 - BLK_DEV_UBLK: m
 - IO_URING: y
