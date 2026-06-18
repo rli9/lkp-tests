@@ -93,7 +93,7 @@ task :shfmt do
                   ENV['file']
                 else
                   dir = ENV['dir'] || '.'
-                  `find #{dir} -type f -executable ! -path "./.git*" ! -path "./vendor*" ! -size +100k | xargs -P$(nproc) grep -s -l -e '^#!/.*bash$' -e '^#!/bin/sh$'`.split("\n").join(' ')
+                  `find #{dir} -type f -executable ! -path "./.git*" ! -path "./vendor*" ! -path "*/sbin/makepkg" ! -path "*/sbin/pacman-LKP" ! -size +100k | xargs -P$(nproc) grep -s -l -e '^#!/.*bash$' -e '^#!/bin/sh$'`.split("\n").join(' ')
                 end
 
   sh "shfmt -w -ln bash -i 0 -fn #{executables}", verbose: false do |ok, res|
