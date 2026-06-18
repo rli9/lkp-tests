@@ -95,6 +95,27 @@ def search_file_in_paths(file, relative_to = nil, search_paths = nil)
     path = File.join(search_path, file)
     return path if File.exist? path
   end
+
+  # Flat lookup failed; try recursive search. To avoid scanning all of
+  # LKP_SRC, derive the nearest jobs/ ancestor of relative_to and prepend
+  # it as the first recursive root — unless the include already carries a
+  # jobs/ prefix (e.g. "jobs/ttt.yaml"), in which case the flat LKP_SRC
+  # lookup above would have already found it and we need no extra root.
+  recursive_paths = search_paths.dup
+  unless file.start_with?('jobs/')
+    jobs_parts = relative_to.split(File::SEPARATOR)
+    jobs_idx   = jobs_parts.rindex('jobs')
+    if jobs_idx
+      jobs_root = jobs_parts[0..jobs_idx].join(File::SEPARATOR)
+      recursive_paths.unshift(jobs_root) unless recursive_paths.include?(jobs_root)
+    end
+  end
+
+  recursive_paths.each do |search_path|
+    matches = Dir.glob(File.join(search_path, '**', file))
+    return matches.first if matches.any?
+  end
+
   nil
 end
 

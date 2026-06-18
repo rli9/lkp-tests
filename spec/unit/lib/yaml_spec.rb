@@ -192,3 +192,75 @@ describe 'yaml_merge_included_files with ignore' do
     expect(result).not_to have_key('key3')
   end
 end
+
+describe 'search_file_in_paths' do
+  let(:tmpdir) { Dir.mktmpdir }
+
+  after { FileUtils.rm_rf(tmpdir) }
+
+  it 'returns absolute path when the file exists' do
+    file = File.join(tmpdir, 'flat.yaml')
+    FileUtils.touch(file)
+    expect(search_file_in_paths(file)).to eq file
+  end
+
+  it 'returns nil for an absolute path that does not exist' do
+    expect(search_file_in_paths('/nonexistent/no-such.yaml')).to be_nil
+  end
+
+  it 'finds a file relative to relative_to' do
+    file = File.join(tmpdir, 'rel.yaml')
+    FileUtils.touch(file)
+    expect(search_file_in_paths('rel.yaml', tmpdir)).to eq file
+  end
+
+  it 'finds a file resolved via ../ relative to relative_to' do
+    subdir = File.join(tmpdir, 'sub')
+    FileUtils.mkdir_p(subdir)
+    file = File.join(tmpdir, 'parent.yaml')
+    FileUtils.touch(file)
+    expect(search_file_in_paths('../parent.yaml', subdir)).to eq File.join(subdir, '../parent.yaml')
+  end
+
+  it 'finds a file in a flat search_path' do
+    search_path = File.join(tmpdir, 'search')
+    FileUtils.mkdir_p(search_path)
+    file = File.join(search_path, 'found.yaml')
+    FileUtils.touch(file)
+    expect(search_file_in_paths('found.yaml', tmpdir, [search_path])).to eq file
+  end
+
+  it 'finds a file nested in a subdirectory via recursive fallback' do
+    subdir = File.join(tmpdir, 'jobs', 'ltp')
+    FileUtils.mkdir_p(subdir)
+    file = File.join(subdir, 'ltp-dio.yaml')
+    FileUtils.touch(file)
+    # Reference by basename only; flat lookup under tmpdir will miss it
+    expect(search_file_in_paths('ltp-dio.yaml', tmpdir, [tmpdir])).to eq file
+  end
+
+  it 'finds a jobs/ root file when searching from a nested subdirectory' do
+    jobs_dir = File.join(tmpdir, 'jobs')
+    sub_dir  = File.join(jobs_dir, 'ltp')
+    FileUtils.mkdir_p(sub_dir)
+    file = File.join(jobs_dir, 'ttt.yaml')
+    FileUtils.touch(file)
+    # relative_to is jobs/ltp; ttt.yaml lives in jobs/ not jobs/ltp/
+    # jobs/ ancestor shortcut must find it without scanning all of tmpdir
+    expect(search_file_in_paths('ttt.yaml', sub_dir, [tmpdir])).to eq file
+  end
+
+  it 'returns nil when the file does not exist anywhere' do
+    expect(search_file_in_paths('no-such.yaml', tmpdir, [tmpdir])).to be_nil
+  end
+
+  it 'prefers the flat path over a deeper recursive match' do
+    subdir = File.join(tmpdir, 'jobs', 'sub')
+    FileUtils.mkdir_p(subdir)
+    flat_file  = File.join(tmpdir, 'shared.yaml')
+    deep_file  = File.join(subdir, 'shared.yaml')
+    FileUtils.touch(flat_file)
+    FileUtils.touch(deep_file)
+    expect(search_file_in_paths('shared.yaml', tmpdir, [tmpdir])).to eq flat_file
+  end
+end
