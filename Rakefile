@@ -57,6 +57,7 @@ RuboCop::RakeTask.new(:rubocop) do |t|
   rubocop_config_file = '.rubocop.yml' unless File.size?(rubocop_config_file)
 
   t.options = ['-D', "-c#{rubocop_config_file}"]
+  t.options.unshift('-a') if ENV['fix'] == '1'
   t.patterns = [ENV['file']] if ENV['file']
 
   puts "PWD = #{Dir.pwd}"
