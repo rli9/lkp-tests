@@ -13,7 +13,7 @@ end
 
 desc 'Show help'
 task :help do
-  puts <<-EOF
+  puts <<~EOF
 ## SPEC
 
 usage
@@ -50,22 +50,18 @@ if ENV['GENERATE_REPORTS'] == 'true'
   task spec: 'ci:setup:rspec'
 end
 
-begin
-  RuboCop::RakeTask.new(:rubocop) do |t|
-    ruby_version = `ruby --version | grep -oE "[0-9]+\\.[0-9]+"`.chomp
+RuboCop::RakeTask.new(:rubocop) do |t|
+  ruby_version = `ruby --version | grep -oE "[0-9]+\\.[0-9]+"`.chomp
 
-    rubocop_config_file = ".rubocop.#{ruby_version}.yml"
-    rubocop_config_file = '.rubocop.yml' unless File.size?(rubocop_config_file)
+  rubocop_config_file = ".rubocop.#{ruby_version}.yml"
+  rubocop_config_file = '.rubocop.yml' unless File.size?(rubocop_config_file)
 
-    t.options = ['-D', "-c#{rubocop_config_file}"]
-    t.patterns = [ENV['file']] if ENV['file']
+  t.options = ['-D', "-c#{rubocop_config_file}"]
+  t.patterns = [ENV['file']] if ENV['file']
 
-    puts "PWD = #{Dir.pwd}"
-    puts "rubocop.patterns = #{t.patterns}"
-    puts "rubocop.options = #{t.options}"
-  end
-rescue StandardError => e
-  puts e
+  puts "PWD = #{Dir.pwd}"
+  puts "rubocop.patterns = #{t.patterns}"
+  puts "rubocop.options = #{t.options}"
 end
 
 desc 'Run syntax check'
@@ -106,7 +102,7 @@ task :shfmt do
 end
 
 desc 'Run shellcode (shellcheck and shfmt)'
-task :shellcode => [:shellcheck, :shfmt]
+task shellcode: %i[shellcheck shfmt]
 
 desc 'Run shellcheck'
 task :shellcheck do
@@ -146,6 +142,6 @@ namespace :docker do
     # image is in the form of debian/buster
     raise "ENV['image'] can't be #{ENV['image'].inspect}" unless ENV['image']
 
-    bash "docker build . -f docker/#{ENV['image'].split('/').first}/Dockerfile -t lkp-tests/#{ENV.fetch('image', nil)} --build-arg base_image=#{ENV['image'].sub('/', ':')}"
+    sh "docker build . -f docker/#{ENV['image'].split('/').first}/Dockerfile -t lkp-tests/#{ENV.fetch('image', nil)} --build-arg base_image=#{ENV['image'].sub('/', ':')}"
   end
 end
