@@ -9,7 +9,7 @@ gem 'rake'
 gem 'term-ansicolor'
 gem 'tty-command'
 
-group :development, :test do
+group :test do
   gem 'ci_reporter_rspec'
   gem 'rspec'
   gem 'rubocop', require: false
