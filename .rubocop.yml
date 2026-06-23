@@ -185,3 +185,10 @@ Style/RegexpLiteral:
 Style/OneClassPerFile:
   Enabled: false
 
+RSpec/AnyInstance:
+  Enabled: false
+
+Style/FileOpen:
+  Exclude:
+    - 'lib/common.rb'
+
