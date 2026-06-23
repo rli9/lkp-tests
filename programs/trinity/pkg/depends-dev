@@ -8,6 +8,7 @@ gettext-base
 groff-base
 intltool-debian
 libarchive-zip-perl
+linux-libc-dev/stable-backports
 libfile-stripnondeterminism-perl
 libicu
 libpipeline1
