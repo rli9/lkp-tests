@@ -11,7 +11,7 @@ test_memory_size: 50%
 #   - mode: hardware
 #   - mode: os
 
-#---
+# ---
 nr_threads:
   # - 1
   - 20%

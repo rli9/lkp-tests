@@ -140,7 +140,7 @@ run_lmbench3_development()
 
 	# shellcheck disable=SC2016
 	grep -q 'dd if=/dev/zero of=$FILE count=1 bs=1G' $LMBENCH_PATH ||
-	sed -i '/lat_pagefault -P $SYNC_MAX $FILE/i [ -f $FILE ] || dd if=/dev/zero of=$FILE count=1 bs=1G' $LMBENCH_PATH
+		sed -i '/lat_pagefault -P $SYNC_MAX $FILE/i [ -f $FILE ] || dd if=/dev/zero of=$FILE count=1 bs=1G' $LMBENCH_PATH
 	log_eval "
 	(
 		echo $nr_threads

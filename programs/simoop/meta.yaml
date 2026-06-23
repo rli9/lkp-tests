@@ -8,16 +8,16 @@ description: |
 homepage: https://git.kernel.org/pub/scm/linux/kernel/git/mason/simoop.git/
 
 parameters:
-  threads: worker threads (def: 16)
-  alloc_memory: memory to allocate during think time in each worker (def: 0)
-  mmapsize: amount to mmap to time allocator (def: 0)
-  runtime: How long to run before exiting (seconds, def: 30)
-  warmuptime: How long to warmup before resetting the stats (seconds, def: 60)
-  interval: Sleep time in seconds between latency reports (sec, def: 120)
-  sleeptime: Sleep time in usecs between worker loops (usec, def: 0)
-  cputime: How long to think during each worker loop (seconds, def: 0)
-  cputhreads: How many threads do the cpu time loop (0)
-  numfiles: Number of files per directory tree (65536)
+  threads: 'worker threads (def: 16)'
+  alloc_memory: 'memory to allocate during think time in each worker (def: 0)'
+  mmapsize: 'amount to mmap to time allocator (def: 0)'
+  runtime: 'How long to run before exiting (seconds, def: 30)'
+  warmuptime: 'How long to warmup before resetting the stats (seconds, def: 60)'
+  interval: 'Sleep time in seconds between latency reports (sec, def: 120)'
+  sleeptime: 'Sleep time in usecs between worker loops (usec, def: 0)'
+  cputime: 'How long to think during each worker loop (seconds, def: 0)'
+  cputhreads: 'How many threads do the cpu time loop (0)'
+  numfiles: 'Number of files per directory tree (65536)'
   filesize: Size of each file (64M)
   readsize: amount to read from each file (2M)
   writesize: amount to write to tmp files (2M)

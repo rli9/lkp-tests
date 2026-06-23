@@ -1,4 +1,4 @@
-<< : fxmark.yaml
+<<: fxmark.yaml
 
 disk: 1SSD
 media: ssd

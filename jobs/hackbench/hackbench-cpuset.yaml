@@ -1,4 +1,4 @@
-<< : hackbench.yaml
+<<: hackbench.yaml
 
 nr_node: $(echo /sys/devices/system/node/node* | wc -w)
 cgroup:

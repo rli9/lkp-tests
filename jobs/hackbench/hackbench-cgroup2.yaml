@@ -1,2 +1,2 @@
-<< : cgroup2.yaml
-<< : hackbench.yaml
+<<: cgroup2.yaml
+<<: hackbench.yaml

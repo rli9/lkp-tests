@@ -9,5 +9,5 @@ rt-app:
     - browser-long
     - browser-short
     - spreading-tasks
-    #- video-long
-    #- video-short
+    # - video-long
+    # - video-short

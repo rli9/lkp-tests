@@ -11,6 +11,10 @@ class String
   include Term::ANSIColor
 end
 
+def tool_available?(cmd)
+  system("which #{cmd} >/dev/null 2>&1")
+end
+
 desc 'Show help'
 task :help do
   puts <<~EOF
@@ -86,6 +90,11 @@ end
 
 desc 'Run shfmt'
 task :shfmt do
+  unless tool_available?('shfmt')
+    puts 'shfmt not installed, skipping'.yellow
+    next
+  end
+
   executables = if ENV['file']
                   ENV['file']
                 else
@@ -107,6 +116,11 @@ task shellcode: %i[shellcheck shfmt]
 
 desc 'Run shellcheck'
 task :shellcheck do
+  unless tool_available?('shellcheck')
+    puts 'shellcheck not installed, skipping'.yellow
+    next
+  end
+
   executables = ENV['file'] || `find -type f -executable ! -path "./.git*"  ! -path "./vendor*" ! -size +100k | xargs -P$(nproc) grep -s -l -e '^#!/.*bash$' -e '^#!/bin/sh$'`.split("\n").join(' ')
 
   format = ENV['format'] || 'tty'
@@ -125,9 +139,14 @@ end
 
 desc 'Run yamllint'
 task :yamllint do
+  unless tool_available?('yamllint')
+    puts 'yamllint not installed, skipping'.yellow
+    next
+  end
+
   sh 'yamllint', '--strict', '--format=auto', '.', verbose: false do |ok, res|
     if ok
-      puts 'yamllint OK'
+      puts 'yamllint OK'.green
     else
       exit res.exitstatus
     end
@@ -135,7 +154,7 @@ task :yamllint do
 end
 
 desc 'Run code check'
-task code: %i[syntax shellcode rubocop spec]
+task code: %i[syntax yamllint shellcode rubocop]
 
 namespace :docker do
   desc 'Build docker image'

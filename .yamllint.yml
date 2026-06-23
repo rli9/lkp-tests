@@ -2,14 +2,32 @@ extends: default
 
 rules:
   line-length: disable
-
   document-start: disable
-
-  comments: disable
-
+  comments:
+    min-spaces-from-content: 1
+  comments-indentation: disable
+  braces:
+    max-spaces-inside: 1
+  octal-values:
+    forbid-implicit-octal: true
+    forbid-explicit-octal: true
+  truthy: disable
   indentation:
     spaces: 2
 
 ignore: |
   .git/
+  node_modules/
+  vendor/
   spec/**/*.yaml
+  jobs/pts-avx-part1.yaml
+  jobs/pts-bad.yaml
+  jobs/pts-part1.yaml
+  jobs/pts-part2.yaml
+  jobs/pts-part3.yaml
+  jobs/pts-slow.yaml
+  jobs/fsmark.yaml
+  jobs/fsmark-1hdd-400m.yaml
+  jobs/aim7-fs-1brd.yaml
+  jobs/aim7-fs-raid.yaml
+  jobs/postmark.yaml

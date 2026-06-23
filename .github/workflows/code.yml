@@ -30,8 +30,11 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby-version }}
           bundler-cache: true
+      - name: Install yamllint
+        run: pip install yamllint
       - run: bundle exec rubocop -v
       - run: bundle exec rake code
+      - run: bundle exec rake spec
 
   test-packages-debian:
     runs-on: ubuntu-latest

@@ -8,9 +8,9 @@ is_mrt()
 	local dir=$1
 	local -a jobs
 	local -a matrix
-	matrix=( "$dir"/matrix.json* )
+	matrix=("$dir"/matrix.json*)
 	[ ${#matrix} -eq 0 ] && return 1
-	jobs=( "$dir"/[0-9]*/job.yaml )
+	mapfile -t jobs < <(compgen -G "$dir/[0-9]*/job.yaml")
 	[ ${#jobs} -ge 1 ]
 }
 
@@ -26,16 +26,16 @@ expand_tag_to_commit()
 	[[ "$project" ]] || project="linux"
 
 	[[ "$param" =~ (^v[0-9].[0-9]+[-rc0-9_]*$) ]] &&
-	{
-		git_tag=${BASH_REMATCH[0]}
-		git_tag="${git_tag%/*}"
+		{
+			git_tag=${BASH_REMATCH[0]}
+			git_tag="${git_tag%/*}"
 
-		# shellcheck disable=SC2098 # This expansion will not see the mentioned assignment
-		# shellcheck disable=SC2097 # This assignment is only seen by the forked process
-		commit=$(GIT_WORK_TREE="$GIT_ROOT_DIR/$project" GIT_DIR="$GIT_WORK_TREE/.git" \
+			# shellcheck disable=SC2098 # This expansion will not see the mentioned assignment
+			# shellcheck disable=SC2097 # This assignment is only seen by the forked process
+			commit=$(GIT_WORK_TREE="$GIT_ROOT_DIR/$project" GIT_DIR="$GIT_WORK_TREE/.git" \
 				git rev-list -n1 "$git_tag" 2>/dev/null) &&
-		[[ $commit ]] && param="${param/$git_tag/$commit}"
-	}
+				[[ $commit ]] && param="${param/$git_tag/$commit}"
+		}
 
 	echo "$param"
 }
@@ -50,8 +50,7 @@ cleanup_path_record_from_patterns()
 	local dot_temp_file
 	local match_temp_file
 
-	for pattern
-	do
+	for pattern; do
 		pattern=$(expand_tag_to_commit $pattern)
 
 		if [[ "$flag_pattern" = "0" ]]; then
@@ -67,11 +66,10 @@ cleanup_path_record_from_patterns()
 	match_temp_file=$(mktemp -p /tmp lkp-result-cleanup-path.tmpXXXXXX) || return
 	chmod 664 $dot_temp_file || return
 
-	for path_file in $(grep -l "$pattern" $KTEST_PATHS_DIR/*/????-??-??-* $KTEST_PATHS_DIR/*/.????-??-??-*)
-	do
-		awk -v file1="$match_temp_file" -v file2="$dot_temp_file"  "BEGIN {modified=0} $cmd {print >> file1; modified=1; next}; \
+	for path_file in $(grep -l "$pattern" $KTEST_PATHS_DIR/*/????-??-??-* $KTEST_PATHS_DIR/*/.????-??-??-*); do
+		awk -v file1="$match_temp_file" -v file2="$dot_temp_file" "BEGIN {modified=0} $cmd {print >> file1; modified=1; next}; \
 		{print > file2} END {exit 1-modified}" $path_file &&
-		mv -f $dot_temp_file $path_file
+			mv -f $dot_temp_file $path_file
 		chown .lkp $path_file
 
 	done
@@ -104,12 +102,11 @@ clean_path_record_from_result_root()
 		paths=$(grep -s -l "$path" $KTEST_PATHS_DIR/*/????-??-??-*)
 	fi
 
-	for path_file in $paths
-	do
+	for path_file in $paths; do
 		lockfile-create -q --use-pid --retry 10 --lock-name "$path_file".lock
 
-		awk "BEGIN {modified=0} $cmd {modified=1;next}; {print} END {exit 1-modified}" $path_file > $dot_temp_file &&
-		mv -f $dot_temp_file $path_file
+		awk "BEGIN {modified=0} $cmd {modified=1;next}; {print} END {exit 1-modified}" $path_file >$dot_temp_file &&
+			mv -f $dot_temp_file $path_file
 		chown .lkp $path_file
 
 		lockfile-remove --lock-name "$path_file".lock
