@@ -85,7 +85,7 @@ task :syntax do
     exit res.exitstatus unless ok
   end
 
-  puts 'syntax OK'
+  puts 'syntax OK'.green
 end
 
 desc 'Run shfmt'
@@ -104,7 +104,8 @@ task :shfmt do
 
   sh "shfmt -w -ln bash -i 0 -fn #{executables}", verbose: false do |ok, res|
     if ok
-      puts 'shfmt OK'.green
+      version = `shfmt --version 2>&1`.strip.delete_prefix('v')
+      puts "shfmt (#{version}) OK".green
     else
       exit res.exitstatus
     end
@@ -130,7 +131,8 @@ task :shellcheck do
 
   sh "#{base_cmd} #{executables}", verbose: false do |ok, res|
     if ok
-      puts 'shellcheck OK'
+      version = `shellcheck --version 2>&1`.match(/^version: (\S+)/)&.captures&.first || '?'
+      puts "shellcheck (#{version}) OK".green
     else
       exit res.exitstatus
     end
@@ -146,7 +148,28 @@ task :yamllint do
 
   sh 'yamllint', '--strict', '--format=auto', '.', verbose: false do |ok, res|
     if ok
-      puts 'yamllint OK'.green
+      version = `yamllint --version 2>&1`.strip.split.last
+      puts "yamllint (#{version}) OK".green
+    else
+      exit res.exitstatus
+    end
+  end
+end
+
+desc 'Run ruff'
+task :ruff do
+  unless tool_available?('ruff')
+    puts 'ruff not installed, skipping'.yellow
+    next
+  end
+
+  ENV['RUFF_CACHE_DIR'] ||= '/tmp/.ruff_cache'
+  fix_flag = ENV['fix'] == '1' ? '--fix' : ''
+  format_flag = ENV['fix'] == '1' ? '' : '--check'
+  sh "python3 -m ruff check #{fix_flag} #{ENV['file'] || '.'} && python3 -m ruff format #{format_flag} #{ENV['file'] || '.'}", verbose: false do |ok, res|
+    if ok
+      version = `python3 -m ruff --version 2>&1`.strip.split.last
+      puts "ruff (#{version}) OK".green
     else
       exit res.exitstatus
     end
@@ -154,7 +177,7 @@ task :yamllint do
 end
 
 desc 'Run code check'
-task code: %i[syntax yamllint shellcode rubocop]
+task code: %i[syntax yamllint shellcode rubocop ruff]
 
 namespace :docker do
   desc 'Build docker image'
