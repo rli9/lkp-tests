@@ -6,7 +6,7 @@ need_memory: 4G
 
 disk:
   - 1HDD
-  # - 1SSD
+  - 1SSD
 fs:
   - ext4
   - xfs
@@ -20,8 +20,14 @@ ltp:
     - syscalls-02
     - syscalls-03
     - syscalls-04
-    - syscalls-06
     - syscalls-07
     - writev03.writev03 # run standalone
     - fork13.fork13
     - syscalls-setsockopt06 # need about 25mins
+
+---
+need_memory: 10G
+
+ltp:
+  test:
+    - syscalls-06
