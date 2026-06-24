@@ -127,6 +127,10 @@ need_kconfig:
 - NET_NS: y
 - USER_NS: y
 
+% elsif ___.test == "net.ipv6"
+- NETFILTER_XTABLES_LEGACY: y
+- IP6_NF_IPTABLES_LEGACY: m
+
 % elsif ___.test == "net.tcp_cmds"
 - DUMMY: m
 - NET_SCHED: y
