@@ -18,7 +18,7 @@
 # function calls:
 # perf script -C <P> --ns --itrace=cr --time <TIME-STAMP> -F cpu,ip,time,sym,flags,addr,symoff
 # assembler traces:
-# perf script -C <P> --ns --itrace=i0ns --time <TIME-STAMP> -F cpu,ip,time,sym,flags,addr,symoff,insn | ./xed -A -64 -F insn: 
+# perf script -C <P> --ns --itrace=i0ns --time <TIME-STAMP> -F cpu,ip,time,sym,flags,addr,symoff,insn | ./xed -A -64 -F insn:
 #
 
 # Copyright (c) 2017, Intel Corporation
@@ -47,6 +47,12 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 # OF THE POSSIBILITY OF SUCH DAMAGE.
 
+import sys
+import collections
+import argparse
+import re
+import os
+
 columns = """
 RUN      total time duration, excluding callees (us)
 OUTS     duration of callees outside of filter region (us)
@@ -63,31 +69,26 @@ n-TIME   perf time stamp at n% percentile of duration (to pass to --time)
 P        CPU at n% percentile of duration (to pass to -C)
 """
 
-import sys
-import collections
-import argparse
-import re
-import os
-
 # [000] 255625.614382717:   tr strt                  0 [unknown] => ffffffff810dc9a0 sched_clock_cpu+0xVV
 # [000] 255625.614382717:   call         ffffffff810dca2e sched_clock_cpu+0xVV =>               0 [unknown]
 # [000] 255625.614382722:   tr strt                  0 [unknown] => ffffffff810dca33 sched_clock_cpu+0xVV
 # [000] 255625.614382722:   return       ffffffff810dca3d sched_clock_cpu+0xVV =>               0 [unknown]
 
 ap = argparse.ArgumentParser()
-ap.add_argument('--all', action='store_true', help="Print duration for every call")
-ap.add_argument('--debug', action='store_true', help="Extra debugging output")
-ap.add_argument('--tracefunc', default=None, help="Print all updates for function (for debugging)")
-ap.add_argument('--thresh', type=float, default=0.05, help="Min threshold to print")
-ap.add_argument('--max-print', default=20, help="Max number of parse errors to print")
-ap.add_argument('--filter', default=None, help="Only account callees of function")
-ap.add_argument('--binary', default=None, help="Binary to resolve out of context branches")
+ap.add_argument("--all", action="store_true", help="Print duration for every call")
+ap.add_argument("--debug", action="store_true", help="Extra debugging output")
+ap.add_argument("--tracefunc", default=None, help="Print all updates for function (for debugging)")
+ap.add_argument("--thresh", type=float, default=0.05, help="Min threshold to print")
+ap.add_argument("--max-print", default=20, help="Max number of parse errors to print")
+ap.add_argument("--filter", default=None, help="Only account callees of function")
+ap.add_argument("--binary", default=None, help="Binary to resolve out of context branches")
 args = ap.parse_args()
 
 special_exit = {
     "__schedule": "schedule_tail",
     "schedule": "schedule_tail",
 }
+
 
 # handle symbols that don't have clear call/ret (usually assembler)
 # collapse the resulted symbols into one
@@ -98,6 +99,7 @@ def fixup_sym(s):
         return "__switch_to"
     return s
 
+
 def parse_sym(s):
     n = s.split("+")
     if len(n) > 1:
@@ -106,37 +108,41 @@ def parse_sym(s):
     s = fixup_sym(s)
     return s, 0
 
-def percentile(l, p):
-    if len(l) < 2:
+
+def percentile(data, p):
+    if len(data) < 2:
         return 0
-    n = max(int(round(p * len(l) + 0.5)), 2)
-    return l[n-2]
+    n = max(int(round(p * len(data) + 0.5)), 2)
+    return data[n - 2]
+
 
 def debugp(s):
     if args.debug:
         print(s)
 
+
 def read_calls(b):
     calls = dict()
     with os.popen("objdump -d " + b) as f:
-        for l in f:
-            if "callq" not in l:
+        for line in f:
+            if "callq" not in line:
                 continue
             #  ffffffff81000007:       e8 b8 01 00 00          callq  ffffffff810001c4 <verify_cpu>
-            n = l.split()
+            n = line.split()
             if len(n) < 1:
                 continue
             addr = int(n[0].strip(":"), 16)
-            m = re.search(r'callq.*<(.*)>', l)
+            m = re.search(r"callq.*<(.*)>", line)
             if m:
                 calls[addr] = m.group(1)
     return calls
-        
+
+
 funcstart = dict()
 funclast = dict()
 funccount = collections.Counter()
 funcs = collections.Counter()
-funcdur = collections.defaultdict(list)     # tuples of (dur, timestamp, cpu, total) 
+funcdur = collections.defaultdict(list)  # tuples of (dur, timestamp, cpu, total)
 curdur = collections.Counter()
 outside = collections.Counter()
 callee = collections.Counter()
@@ -159,27 +165,36 @@ endt = dict()
 
 num_print = 0
 
-def update_funcdur(f, dur, l, cpu):
+
+def update_funcdur(f, dur, line, cpu):
     funcs[f] += dur
     curdur[(cpu, f)] += dur
     if args.debug and args.tracefunc == f:
-        print(l, end='')
-        print("delta", dur*10e6, "dur", funcs[f]*10e6, "callee", callee[f]*10e6)
+        print(line, end="")
+        print("delta", dur * 10e6, "dur", funcs[f] * 10e6, "callee", callee[f] * 10e6)
+
 
 static_calls = dict()
 if args.binary:
     static_calls = read_calls(args.binary)
 
-for l in sys.stdin:
-    n = l.split()
+for line in sys.stdin:
+    n = line.split()
     off = 0
     if n[2] == "tr":
         off = 1
     try:
-        cpu, time, cmd, fromf, tof, fromip = int(n[0].strip("[]")), float(n[1].strip(":")), n[2], n[4+off], n[7+off], int(n[3+off], 16)
+        cpu, time, cmd, fromf, tof, fromip = (
+            int(n[0].strip("[]")),
+            float(n[1].strip(":")),
+            n[2],
+            n[4 + off],
+            n[7 + off],
+            int(n[3 + off], 16),
+        )
     except ValueError:
         if num_print < args.max_print:
-            print("unparseable line", l, end='')
+            print("unparseable line", line, end="")
             num_print += 1
         ignored += 1
         continue
@@ -209,12 +224,16 @@ for l in sys.stdin:
             if last_filter_caller[cpu] != tof:
                 # we got called from outside while suspended on an external call
                 # push on stack
-                last_filter_stack[cpu].append((last_filter_callee[cpu], 
+                last_filter_stack[cpu].append(
+                    (
+                        last_filter_callee[cpu],
                         last_filter_caller[cpu],
                         outs_start[cpu] if cpu in outs_start else None,
-                        outs_last_func[cpu] if cpu in outs_last_func else None))
+                        outs_last_func[cpu] if cpu in outs_last_func else None,
+                    )
+                )
                 debugp("push " + last_filter_callee[cpu] + " " + last_filter_caller[cpu])
-                #print time, "returning from out of context", fromf, "to", tof, "expected", last_filter_caller[cpu]
+                # print time, "returning from out of context", fromf, "to", tof, "expected", last_filter_caller[cpu]
                 if cpu in outs_last_func:
                     del outs_last_func[cpu]
                     del outs_start[cpu]
@@ -230,7 +249,7 @@ for l in sys.stdin:
             if cpu in outs_start:
                 if cpu in outs_last_func and outs_last_func[cpu] != tof:
                     if num_print < args.max_print:
-                        print(l, end='')
+                        print(line, end="")
                         print("mismatch, expected to come back to", outs_last_func[cpu], "got", tof)
                         num_print += 1
                     mismatches += 1
@@ -239,7 +258,7 @@ for l in sys.stdin:
             funcstart[(cpu, tof)] = time
             funccount[tof] += 1
         if fromf != "[unknown]" and (cpu, fromf) in funclast:
-            update_funcdur(fromf, time - funclast[(cpu, fromf)], l, cpu)
+            update_funcdur(fromf, time - funclast[(cpu, fromf)], line, cpu)
         funclast[(cpu, tof)] = time
         if too == 0:
             funcstart[(cpu, tof)] = time
@@ -267,7 +286,7 @@ for l in sys.stdin:
         funccount[tof] += 1
         curdur[(cpu, tof)] = 0
         if (cpu, fromf) in funclast:
-            update_funcdur(fromf, time - funclast[(cpu, fromf)], l, cpu)
+            update_funcdur(fromf, time - funclast[(cpu, fromf)], line, cpu)
         funclast[(cpu, fromf)] = time
         callers[tof].add(fromf)
         callee_set[fromf].add(tof)
@@ -298,18 +317,18 @@ for l in sys.stdin:
         if (cpu, fromf) not in funclast:
             continue
         dur = time - funclast[(cpu, fromf)]
-        update_funcdur(fromf, dur, l, cpu)
+        update_funcdur(fromf, dur, line, cpu)
         if (cpu, fromf) in funcstart:
             start = funcstart[(cpu, fromf)]
             funcdur[fromf].append((curdur[(cpu, fromf)], start, cpu, time - start))
             if args.all:
-                print("%15.9f" % time, "%8.2f" % ((time - funcstart[(cpu, fromf)])*1e6), "\t", fromf)
+                print("%15.9f" % time, "%8.2f" % ((time - funcstart[(cpu, fromf)]) * 1e6), "\t", fromf)
         if iflag:
             continue
         if (cpu, tof) in funclast:
             callee[tof] += time - funclast[(cpu, tof)]
         if tof == args.tracefunc:
-            print(l, end='')
+            print(line, end="")
             print("delta", dur, "callee", callee[tof])
         funclast[(cpu, tof)] = time
 
@@ -322,52 +341,72 @@ print(columns)
 print()
 
 cpus = sorted(startt.keys())
-print("times traced: ", " ".join(["%5.2fus" % ((endt[cpu] - startt[cpu])*1e6) for cpu in cpus]))
-#total = sum([endt[cpu] - startt[cpu] for cpu in cpus])*1e6
+print("times traced: ", " ".join(["%5.2fus" % ((endt[cpu] - startt[cpu]) * 1e6) for cpu in cpus]))
+# total = sum([endt[cpu] - startt[cpu] for cpu in cpus])*1e6
 print()
 
-totalsched = sum(funcs.values())*1e6
+totalsched = sum(funcs.values()) * 1e6
 left = []
 left_outside = 0.0
-print("%8s %8s %6s %8s %8s %8s %8s %8s %8s %8s %8s %-30s" % (
-        "RUN", "NUM", "PCT-TO",
-        "OUTS", "CALLEE", "TOTAL", "TOTAV",
-        "50-DUR", "90-DUR", "95-DUR", "99-DUR", "NAME"))
+print(
+    "%8s %8s %6s %8s %8s %8s %8s %8s %8s %8s %8s %-30s"
+    % ("RUN", "NUM", "PCT-TO", "OUTS", "CALLEE", "TOTAL", "TOTAV", "50-DUR", "90-DUR", "95-DUR", "99-DUR", "NAME")
+)
 all_total = 0
 for j in sorted(funcs, key=lambda x: funcs[x], reverse=True):
     all_total += outside[j] + callee[j] + dur
     dur = funcs[j] * 1e6
-    pct = (dur/totalsched)*100. if totalsched > 0 else 0
+    pct = (dur / totalsched) * 100.0 if totalsched > 0 else 0
     if pct < args.thresh:
         left.append(pct)
         left_outside += outside[j]
     else:
         sorted_p = sorted(funcdur[j], key=lambda x: x[0])
         p = [x[0] for x in sorted_p]
-        print("%8.2f %8d %6.2f %8.2f %8.2f %8.2f %8.2f %8.2f %8.2f %8.2f %8.2f %-30s" % (
-                    dur, funccount[j],
-                    pct,
-                    outside[j] * 1e6, callee[j]* 1e6,
-                    dur + callee[j]*1e6 + outside[j]*1e6,
-                    (dur + callee[j]*1e6 + outside[j]*1e6) / len(p) if len(p) > 0 else 0,
-                    percentile(p, .50)*1e6, percentile(p, .90)*1e6,
-                    percentile(p, .95)*1e6, percentile(p, .99)*1e6,
-                    j + (" [O]" if j in outside_funcs else "")))
+        print(
+            "%8.2f %8d %6.2f %8.2f %8.2f %8.2f %8.2f %8.2f %8.2f %8.2f %8.2f %-30s"
+            % (
+                dur,
+                funccount[j],
+                pct,
+                outside[j] * 1e6,
+                callee[j] * 1e6,
+                dur + callee[j] * 1e6 + outside[j] * 1e6,
+                (dur + callee[j] * 1e6 + outside[j] * 1e6) / len(p) if len(p) > 0 else 0,
+                percentile(p, 0.50) * 1e6,
+                percentile(p, 0.90) * 1e6,
+                percentile(p, 0.95) * 1e6,
+                percentile(p, 0.99) * 1e6,
+                j + (" [O]" if j in outside_funcs else ""),
+            )
+        )
         assert sum(p) <= dur
 print()
 print("all_total", all_total)
 print("sum", sum([endt[cpu] - startt[cpu] for cpu in cpus]))
 
 # debug me
-#assert all_total <= sum([endt[cpu] - startt[cpu] for cpu in cpus])
+# assert all_total <= sum([endt[cpu] - startt[cpu] for cpu in cpus])
 
 left = sorted(left)
 sleft = sum(left)
-print("%8.2f %8d %6.2f %8.2f %8s %8s %6s %6s %6s %6s %6s %-30s" % (
-        sleft, len(left),
-        (sleft/totalsched)*100. if totalsched > 0 else 0,
+print(
+    "%8.2f %8d %6.2f %8.2f %8s %8s %6s %6s %6s %6s %6s %-30s"
+    % (
+        sleft,
+        len(left),
+        (sleft / totalsched) * 100.0 if totalsched > 0 else 0,
         left_outside,
-        "", "", "", "", "", "", "", "other"))
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "other",
+    )
+)
 print()
 print("%d functions below threshold" % len(left))
 print()
@@ -377,17 +416,21 @@ print()
 print("%8s %8s %8s %8s %s" % ("50-TOT", "90-TOT", "95-TOT", "99-TOT", "NAME"))
 for j in sorted(funcs, key=lambda x: funcs[x], reverse=True):
     dur = funcs[j] * 1e6
-    pct = (dur/totalsched)*100. if totalsched > 0 else 0
+    pct = (dur / totalsched) * 100.0 if totalsched > 0 else 0
     if pct < args.thresh:
         continue
     sorted_p = sorted(funcdur[j], key=lambda x: x[3])
     p = [x[3] for x in sorted_p]
-    print("%8.2f %8.2f %8.2f %8.2f %s" % (
-            percentile(p, .50)*1e6,
-            percentile(p, .90)*1e6,
-            percentile(p, .95)*1e6,
-            percentile(p, .99)*1e6,
-            j))
+    print(
+        "%8.2f %8.2f %8.2f %8.2f %s"
+        % (
+            percentile(p, 0.50) * 1e6,
+            percentile(p, 0.90) * 1e6,
+            percentile(p, 0.95) * 1e6,
+            percentile(p, 0.99) * 1e6,
+            j,
+        )
+    )
 
 print()
 print("Callers")
@@ -395,7 +438,7 @@ print()
 print("%30s %-40s" % ("FUNC", "CALLERS"))
 for j in sorted(funcs, key=lambda x: funcs[x], reverse=True):
     dur = funcs[j] * 1e6
-    pct = (dur/totalsched)*100. if totalsched > 0 else 0
+    pct = (dur / totalsched) * 100.0 if totalsched > 0 else 0
     if len(callers[j]) > 0 and pct >= args.thresh:
         print("%30s %-40s" % (j, " ".join(callers[j])))
 print()
@@ -406,39 +449,67 @@ print()
 print("%30s %-40s" % ("FUNC", "CALLEES"))
 for j in sorted(funcs, key=lambda x: funcs[x], reverse=True):
     dur = funcs[j] * 1e6
-    pct = (dur/totalsched)*100. if totalsched > 0 else 0
+    pct = (dur / totalsched) * 100.0 if totalsched > 0 else 0
     if len(callee_set[j]) > 0 and pct >= args.thresh:
         print("%30s %-40s" % (j, " ".join(callee_set[j])))
 print()
+
 
 def print_timestamps(title, column, ind):
     print()
     print("perf timestamps of function start by " + title)
     print()
 
-    print(("%8s %8s " + "%15s %8s %2s " * 4 + "%s") % (
-            "RUN", "NUM",
-            "50-TIME", "50-" + column, "P",
-            "90-TIME", "90-" + column, "P",
-            "95-TIME", "95-" + column, "P",
-            "99-TIME", "99-" + column, "P",
-            "NAME"))
+    print(
+        ("%8s %8s " + "%15s %8s %2s " * 4 + "%s")
+        % (
+            "RUN",
+            "NUM",
+            "50-TIME",
+            "50-" + column,
+            "P",
+            "90-TIME",
+            "90-" + column,
+            "P",
+            "95-TIME",
+            "95-" + column,
+            "P",
+            "99-TIME",
+            "99-" + column,
+            "P",
+            "NAME",
+        )
+    )
     for j in sorted(funcs, key=lambda x: funcs[x], reverse=True):
         dur = funcs[j] * 1e6
-        pct = (dur/totalsched)*100. if totalsched > 0 else 0
+        pct = (dur / totalsched) * 100.0 if totalsched > 0 else 0
         if pct < args.thresh:
             continue
         sorted_p = sorted(funcdur[j], key=lambda x: x[ind])
         p = [x[1] for x in sorted_p]
         pind = [x[ind] for x in sorted_p]
         pcpu = [x[2] for x in sorted_p]
-        print(("%8.2f %8d " + "%15f %8.2f %2d " * 4 + " %s") % (
-                dur, funccount[j],
-                percentile(p, .50), percentile(pind, .50)*1e6, percentile(pcpu, .50),
-                percentile(p, .90), percentile(pind, .90)*1e6, percentile(pcpu, .90),
-                percentile(p, .95), percentile(pind, .95)*1e6, percentile(pcpu, .95),
-                percentile(p, .99), percentile(pind, .99)*1e6, percentile(pcpu, .99),
-                j))
+        print(
+            ("%8.2f %8d " + "%15f %8.2f %2d " * 4 + " %s")
+            % (
+                dur,
+                funccount[j],
+                percentile(p, 0.50),
+                percentile(pind, 0.50) * 1e6,
+                percentile(pcpu, 0.50),
+                percentile(p, 0.90),
+                percentile(pind, 0.90) * 1e6,
+                percentile(pcpu, 0.90),
+                percentile(p, 0.95),
+                percentile(pind, 0.95) * 1e6,
+                percentile(pcpu, 0.95),
+                percentile(p, 0.99),
+                percentile(pind, 0.99) * 1e6,
+                percentile(pcpu, 0.99),
+                j,
+            )
+        )
+
 
 print_timestamps("duration", "DUR", 0)
 print_timestamps("total", "TOT", 3)
