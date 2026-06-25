@@ -71,7 +71,7 @@ end
 
 desc 'Run syntax check'
 task :syntax do
-  executables = `find -type f -executable ! -path "./.git*" ! -path "./vendor*" ! -size +100k`.split("\n").join(' ')
+  executables = `find -type f -executable ! -path "./.git*" ! -path "./vendor*" ! -path "*/node_modules/*" ! -size +100k`.split("\n").join(' ')
 
   sh "grep -s -l '^#!/.*ruby$' #{executables} | xargs -P$(nproc) -n1 ruby -c >/dev/null", verbose: false do |ok, res|
     exit res.exitstatus unless ok
@@ -99,7 +99,7 @@ task :shfmt do
                   ENV['file']
                 else
                   dir = ENV['dir'] || '.'
-                  `find #{dir} -type f -executable ! -path "./.git*" ! -path "./vendor*" ! -path "*/sbin/makepkg" ! -path "*/sbin/pacman-LKP" ! -size +100k | xargs -P$(nproc) grep -s -l -e '^#!/.*bash$' -e '^#!/bin/sh$'`.split("\n").join(' ')
+                  `find #{dir} -type f -executable ! -path "./.git*" ! -path "./vendor*" ! -path "*/node_modules/*" ! -path "*/sbin/makepkg" ! -path "*/sbin/pacman-LKP" ! -size +100k | xargs -P$(nproc) grep -s -l -e '^#!/.*bash$' -e '^#!/bin/sh$'`.split("\n").join(' ')
                 end
 
   mode_flag = ENV['fix'] == '1' ? '-w' : '-d'
@@ -123,7 +123,7 @@ task :shellcheck do
     next
   end
 
-  executables = ENV['file'] || `find -type f -executable ! -path "./.git*"  ! -path "./vendor*" ! -size +100k | xargs -P$(nproc) grep -s -l -e '^#!/.*bash$' -e '^#!/bin/sh$'`.split("\n").join(' ')
+  executables = ENV['file'] || `find -type f -executable ! -path "./.git*" ! -path "./vendor*" ! -path "*/node_modules/*" ! -size +100k | xargs -P$(nproc) grep -s -l -e '^#!/.*bash$' -e '^#!/bin/sh$'`.split("\n").join(' ')
 
   format = ENV['format'] || 'tty'
 
