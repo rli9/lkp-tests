@@ -64,6 +64,8 @@ RuboCop::RakeTask.new(:rubocop) do |t|
   t.options.unshift('-a') if ENV['fix'] == '1'
   t.patterns = [ENV['file']] if ENV['file']
 
+  version = `rubocop --version 2>&1`.strip
+  puts "rubocop (#{version}) start...".yellow
   puts "PWD = #{Dir.pwd}"
   puts "rubocop.patterns = #{t.patterns}"
   puts "rubocop.options = #{t.options}"
@@ -71,6 +73,7 @@ end
 
 desc 'Run syntax check'
 task :syntax do
+  puts 'syntax start...'.yellow
   executables = `find -type f -executable ! -path "./.git*" ! -path "./vendor*" ! -path "*/node_modules/*" ! -size +100k`.split("\n").join(' ')
 
   sh "grep -s -l '^#!/.*ruby$' #{executables} | xargs -P$(nproc) -n1 ruby -c >/dev/null", verbose: false do |ok, res|
@@ -102,10 +105,12 @@ task :shfmt do
                   `find #{dir} -type f -executable ! -path "./.git*" ! -path "./vendor*" ! -path "*/node_modules/*" ! -path "*/sbin/makepkg" ! -path "*/sbin/pacman-LKP" ! -size +100k | xargs -P$(nproc) grep -s -l -e '^#!/.*bash$' -e '^#!/bin/sh$'`.split("\n").join(' ')
                 end
 
+  version = `shfmt --version 2>&1`.strip.delete_prefix('v')
+  puts "shfmt (#{version}) start...".yellow
+
   mode_flag = ENV['fix'] == '1' ? '-w' : '-d'
   sh "shfmt #{mode_flag} -ln bash -i 0 -fn #{executables}", verbose: false do |ok, res|
     if ok
-      version = `shfmt --version 2>&1`.strip.delete_prefix('v')
       puts "shfmt (#{version}) OK".green
     else
       exit res.exitstatus
@@ -130,9 +135,11 @@ task :shellcheck do
   base_cmd = "shellcheck -S warning -f #{format}"
   base_cmd += " -i #{ENV['code']}" if ENV['code']
 
+  version = `shellcheck --version 2>&1`.match(/^version: (\S+)/)&.captures&.first || '?'
+  puts "shellcheck (#{version}) start...".yellow
+
   sh "#{base_cmd} #{executables}", verbose: false do |ok, res|
     if ok
-      version = `shellcheck --version 2>&1`.match(/^version: (\S+)/)&.captures&.first || '?'
       puts "shellcheck (#{version}) OK".green
     else
       exit res.exitstatus
@@ -147,9 +154,11 @@ task :yamllint do
     next
   end
 
+  version = `yamllint --version 2>&1`.strip.split.last
+  puts "yamllint (#{version}) start...".yellow
+
   sh 'yamllint', '--strict', '--format=auto', '.', verbose: false do |ok, res|
     if ok
-      version = `yamllint --version 2>&1`.strip.split.last
       puts "yamllint (#{version}) OK".green
     else
       exit res.exitstatus
@@ -165,11 +174,13 @@ task :ruff do
   end
 
   ENV['RUFF_CACHE_DIR'] ||= '/tmp/.ruff_cache'
+  version = `python3 -m ruff --version 2>&1`.strip.split.last
+  puts "ruff (#{version}) start...".yellow
+
   fix_flag = ENV['fix'] == '1' ? '--fix' : ''
   format_flag = ENV['fix'] == '1' ? '' : '--check'
   sh "python3 -m ruff check #{fix_flag} #{ENV['file'] || '.'} && python3 -m ruff format #{format_flag} #{ENV['file'] || '.'}", verbose: false do |ok, res|
     if ok
-      version = `python3 -m ruff --version 2>&1`.strip.split.last
       puts "ruff (#{version}) OK".green
     else
       exit res.exitstatus
