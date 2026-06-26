@@ -49,7 +49,7 @@ describe 'Directory File Sorting' do
       filtered_files(config[:path], config[:filter]).each do |file|
         it "#{file} has sorted content and no duplicates" do
           actual = File.readlines(file)
-                       .reject { |line| line.blank? || line.start_with?('#') }
+                       .reject { |line| line.strip.empty? || line.start_with?('#') }
                        .join
 
           expect(actual.chomp).to eq(sorted_file_content(file))
