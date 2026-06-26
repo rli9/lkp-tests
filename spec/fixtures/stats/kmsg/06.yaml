@@ -1,9 +1,4 @@
 
-# irq .* nobody cared (try booting with the .* option)
-irq#:nobody_cared(try_booting_with_the~irqpoll~option): 1
-message:irq#:nobody_cared(try_booting_with_the~irqpoll~option): kern  :err   : [   13.708876] irq 16: nobody cared (try booting with the "irqpoll" option)
-pattern:irq#:nobody_cared(try_booting_with_the~irqpoll~option): irq .* nobody cared (try booting with the .* option)
-
 # handlers:
 handlers: 1
 message:handlers: kern  :err   : [   13.708941] handlers:
@@ -20,7 +15,6 @@ message:Disabling_IRQ: kern  :emerg : [   13.708946] Disabling IRQ #16
 pattern:Disabling_IRQ: Disabling IRQ
 
 timestamp:last: 13.708946
-timestamp:irq#:nobody_cared(try_booting_with_the~irqpoll~option): 13.708876
 timestamp:handlers: 13.708941
 timestamp:usb_hcd_irq: 13.708945
 timestamp:Disabling_IRQ: 13.708946
