@@ -53,7 +53,7 @@ import argparse
 import re
 import os
 
-columns = """
+COLUMNS = """
 RUN      total time duration, excluding callees (us)
 OUTS     duration of callees outside of filter region (us)
 CALLEE   duration of callees (us)
@@ -101,19 +101,19 @@ def fixup_sym(s):
 
 
 def parse_sym(s):
-    n = s.split("+")
-    if len(n) > 1:
-        n[0] = fixup_sym(n[0])
-        return n[0], int(n[1], 16)
+    parts = s.split("+")
+    if len(parts) > 1:
+        parts[0] = fixup_sym(parts[0])
+        return parts[0], int(parts[1], 16)
     s = fixup_sym(s)
     return s, 0
 
 
-def percentile(data, p):
+def percentile(data, pval):
     if len(data) < 2:
         return 0
-    n = max(int(round(p * len(data) + 0.5)), 2)
-    return data[n - 2]
+    idx = max(int(round(pval * len(data) + 0.5)), 2)
+    return data[idx - 2]
 
 
 def debugp(s):
@@ -122,24 +122,24 @@ def debugp(s):
 
 
 def read_calls(b):
-    calls = dict()
+    calls = {}
     with os.popen("objdump -d " + b) as f:
-        for line in f:
-            if "callq" not in line:
+        for src_line in f:
+            if "callq" not in src_line:
                 continue
             #  ffffffff81000007:       e8 b8 01 00 00          callq  ffffffff810001c4 <verify_cpu>
-            n = line.split()
-            if len(n) < 1:
+            parts = src_line.split()
+            if len(parts) < 1:
                 continue
-            addr = int(n[0].strip(":"), 16)
-            m = re.search(r"callq.*<(.*)>", line)
+            addr = int(parts[0].strip(":"), 16)
+            m = re.search(r"callq.*<(.*)>", src_line)
             if m:
                 calls[addr] = m.group(1)
     return calls
 
 
-funcstart = dict()
-funclast = dict()
+funcstart = {}
+funclast = {}
 funccount = collections.Counter()
 funcs = collections.Counter()
 funcdur = collections.defaultdict(list)  # tuples of (dur, timestamp, cpu, total)
@@ -148,33 +148,33 @@ outside = collections.Counter()
 callee = collections.Counter()
 callers = collections.defaultdict(set)
 callee_set = collections.defaultdict(set)
-outs_last_func = dict()
-outs_start = dict()
-last_filter_callee = dict()
-last_filter_caller = dict()
+outs_last_func = {}
+outs_start = {}
+last_filter_callee = {}
+last_filter_caller = {}
 last_filter_stack = collections.defaultdict(list)
-ignore = dict()
+ignore = {}
 outside_funcs = set()
-iflag_default = True if args.filter else False
+IFLAG_DEFAULT = bool(args.filter)
 ignored = 0
 parsed = 0
 mismatches = 0
 
-startt = dict()
-endt = dict()
+startt = {}
+endt = {}
 
 num_print = 0
 
 
-def update_funcdur(f, dur, line, cpu):
-    funcs[f] += dur
-    curdur[(cpu, f)] += dur
+def update_funcdur(f, delta, src_line, cpu_id):
+    funcs[f] += delta
+    curdur[(cpu_id, f)] += delta
     if args.debug and args.tracefunc == f:
-        print(line, end="")
-        print("delta", dur * 10e6, "dur", funcs[f] * 10e6, "callee", callee[f] * 10e6)
+        print(src_line, end="")
+        print("delta", delta * 10e6, "dur", funcs[f] * 10e6, "callee", callee[f] * 10e6)
 
 
-static_calls = dict()
+static_calls = {}
 if args.binary:
     static_calls = read_calls(args.binary)
 
@@ -204,7 +204,7 @@ for line in sys.stdin:
     if cpu not in startt:
         startt[cpu] = time
     endt[cpu] = time
-    iflag = ignore.setdefault(cpu, iflag_default)
+    iflag = ignore.setdefault(cpu, IFLAG_DEFAULT)
     # coming back from out of filter region
     if cmd == "tr":
         if iflag:
@@ -322,7 +322,7 @@ for line in sys.stdin:
             start = funcstart[(cpu, fromf)]
             funcdur[fromf].append((curdur[(cpu, fromf)], start, cpu, time - start))
             if args.all:
-                print("%15.9f" % time, "%8.2f" % ((time - funcstart[(cpu, fromf)]) * 1e6), "\t", fromf)
+                print(f"{time:15.9f}", f"{(time - funcstart[(cpu, fromf)]) * 1e6:8.2f}", "\t", fromf)
         if iflag:
             continue
         if (cpu, tof) in funclast:
@@ -333,15 +333,15 @@ for line in sys.stdin:
         funclast[(cpu, tof)] = time
 
 print()
-print("%d out of %d ignored" % (ignored, parsed))
-print("%d mismatches" % mismatches)
+print(f"{ignored} out of {parsed} ignored")
+print(f"{mismatches} mismatches")
 print()
 
-print(columns)
+print(COLUMNS)
 print()
 
 cpus = sorted(startt.keys())
-print("times traced: ", " ".join(["%5.2fus" % ((endt[cpu] - startt[cpu]) * 1e6) for cpu in cpus]))
+print("times traced: ", " ".join([f"{(endt[cpu] - startt[cpu]) * 1e6:5.2f}us" for cpu in cpus]))
 # total = sum([endt[cpu] - startt[cpu] for cpu in cpus])*1e6
 print()
 
@@ -349,8 +349,7 @@ totalsched = sum(funcs.values()) * 1e6
 left = []
 left_outside = 0.0
 print(
-    "%8s %8s %6s %8s %8s %8s %8s %8s %8s %8s %8s %-30s"
-    % ("RUN", "NUM", "PCT-TO", "OUTS", "CALLEE", "TOTAL", "TOTAV", "50-DUR", "90-DUR", "95-DUR", "99-DUR", "NAME")
+    f"{'RUN':>8} {'NUM':>8} {'PCT-TO':>6} {'OUTS':>8} {'CALLEE':>8} {'TOTAL':>8} {'TOTAV':>8} {'50-DUR':>8} {'90-DUR':>8} {'95-DUR':>8} {'99-DUR':>8} {'NAME':<30}"
 )
 all_total = 0
 for j in sorted(funcs, key=lambda x: funcs[x], reverse=True):
@@ -363,27 +362,18 @@ for j in sorted(funcs, key=lambda x: funcs[x], reverse=True):
     else:
         sorted_p = sorted(funcdur[j], key=lambda x: x[0])
         p = [x[0] for x in sorted_p]
+        name_str = j + (" [O]" if j in outside_funcs else "")
+        total_dur = dur + callee[j] * 1e6 + outside[j] * 1e6
         print(
-            "%8.2f %8d %6.2f %8.2f %8.2f %8.2f %8.2f %8.2f %8.2f %8.2f %8.2f %-30s"
-            % (
-                dur,
-                funccount[j],
-                pct,
-                outside[j] * 1e6,
-                callee[j] * 1e6,
-                dur + callee[j] * 1e6 + outside[j] * 1e6,
-                (dur + callee[j] * 1e6 + outside[j] * 1e6) / len(p) if len(p) > 0 else 0,
-                percentile(p, 0.50) * 1e6,
-                percentile(p, 0.90) * 1e6,
-                percentile(p, 0.95) * 1e6,
-                percentile(p, 0.99) * 1e6,
-                j + (" [O]" if j in outside_funcs else ""),
-            )
+            f"{dur:8.2f} {funccount[j]:8d} {pct:6.2f} {outside[j] * 1e6:8.2f} {callee[j] * 1e6:8.2f} "
+            f"{total_dur:8.2f} {(total_dur / len(p) if len(p) > 0 else 0):8.2f} "
+            f"{percentile(p, 0.50) * 1e6:8.2f} {percentile(p, 0.90) * 1e6:8.2f} "
+            f"{percentile(p, 0.95) * 1e6:8.2f} {percentile(p, 0.99) * 1e6:8.2f} {name_str:<30}"
         )
         assert sum(p) <= dur
 print()
 print("all_total", all_total)
-print("sum", sum([endt[cpu] - startt[cpu] for cpu in cpus]))
+print("sum", sum(endt[cpu] - startt[cpu] for cpu in cpus))
 
 # debug me
 # assert all_total <= sum([endt[cpu] - startt[cpu] for cpu in cpus])
@@ -391,29 +381,16 @@ print("sum", sum([endt[cpu] - startt[cpu] for cpu in cpus]))
 left = sorted(left)
 sleft = sum(left)
 print(
-    "%8.2f %8d %6.2f %8.2f %8s %8s %6s %6s %6s %6s %6s %-30s"
-    % (
-        sleft,
-        len(left),
-        (sleft / totalsched) * 100.0 if totalsched > 0 else 0,
-        left_outside,
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "other",
-    )
+    f"{sleft:8.2f} {len(left):8d} {(sleft / totalsched) * 100.0 if totalsched > 0 else 0:6.2f} "
+    f"{left_outside:8.2f} {'':8} {'':8} {'':6} {'':6} {'':6} {'':6} {'':6} {'other':<30}"
 )
 print()
-print("%d functions below threshold" % len(left))
+print(f"{len(left)} functions below threshold")
 print()
 
 print("total percentiles")
 print()
-print("%8s %8s %8s %8s %s" % ("50-TOT", "90-TOT", "95-TOT", "99-TOT", "NAME"))
+print(f"{'50-TOT':>8} {'90-TOT':>8} {'95-TOT':>8} {'99-TOT':>8} NAME")
 for j in sorted(funcs, key=lambda x: funcs[x], reverse=True):
     dur = funcs[j] * 1e6
     pct = (dur / totalsched) * 100.0 if totalsched > 0 else 0
@@ -422,36 +399,30 @@ for j in sorted(funcs, key=lambda x: funcs[x], reverse=True):
     sorted_p = sorted(funcdur[j], key=lambda x: x[3])
     p = [x[3] for x in sorted_p]
     print(
-        "%8.2f %8.2f %8.2f %8.2f %s"
-        % (
-            percentile(p, 0.50) * 1e6,
-            percentile(p, 0.90) * 1e6,
-            percentile(p, 0.95) * 1e6,
-            percentile(p, 0.99) * 1e6,
-            j,
-        )
+        f"{percentile(p, 0.50) * 1e6:8.2f} {percentile(p, 0.90) * 1e6:8.2f} "
+        f"{percentile(p, 0.95) * 1e6:8.2f} {percentile(p, 0.99) * 1e6:8.2f} {j}"
     )
 
 print()
 print("Callers")
 print()
-print("%30s %-40s" % ("FUNC", "CALLERS"))
+print(f"{'FUNC':>30} {'CALLERS':<40}")
 for j in sorted(funcs, key=lambda x: funcs[x], reverse=True):
     dur = funcs[j] * 1e6
     pct = (dur / totalsched) * 100.0 if totalsched > 0 else 0
     if len(callers[j]) > 0 and pct >= args.thresh:
-        print("%30s %-40s" % (j, " ".join(callers[j])))
+        print(f"{j:>30} {' '.join(callers[j]):<40}")
 print()
 
 print()
 print("Callees")
 print()
-print("%30s %-40s" % ("FUNC", "CALLEES"))
+print(f"{'FUNC':>30} {'CALLEES':<40}")
 for j in sorted(funcs, key=lambda x: funcs[x], reverse=True):
     dur = funcs[j] * 1e6
     pct = (dur / totalsched) * 100.0 if totalsched > 0 else 0
     if len(callee_set[j]) > 0 and pct >= args.thresh:
-        print("%30s %-40s" % (j, " ".join(callee_set[j])))
+        print(f"{j:>30} {' '.join(callee_set[j]):<40}")
 print()
 
 
@@ -480,33 +451,33 @@ def print_timestamps(title, column, ind):
             "NAME",
         )
     )
-    for j in sorted(funcs, key=lambda x: funcs[x], reverse=True):
-        dur = funcs[j] * 1e6
-        pct = (dur / totalsched) * 100.0 if totalsched > 0 else 0
-        if pct < args.thresh:
+    for func_name in sorted(funcs, key=lambda x: funcs[x], reverse=True):
+        func_dur = funcs[func_name] * 1e6
+        func_pct = (func_dur / totalsched) * 100.0 if totalsched > 0 else 0
+        if func_pct < args.thresh:
             continue
-        sorted_p = sorted(funcdur[j], key=lambda x: x[ind])
-        p = [x[1] for x in sorted_p]
-        pind = [x[ind] for x in sorted_p]
-        pcpu = [x[2] for x in sorted_p]
+        sorted_funcs = sorted(funcdur[func_name], key=lambda x: x[ind])
+        p_vals = [x[1] for x in sorted_funcs]
+        pind = [x[ind] for x in sorted_funcs]
+        pcpu = [x[2] for x in sorted_funcs]
         print(
             ("%8.2f %8d " + "%15f %8.2f %2d " * 4 + " %s")
             % (
-                dur,
-                funccount[j],
-                percentile(p, 0.50),
+                func_dur,
+                funccount[func_name],
+                percentile(p_vals, 0.50),
                 percentile(pind, 0.50) * 1e6,
                 percentile(pcpu, 0.50),
-                percentile(p, 0.90),
+                percentile(p_vals, 0.90),
                 percentile(pind, 0.90) * 1e6,
                 percentile(pcpu, 0.90),
-                percentile(p, 0.95),
+                percentile(p_vals, 0.95),
                 percentile(pind, 0.95) * 1e6,
                 percentile(pcpu, 0.95),
-                percentile(p, 0.99),
+                percentile(p_vals, 0.99),
                 percentile(pind, 0.99) * 1e6,
                 percentile(pcpu, 0.99),
-                j,
+                func_name,
             )
         )
 
