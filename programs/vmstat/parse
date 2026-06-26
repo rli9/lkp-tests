@@ -19,7 +19,7 @@ while (line = $stdin.gets)
   data = line.split
 
   if data.last =~ /\d\d:\d\d:\d\d/
-    timestamp = data.pop(2).join(' ').to_time.to_i
+    timestamp = Time.parse(data.pop(2).join(' ')).to_i
     puts "time: #{timestamp}"
   end
 

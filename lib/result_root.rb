@@ -130,7 +130,7 @@ end
 class Completion
   def initialize(line)
     fields = line.split
-    @time = fields[0..2].join(' ').to_time
+    @time = Time.parse(fields[0..2].join(' '))
     @_rt = MResultRoot.new fields[4]
     @status = fields.drop(4).join ' '
   end
