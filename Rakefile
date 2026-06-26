@@ -188,8 +188,27 @@ task :ruff do
   end
 end
 
+desc 'Run pylint'
+task :pylint do
+  unless tool_available?('pylint')
+    puts 'pylint not installed, skipping'.yellow
+    next
+  end
+
+  version = `pylint --version 2>&1`.split[1]
+  puts "pylint (#{version}) start...".yellow
+
+  sh "pylint --recursive y #{ENV['file'] || '.'}", verbose: false do |ok, res|
+    if ok
+      puts "pylint (#{version}) OK".green
+    else
+      exit res.exitstatus
+    end
+  end
+end
+
 desc 'Run code check'
-task code: %i[syntax yamllint shellcode rubocop ruff]
+task code: %i[syntax yamllint shellcode rubocop ruff pylint]
 
 namespace :docker do
   desc 'Build docker image'
