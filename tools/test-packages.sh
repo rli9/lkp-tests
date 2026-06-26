@@ -16,7 +16,8 @@ map_packages()
 {
 	parse_packages_arch
 
-	[[ "$distro" != "debian" ]] && remove_packages_version && remove_packages_repository
+	remove_packages_version
+	remove_packages_repository
 
 	map_python_packages
 
