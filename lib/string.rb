@@ -3,8 +3,8 @@
 LKP_SRC ||= ENV['LKP_SRC'] || File.dirname(__dir__)
 LKP_CORE_SRC ||= ENV['LKP_CORE_SRC'] || LKP_SRC
 
-require "#{LKP_CORE_SRC}/lib/time"
 require 'active_support/core_ext/string'
+require "#{LKP_CORE_SRC}/lib/time"
 
 REGEX_ANSI_COLOR = /\e\[([0-9;]+m|[mK])/
 class String
