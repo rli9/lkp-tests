@@ -8,11 +8,11 @@ gettext-base
 groff-base
 intltool-debian
 libarchive-zip-perl
-linux-libc-dev/stable-backports
 libfile-stripnondeterminism-perl
 libicu
 libpipeline1
 libtimedate-perl
 libxml2
+linux-libc-dev/stable-backports
 man-db
 po-debconf
