@@ -21,7 +21,9 @@ RUN zypper refresh && \
     # procps installs vmstat, sysctl, etc to partially persistent commonly used dependencies
     procps \
     perf \
-    hostname && \
+    hostname \
+    # ruby-devel provides headers needed to compile native gem extensions (e.g. bigdecimal)
+    ruby-devel && \
     make install && \
     lkp install
 
