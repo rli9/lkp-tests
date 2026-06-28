@@ -230,6 +230,13 @@ fixup_test()
 		# LTP installs scripts under testcases/bin/, not the source-tree path.
 		sed -i 's/opt="-n"/opt="-6"/' testcases/bin/dns-stress02-rmt.sh
 		;;
+	net_stress.appl-http)
+		# HTTP_DOWNLOAD_DIR defaults to /var/www/html (set by tst_net.sh).
+		# apache2 is installed (pkg/depends) so the directory exists and setup
+		# passes, but the service is not started — curl then fails with
+		# "Could not connect to server" on port 80.  Start it here.
+		systemctl start apache2 || exit
+		;;
 	net_stress.appl-0*)
 		[ -d /srv/ftp ] && export FTP_DOWNLOAD_DIR=/srv/ftp
 		sed -i '/\/usr\/sbin\/named {/a\\/tmp\/** rw,' /etc/apparmor.d/usr.sbin.named || exit
