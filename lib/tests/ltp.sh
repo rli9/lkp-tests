@@ -223,6 +223,13 @@ fixup_test()
 	net.rpc_tests)
 		systemctl start openbsd-inetd || exit
 		;;
+	net_stress.appl-dns)
+		# dig -n is not a valid option in modern BIND9; the test script
+		# dns-stress02-rmt.sh uses it for IPv6 reverse lookups but it causes dig
+		# to fail.  Replace with -6, the correct flag for IPv6-only transport.
+		# LTP installs scripts under testcases/bin/, not the source-tree path.
+		sed -i 's/opt="-n"/opt="-6"/' testcases/bin/dns-stress02-rmt.sh
+		;;
 	net_stress.appl-0*)
 		[ -d /srv/ftp ] && export FTP_DOWNLOAD_DIR=/srv/ftp
 		sed -i '/\/usr\/sbin\/named {/a\\/tmp\/** rw,' /etc/apparmor.d/usr.sbin.named || exit
