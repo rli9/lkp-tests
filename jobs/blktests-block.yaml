@@ -13,8 +13,17 @@ blktests:
     - block-group-00
     - block-group-01
     - block-010
-    # No I/O performed by psync
+    # block-011: requires PCIe-connected device (_require_test_dev_is_pci).
+    # SATA drives fail the check. Enable by adding a 1NVME disk stanza below.
     # - block-011
+    #
+    # block-019: requires PCIe device in a hot-pluggable slot
+    # (_require_test_dev_is_pci && _require_test_dev_in_hotplug_slot,
+    # CAP_EXP+14.w bits 0x60). Standard M.2 NVMe does NOT qualify; needs
+    # a server with U.2/U.3 hot-swap NVMe bays or a PCIe hot-plug slot.
+    # Enable by adding a 1NVMEhotplug disk stanza when such hardware is
+    # available.
+    # - block-019
 
 ---
 kernel_cmdline: "cgroup_no_v1=all"
