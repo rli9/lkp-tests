@@ -1,44 +1,44 @@
 need_kconfig:
-% if job['fs'] == "f2fs"
-- F2FS_FS: m
-- F2FS_FS_XATTR: y
-- F2FS_FS_SECURITY: y
-- F2FS_FS_ENCRYPTION: y
+% if job['fs'] == "bcachefs"
+- BCACHEFS_FS: m
+- BCACHEFS_QUOTA: y
+% elsif job['fs'] == "btrfs"
+- DM_DUST
 % elsif job['fs'] == "ext2"
 - EXT2_FS: m
-- EXT2_FS_XATTR: y
 - EXT2_FS_POSIX_ACL: y
 - EXT2_FS_SECURITY: y
+- EXT2_FS_XATTR: y
 % elsif job['fs'] == "ext4"
 - EXT4_ENCRYPTION: y
-% elsif job['fs'] == "xfs"
-- XFS_RT: y
-- XFS_ONLINE_SCRUB: y
-- XFS_ONLINE_REPAIR: y
-% elsif job['fs'] == "udf"
-- UDF_FS: m
+% elsif job['fs'] == "f2fs"
+- F2FS_FS: m
+- F2FS_FS_ENCRYPTION: y
+- F2FS_FS_SECURITY: y
+- F2FS_FS_XATTR: y
 % elsif job['fs'] == "ocfs2"
 - OCFS2_FS: m
 - OCFS2_FS_O2CB: m
-- OCFS2_FS_USERSPACE_CLUSTER: m
 - OCFS2_FS_STATS: y
-% elsif job['fs'] == "btrfs"
-- DM_DUST
-% elsif job['fs'] == "bcachefs"
-- BCACHEFS_FS: m
-- BCACHEFS_QUOTA: y
+- OCFS2_FS_USERSPACE_CLUSTER: m
+% elsif job['fs'] == "udf"
+- UDF_FS: m
+% elsif job['fs'] == "xfs"
+- XFS_ONLINE_REPAIR: y
+- XFS_ONLINE_SCRUB: y
+- XFS_RT: y
 % end
 
-- FS_ENCRYPTION: y
+- BLK_DEV_ZONED_LOOP: m
 - CRYPTO_HCTR2: y
 - CRYPTO_POLYVAL: y
 - DEBUG_KERNEL: y
-- FAULT_INJECTION: y
-- FAIL_MAKE_REQUEST: y
-- FAULT_INJECTION_DEBUG_FS: y
-- BLK_DEV_ZONED_LOOP: m
 - DM_LOG_WRITES: m
-- UNICODE: m
-- IO_URING: y
 - EXPERT: y
+- FAIL_MAKE_REQUEST: y
+- FAULT_INJECTION: y
+- FAULT_INJECTION_DEBUG_FS: y
+- FS_ENCRYPTION: y
 - HIBERNATION: n
+- IO_URING: y
+- UNICODE: m
