@@ -12,10 +12,18 @@ need_kconfig:
 % elsif job['fs'] == "ext4"
 - EXT4_ENCRYPTION: y
 % elsif job['fs'] == "f2fs"
+- F2FS_FAULT_INJECTION: y
 - F2FS_FS: m
+- F2FS_FS_COMPRESSION: y
 - F2FS_FS_ENCRYPTION: y
+- F2FS_FS_LZ4: y
+- F2FS_FS_LZ4HC: y
+- F2FS_FS_LZO: y
+- F2FS_FS_LZORLE: y
+- F2FS_FS_POSIX_ACL: y
 - F2FS_FS_SECURITY: y
 - F2FS_FS_XATTR: y
+- F2FS_FS_ZSTD: y
 % elsif job['fs'] == "ocfs2"
 - OCFS2_FS: m
 - OCFS2_FS_O2CB: m
@@ -41,4 +49,5 @@ need_kconfig:
 - FS_ENCRYPTION: y
 - HIBERNATION: n
 - IO_URING: y
+- QFMT_V2: m
 - UNICODE: m
